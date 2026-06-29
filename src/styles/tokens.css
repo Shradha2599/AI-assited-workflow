@@ -1,0 +1,125 @@
+:root {
+  /* Brand */
+  --color-brand: #e53935;
+  --color-brand-foreground: #ffffff;
+
+  /* Primary action blue */
+  --color-primary: #1a73e8;
+  --color-primary-foreground: #ffffff;
+  --color-primary-hover: #1557b0;
+  --color-primary-light: #e8f0fe;
+
+  /* Semantic */
+  --color-success: #1e8e3e;
+  --color-success-light: #e6f4ea;
+  --color-warning: #f9ab00;
+  --color-warning-light: #fef7e0;
+  --color-error: #d93025;
+  --color-error-light: #fce8e6;
+
+  /* Surfaces */
+  --color-background: #f5f6f8;
+  --color-foreground: #202124;
+  --color-muted: #f1f3f4;
+  --color-muted-foreground: #5f6368;
+  --color-border: #dadce0;
+  --color-card: #ffffff;
+  --color-card-foreground: #202124;
+
+  /* Sidebar & panels */
+  --color-sidebar: #ffffff;
+  --color-sidebar-foreground: #5f6368;
+  --color-sidebar-active: #e8f0fe;
+  --color-tasks-panel: #ffffff;
+  --color-tasks-tab-active: #3c4043;
+  --color-tasks-tab-inactive: #ffffff;
+
+  /* Holiday banner */
+  --color-holiday-bg: #e6f4ea;
+  --color-holiday-text: #d93025;
+  --color-holiday-badge: #ceead6;
+
+  /* Treemap lag colors */
+  --color-lag-high: #ea4335;
+  --color-lag-medium-high: #fa7b17;
+  --color-lag-medium: #fbbc04;
+  --color-lag-low: #f9f871;
+  --color-lag-par: #ccff90;
+  --color-lag-ahead: #34a853;
+
+  /* Calendar */
+  --color-calendar-header: #fef7e0;
+  --color-calendar-grid: #fffbf0;
+
+  /* Pipeline heatmap */
+  --color-heatmap-high: #4285f4;
+  --color-heatmap-low: #fef7e0;
+
+  /* AI */
+  --color-ai-sparkle: #1a73e8;
+  --color-ai-insight: #e8f0fe;
+  --color-ai-insight-border: #aecbfa;
+
+  /* Spacing — 8pt grid */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Elevation */
+  --shadow-low: 0 1px 2px 0 rgb(60 64 67 / 0.08);
+  --shadow-medium: 0 1px 3px 0 rgb(60 64 67 / 0.12), 0 1px 2px -1px rgb(60 64 67 / 0.08);
+  --shadow-drawer: -2px 0 12px 0 rgb(60 64 67 / 0.15);
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --text-page-title-size: 1.375rem;
+  --text-page-title-line-height: 1.75rem;
+  --text-page-title-weight: 600;
+
+  --text-section-size: 0.875rem;
+  --text-section-line-height: 1.25rem;
+  --text-section-weight: 600;
+
+  --text-body-size: 0.8125rem;
+  --text-body-line-height: 1.125rem;
+  --text-body-weight: 400;
+
+  --text-caption-size: 0.75rem;
+  --text-caption-line-height: 1rem;
+  --text-caption-weight: 400;
+
+  --text-label-size: 0.6875rem;
+  --text-label-line-height: 0.875rem;
+  --text-label-weight: 500;
+
+  --text-kpi-size: 1.375rem;
+  --text-kpi-line-height: 1.75rem;
+  --text-kpi-weight: 600;
+
+  /* Layout */
+  --sidebar-width: 72px;
+  --topbar-height: 56px;
+  --tasks-panel-width: 340px;
+  --content-max-width: none;
+
+  /* Z-index */
+  --z-sidebar: 40;
+  --z-topbar: 50;
+  --z-drawer: 60;
+  --z-modal: 70;
+  --z-toast: 80;
+}
