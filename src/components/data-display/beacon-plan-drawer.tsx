@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { BeaconPlanDrawerShimmer } from "@/components/data-display/beacon-plan-shimmer";
 import { DrawerRevenueSummary } from "@/components/data-display/drawer-revenue-summary";
@@ -10,23 +10,26 @@ import { Button } from "@/components/ui/button";
 import { DrawerHeaderShell, DrawerPanel } from "@/components/ui/drawer-panel";
 import { SvgIcon } from "@/components/ui/svg-icon";
 
-const BEACON_LOADING_MS = 3000;
+function parseRevM(r: string): number {
+  const m = r.match(/\$?([\d.]+)([MK]?)/i);
+  if (!m) return 0;
+  const n = parseFloat(m[1]);
+  return m[2]?.toUpperCase() === "K" ? n / 1000 : n;
+}
 
 interface BeaconPlanDrawerProps {
   open: boolean;
-  items: GapItem[];
   existingPlanItems: string[];
   revenueGoal: string;
   revenuePlanned: string;
   revenuePlannedPercent: number;
   plannedMessage: string;
   onClose: () => void;
-  onAddToPlan: (itemIds: string[]) => void;
+  onAddToPlan: (items: Array<{ name: string; revenueM: number }>) => void;
 }
 
 export function BeaconPlanDrawer({
   open,
-  items,
   existingPlanItems,
   revenueGoal,
   revenuePlanned,
@@ -35,20 +38,52 @@ export function BeaconPlanDrawer({
   onClose,
   onAddToPlan,
 }: BeaconPlanDrawerProps) {
+  const [items, setItems]           = useState<GapItem[]>([]);
+  const [loading, setLoading]       = useState(false);
+  const [error, setError]           = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState(true);
+  const abortRef                    = useRef<AbortController | null>(null);
 
+  // Fetch recommendations whenever the drawer opens (or revenue goal changes)
   useEffect(() => {
     if (!open) {
-      setLoading(true);
       setSelectedIds(new Set());
       return;
     }
 
+    // Abort any in-flight request
+    abortRef.current?.abort();
+    const ctrl = new AbortController();
+    abortRef.current = ctrl;
+
     setLoading(true);
-    const timer = window.setTimeout(() => setLoading(false), BEACON_LOADING_MS);
-    return () => window.clearTimeout(timer);
-  }, [open]);
+    setError(null);
+    setItems([]);
+
+    fetch("/api/plan-with-beacon", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ revenueGoal, existingPlanItems }),
+      signal: ctrl.signal,
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(await res.text());
+        return res.json() as Promise<GapItem[]>;
+      })
+      .then((data) => {
+        setItems(data);
+        setLoading(false);
+      })
+      .catch((err: Error) => {
+        if (err.name === "AbortError") return;
+        console.error("[BeaconPlanDrawer]", err);
+        setError("Something went wrong analysing your assortment. Please try again.");
+        setLoading(false);
+      });
+
+    return () => ctrl.abort();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, revenueGoal]);
 
   if (!open) return null;
 
@@ -73,7 +108,10 @@ export function BeaconPlanDrawer({
 
   function handleAddSelected() {
     if (selectedIds.size === 0) return;
-    onAddToPlan(Array.from(selectedIds));
+    const selectedItems = availableItems
+      .filter((item) => selectedIds.has(item.id))
+      .map((item) => ({ name: item.name, revenueM: parseRevM(item.estimatedRevenue) }));
+    onAddToPlan(selectedItems);
     setSelectedIds(new Set());
     onClose();
   }
@@ -94,7 +132,7 @@ export function BeaconPlanDrawer({
         />
       }
       footer={
-        !loading ? (
+        !loading && !error && availableItems.length > 0 ? (
           <Button className="w-full" disabled={selectedIds.size === 0} onClick={handleAddSelected}>
             Add to Plan{selectedIds.size > 0 ? ` (${selectedIds.size} selected)` : ""}
           </Button>
@@ -110,15 +148,52 @@ export function BeaconPlanDrawer({
         />
       </div>
 
-      {loading ? (
+      {/* ── Loading ─────────────────────────────────────────────────────── */}
+      {loading && (
         <>
           <div className="px-[var(--space-4)] pb-[var(--space-4)]">
-            <div className="h-4 w-48 rounded-[var(--radius-sm)] bg-shimmer" />
-            <div className="mt-2 h-3 w-32 rounded-[var(--radius-sm)] bg-shimmer" />
+            <div className="h-4 w-56 rounded-[var(--radius-sm)] bg-shimmer" />
+            <div className="mt-2 h-3 w-36 rounded-[var(--radius-sm)] bg-shimmer" />
           </div>
           <BeaconPlanDrawerShimmer count={5} />
+
+          {/* Status message */}
+          <p className="mt-2 px-[var(--space-4)] text-center text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
+            Beacon is analysing the assortment gap for{" "}
+            <span className="font-semibold text-[var(--color-foreground)]">{revenueGoal}</span>…
+          </p>
         </>
-      ) : (
+      )}
+
+      {/* ── Error ───────────────────────────────────────────────────────── */}
+      {!loading && error && (
+        <div className="px-[var(--space-4)] py-12 text-center">
+          <p className="text-[var(--text-body-size)] text-[var(--color-error)]">{error}</p>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mt-4"
+            onClick={() => {
+              // Re-trigger by toggling open (parent manages this)
+              setError(null);
+              setLoading(true);
+              fetch("/api/plan-with-beacon", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ revenueGoal, existingPlanItems }),
+              })
+                .then((r) => r.json() as Promise<GapItem[]>)
+                .then((data) => { setItems(data); setLoading(false); })
+                .catch(() => { setError("Something went wrong. Please try again."); setLoading(false); });
+            }}
+          >
+            Retry
+          </Button>
+        </div>
+      )}
+
+      {/* ── Results ─────────────────────────────────────────────────────── */}
+      {!loading && !error && (
         <>
           <div className="flex items-center justify-between px-[var(--space-4)] pb-[var(--space-4)]">
             <div>
@@ -126,7 +201,7 @@ export function BeaconPlanDrawer({
                 Item type recommendations
               </p>
               <p className="mt-0.5 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-                {availableItems.length} item types available
+                {availableItems.length} item types selected to meet your {revenueGoal} goal
               </p>
             </div>
             {availableItems.length > 0 && (

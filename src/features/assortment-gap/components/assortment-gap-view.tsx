@@ -9,7 +9,7 @@ import {
   CategoryTreemap,
   type TreemapItem,
 } from "@/components/data-display/category-treemap";
-import { GapsDrawer, type GapItem } from "@/components/data-display/gaps-drawer";
+import { GapsDrawer } from "@/components/data-display/gaps-drawer";
 import { MissingProductsTable, type MissingProduct } from "@/components/data-display/missing-products-table";
 import { RevenueGoalPanel } from "@/components/data-display/revenue-goal-panel";
 import { PageHeader } from "@/components/layout/page-header";
@@ -22,6 +22,7 @@ import {
   type TreemapHierarchyRoot,
   type TreemapNode,
 } from "@/lib/mock-data/treemap-hierarchy";
+import { getGapItemsByCategory } from "@/lib/mock-data/gap-items-catalog";
 
 interface AssortmentGapViewProps {
   lastUpdatedLabel: string;
@@ -29,8 +30,6 @@ interface AssortmentGapViewProps {
   selectedCategoryCount: number;
   competitors: string[];
   treemapRoot: TreemapHierarchyRoot;
-  servewareGapItems: GapItem[];
-  beaconRecommendedItems: GapItem[];
   products: MissingProduct[];
 }
 
@@ -54,8 +53,6 @@ export function AssortmentGapView({
   selectedCategoryCount,
   competitors,
   treemapRoot,
-  servewareGapItems,
-  beaconRecommendedItems,
   products,
 }: AssortmentGapViewProps) {
   const [drillPath, setDrillPath] = useState<string[]>([]);
@@ -81,17 +78,13 @@ export function AssortmentGapView({
     [treemapRoot, drillPath],
   );
 
-  const drawerItems = useMemo(
-    () =>
-      servewareGapItems.map((item) => ({
-        ...item,
-        inPlan: planItems.includes(item.name),
-      })),
-    [servewareGapItems, planItems],
-  );
-
-  const revenuePlannedPercent = Math.min(planItems.length * 2, 100);
-  const plannedRevenue = planItems.length > 0 ? `$${(planItems.length * 1.6).toFixed(1)}M` : "$0M";
+  const drawerItems = useMemo(() => {
+    if (!drawerCategory) return [];
+    return getGapItemsByCategory(drawerCategory).map((item) => ({
+      ...item,
+      inPlan: planItems.includes(item.name),
+    }));
+  }, [drawerCategory, planItems]);
 
   function handleViewGapsFromTooltip(item: TreemapItem) {
     const category = item.opensDrawer ?? item.label;
@@ -99,11 +92,8 @@ export function AssortmentGapView({
     setSelectedId(item.id);
   }
 
-  function handleBeaconAddToPlan(itemIds: string[], items: GapItem[]) {
-    for (const id of itemIds) {
-      const entry = items.find((item) => item.id === id);
-      if (entry) addPlanItem(entry.name);
-    }
+  function handleBeaconAddToPlan(items: Array<{ name: string; revenueM: number }>) {
+    for (const { name, revenueM } of items) addPlanItem(name, revenueM);
   }
 
   function handleTreemapSelect(item: TreemapItem) {
@@ -160,13 +150,6 @@ export function AssortmentGapView({
 
       <RevenueGoalPanel
         revenueOpportunity={revenueOpportunity}
-        revenuePlannedPercent={revenuePlannedPercent}
-        plannedMessage={
-          planItems.length > 0
-            ? `You are $${(50 - planItems.length * 1.6).toFixed(1)}M away from completing your assortment plan`
-            : "You are $50.0M away from completing your assortment plan"
-        }
-        beaconRecommendedItems={beaconRecommendedItems}
         planItemCount={planItems.length}
         planItemNames={planItems}
         onAddToPlan={handleBeaconAddToPlan}
@@ -199,26 +182,25 @@ export function AssortmentGapView({
       {drawerCategory && (
         <GapsDrawer
           category={drawerCategory}
-          gapCount={23}
+          gapCount={drawerItems.length}
           items={drawerItems}
           revenueGoal="$50.0M"
-          revenuePlanned={plannedRevenue}
-          revenuePlannedPercent={revenuePlannedPercent}
-          plannedMessage={
-            planItems.length > 0
-              ? `You are $${(50 - planItems.length * 1.6).toFixed(1)}M away from completing your assortment plan`
-              : "You are $50.0M away from completing your assortment plan"
-          }
+          revenuePlanned="$0M"
+          revenuePlannedPercent={0}
+          plannedMessage=""
           onClose={() => {
             setDrawerCategory(null);
             setSelectedId(null);
           }}
           onAddToPlan={(id) => {
-            const item = servewareGapItems.find((g) => g.id === id);
-            if (item) addPlanItem(item.name);
+            const item = drawerItems.find((g) => g.id === id);
+            if (item) {
+              const revM = parseFloat(item.estimatedRevenue.replace(/[^0-9.]/g, "")) || 0;
+              addPlanItem(item.name, revM);
+            }
           }}
           onRemoveFromPlan={(id) => {
-            const item = servewareGapItems.find((g) => g.id === id);
+            const item = drawerItems.find((g) => g.id === id);
             if (item) removePlanItem(item.name);
           }}
         />

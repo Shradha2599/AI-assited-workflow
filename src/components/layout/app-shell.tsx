@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 
 import { Sidebar } from "@/components/layout/sidebar";
@@ -7,6 +8,7 @@ import { SidebarProvider, useSidebar } from "@/components/layout/sidebar-context
 import { Topbar } from "@/components/layout/topbar";
 import { PageHeaderProvider, PageHeaderSlot } from "@/components/layout/page-header-context";
 import { TasksPanel, type RecommendedTask } from "@/components/ai/tasks-panel";
+import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import {
   dashboardTasks,
   gapAnalysisTasks,
@@ -178,10 +180,100 @@ function getPageForPath(pathname: string): BeaconPage {
   return "unknown";
 }
 
+/** Generates context-aware tasks for the assortment plan page based on live store state */
+function usePlanTasks(isOnPlanPage: boolean): RecommendedTask[] | null {
+  const planItems     = usePlanStore((s) => s.planItems);
+  const scheduledItems = usePlanStore((s) => s.scheduledItems);
+
+  return useMemo<RecommendedTask[] | null>(() => {
+    if (!isOnPlanPage) return null;
+
+    const scheduledLabels = new Set(scheduledItems.map((s) => s.label));
+    const unscheduled = planItems.filter((p) => !scheduledLabels.has(p));
+    const categories  = [...new Set(scheduledItems.map((s) => s.row))];
+
+    // No items added to plan yet
+    if (planItems.length === 0) {
+      return [
+        {
+          id: "apt-no-items",
+          title: "Start with Gap Analysis",
+          description: "No item types in your plan yet. Go to Assortment Gap Analysis to identify and add item types.",
+          actionLabel: "Analyse Gaps →",
+          actionHref: "/assortment/gap",
+        },
+        {
+          id: "apt-beacon-hint",
+          title: "Ask Beacon to build your plan",
+          description: "Beacon can analyse the assortment gap and recommend item types that meet your revenue goal.",
+          actionLabel: "Chat with Beacon →",
+          actionHref: "/assortment/gap",
+        },
+      ];
+    }
+
+    // Items in plan but none on calendar
+    if (scheduledItems.length === 0) {
+      return [
+        {
+          id: "apt-drag",
+          title: `${planItems.length} item type${planItems.length > 1 ? "s" : ""} ready to schedule`,
+          description: "Drag items from the Assortment Plan strip above onto the calendar. Each item will auto-land in its correct category row.",
+          actionLabel: "Generate Calendar →",
+        },
+        {
+          id: "apt-generate",
+          title: "Let Beacon auto-schedule",
+          description: "Beacon can use market demand signals to automatically schedule all items across the right quarters.",
+          actionLabel: "Generate Calendar →",
+        },
+      ];
+    }
+
+    // Partial — some items on calendar, some not yet
+    if (unscheduled.length > 0) {
+      return [
+        {
+          id: "apt-partial",
+          title: `${scheduledItems.length} of ${planItems.length} items placed`,
+          description: `Still to schedule: ${unscheduled.slice(0, 3).join(", ")}${unscheduled.length > 3 ? ` +${unscheduled.length - 3} more` : ""}.`,
+          actionLabel: "Continue planning",
+        },
+        {
+          id: "apt-resize",
+          title: "Adjust launch windows",
+          description: "Click any item on the calendar to select it, then drag the blue handles to refine its month range.",
+          actionLabel: "Optimise timing",
+        },
+      ];
+    }
+
+    // All items on calendar — ready to finalise
+    return [
+      {
+        id: "apt-done",
+        title: `✓ All ${planItems.length} item types scheduled`,
+        description: `Spanning ${categories.length} categor${categories.length > 1 ? "ies" : "y"}: ${categories.slice(0, 3).join(", ")}${categories.length > 3 ? "…" : ""}. Your plan is ready to share.`,
+        actionLabel: "Finalize & Share →",
+        actionHref: "/assortment/finalize",
+      },
+      {
+        id: "apt-versions",
+        title: "Save a new version",
+        description: "Create a Version 2 to experiment with a different schedule while keeping your current plan safe.",
+        actionLabel: "Create version",
+      },
+    ];
+  }, [isOnPlanPage, planItems, scheduledItems]);
+}
+
 function AppShellContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { showSubnav } = useSidebar();
-  const tasks = getTasksForPath(pathname);
+  const isOnPlanPage = pathname.startsWith("/assortment/plan") || pathname.startsWith("/assortment/finalize");
+  const dynamicPlanTasks = usePlanTasks(isOnPlanPage);
+  const staticTasks = getTasksForPath(pathname);
+  const tasks = dynamicPlanTasks ?? staticTasks;
   const insights = getInsightsForPath(pathname);
   const showInsightsTab = shouldShowInsightsTab(pathname);
   const page = getPageForPath(pathname);

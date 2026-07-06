@@ -37,12 +37,51 @@ export interface RecommendedTask {
   reviewTaskId?: string;
 }
 
-const STARTER_PROMPTS = [
-  "Which product types are driving growth for competitors?",
-  "Which viral products have high search volume but low Target coverage?",
-  "Show categories with weak onboarding pipeline coverage.",
-  "Who are the top confidence sellers for Lighting?",
-];
+// Page-aware starter prompts — focused on the dashboard → calendar flow
+const STARTER_PROMPTS_BY_PAGE: Record<string, string[]> = {
+  dashboard: [
+    "Which categories have the biggest assortment gap vs competitors?",
+    "What should I prioritize to hit our revenue goal this quarter?",
+    "Which sellers in our pipeline are closest to going live?",
+    "What's our biggest missed revenue opportunity right now?",
+  ],
+  "assortment-gap": [
+    "Which Lighting items should I add to close the 38% lag?",
+    "Compare our Serveware coverage vs Amazon and Walmart.",
+    "What are the top viral products we're missing in Kitchen & Dining?",
+    "Which categories should I tackle first for Q1 launch?",
+  ],
+  "assortment-plan": [
+    "Help me plan Lighting launches for Q1 (Nov–Dec).",
+    "Which items should be live before Thanksgiving?",
+    "Optimize my calendar for maximum revenue impact.",
+    "What should I schedule for Back to School season in Q4?",
+  ],
+  "lead-discovery": [
+    "Find top Lighting sellers with confidence score above 85.",
+    "Who are the best Serveware sellers to shortlist now?",
+    "Which sellers reduce our operational risk the most?",
+    "Show me sellers with the highest GMV potential for Kitchen.",
+  ],
+  "partner-onboarding": [
+    "Which partners have blockers holding up activation?",
+    "Draft a document reminder for all pending partners.",
+    "Who is closest to completing onboarding this week?",
+    "What are the most common onboarding blockers across partners?",
+  ],
+  "seller-profile": [
+    "Give me a risk assessment for this seller.",
+    "How does this seller compare to our shortlist criteria?",
+    "Draft an acquisition outreach email for this seller.",
+    "Which categories does this seller cover best?",
+  ],
+  unknown: [
+    "Which product types are driving growth for competitors?",
+    "Which viral products have high search volume but low Target coverage?",
+    "Show categories with weak onboarding pipeline coverage.",
+    "Who are the top confidence sellers for Lighting?",
+  ],
+};
 
 interface TasksPanelProps {
   tasks: RecommendedTask[];
@@ -210,33 +249,85 @@ function StandardTaskCard({
   );
 }
 
-// ─── Suggested items (shown when AI mentions adding items) ───────────────────
-const SUGGESTED_ITEMS = [
-  { id: "si-1", name: "Ceramic Serving High Bowls", category: "Kitchen & Dining", img: "/images/products/ceramic-serving-high-bowls.svg" },
-  { id: "si-2", name: "Glass Beverage Dispenser", category: "Kitchen & Dining", img: "/images/products/glass-beverage-dispenser.svg" },
-  { id: "si-3", name: "Cake Stands & Tiered Servers", category: "Kitchen & Dining", img: "/images/products/cake-stands-tiered-servers.svg" },
-  { id: "si-4", name: "Dip & Condiment Servers", category: "Kitchen & Dining", img: "/images/products/dip-condiment-servers.svg" },
-  { id: "si-5", name: "Sugar Bowl & Creamer Sets", category: "Kitchen & Dining", img: "/images/products/sugar-bowl-creamer-sets.svg" },
-];
+// ─── Suggested items catalog — keyed by category ─────────────────────────────
+type SuggestedItem = { id: string; name: string; opportunity: string; img: string };
 
-const ITEM_SUGGESTION_KEYWORDS = [
-  "add", "item", "product", "sku", "serveware", "kitchen", "lighting",
-  "category", "assortment", "plan", "recommend", "suggest", "coverage",
-];
+const ITEMS_BY_CATEGORY: Record<string, SuggestedItem[]> = {
+  "Lighting": [
+    { id: "l-1", name: "Ceramic Table Lamp",      opportunity: "82% opp.", img: "/images/products/ceramic-table-lamp.svg" },
+    { id: "l-2", name: "Pendant Light Fixture",   opportunity: "76% opp.", img: "/images/products/pendant-light-fixture.svg" },
+    { id: "l-3", name: "Outdoor String Lights",   opportunity: "71% opp.", img: "/images/products/outdoor-string-lights.svg" },
+    { id: "l-4", name: "Halloween Lantern Set",   opportunity: "68% opp.", img: "/images/products/halloween-lantern-set.svg" },
+  ],
+  "Serveware": [
+    { id: "sw-1", name: "Ceramic Serving Bowls",       opportunity: "79% opp.", img: "/images/products/ceramic-serving-high-bowls.svg" },
+    { id: "sw-2", name: "Glass Beverage Dispenser",    opportunity: "74% opp.", img: "/images/products/glass-beverage-dispenser.svg" },
+    { id: "sw-3", name: "Cake Stands & Tiered Servers",opportunity: "72% opp.", img: "/images/products/cake-stands-tiered-servers.svg" },
+    { id: "sw-4", name: "Dip & Condiment Servers",     opportunity: "65% opp.", img: "/images/products/dip-condiment-servers.svg" },
+    { id: "sw-5", name: "Sugar Bowl & Creamer Sets",   opportunity: "61% opp.", img: "/images/products/sugar-bowl-creamer-sets.svg" },
+  ],
+  "Kitchen & Dining": [
+    { id: "kd-1", name: "Glass Cake Domes",              opportunity: "77% opp.", img: "/images/products/glass-cake-domes.svg" },
+    { id: "kd-2", name: "Cupcake Stand & Tiered Server", opportunity: "70% opp.", img: "/images/products/cupcake-stand-tiered-server.svg" },
+    { id: "kd-3", name: "Ceramic Serving Bowls",         opportunity: "68% opp.", img: "/images/products/ceramic-serving-high-bowls.svg" },
+    { id: "kd-4", name: "Sugar Bowl & Creamer Sets",     opportunity: "62% opp.", img: "/images/products/sugar-bowl-creamer-sets.svg" },
+  ],
+  "Furniture": [
+    { id: "f-1", name: "Decorative Wall Mirror",   opportunity: "75% opp.", img: "/images/products/decorative-wall-mirror.svg" },
+    { id: "f-2", name: "Linen Dining Chair Cover", opportunity: "69% opp.", img: "/images/products/linen-dining-chair-cover.svg" },
+    { id: "f-3", name: "Storage Basket Set",       opportunity: "66% opp.", img: "/images/products/storage-basket-set.svg" },
+  ],
+  "Storage & Organization": [
+    { id: "so-1", name: "Storage Basket Set",      opportunity: "80% opp.", img: "/images/products/storage-basket-set.svg" },
+    { id: "so-2", name: "Decorative Wall Mirror",  opportunity: "65% opp.", img: "/images/products/decorative-wall-mirror.svg" },
+  ],
+  "Outdoor Living & Garden": [
+    { id: "og-1", name: "Outdoor String Lights",  opportunity: "78% opp.", img: "/images/products/outdoor-string-lights.svg" },
+    { id: "og-2", name: "Halloween Lantern Set",  opportunity: "71% opp.", img: "/images/products/halloween-lantern-set.svg" },
+  ],
+};
 
-function hasItemSuggestion(content: string): boolean {
+/**
+ * Returns the gap category being discussed if the AI is making a product
+ * recommendation, otherwise returns null (no widget shown).
+ */
+function extractSuggestedCategory(content: string): string | null {
   const lower = content.toLowerCase();
-  return ITEM_SUGGESTION_KEYWORDS.some((kw) => lower.includes(kw));
+
+  // Only show widget if the AI is actively recommending products/items
+  const isRecommending =
+    /\b(recommend|suggest|add|consider|prioritize|plan|schedule|expand|launch|focus)\b/.test(lower);
+  const isAboutItems =
+    /\b(item|product|sku|type|category|assortment|gap|coverage)\b/.test(lower);
+  if (!isRecommending || !isAboutItems) return null;
+
+  // Most-specific category wins
+  if (/\b(lighting|lamp|pendant|fixture|lantern|string light)\b/.test(lower)) return "Lighting";
+  if (/\b(serveware|serving bowl|beverage dispenser|cake stand|condiment)\b/.test(lower)) return "Serveware";
+  if (/\b(kitchen|dining|cookware|bakeware|cake dome|cupcake)\b/.test(lower)) return "Kitchen & Dining";
+  if (/\b(storage|basket|organiz|bin|container)\b/.test(lower)) return "Storage & Organization";
+  if (/\b(furniture|mirror|chair|sofa|table)\b/.test(lower)) return "Furniture";
+  if (/\b(outdoor|garden|patio|lawn)\b/.test(lower)) return "Outdoor Living & Garden";
+
+  return null;
 }
 
-function SuggestedItemsWidget({ onViewItems }: { onViewItems: () => void }) {
-  const visible = SUGGESTED_ITEMS.slice(0, 2);
-  const remaining = SUGGESTED_ITEMS.length - 2;
+function SuggestedItemsWidget({
+  category,
+  onViewItems,
+}: {
+  category: string;
+  onViewItems: () => void;
+}) {
+  const items = ITEMS_BY_CATEGORY[category] ?? ITEMS_BY_CATEGORY["Serveware"];
+  const visible = items.slice(0, 2);
+  const remaining = items.length - 2;
+
   return (
     <div className="overflow-hidden rounded-[var(--radius-md)] border border-[#e5e7eb] bg-white shadow-sm">
       <div className="border-b border-[#f3f4f6] px-3 py-2">
         <p className="text-[11px] font-semibold text-[var(--color-foreground)]">Suggested Items</p>
-        <p className="text-[10px] text-[var(--color-muted-foreground)]">Based on assortment gap analysis</p>
+        <p className="text-[10px] text-[var(--color-muted-foreground)]">{category} · Based on assortment gap analysis</p>
       </div>
       <div className="divide-y divide-[#f3f4f6]">
         {visible.map((item) => (
@@ -246,7 +337,7 @@ function SuggestedItemsWidget({ onViewItems }: { onViewItems: () => void }) {
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-[11px] font-medium text-[var(--color-foreground)]">{item.name}</p>
-              <p className="text-[10px] text-[var(--color-muted-foreground)]">{item.category}</p>
+              <p className="text-[10px] text-[var(--color-muted-foreground)]">{item.opportunity}</p>
             </div>
             <button
               type="button"
@@ -563,7 +654,7 @@ export function TasksPanel({
                 <p className="text-[var(--text-label-size)] font-medium uppercase tracking-wide text-[var(--color-muted-foreground)]">
                   Try asking
                 </p>
-                {STARTER_PROMPTS.map((prompt) => (
+                {(STARTER_PROMPTS_BY_PAGE[page ?? "unknown"] ?? STARTER_PROMPTS_BY_PAGE["unknown"]).map((prompt) => (
                   <button
                     key={prompt}
                     type="button"
@@ -652,11 +743,17 @@ export function TasksPanel({
                               {msg.content}
                             </p>
                           </div>
-                          {hasItemSuggestion(msg.content) && (
-                            <div className="w-full max-w-[92%]">
-                              <SuggestedItemsWidget onViewItems={() => openGapDrawer("Serveware")} />
-                            </div>
-                          )}
+                          {(() => {
+                            const cat = extractSuggestedCategory(msg.content);
+                            return cat ? (
+                              <div className="w-full max-w-[92%]">
+                                <SuggestedItemsWidget
+                                  category={cat}
+                                  onViewItems={() => openGapDrawer(cat)}
+                                />
+                              </div>
+                            ) : null;
+                          })()}
                           <div className="flex items-center gap-2">
                             <span className="text-[10px] text-[var(--color-muted-foreground)]">{time}</span>
                             <div className="flex items-center gap-1">
@@ -710,7 +807,7 @@ export function TasksPanel({
                 )}
                 {error && (
                   <div className="rounded-[var(--radius-md)] border border-red-200 bg-red-50 px-[var(--space-3)] py-[var(--space-2)] text-[var(--text-caption-size)] text-red-700">
-                    Something went wrong. Make sure Ollama is running.
+                    Something went wrong. Please try again.
                   </div>
                 )}
               </div>

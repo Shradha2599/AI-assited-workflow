@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowRight, Info, Pencil, Save } from "lucide-react";
+import { Info, Pencil, Save } from "lucide-react";
 
 import { AssortmentPlanItems } from "@/components/data-display/assortment-plan-items";
 import { BeaconPlanDrawer } from "@/components/data-display/beacon-plan-drawer";
-import type { GapItem } from "@/components/data-display/gaps-drawer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SvgIcon } from "@/components/ui/svg-icon";
@@ -17,17 +16,15 @@ import {
   normalizeRevenueGoalInput,
   parseRevenueGoalToMillions,
 } from "@/lib/utils/revenue-goal-input";
+import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { useToastStore } from "@/stores/toast-store";
 import { cn } from "@/lib/utils";
 
 interface RevenueGoalPanelProps {
   revenueOpportunity: string;
-  revenuePlannedPercent: number;
-  plannedMessage: string;
-  beaconRecommendedItems: GapItem[];
   planItemCount: number;
   planItemNames: string[];
-  onAddToPlan: (itemIds: string[], items: GapItem[]) => void;
+  onAddToPlan: (items: Array<{ name: string; revenueM: number }>) => void;
   onRemoveFromPlan?: (name: string) => void;
   onBeaconDrawerOpen?: () => void;
   className?: string;
@@ -35,9 +32,6 @@ interface RevenueGoalPanelProps {
 
 export function RevenueGoalPanel({
   revenueOpportunity,
-  revenuePlannedPercent,
-  plannedMessage,
-  beaconRecommendedItems,
   planItemCount,
   planItemNames,
   onAddToPlan,
@@ -45,16 +39,38 @@ export function RevenueGoalPanel({
   onBeaconDrawerOpen,
   className,
 }: RevenueGoalPanelProps) {
-  const showToast = useToastStore((state) => state.showToast);
-  const [goalInput, setGoalInput] = useState("");
-  const [savedGoal, setSavedGoal] = useState("");
+  const showToast     = useToastStore((state) => state.showToast);
+  const planRevenues  = usePlanStore((s) => s.planRevenues);
+
+  const [goalInput, setGoalInput]       = useState("");
+  const [savedGoal, setSavedGoal]       = useState("");
   const [isEditingGoal, setIsEditingGoal] = useState(false);
   const [beaconDrawerOpen, setBeaconDrawerOpen] = useState(false);
 
-  const hasSavedGoal = savedGoal.length > 0;
-  const canSave = isValidRevenueGoalInput(goalInput);
-  const goalMillions = hasSavedGoal ? parseRevenueGoalToMillions(savedGoal) : null;
-  const isReadOnly = hasSavedGoal && !isEditingGoal;
+  const hasSavedGoal  = savedGoal.length > 0;
+  const canSave       = isValidRevenueGoalInput(goalInput);
+  const goalMillions  = hasSavedGoal ? parseRevenueGoalToMillions(savedGoal) : null;
+  const isReadOnly    = hasSavedGoal && !isEditingGoal;
+
+  // Actual planned revenue = sum of revenues stored per item
+  const plannedRevM   = Object.values(planRevenues).reduce((a, b) => a + b, 0);
+  const plannedRevStr = plannedRevM > 0 ? `$${plannedRevM.toFixed(1)}M` : "$0M";
+
+  // Percentage relative to the saved goal (capped at 100)
+  const displayPercent = hasSavedGoal && goalMillions
+    ? Math.min(Math.round((plannedRevM / goalMillions) * 100), 100)
+    : 0;
+
+  // Planned message computed from actual numbers
+  const revenuePlannedMessage = !hasSavedGoal
+    ? "You haven't set your revenue goal yet"
+    : plannedRevM === 0
+      ? `You are ${formatRevenueGoalDisplay(savedGoal)} away from completing your assortment plan`
+      : goalMillions && plannedRevM >= goalMillions
+        ? "Your assortment plan meets the revenue goal 🎉"
+        : goalMillions
+          ? `You are $${Math.max(goalMillions - plannedRevM, 0).toFixed(1)}M away from completing your assortment plan`
+          : "";
 
   useEffect(() => {
     if (hasSavedGoal && !isEditingGoal) {
@@ -63,10 +79,7 @@ export function RevenueGoalPanel({
   }, [hasSavedGoal, isEditingGoal, savedGoal]);
 
   function handleGoalChange(raw: string) {
-    if (!raw) {
-      setGoalInput("");
-      return;
-    }
+    if (!raw) { setGoalInput(""); return; }
     setGoalInput(normalizeRevenueGoalInput(raw));
   }
 
@@ -87,25 +100,13 @@ export function RevenueGoalPanel({
     });
   }
 
-  function handleEditGoal() {
-    setIsEditingGoal(true);
-  }
-
-  function handleAddSelected(itemIds: string[]) {
-    onAddToPlan(itemIds, beaconRecommendedItems);
+  function handleAddSelected(items: Array<{ name: string; revenueM: number }>) {
+    onAddToPlan(items);
     showToast({
       title: "Items added to plan",
-      description: `${itemIds.length} item type${itemIds.length === 1 ? "" : "s"} added to your assortment plan.`,
+      description: `${items.length} item type${items.length === 1 ? "" : "s"} added to your assortment plan.`,
     });
   }
-
-  const revenuePlannedMessage = !hasSavedGoal
-    ? "You haven't set your revenue goal yet"
-    : goalMillions != null
-      ? plannedMessage.replace("$50.0M", formatRevenueGoalDisplay(savedGoal)).replace("$50M", formatRevenueGoalDisplay(savedGoal))
-      : plannedMessage;
-
-  const displayPercent = hasSavedGoal ? revenuePlannedPercent : 0;
 
   return (
     <>
@@ -118,6 +119,7 @@ export function RevenueGoalPanel({
         </div>
 
         <div className="mb-[var(--space-5)] flex flex-col gap-[var(--space-3)] sm:flex-row">
+          {/* Revenue Opportunity */}
           <div className="flex w-full shrink-0 flex-col items-center justify-center rounded-[var(--radius-lg)] border border-[var(--color-border)] px-[var(--space-4)] py-[var(--space-5)] text-center sm:w-[168px]">
             <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
               Revenue Opportunity
@@ -127,6 +129,7 @@ export function RevenueGoalPanel({
             </p>
           </div>
 
+          {/* Revenue Goal input + planned bar */}
           <div className="flex min-w-0 flex-1 items-start gap-[80px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] p-[var(--space-4)]">
             <div className="w-[200px] shrink-0">
               <div className="mb-[var(--space-2)] flex items-center gap-1.5">
@@ -136,7 +139,7 @@ export function RevenueGoalPanel({
                 {hasSavedGoal && !isEditingGoal ? (
                   <button
                     type="button"
-                    onClick={handleEditGoal}
+                    onClick={() => setIsEditingGoal(true)}
                     className="cursor-pointer rounded-[var(--radius-sm)] p-0.5 text-[var(--color-primary)] transition-colors hover:bg-[var(--color-primary)]/10"
                     aria-label="Edit revenue goal"
                   >
@@ -189,7 +192,7 @@ export function RevenueGoalPanel({
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-[var(--color-muted)]">
                 <div
-                  className="h-full rounded-full bg-[var(--color-primary)] transition-all"
+                  className="h-full rounded-full bg-[var(--color-primary)] transition-all duration-500"
                   style={{ width: `${displayPercent}%` }}
                 />
               </div>
@@ -216,18 +219,10 @@ export function RevenueGoalPanel({
           )}
 
           {planItemCount > 0 && (
-            <div className="space-y-3">
-              <AssortmentPlanItems items={planItemNames} onRemove={onRemoveFromPlan} />
-              <Button variant="ghost" size="sm" className="h-auto px-0 py-0" asChild>
-                <Link href="/assortment/plan">
-                  View full plan
-                  <ArrowRight className="h-3 w-3" />
-                </Link>
-              </Button>
-            </div>
+            <AssortmentPlanItems items={planItemNames} onRemove={onRemoveFromPlan} />
           )}
 
-          <div className="mt-[var(--space-3)]">
+          <div className="mt-[var(--space-3)] flex items-center gap-2">
             <Button
               size="sm"
               onClick={() => {
@@ -238,16 +233,29 @@ export function RevenueGoalPanel({
               <SvgIcon name="aiSparkle" size={14} variant="onPrimary" />
               Plan with Beacon
             </Button>
+
+            {planItemCount > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)]"
+                asChild
+              >
+                <Link href="/assortment/plan">
+                  <SvgIcon name="calendar" size={14} variant="primary" />
+                  Customize Calendar
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </Card>
 
       <BeaconPlanDrawer
         open={beaconDrawerOpen}
-        items={beaconRecommendedItems}
         existingPlanItems={planItemNames}
         revenueGoal={hasSavedGoal ? formatRevenueGoalDisplay(savedGoal) : "$50.0M"}
-        revenuePlanned={planItemCount > 0 ? `$${(planItemCount * 1.6).toFixed(1)}M` : "$0M"}
+        revenuePlanned={plannedRevStr}
         revenuePlannedPercent={displayPercent}
         plannedMessage={revenuePlannedMessage}
         onClose={() => setBeaconDrawerOpen(false)}

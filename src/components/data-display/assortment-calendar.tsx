@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
-import { GripVertical, Loader2, MessageSquare, Sparkles, Trash2, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Check, ChevronDown, GripVertical, Loader2, MessageSquare, Plus, Sparkles, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -59,35 +60,125 @@ const QUARTER_BOUNDARIES = new Set([2, 5, 8]); // after index 2, 5, 8 (0-based)
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 /** Derive a category row label from an item name */
+// ── Category inference: maps item name keywords → calendar row ────────────────
+const CATEGORY_RULES: Array<{ keywords: string[]; row: string }> = [
+  {
+    keywords: ["christmas", "halloween", "thanksgiving", "easter", "holiday", "festive",
+               "wreath", "garland", "nutcracker", "advent", "nativity", "skeleton",
+               "animatronic", "inflatable", "pumpkin", "harvest", "tinsel"],
+    row: "Holiday & Festive Decor",
+  },
+  {
+    keywords: ["patio", "grill", "smoker", "propane", "grills", "outdoor cooking",
+               "backyard", "griddle station", "camp stove", "pizza oven",
+               "adirondack", "bistro", "lounge set", "egg chair", "solar pathway",
+               "solar stake", "fire pit", "outdoor umbrella", "weatherproof",
+               "outdoor rug", "outdoor flat-weave", "plastic patio",
+               "raised garden", "planter", "hanging basket", "garden tool",
+               "pruning", "hose reel", "outdoor decor", "garden statue",
+               "wind chime", "outdoor lantern", "outdoor throw", "outdoor"],
+    row: "Outdoor Living & Garden",
+  },
+  {
+    keywords: ["sofa", "sectional", "armchair", "accent chair", "velvet chair",
+               "bookcase", "bookshelf", "ottoman", "storage bench", "coffee table",
+               "lift-top", "tv console", "media unit", "platform bed", "bed frame",
+               "headboard", "nightstand", "dresser", "6-drawer", "dining table",
+               "dining chair", "bar stool", "standing desk", "task chair",
+               "l-shaped desk", "wall desk", "hall tree", "coat rack", "console table",
+               "entryway bench", "nesting table", "accent table"],
+    row: "Furniture",
+  },
+  {
+    keywords: ["chandelier", "pendant light", "pendant kit", "ceiling light",
+               "flush mount", "semi-flush", "wall sconce", "swing-arm",
+               "picture light", "floor lamp", "arc floor", "tripod lamp",
+               "torchiere", "reading lamp", "table lamp", "desk lamp",
+               "bedside lamp", "buffet lamp", "outdoor wall lantern",
+               "string light", "bistro light", "festoon", "solar light",
+               "motion-sensor flood", "deck light", "step light",
+               "smart bulb", "led strip", "led lighting", "smart lighting",
+               "dimmer", "bias lighting", "lamp", "light", "lighting",
+               "sconce", "fixture", "bulb", "luminar"],
+    row: "Lighting",
+  },
+  {
+    keywords: ["area rug", "wool rug", "persian rug", "moroccan rug", "jute rug",
+               "shag rug", "flat-weave", "dhurrie", "cowhide", "faux-fur",
+               "runner set", "kitchen runner", "hallway runner", "anti-fatigue",
+               "polypropylene rug", "reversible plastic mat", "boho stripe",
+               "washable runner", "non-slip runner", "rug"],
+    row: "Rugs",
+  },
+  {
+    keywords: ["party plate", "party tableware", "biodegradable plate",
+               "bamboo plate", "paper cup", "acrylic glass", "gold cutlery",
+               "balloon arch", "balloon garland", "foil balloon", "led balloon",
+               "paper fan", "tassel", "confetti", "custom banner", "photo booth",
+               "party favor", "candy bag", "mini succulent", "keychain favor",
+               "party cake", "cupcake stand tower", "tiered snack tray",
+               "party decoration", "party supply", "party"],
+    row: "Party Supplies",
+  },
+  {
+    keywords: ["cookware", "sauté pan", "frying pan", "cast iron", "dutch oven",
+               "wok", "stir-fry", "pressure cooker", "instant pot", "griddle pan",
+               "grill pan", "stock pot", "pasta insert", "bakeware", "springform",
+               "silicone mat", "loaf pan", "bread pan", "bundt", "cookie sheet",
+               "muffin tin", "knife", "knives", "steak knife", "knife block",
+               "sharpener", "honing", "china", "dinner set", "tablecloth",
+               "table runner", "napkin", "placemat", "pot holder", "oven mitt",
+               "serving bowl", "sugar bowl", "creamer", "condiment", "dip server",
+               "cake stand", "cake dome", "gravy boat", "salad bowl",
+               "charcuterie", "cheese board", "fondue", "hot pot", "chafing",
+               "buffet dish", "food warmer", "wine glass", "crystal", "tumbler",
+               "cocktail shaker", "highball", "rocks glass", "champagne", "flute",
+               "coupe", "carafe", "pitcher", "beer mug", "stein",
+               "spice rack", "canister", "drawer organizer", "knife strip",
+               "pantry label", "cutting board", "bamboo board",
+               "air fryer", "espresso", "coffee maker", "kettle", "coffee",
+               "stand mixer", "convection oven", "blender", "can opener",
+               "meal prep", "container", "bento", "snack cup", "wine rack",
+               "wine opener", "countertop", "kitchen"],
+    row: "Kitchen & Dining",
+  },
+];
+
 function rowForItem(itemName: string): string {
   const lower = itemName.toLowerCase();
-  if (lower.includes("light") || lower.includes("lamp") || lower.includes("pendant")) {
-    return "Lighting";
+  for (const { keywords, row } of CATEGORY_RULES) {
+    if (keywords.some((kw) => lower.includes(kw))) return row;
   }
-  return "Kitchen & Dining";
+  return "Kitchen & Dining"; // safe fallback
 }
 
 const LANE_HEIGHT = 48;
 
 const ROW_COLORS: Record<string, { bg: string; border: string; text: string; handle: string }> = {
-  "Kitchen & Dining": {
-    bg: "bg-orange-50",
-    border: "border-orange-300",
-    text: "text-orange-900",
-    handle: "bg-orange-300/40",
-  },
-  Lighting: {
-    bg: "bg-amber-50",
-    border: "border-amber-300",
-    text: "text-amber-900",
-    handle: "bg-amber-300/40",
-  },
+  "Kitchen & Dining":       { bg: "bg-orange-50",  border: "border-orange-300",  text: "text-orange-900",  handle: "bg-orange-300/40"  },
+  "Lighting":               { bg: "bg-amber-50",   border: "border-amber-300",   text: "text-amber-900",   handle: "bg-amber-300/40"   },
+  "Furniture":              { bg: "bg-stone-50",   border: "border-stone-300",   text: "text-stone-900",   handle: "bg-stone-300/40"   },
+  "Outdoor Living & Garden":{ bg: "bg-green-50",   border: "border-green-300",   text: "text-green-900",   handle: "bg-green-300/40"   },
+  "Holiday & Festive Decor":{ bg: "bg-red-50",     border: "border-red-300",     text: "text-red-900",     handle: "bg-red-300/40"     },
+  "Rugs":                   { bg: "bg-purple-50",  border: "border-purple-300",  text: "text-purple-900",  handle: "bg-purple-300/40"  },
+  "Party Supplies":         { bg: "bg-pink-50",    border: "border-pink-300",    text: "text-pink-900",    handle: "bg-pink-300/40"    },
 };
 const DEFAULT_ROW_COLOR = {
   bg: "bg-blue-50",
   border: "border-blue-300",
   text: "text-blue-900",
   handle: "bg-blue-300/40",
+};
+
+// Priority order for row display in the calendar
+const ROW_PRIORITY: Record<string, number> = {
+  "Kitchen & Dining": 0,
+  "Lighting": 1,
+  "Furniture": 2,
+  "Outdoor Living & Garden": 3,
+  "Holiday & Festive Decor": 4,
+  "Rugs": 5,
+  "Party Supplies": 6,
 };
 
 function allocateLanes(items: ScheduledCalendarItem[]): Map<string, number> {
@@ -112,6 +203,124 @@ function allocateLanes(items: ScheduledCalendarItem[]): Map<string, number> {
   return map;
 }
 
+// ─── Version picker ───────────────────────────────────────────────────────────
+
+function VersionPicker() {
+  const versions       = usePlanStore((s) => s.calendarVersions);
+  const activeId       = usePlanStore((s) => s.activeVersionId);
+  const createVersion  = usePlanStore((s) => s.createVersion);
+  const switchVersion  = usePlanStore((s) => s.switchVersion);
+  const deleteVersion  = usePlanStore((s) => s.deleteVersion);
+
+  const [open, setOpen]       = useState(false);
+  const [newName, setNewName] = useState("");
+  const dropdownRef           = useRef<HTMLDivElement>(null);
+  const inputRef              = useRef<HTMLInputElement>(null);
+
+  const active = versions.find((v) => v.id === activeId) ?? versions[0];
+
+  // Close on outside click
+  useEffect(() => {
+    function onPointerDown(e: PointerEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [open]);
+
+  // Focus input when dropdown opens
+  useEffect(() => {
+    if (open) setTimeout(() => inputRef.current?.focus(), 50);
+  }, [open]);
+
+  function handleCreate() {
+    const name = newName.trim() || `Version ${versions.length + 1}`;
+    createVersion(name);
+    setNewName("");
+    setOpen(false);
+  }
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      {/* Trigger */}
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex items-center gap-1.5 rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2.5 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors"
+      >
+        {active?.name ?? "Version 1"}
+        <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", open && "rotate-180")} />
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <div className="absolute right-0 top-full z-50 mt-1 w-56 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-card)] shadow-[var(--shadow-medium)]">
+          {/* Version list */}
+          <ul className="max-h-48 overflow-y-auto py-1">
+            {versions.map((v) => (
+              <li
+                key={v.id}
+                className={cn(
+                  "group flex cursor-pointer items-center justify-between gap-2 px-3 py-2 text-[var(--text-caption-size)] hover:bg-[var(--color-muted)]",
+                  v.id === activeId && "bg-[var(--color-primary)]/8 font-medium text-[var(--color-primary)]",
+                )}
+                onClick={() => { switchVersion(v.id); setOpen(false); }}
+              >
+                <span className="min-w-0 flex-1 truncate">{v.name}</span>
+                <span className="flex shrink-0 items-center gap-1">
+                  {v.id === activeId && (
+                    <Check className="h-3 w-3 text-[var(--color-primary)]" />
+                  )}
+                  {versions.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); deleteVersion(v.id); }}
+                      className="hidden rounded p-0.5 text-[var(--color-muted-foreground)] hover:bg-[var(--color-error-light)] hover:text-[var(--color-error)] group-hover:flex"
+                      aria-label={`Delete ${v.name}`}
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="h-px bg-[var(--color-border)]" />
+
+          {/* New version input */}
+          <div className="p-2">
+            <p className="mb-1.5 px-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]">
+              New version
+            </p>
+            <div className="flex items-center gap-1.5">
+              <input
+                ref={inputRef}
+                type="text"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") handleCreate(); if (e.key === "Escape") setOpen(false); }}
+                placeholder={`Version ${versions.length + 1}`}
+                className="h-7 min-w-0 flex-1 rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-surface)] px-2 text-[var(--text-caption-size)] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
+              />
+              <button
+                type="button"
+                onClick={handleCreate}
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] transition-colors"
+                aria-label="Create version"
+              >
+                <Plus className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Component ───────────────────────────────────────────────────────────────
 
 interface AssortmentCalendarProps {
@@ -126,12 +335,31 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
   const scheduleItem = usePlanStore((s) => s.scheduleItem);
   const removeScheduledItem = usePlanStore((s) => s.removeScheduledItem);
   const updateScheduledItemSpan = usePlanStore((s) => s.updateScheduledItemSpan);
+  const updateScheduledItemStartMonth = usePlanStore((s) => s.updateScheduledItemStartMonth);
   const setScheduledItems = usePlanStore((s) => s.setScheduledItems);
+
+  // Items not yet placed on the calendar (available to drag)
+  const scheduledLabels = useMemo(
+    () => new Set(scheduledItems.map((s) => s.label)),
+    [scheduledItems],
+  );
+  const unscheduledPlanItems = useMemo(
+    () => planItems.filter((name) => !scheduledLabels.has(name)),
+    [planItems, scheduledLabels],
+  );
 
   const [draggingItem, setDraggingItem] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ row: string; month: number } | null>(null);
-  const [resizeOverride, setResizeOverride] = useState<{ id: string; span: number } | null>(null);
+  const [resizeOverride, setResizeOverride] = useState<{ id: string; startMonth?: number; span: number } | null>(null);
   const [generating, setGenerating] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
+  // Deselect when clicking outside any item bar
+  useEffect(() => {
+    function onDocClick() { setSelectedItemId(null); }
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
+  }, []);
 
   const tableRef = useRef<HTMLDivElement>(null);
 
@@ -145,11 +373,7 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
         result.push(item.row);
       }
     }
-    // Stable order: Kitchen first, then Lighting, then others
-    result.sort((a, b) => {
-      const priority: Record<string, number> = { "Kitchen & Dining": 0, Lighting: 1 };
-      return (priority[a] ?? 99) - (priority[b] ?? 99);
-    });
+    result.sort((a, b) => (ROW_PRIORITY[a] ?? 99) - (ROW_PRIORITY[b] ?? 99));
     return result;
   }, [scheduledItems]);
 
@@ -159,7 +383,13 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
       const rowItems = scheduledItems
         .filter((item) => item.row === row)
         .map((item) =>
-          item.id === resizeOverride?.id ? { ...item, span: resizeOverride.span } : item,
+          item.id === resizeOverride?.id
+            ? {
+                ...item,
+                startMonth: resizeOverride.startMonth ?? item.startMonth,
+                span: resizeOverride.span,
+              }
+            : item,
         );
       result[row] = allocateLanes(rowItems);
     }
@@ -182,9 +412,11 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
   }, []);
 
   const handleDrop = useCallback(
-    (row: string, month: number) => {
+    (_row: string, _month: number) => {
       if (!draggingItem) return;
-      scheduleItem(draggingItem, row, month, 3);
+      // Always derive the correct category row from the item name — ignore drop target row
+      const correctRow = rowForItem(draggingItem);
+      scheduleItem(draggingItem, correctRow, 0, 12);
       if (!planItems.includes(draggingItem)) addPlanItem(draggingItem);
       setDraggingItem(null);
       setDropTarget(null);
@@ -192,22 +424,21 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
     [draggingItem, scheduleItem, addPlanItem, planItems],
   );
 
-  // When dropping on the empty body, derive row from item name
   const handleDropOnEmpty = useCallback(
-    (month: number) => {
+    (_month: number) => {
       if (!draggingItem) return;
-      const row = rowForItem(draggingItem);
-      handleDrop(row, month);
+      handleDrop("", 0);
     },
     [draggingItem, handleDrop],
   );
 
+  /** Right-edge resize: adjusts span (item grows/shrinks from right) */
   function handleResizeStart(e: React.MouseEvent, item: ScheduledCalendarItem) {
     e.preventDefault();
     e.stopPropagation();
+    setSelectedItemId(item.id);
     if (!tableRef.current) return;
-    const containerWidth = tableRef.current.clientWidth;
-    const cellWidth = containerWidth / 12;
+    const cellWidth = tableRef.current.clientWidth / 12;
     const startX = e.clientX;
     const initialSpan = item.span;
 
@@ -221,6 +452,40 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
       const delta = Math.round((ev.clientX - startX) / cellWidth);
       const finalSpan = Math.max(1, Math.min(12 - item.startMonth, initialSpan + delta));
       updateScheduledItemSpan(item.id, finalSpan);
+      setResizeOverride(null);
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    }
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  }
+
+  /** Left-edge resize: adjusts startMonth + span (item grows/shrinks from left) */
+  function handleResizeStartLeft(e: React.MouseEvent, item: ScheduledCalendarItem) {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedItemId(item.id);
+    if (!tableRef.current) return;
+    const cellWidth = tableRef.current.clientWidth / 12;
+    const startX = e.clientX;
+    const initialStart = item.startMonth;
+    const initialEnd = item.startMonth + item.span; // fixed right edge
+
+    function onMouseMove(ev: MouseEvent) {
+      const delta = Math.round((ev.clientX - startX) / cellWidth);
+      const newStart = Math.max(0, Math.min(initialEnd - 1, initialStart + delta));
+      const newSpan = initialEnd - newStart;
+      setResizeOverride({ id: item.id, startMonth: newStart, span: newSpan });
+    }
+
+    function onMouseUp(ev: MouseEvent) {
+      const delta = Math.round((ev.clientX - startX) / cellWidth);
+      const newStart = Math.max(0, Math.min(initialEnd - 1, initialStart + delta));
+      const newSpan = initialEnd - newStart;
+      updateScheduledItemSpan(item.id, newSpan);
+      // Also update startMonth in store
+      updateScheduledItemStartMonth(item.id, newStart);
       setResizeOverride(null);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
@@ -255,10 +520,11 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
     }
   }
 
-  // ─── Shared header cell style ───────────────────────────────────────────────
-  const headerYellow = "bg-[#F9C74F] text-[#5C4A00]";
-  const headerYellowLight = "bg-[#FEF08A]/60 text-[#5C4A00]";
-  const headerWhite = "bg-white text-[var(--color-muted-foreground)]";
+  // ─── Shared header cell styles ───────────────────────────────────────────────
+  const headerYellow = "bg-[#FFE34D] text-[#5C4A00]";
+  const headerYellowLight = "bg-[#FFF3B2] text-[#5C4A00]";
+  const headerSeason = "bg-[#FFF9DB] text-[#4B4B4B]";
+  const headerEvents = "bg-[#FFFCEB] text-[#4B4B4B]";
 
   return (
     <div className={cn("space-y-[var(--space-4)]", className)}>
@@ -268,7 +534,8 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
           <h3 className="text-[var(--text-section-size)] font-semibold">Assortment Plan</h3>
         </div>
         <div className="flex flex-wrap gap-2">
-          {planItems.map((item) => (
+          {/* Draggable — not yet placed on calendar */}
+          {unscheduledPlanItems.map((item) => (
             <span
               key={item}
               draggable
@@ -291,9 +558,15 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
               </button>
             </span>
           ))}
+
           {planItems.length === 0 && (
             <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
               Add items from the Gap Analysis page, then generate or drag them onto the calendar.
+            </p>
+          )}
+          {planItems.length > 0 && unscheduledPlanItems.length === 0 && (
+            <p className="text-[var(--text-caption-size)] text-[var(--color-primary)]">
+              All item types have been placed on the calendar.
             </p>
           )}
         </div>
@@ -315,22 +588,17 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
       </Card>
 
       {/* ── Calendar grid ─────────────────────────────────────────────────── */}
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden border-0 shadow-none">
         <div className="flex items-center justify-between border-b border-[var(--color-border)] p-[var(--space-4)]">
           <h3 className="text-[var(--text-section-size)] font-semibold">Calendar Plan 2025-26</h3>
-          <button
-            type="button"
-            className="rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]"
-          >
-            Version 1 ▾
-          </button>
+          <VersionPicker />
         </div>
 
-        <div className="overflow-x-auto" ref={tableRef}>
-          <table className="w-full min-w-[860px] border-collapse text-center text-[var(--text-caption-size)]">
+        <div className="overflow-x-auto p-6" ref={tableRef}>
+          <table className="w-full min-w-[860px] border-collapse text-center text-[var(--text-caption-size)]" style={{ tableLayout: "fixed" }}>
             <colgroup>
-              {/* Label column */}
-              <col style={{ width: "110px", minWidth: "110px" }} />
+              {/* Label column – fixed; remaining 12 cols share the rest equally */}
+              <col style={{ width: "110px" }} />
               {MONTHS.map((_, i) => (
                 <col key={i} />
               ))}
@@ -377,14 +645,14 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
 
               {/* ── Season row ── */}
               <tr>
-                <td className={cn("border border-[var(--color-border)] px-2 py-1.5 text-left text-[var(--text-caption-size)] font-semibold", headerWhite)}>
+                <td className={cn("border border-[var(--color-border)] px-2 py-1.5 text-left text-[var(--text-caption-size)] font-semibold", headerSeason)}>
                   Season
                 </td>
                 {SEASON_SPANS.map((s, i) => (
                   <td
                     key={i}
                     colSpan={s.span}
-                    className="border border-[var(--color-border)] px-1 py-1.5 text-[var(--text-caption-size)] font-medium text-[var(--color-muted-foreground)]"
+                    className={cn("border border-[var(--color-border)] px-1 py-1.5 text-[var(--text-caption-size)] font-medium overflow-hidden", headerSeason)}
                   >
                     {s.label}
                   </td>
@@ -393,14 +661,15 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
 
               {/* ── Events row ── */}
               <tr>
-                <td className={cn("border border-[var(--color-border)] px-2 py-1.5 text-left text-[var(--text-caption-size)] font-semibold", headerWhite)}>
+                <td className={cn("border border-[var(--color-border)] px-2 py-1.5 text-left text-[var(--text-caption-size)] font-semibold", headerEvents)}>
                   Events
                 </td>
                 {EVENTS_PER_MONTH.map((ev, i) => (
                   <td
                     key={i}
                     className={cn(
-                      "border border-[var(--color-border)] px-0.5 py-1 text-[9px] leading-tight text-[var(--color-muted-foreground)]",
+                      "overflow-hidden truncate border border-[var(--color-border)] px-1 py-1.5 text-[var(--text-caption-size)]",
+                      headerEvents,
                       QUARTER_BOUNDARIES.has(i) && "border-r-2 border-r-[var(--color-border)]",
                     )}
                   >
@@ -435,7 +704,7 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
                         className="border border-[var(--color-border)] p-0"
                         style={{ position: "relative", height: `${rowHeight}px` }}
                       >
-                        {/* Drop target grid */}
+                        {/* Drop target grid — vertical lines per month */}
                         <div
                           style={{
                             position: "absolute",
@@ -449,7 +718,11 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
                               key={month}
                               className={cn(
                                 "h-full transition-colors",
-                                month < 11 ? (QUARTER_BOUNDARIES.has(month) ? "border-r-2 border-r-[var(--color-border)]" : "border-r border-[var(--color-border)]") : "",
+                                month < 11
+                                  ? QUARTER_BOUNDARIES.has(month)
+                                    ? "border-r-2 border-r-[#D1D5DB]"
+                                    : "border-r border-r-[#E5E7EB]"
+                                  : "",
                                 dropTarget?.row === row && dropTarget.month === month
                                   ? "bg-[var(--color-primary)]/10"
                                   : draggingItem
@@ -472,42 +745,65 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
                         {/* Scheduled item bars */}
                         {rowItems.map((item) => {
                           const lane = laneMap.get(item.id) ?? 0;
-                          const activeSpan =
-                            resizeOverride?.id === item.id ? resizeOverride.span : item.span;
+                          const isResizing = resizeOverride?.id === item.id;
+                          const activeStart = isResizing ? (resizeOverride.startMonth ?? item.startMonth) : item.startMonth;
+                          const activeSpan = isResizing ? resizeOverride.span : item.span;
+                          const isSelected = selectedItemId === item.id || isResizing;
                           return (
                             <div
                               key={item.id}
                               style={{
                                 position: "absolute",
-                                left: `${(item.startMonth / 12) * 100}%`,
+                                left: `${(activeStart / 12) * 100}%`,
                                 width: `${(activeSpan / 12) * 100}%`,
-                                top: `${lane * LANE_HEIGHT + 6}px`,
-                                height: `${LANE_HEIGHT - 12}px`,
-                                zIndex: resizeOverride?.id === item.id ? 10 : 1,
+                                top: `${lane * LANE_HEIGHT + 5}px`,
+                                height: `${LANE_HEIGHT - 10}px`,
+                                zIndex: isSelected ? 10 : 1,
                               }}
                               className={cn(
-                                "group flex items-center overflow-hidden rounded-[var(--radius-sm)] border px-2 text-[10px] font-medium shadow-sm transition-shadow",
-                                colors.bg,
-                                colors.border,
+                                "group flex items-center overflow-hidden rounded-[var(--radius-md)] border bg-[#F5F5F5] text-[10px] font-medium shadow-sm transition-all cursor-pointer",
                                 colors.text,
-                                resizeOverride?.id === item.id && "shadow-md",
+                                isSelected
+                                  ? "border-[var(--color-primary)] bg-white shadow-md"
+                                  : "border-gray-300 hover:border-[var(--color-primary)] hover:bg-white hover:shadow-md",
                               )}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedItemId((prev) => (prev === item.id ? null : item.id));
+                              }}
                             >
-                              <span className="flex-1 truncate">{item.label}</span>
-                              <button
-                                type="button"
-                                onClick={() => removeScheduledItem(item.id)}
-                                aria-label={`Remove ${item.label}`}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100"
-                              >
-                                <Trash2 className="h-3 w-3" />
-                              </button>
+                              {/* Left resize handle — blue, visible on hover or when selected */}
                               <div
                                 className={cn(
-                                  "absolute right-0 top-0 h-full w-2.5 cursor-col-resize rounded-r-[var(--radius-sm)] opacity-0 transition-opacity group-hover:opacity-100",
-                                  colors.handle,
+                                  "h-full w-2.5 shrink-0 cursor-col-resize rounded-l-[var(--radius-md)] bg-[var(--color-primary)] transition-opacity",
+                                  isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100",
                                 )}
-                                onMouseDown={(e) => handleResizeStart(e, item)}
+                                onMouseDown={(e) => { e.stopPropagation(); handleResizeStartLeft(e, item); }}
+                              />
+
+                              {/* Label */}
+                              <span className="min-w-0 flex-1 truncate px-2 text-center">{item.label}</span>
+
+                              {/* Remove button — visible on hover / selected */}
+                              <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); removeScheduledItem(item.id); }}
+                                aria-label={`Remove ${item.label}`}
+                                className={cn(
+                                  "mr-1 shrink-0 rounded-full p-0.5 text-[var(--color-muted-foreground)] transition-opacity hover:bg-red-100 hover:text-red-600",
+                                  isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+                                )}
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+
+                              {/* Right resize handle — blue, visible on hover or when selected */}
+                              <div
+                                className={cn(
+                                  "h-full w-2.5 shrink-0 cursor-col-resize rounded-r-[var(--radius-md)] bg-[var(--color-primary)] transition-opacity",
+                                  isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+                                )}
+                                onMouseDown={(e) => { e.stopPropagation(); handleResizeStart(e, item); }}
                               />
                             </div>
                           );
@@ -519,15 +815,15 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
               ) : (
                 /* ── Empty body — shown until first item is dropped ── */
                 <tr>
-                  <td className="border border-[var(--color-border)] bg-[var(--color-muted)]/20 px-2 py-1 text-left text-[var(--text-caption-size)] font-medium text-[var(--color-muted-foreground)]">
+                  <td className="border border-[var(--color-border)] bg-white px-2 py-1 text-left text-[var(--text-caption-size)] font-medium text-[var(--color-muted-foreground)]">
                     {/* label column intentionally empty */}
                   </td>
                   <td
                     colSpan={12}
-                    className="border border-[var(--color-border)] p-0"
-                    style={{ position: "relative", height: "160px" }}
+                    className="border border-[var(--color-border)] bg-white p-0"
+                    style={{ position: "relative", height: "120px" }}
                   >
-                    {/* Month drop cells */}
+                    {/* Month drop cells — vertical lines per month */}
                     <div
                       style={{
                         position: "absolute",
@@ -541,7 +837,11 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
                           key={month}
                           className={cn(
                             "h-full transition-colors",
-                            month < 11 ? (QUARTER_BOUNDARIES.has(month) ? "border-r-2 border-r-[var(--color-border)]" : "border-r border-[var(--color-border)]") : "",
+                            month < 11
+                              ? QUARTER_BOUNDARIES.has(month)
+                                ? "border-r-2 border-r-[#D1D5DB]"
+                                : "border-r border-r-[#E5E7EB]"
+                              : "",
                             dropTarget?.month === month && dropTarget.row === "empty"
                               ? "bg-[var(--color-primary)]/10"
                               : draggingItem
@@ -560,10 +860,10 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
                         />
                       ))}
                     </div>
-                    {/* Centre message */}
-                    <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1">
-                      <p className="text-[var(--text-body-size)] font-medium text-[var(--color-muted-foreground)]">
-                        Drag &amp; Drop Item types to plan your Assortment Calendar
+                    {/* Centre message — dashed drop box filling full cell */}
+                    <div className="pointer-events-none absolute inset-2 flex items-center justify-center rounded-[var(--radius-md)] border-2 border-dashed border-[#D1D5DB] bg-[#F9FAFB]">
+                      <p className="text-center text-[var(--text-caption-size)] font-medium text-[var(--color-muted-foreground)]">
+                        Drag &amp; drop item to plan your Assortment Calendar
                       </p>
                     </div>
                   </td>
@@ -574,15 +874,25 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
         </div>
       </Card>
 
-      <Button
-        variant="secondary"
-        size="sm"
-        disabled={scheduledItems.length === 0}
-        className={scheduledItems.length === 0 ? "opacity-50" : undefined}
-      >
-        Finalize &amp; Share
-      </Button>
+      <FinalizeShareButton />
     </div>
+  );
+}
+
+function FinalizeShareButton() {
+  const scheduledItems = usePlanStore((s) => s.scheduledItems);
+  const router = useRouter();
+  const hasItems = scheduledItems.length > 0;
+
+  return (
+    <Button
+      size="sm"
+      disabled={!hasItems}
+      onClick={() => hasItems && router.push("/assortment/finalize")}
+      className={!hasItems ? "opacity-40" : undefined}
+    >
+      Finalize &amp; Share
+    </Button>
   );
 }
 

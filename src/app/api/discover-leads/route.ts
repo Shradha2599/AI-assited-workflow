@@ -22,6 +22,12 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  if (!process.env.GROQ_API_KEY) {
+    return new Response(
+      JSON.stringify({ error: "GROQ_API_KEY environment variable is not set." }),
+      { status: 500, headers: { "Content-Type": "application/json" } },
+    );
+  }
   const { planItems } = (await req.json()) as { planItems: string[] };
 
   const sellerProfiles = sellers.map((s) => ({

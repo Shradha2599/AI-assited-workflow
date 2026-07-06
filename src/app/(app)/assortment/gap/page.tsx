@@ -11,8 +11,6 @@ export default async function AssortmentGapPage() {
       selectedCategoryCount={analysis.selectedCategoryCount}
       competitors={analysis.competitors}
       treemapRoot={analysis.treemapRoot}
-      servewareGapItems={analysis.servewareGapItems}
-      beaconRecommendedItems={analysis.beaconRecommendedItems}
       products={analysis.missingProducts}
     />
   );

@@ -6,6 +6,13 @@ import { loadPageData } from "@/lib/agents/context-loader";
 const groq = createGroq({ apiKey: process.env.GROQ_API_KEY });
 
 export async function POST(req: Request) {
+  if (!process.env.GROQ_API_KEY) {
+    return new Response(
+      JSON.stringify({ error: "GROQ_API_KEY environment variable is not set." }),
+      { status: 500, headers: { "Content-Type": "application/json" } },
+    );
+  }
+
   const { messages, page } = (await req.json()) as {
     messages: { role: "user" | "assistant"; content: string }[];
     page?: BeaconPage;
@@ -24,7 +31,7 @@ export async function POST(req: Request) {
     system: fullSystem,
     messages,
     temperature: 0.4,
-    maxTokens: 512,
+    maxTokens: 1024,
   });
 
   return result.toDataStreamResponse();
