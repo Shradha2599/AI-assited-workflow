@@ -1,0 +1,1839 @@
+[
+  {
+    "sellerId": "seller_001",
+    "companyName": "Bella Home Co.",
+    "description": "Bella Home Co. is a retailer and brand specializing in home decor products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2019,
+    "headquarters": "San Diego, CA",
+    "employeeCount": 156,
+    "annualRevenue": 2824530,
+    "primaryCategories": [
+      "Home Decor"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Shopify",
+      "Home Depot"
+    ],
+    "website": "https://bellahomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.7,
+      "Walmart": 4.6
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 77731,
+      "tiktokFollowers": 53891
+    }
+  },
+  {
+    "sellerId": "seller_002",
+    "companyName": "Greenleaf Home Co.",
+    "description": "Greenleaf Home Co. is a retailer and brand specializing in party supplies products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2013,
+    "headquarters": "Nashville, TN",
+    "employeeCount": 17,
+    "annualRevenue": 10653820,
+    "primaryCategories": [
+      "Party Supplies"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Wayfair",
+      "Etsy"
+    ],
+    "website": "https://greenleafhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 4.6
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 114829,
+      "tiktokFollowers": 114603
+    }
+  },
+  {
+    "sellerId": "seller_003",
+    "companyName": "Mosaic Home Co.",
+    "description": "Mosaic Home Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2019,
+    "headquarters": "Denver, CO",
+    "employeeCount": 112,
+    "annualRevenue": 8881877,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Etsy"
+    ],
+    "website": "https://mosaichomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.4,
+      "Walmart": 4.7
+    },
+    "fulfillmentCapabilities": [
+      "Retail",
+      "3PL",
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 153480,
+      "tiktokFollowers": 33352
+    }
+  },
+  {
+    "sellerId": "seller_004",
+    "companyName": "Solara Home Co.",
+    "description": "Solara Home Co. is a retailer and brand specializing in kitchen & dining products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2015,
+    "headquarters": "Denver, CO",
+    "employeeCount": 135,
+    "annualRevenue": 6499889,
+    "primaryCategories": [
+      "Kitchen & Dining"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Walmart"
+    ],
+    "website": "https://solarahomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.4,
+      "Walmart": 4.8
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 86477,
+      "tiktokFollowers": 55388
+    }
+  },
+  {
+    "sellerId": "seller_005",
+    "companyName": "Maven Home Co.",
+    "description": "Maven Home Co. is a retailer and brand specializing in storage & organization products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2016,
+    "headquarters": "Denver, CO",
+    "employeeCount": 174,
+    "annualRevenue": 2560819,
+    "primaryCategories": [
+      "Storage & Organization"
+    ],
+    "marketplaces": [
+      "Shopify",
+      "Walmart",
+      "Home Depot"
+    ],
+    "website": "https://mavenhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.6,
+      "Walmart": 4.2
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer",
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 159373,
+      "tiktokFollowers": 98806
+    }
+  },
+  {
+    "sellerId": "seller_006",
+    "companyName": "Terra Home Co.",
+    "description": "Terra Home Co. is a retailer and brand specializing in storage & organization products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2010,
+    "headquarters": "Nashville, TN",
+    "employeeCount": 115,
+    "annualRevenue": 8374556,
+    "primaryCategories": [
+      "Storage & Organization"
+    ],
+    "marketplaces": [
+      "Home Depot",
+      "Shopify",
+      "Walmart"
+    ],
+    "website": "https://terrahomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.5,
+      "Walmart": 4.0
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer",
+      "Retail",
+      "Bulk"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 34267,
+      "tiktokFollowers": 29934
+    }
+  },
+  {
+    "sellerId": "seller_007",
+    "companyName": "Luma Home Co.",
+    "description": "Luma Home Co. is a retailer and brand specializing in lighting products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2015,
+    "headquarters": "Brooklyn, NY",
+    "employeeCount": 82,
+    "annualRevenue": 5220791,
+    "primaryCategories": [
+      "Lighting"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Shopify"
+    ],
+    "website": "https://lumahomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.2,
+      "Walmart": 3.9
+    },
+    "fulfillmentCapabilities": [
+      "Bulk"
+    ],
+    "legalStatus": "Watch",
+    "socialPresence": {
+      "instagramFollowers": 67519,
+      "tiktokFollowers": 84023
+    }
+  },
+  {
+    "sellerId": "seller_008",
+    "companyName": "Oak Home Co.",
+    "description": "Oak Home Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2010,
+    "headquarters": "San Diego, CA",
+    "employeeCount": 81,
+    "annualRevenue": 9908348,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Shopify"
+    ],
+    "website": "https://oakhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.8,
+      "Walmart": 4.1
+    },
+    "fulfillmentCapabilities": [
+      "3PL",
+      "Bulk"
+    ],
+    "legalStatus": "Watch",
+    "socialPresence": {
+      "instagramFollowers": 174851,
+      "tiktokFollowers": 93993
+    }
+  },
+  {
+    "sellerId": "seller_009",
+    "companyName": "Willow Home Co.",
+    "description": "Willow Home Co. is a retailer and brand specializing in kitchen & dining products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2010,
+    "headquarters": "Phoenix, AZ",
+    "employeeCount": 156,
+    "annualRevenue": 11873850,
+    "primaryCategories": [
+      "Kitchen & Dining"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Etsy",
+      "Shopify"
+    ],
+    "website": "https://willowhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 3.9
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 108806,
+      "tiktokFollowers": 111694
+    }
+  },
+  {
+    "sellerId": "seller_010",
+    "companyName": "Atlas Home Co.",
+    "description": "Atlas Home Co. is a retailer and brand specializing in kitchen & dining products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2020,
+    "headquarters": "Charlotte, NC",
+    "employeeCount": 178,
+    "annualRevenue": 10118963,
+    "primaryCategories": [
+      "Kitchen & Dining"
+    ],
+    "marketplaces": [
+      "Home Depot",
+      "Shopify",
+      "Wayfair"
+    ],
+    "website": "https://atlashomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.5,
+      "Walmart": 4.7
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 161310,
+      "tiktokFollowers": 67359
+    }
+  },
+  {
+    "sellerId": "seller_011",
+    "companyName": "Nord Home Co.",
+    "description": "Nord Home Co. is a retailer and brand specializing in storage & organization products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2018,
+    "headquarters": "Brooklyn, NY",
+    "employeeCount": 78,
+    "annualRevenue": 11068239,
+    "primaryCategories": [
+      "Storage & Organization"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Walmart",
+      "Home Depot"
+    ],
+    "website": "https://nordhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.8,
+      "Walmart": 4.7
+    },
+    "fulfillmentCapabilities": [
+      "Retail"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 106967,
+      "tiktokFollowers": 106987
+    }
+  },
+  {
+    "sellerId": "seller_012",
+    "companyName": "Harbor Home Co.",
+    "description": "Harbor Home Co. is a retailer and brand specializing in kitchen & dining products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2011,
+    "headquarters": "Chicago, IL",
+    "employeeCount": 184,
+    "annualRevenue": 6783505,
+    "primaryCategories": [
+      "Kitchen & Dining"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Home Depot"
+    ],
+    "website": "https://harborhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.3,
+      "Walmart": 4.7
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship",
+      "3PL"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 20443,
+      "tiktokFollowers": 39382
+    }
+  },
+  {
+    "sellerId": "seller_013",
+    "companyName": "Purely Home Co.",
+    "description": "Purely Home Co. is a retailer and brand specializing in furniture products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2012,
+    "headquarters": "Charlotte, NC",
+    "employeeCount": 84,
+    "annualRevenue": 2383658,
+    "primaryCategories": [
+      "Furniture"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Etsy",
+      "Walmart"
+    ],
+    "website": "https://purelyhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 4.5
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "Drop Ship",
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 70002,
+      "tiktokFollowers": 116587
+    }
+  },
+  {
+    "sellerId": "seller_014",
+    "companyName": "Summit Home Co.",
+    "description": "Summit Home Co. is a retailer and brand specializing in kitchen & dining products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2012,
+    "headquarters": "Charlotte, NC",
+    "employeeCount": 50,
+    "annualRevenue": 9332725,
+    "primaryCategories": [
+      "Kitchen & Dining"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Walmart",
+      "Etsy"
+    ],
+    "website": "https://summithomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.6,
+      "Walmart": 4.0
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 168426,
+      "tiktokFollowers": 35750
+    }
+  },
+  {
+    "sellerId": "seller_015",
+    "companyName": "Bright Home Co.",
+    "description": "Bright Home Co. is a retailer and brand specializing in home decor products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2011,
+    "headquarters": "Nashville, TN",
+    "employeeCount": 46,
+    "annualRevenue": 9715013,
+    "primaryCategories": [
+      "Home Decor"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Walmart",
+      "Home Depot"
+    ],
+    "website": "https://brighthomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.6,
+      "Walmart": 4.0
+    },
+    "fulfillmentCapabilities": [
+      "Retail",
+      "3PL",
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 145093,
+      "tiktokFollowers": 15135
+    }
+  },
+  {
+    "sellerId": "seller_016",
+    "companyName": "Clover Home Co.",
+    "description": "Clover Home Co. is a retailer and brand specializing in holiday & festive decor products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2018,
+    "headquarters": "Phoenix, AZ",
+    "employeeCount": 80,
+    "annualRevenue": 1077672,
+    "primaryCategories": [
+      "Holiday & Festive Decor"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Amazon",
+      "Etsy"
+    ],
+    "website": "https://cloverhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.5,
+      "Walmart": 4.4
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "Direct-to-Consumer",
+      "Drop Ship"
+    ],
+    "legalStatus": "Watch",
+    "socialPresence": {
+      "instagramFollowers": 98431,
+      "tiktokFollowers": 75778
+    }
+  },
+  {
+    "sellerId": "seller_017",
+    "companyName": "Hearth Home Co.",
+    "description": "Hearth Home Co. is a retailer and brand specializing in furniture products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2021,
+    "headquarters": "Denver, CO",
+    "employeeCount": 198,
+    "annualRevenue": 7224476,
+    "primaryCategories": [
+      "Furniture"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Amazon"
+    ],
+    "website": "https://hearthhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 4.5
+    },
+    "fulfillmentCapabilities": [
+      "3PL"
+    ],
+    "legalStatus": "Watch",
+    "socialPresence": {
+      "instagramFollowers": 161412,
+      "tiktokFollowers": 47516
+    }
+  },
+  {
+    "sellerId": "seller_018",
+    "companyName": "Vista Home Co.",
+    "description": "Vista Home Co. is a retailer and brand specializing in bedding products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2016,
+    "headquarters": "San Diego, CA",
+    "employeeCount": 173,
+    "annualRevenue": 7255807,
+    "primaryCategories": [
+      "Bedding"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Amazon",
+      "Etsy"
+    ],
+    "website": "https://vistahomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.9,
+      "Walmart": 4.1
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer",
+      "3PL",
+      "Retail"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 175567,
+      "tiktokFollowers": 105321
+    }
+  },
+  {
+    "sellerId": "seller_019",
+    "companyName": "Prairie Home Co.",
+    "description": "Prairie Home Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2015,
+    "headquarters": "San Diego, CA",
+    "employeeCount": 184,
+    "annualRevenue": 3791590,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Etsy"
+    ],
+    "website": "https://prairiehomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.2,
+      "Walmart": 4.8
+    },
+    "fulfillmentCapabilities": [
+      "3PL",
+      "Direct-to-Consumer",
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 127213,
+      "tiktokFollowers": 21126
+    }
+  },
+  {
+    "sellerId": "seller_020",
+    "companyName": "Bloom Home Co.",
+    "description": "Bloom Home Co. is a retailer and brand specializing in holiday & festive decor products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2014,
+    "headquarters": "Nashville, TN",
+    "employeeCount": 189,
+    "annualRevenue": 2775666,
+    "primaryCategories": [
+      "Holiday & Festive Decor"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Etsy",
+      "Walmart"
+    ],
+    "website": "https://bloomhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.7,
+      "Walmart": 4.0
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship",
+      "Direct-to-Consumer",
+      "Retail"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 178248,
+      "tiktokFollowers": 53598
+    }
+  },
+  {
+    "sellerId": "seller_021",
+    "companyName": "Cedar Home Co.",
+    "description": "Cedar Home Co. is a retailer and brand specializing in party supplies products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2014,
+    "headquarters": "San Diego, CA",
+    "employeeCount": 79,
+    "annualRevenue": 8249558,
+    "primaryCategories": [
+      "Party Supplies"
+    ],
+    "marketplaces": [
+      "Home Depot",
+      "Etsy"
+    ],
+    "website": "https://cedarhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.8,
+      "Walmart": 4.1
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer",
+      "Retail"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 131006,
+      "tiktokFollowers": 54247
+    }
+  },
+  {
+    "sellerId": "seller_022",
+    "companyName": "Amber Home Co.",
+    "description": "Amber Home Co. is a retailer and brand specializing in bath products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2015,
+    "headquarters": "Portland, OR",
+    "employeeCount": 182,
+    "annualRevenue": 4307940,
+    "primaryCategories": [
+      "Bath"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Wayfair",
+      "Etsy"
+    ],
+    "website": "https://amberhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.3,
+      "Walmart": 4.4
+    },
+    "fulfillmentCapabilities": [
+      "3PL",
+      "Retail"
+    ],
+    "legalStatus": "Watch",
+    "socialPresence": {
+      "instagramFollowers": 136157,
+      "tiktokFollowers": 96874
+    }
+  },
+  {
+    "sellerId": "seller_023",
+    "companyName": "Sage Home Co.",
+    "description": "Sage Home Co. is a retailer and brand specializing in storage & organization products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2016,
+    "headquarters": "Seattle, WA",
+    "employeeCount": 22,
+    "annualRevenue": 5832187,
+    "primaryCategories": [
+      "Storage & Organization"
+    ],
+    "marketplaces": [
+      "Etsy",
+      "Wayfair",
+      "Amazon"
+    ],
+    "website": "https://sagehomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 4.7
+    },
+    "fulfillmentCapabilities": [
+      "3PL",
+      "Retail",
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 71527,
+      "tiktokFollowers": 78978
+    }
+  },
+  {
+    "sellerId": "seller_024",
+    "companyName": "Coast Home Co.",
+    "description": "Coast Home Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2015,
+    "headquarters": "Phoenix, AZ",
+    "employeeCount": 60,
+    "annualRevenue": 9594274,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Home Depot"
+    ],
+    "website": "https://coasthomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.2,
+      "Walmart": 4.1
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 160671,
+      "tiktokFollowers": 56744
+    }
+  },
+  {
+    "sellerId": "seller_025",
+    "companyName": "Drift Home Co.",
+    "description": "Drift Home Co. is a retailer and brand specializing in kitchen & dining products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2013,
+    "headquarters": "Seattle, WA",
+    "employeeCount": 178,
+    "annualRevenue": 7171442,
+    "primaryCategories": [
+      "Kitchen & Dining"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Etsy",
+      "Walmart"
+    ],
+    "website": "https://drifthomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.3,
+      "Walmart": 4.6
+    },
+    "fulfillmentCapabilities": [
+      "Bulk"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 97383,
+      "tiktokFollowers": 6115
+    }
+  },
+  {
+    "sellerId": "seller_026",
+    "companyName": "Plush Home Co.",
+    "description": "Plush Home Co. is a retailer and brand specializing in lighting products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2013,
+    "headquarters": "San Diego, CA",
+    "employeeCount": 26,
+    "annualRevenue": 3922160,
+    "primaryCategories": [
+      "Lighting"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Amazon",
+      "Home Depot"
+    ],
+    "website": "https://plushhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 4.7
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "Drop Ship",
+      "3PL"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 145604,
+      "tiktokFollowers": 33941
+    }
+  },
+  {
+    "sellerId": "seller_027",
+    "companyName": "Radiant Home Co.",
+    "description": "Radiant Home Co. is a retailer and brand specializing in home decor products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2010,
+    "headquarters": "Chicago, IL",
+    "employeeCount": 69,
+    "annualRevenue": 11954176,
+    "primaryCategories": [
+      "Home Decor"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Etsy",
+      "Home Depot"
+    ],
+    "website": "https://radianthomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 4.0
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship",
+      "3PL",
+      "Bulk"
+    ],
+    "legalStatus": "Watch",
+    "socialPresence": {
+      "instagramFollowers": 91974,
+      "tiktokFollowers": 104374
+    }
+  },
+  {
+    "sellerId": "seller_028",
+    "companyName": "Wild Home Co.",
+    "description": "Wild Home Co. is a retailer and brand specializing in holiday & festive decor products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2012,
+    "headquarters": "Charlotte, NC",
+    "employeeCount": 69,
+    "annualRevenue": 11886205,
+    "primaryCategories": [
+      "Holiday & Festive Decor"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Etsy"
+    ],
+    "website": "https://wildhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 4.1
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "3PL"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 107226,
+      "tiktokFollowers": 21007
+    }
+  },
+  {
+    "sellerId": "seller_029",
+    "companyName": "Fresh Home Co.",
+    "description": "Fresh Home Co. is a retailer and brand specializing in furniture products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2019,
+    "headquarters": "Denver, CO",
+    "employeeCount": 150,
+    "annualRevenue": 2383675,
+    "primaryCategories": [
+      "Furniture"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Etsy"
+    ],
+    "website": "https://freshhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.2,
+      "Walmart": 4.7
+    },
+    "fulfillmentCapabilities": [
+      "Retail"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 23494,
+      "tiktokFollowers": 81036
+    }
+  },
+  {
+    "sellerId": "seller_030",
+    "companyName": "Urban Home Co.",
+    "description": "Urban Home Co. is a retailer and brand specializing in party supplies products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2012,
+    "headquarters": "Portland, OR",
+    "employeeCount": 213,
+    "annualRevenue": 5903507,
+    "primaryCategories": [
+      "Party Supplies"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Home Depot"
+    ],
+    "website": "https://urbanhomeco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.4,
+      "Walmart": 4.6
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship"
+    ],
+    "legalStatus": "Watch",
+    "socialPresence": {
+      "instagramFollowers": 135952,
+      "tiktokFollowers": 9705
+    }
+  },
+  {
+    "sellerId": "seller_031",
+    "companyName": "Bella Living Co.",
+    "description": "Bella Living Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2020,
+    "headquarters": "Portland, OR",
+    "employeeCount": 96,
+    "annualRevenue": 983075,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Shopify",
+      "Walmart",
+      "Wayfair"
+    ],
+    "website": "https://bellalivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 4.7
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship"
+    ],
+    "legalStatus": "Watch",
+    "socialPresence": {
+      "instagramFollowers": 85901,
+      "tiktokFollowers": 75252
+    }
+  },
+  {
+    "sellerId": "seller_032",
+    "companyName": "Greenleaf Living Co.",
+    "description": "Greenleaf Living Co. is a retailer and brand specializing in storage & organization products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2012,
+    "headquarters": "San Diego, CA",
+    "employeeCount": 198,
+    "annualRevenue": 9872363,
+    "primaryCategories": [
+      "Storage & Organization"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Wayfair"
+    ],
+    "website": "https://greenleaflivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 3.9
+    },
+    "fulfillmentCapabilities": [
+      "Retail",
+      "Drop Ship",
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 37817,
+      "tiktokFollowers": 103309
+    }
+  },
+  {
+    "sellerId": "seller_033",
+    "companyName": "Mosaic Living Co.",
+    "description": "Mosaic Living Co. is a retailer and brand specializing in storage & organization products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2019,
+    "headquarters": "Seattle, WA",
+    "employeeCount": 193,
+    "annualRevenue": 1942511,
+    "primaryCategories": [
+      "Storage & Organization"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Home Depot"
+    ],
+    "website": "https://mosaiclivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.3,
+      "Walmart": 4.0
+    },
+    "fulfillmentCapabilities": [
+      "Retail"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 94588,
+      "tiktokFollowers": 49836
+    }
+  },
+  {
+    "sellerId": "seller_034",
+    "companyName": "Solara Living Co.",
+    "description": "Solara Living Co. is a retailer and brand specializing in bedding products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2020,
+    "headquarters": "Brooklyn, NY",
+    "employeeCount": 50,
+    "annualRevenue": 6676719,
+    "primaryCategories": [
+      "Bedding"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Wayfair"
+    ],
+    "website": "https://solaralivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.8,
+      "Walmart": 4.5
+    },
+    "fulfillmentCapabilities": [
+      "3PL",
+      "Retail",
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 145371,
+      "tiktokFollowers": 73885
+    }
+  },
+  {
+    "sellerId": "seller_035",
+    "companyName": "Maven Living Co.",
+    "description": "Maven Living Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2017,
+    "headquarters": "Nashville, TN",
+    "employeeCount": 46,
+    "annualRevenue": 5250430,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Etsy",
+      "Walmart"
+    ],
+    "website": "https://mavenlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.4,
+      "Walmart": 4.6
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer",
+      "3PL",
+      "Bulk"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 75840,
+      "tiktokFollowers": 36471
+    }
+  },
+  {
+    "sellerId": "seller_036",
+    "companyName": "Terra Living Co.",
+    "description": "Terra Living Co. is a retailer and brand specializing in party supplies products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2016,
+    "headquarters": "Chicago, IL",
+    "employeeCount": 34,
+    "annualRevenue": 4731027,
+    "primaryCategories": [
+      "Party Supplies"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Home Depot",
+      "Etsy"
+    ],
+    "website": "https://terralivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.7,
+      "Walmart": 3.9
+    },
+    "fulfillmentCapabilities": [
+      "Retail",
+      "3PL"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 139619,
+      "tiktokFollowers": 59874
+    }
+  },
+  {
+    "sellerId": "seller_037",
+    "companyName": "Luma Living Co.",
+    "description": "Luma Living Co. is a retailer and brand specializing in furniture products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2012,
+    "headquarters": "Nashville, TN",
+    "employeeCount": 116,
+    "annualRevenue": 11989730,
+    "primaryCategories": [
+      "Furniture"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Walmart"
+    ],
+    "website": "https://lumalivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.6,
+      "Walmart": 3.9
+    },
+    "fulfillmentCapabilities": [
+      "Bulk"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 102205,
+      "tiktokFollowers": 24779
+    }
+  },
+  {
+    "sellerId": "seller_038",
+    "companyName": "Oak Living Co.",
+    "description": "Oak Living Co. is a retailer and brand specializing in kitchen & dining products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2010,
+    "headquarters": "Brooklyn, NY",
+    "employeeCount": 38,
+    "annualRevenue": 5025072,
+    "primaryCategories": [
+      "Kitchen & Dining"
+    ],
+    "marketplaces": [
+      "Home Depot",
+      "Shopify",
+      "Wayfair"
+    ],
+    "website": "https://oaklivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.6,
+      "Walmart": 4.8
+    },
+    "fulfillmentCapabilities": [
+      "Retail",
+      "Bulk",
+      "3PL"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 189668,
+      "tiktokFollowers": 59529
+    }
+  },
+  {
+    "sellerId": "seller_039",
+    "companyName": "Willow Living Co.",
+    "description": "Willow Living Co. is a retailer and brand specializing in lighting products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2017,
+    "headquarters": "Phoenix, AZ",
+    "employeeCount": 189,
+    "annualRevenue": 1201878,
+    "primaryCategories": [
+      "Lighting"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Amazon"
+    ],
+    "website": "https://willowlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.5,
+      "Walmart": 4.3
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship",
+      "Bulk",
+      "3PL"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 141477,
+      "tiktokFollowers": 22955
+    }
+  },
+  {
+    "sellerId": "seller_040",
+    "companyName": "Atlas Living Co.",
+    "description": "Atlas Living Co. is a retailer and brand specializing in bedding products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2010,
+    "headquarters": "Chicago, IL",
+    "employeeCount": 152,
+    "annualRevenue": 7737774,
+    "primaryCategories": [
+      "Bedding"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Etsy"
+    ],
+    "website": "https://atlaslivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.4,
+      "Walmart": 4.8
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer",
+      "Retail"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 165775,
+      "tiktokFollowers": 69980
+    }
+  },
+  {
+    "sellerId": "seller_041",
+    "companyName": "Nord Living Co.",
+    "description": "Nord Living Co. is a retailer and brand specializing in kitchen & dining products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2019,
+    "headquarters": "Charlotte, NC",
+    "employeeCount": 110,
+    "annualRevenue": 6941637,
+    "primaryCategories": [
+      "Kitchen & Dining"
+    ],
+    "marketplaces": [
+      "Shopify",
+      "Wayfair"
+    ],
+    "website": "https://nordlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.8,
+      "Walmart": 4.3
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer",
+      "Bulk",
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 83212,
+      "tiktokFollowers": 52420
+    }
+  },
+  {
+    "sellerId": "seller_042",
+    "companyName": "Harbor Living Co.",
+    "description": "Harbor Living Co. is a retailer and brand specializing in party supplies products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2010,
+    "headquarters": "Brooklyn, NY",
+    "employeeCount": 83,
+    "annualRevenue": 9887206,
+    "primaryCategories": [
+      "Party Supplies"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Home Depot",
+      "Etsy"
+    ],
+    "website": "https://harborlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.7,
+      "Walmart": 4.1
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 83085,
+      "tiktokFollowers": 63937
+    }
+  },
+  {
+    "sellerId": "seller_043",
+    "companyName": "Purely Living Co.",
+    "description": "Purely Living Co. is a retailer and brand specializing in bath products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2020,
+    "headquarters": "Chicago, IL",
+    "employeeCount": 218,
+    "annualRevenue": 2766870,
+    "primaryCategories": [
+      "Bath"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Wayfair",
+      "Amazon"
+    ],
+    "website": "https://purelylivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.7,
+      "Walmart": 4.3
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer",
+      "Bulk",
+      "Drop Ship"
+    ],
+    "legalStatus": "Watch",
+    "socialPresence": {
+      "instagramFollowers": 103298,
+      "tiktokFollowers": 50838
+    }
+  },
+  {
+    "sellerId": "seller_044",
+    "companyName": "Summit Living Co.",
+    "description": "Summit Living Co. is a retailer and brand specializing in kitchen & dining products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2019,
+    "headquarters": "San Diego, CA",
+    "employeeCount": 159,
+    "annualRevenue": 8157043,
+    "primaryCategories": [
+      "Kitchen & Dining"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Home Depot",
+      "Shopify"
+    ],
+    "website": "https://summitlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.7,
+      "Walmart": 4.5
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 77576,
+      "tiktokFollowers": 70610
+    }
+  },
+  {
+    "sellerId": "seller_045",
+    "companyName": "Bright Living Co.",
+    "description": "Bright Living Co. is a retailer and brand specializing in bath products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2019,
+    "headquarters": "Seattle, WA",
+    "employeeCount": 81,
+    "annualRevenue": 11095170,
+    "primaryCategories": [
+      "Bath"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Shopify"
+    ],
+    "website": "https://brightlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 4.5
+    },
+    "fulfillmentCapabilities": [
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 150599,
+      "tiktokFollowers": 14460
+    }
+  },
+  {
+    "sellerId": "seller_046",
+    "companyName": "Clover Living Co.",
+    "description": "Clover Living Co. is a retailer and brand specializing in kitchen & dining products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2010,
+    "headquarters": "Seattle, WA",
+    "employeeCount": 131,
+    "annualRevenue": 2754649,
+    "primaryCategories": [
+      "Kitchen & Dining"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Shopify",
+      "Home Depot"
+    ],
+    "website": "https://cloverlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.9,
+      "Walmart": 4.4
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 88848,
+      "tiktokFollowers": 115022
+    }
+  },
+  {
+    "sellerId": "seller_047",
+    "companyName": "Hearth Living Co.",
+    "description": "Hearth Living Co. is a retailer and brand specializing in home decor products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2019,
+    "headquarters": "Portland, OR",
+    "employeeCount": 114,
+    "annualRevenue": 7448256,
+    "primaryCategories": [
+      "Home Decor"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Amazon",
+      "Shopify"
+    ],
+    "website": "https://hearthlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.9,
+      "Walmart": 4.2
+    },
+    "fulfillmentCapabilities": [
+      "3PL",
+      "Bulk"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 128070,
+      "tiktokFollowers": 64502
+    }
+  },
+  {
+    "sellerId": "seller_048",
+    "companyName": "Vista Living Co.",
+    "description": "Vista Living Co. is a retailer and brand specializing in lighting products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2013,
+    "headquarters": "San Diego, CA",
+    "employeeCount": 209,
+    "annualRevenue": 5356146,
+    "primaryCategories": [
+      "Lighting"
+    ],
+    "marketplaces": [
+      "Home Depot",
+      "Shopify"
+    ],
+    "website": "https://vistalivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.7,
+      "Walmart": 4.8
+    },
+    "fulfillmentCapabilities": [
+      "Retail",
+      "3PL",
+      "Bulk"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 68907,
+      "tiktokFollowers": 59776
+    }
+  },
+  {
+    "sellerId": "seller_049",
+    "companyName": "Prairie Living Co.",
+    "description": "Prairie Living Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2021,
+    "headquarters": "Phoenix, AZ",
+    "employeeCount": 119,
+    "annualRevenue": 1392993,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Shopify",
+      "Wayfair"
+    ],
+    "website": "https://prairielivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.8,
+      "Walmart": 4.2
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "3PL"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 98499,
+      "tiktokFollowers": 67422
+    }
+  },
+  {
+    "sellerId": "seller_050",
+    "companyName": "Bloom Living Co.",
+    "description": "Bloom Living Co. is a retailer and brand specializing in bedding products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2016,
+    "headquarters": "Chicago, IL",
+    "employeeCount": 53,
+    "annualRevenue": 8226259,
+    "primaryCategories": [
+      "Bedding"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Amazon"
+    ],
+    "website": "https://bloomlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.1,
+      "Walmart": 4.6
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "3PL",
+      "Retail"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 136559,
+      "tiktokFollowers": 107284
+    }
+  },
+  {
+    "sellerId": "seller_051",
+    "companyName": "Cedar Living Co.",
+    "description": "Cedar Living Co. is a retailer and brand specializing in party supplies products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2016,
+    "headquarters": "Portland, OR",
+    "employeeCount": 37,
+    "annualRevenue": 10819054,
+    "primaryCategories": [
+      "Party Supplies"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Etsy"
+    ],
+    "website": "https://cedarlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.4,
+      "Walmart": 4.4
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "3PL",
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 138380,
+      "tiktokFollowers": 27147
+    }
+  },
+  {
+    "sellerId": "seller_052",
+    "companyName": "Amber Living Co.",
+    "description": "Amber Living Co. is a retailer and brand specializing in storage & organization products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2010,
+    "headquarters": "Chicago, IL",
+    "employeeCount": 156,
+    "annualRevenue": 4661081,
+    "primaryCategories": [
+      "Storage & Organization"
+    ],
+    "marketplaces": [
+      "Walmart",
+      "Amazon"
+    ],
+    "website": "https://amberlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.8,
+      "Walmart": 4.1
+    },
+    "fulfillmentCapabilities": [
+      "3PL"
+    ],
+    "legalStatus": "Watch",
+    "socialPresence": {
+      "instagramFollowers": 27761,
+      "tiktokFollowers": 57688
+    }
+  },
+  {
+    "sellerId": "seller_053",
+    "companyName": "Sage Living Co.",
+    "description": "Sage Living Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2018,
+    "headquarters": "Brooklyn, NY",
+    "employeeCount": 169,
+    "annualRevenue": 9492056,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Home Depot",
+      "Etsy"
+    ],
+    "website": "https://sagelivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.8,
+      "Walmart": 3.9
+    },
+    "fulfillmentCapabilities": [
+      "Retail"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 146720,
+      "tiktokFollowers": 78613
+    }
+  },
+  {
+    "sellerId": "seller_054",
+    "companyName": "Coast Living Co.",
+    "description": "Coast Living Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2018,
+    "headquarters": "Nashville, TN",
+    "employeeCount": 65,
+    "annualRevenue": 2949397,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Etsy"
+    ],
+    "website": "https://coastlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.9,
+      "Walmart": 4.5
+    },
+    "fulfillmentCapabilities": [
+      "Retail"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 39649,
+      "tiktokFollowers": 16513
+    }
+  },
+  {
+    "sellerId": "seller_055",
+    "companyName": "Drift Living Co.",
+    "description": "Drift Living Co. is a retailer and brand specializing in home decor products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2011,
+    "headquarters": "Austin, TX",
+    "employeeCount": 41,
+    "annualRevenue": 10945600,
+    "primaryCategories": [
+      "Home Decor"
+    ],
+    "marketplaces": [
+      "Home Depot",
+      "Etsy"
+    ],
+    "website": "https://driftlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.4,
+      "Walmart": 4.3
+    },
+    "fulfillmentCapabilities": [
+      "Retail",
+      "Drop Ship",
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 20653,
+      "tiktokFollowers": 114731
+    }
+  },
+  {
+    "sellerId": "seller_056",
+    "companyName": "Plush Living Co.",
+    "description": "Plush Living Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2014,
+    "headquarters": "Charlotte, NC",
+    "employeeCount": 101,
+    "annualRevenue": 1375690,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Etsy",
+      "Amazon",
+      "Walmart"
+    ],
+    "website": "https://plushlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.4,
+      "Walmart": 4.8
+    },
+    "fulfillmentCapabilities": [
+      "Bulk",
+      "Direct-to-Consumer",
+      "Drop Ship"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 18449,
+      "tiktokFollowers": 59056
+    }
+  },
+  {
+    "sellerId": "seller_057",
+    "companyName": "Radiant Living Co.",
+    "description": "Radiant Living Co. is a retailer and brand specializing in outdoor living products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2011,
+    "headquarters": "Austin, TX",
+    "employeeCount": 92,
+    "annualRevenue": 8030331,
+    "primaryCategories": [
+      "Outdoor Living"
+    ],
+    "marketplaces": [
+      "Shopify",
+      "Amazon",
+      "Home Depot"
+    ],
+    "website": "https://radiantlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.9,
+      "Walmart": 4.0
+    },
+    "fulfillmentCapabilities": [
+      "3PL",
+      "Drop Ship",
+      "Bulk"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 184815,
+      "tiktokFollowers": 32836
+    }
+  },
+  {
+    "sellerId": "seller_058",
+    "companyName": "Wild Living Co.",
+    "description": "Wild Living Co. is a retailer and brand specializing in holiday & festive decor products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2013,
+    "headquarters": "Phoenix, AZ",
+    "employeeCount": 77,
+    "annualRevenue": 1364335,
+    "primaryCategories": [
+      "Holiday & Festive Decor"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Walmart"
+    ],
+    "website": "https://wildlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.6,
+      "Walmart": 4.5
+    },
+    "fulfillmentCapabilities": [
+      "Retail",
+      "Drop Ship",
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 171725,
+      "tiktokFollowers": 13903
+    }
+  },
+  {
+    "sellerId": "seller_059",
+    "companyName": "Fresh Living Co.",
+    "description": "Fresh Living Co. is a retailer and brand specializing in bedding products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2021,
+    "headquarters": "Charlotte, NC",
+    "employeeCount": 208,
+    "annualRevenue": 8450249,
+    "primaryCategories": [
+      "Bedding"
+    ],
+    "marketplaces": [
+      "Amazon",
+      "Shopify"
+    ],
+    "website": "https://freshlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.3,
+      "Walmart": 4.3
+    },
+    "fulfillmentCapabilities": [
+      "Drop Ship",
+      "Bulk",
+      "Direct-to-Consumer"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 135751,
+      "tiktokFollowers": 49871
+    }
+  },
+  {
+    "sellerId": "seller_060",
+    "companyName": "Urban Living Co.",
+    "description": "Urban Living Co. is a retailer and brand specializing in storage & organization products with a curated assortment and digital commerce presence.",
+    "foundedYear": 2011,
+    "headquarters": "Portland, OR",
+    "employeeCount": 52,
+    "annualRevenue": 11960338,
+    "primaryCategories": [
+      "Storage & Organization"
+    ],
+    "marketplaces": [
+      "Wayfair",
+      "Shopify",
+      "Walmart"
+    ],
+    "website": "https://urbanlivingco.example",
+    "marketplaceRatings": {
+      "Amazon": 4.0,
+      "Walmart": 4.3
+    },
+    "fulfillmentCapabilities": [
+      "Bulk"
+    ],
+    "legalStatus": "Good Standing",
+    "socialPresence": {
+      "instagramFollowers": 185977,
+      "tiktokFollowers": 16658
+    }
+  }
+]

@@ -1,0 +1,1052 @@
+[
+  {
+    "applicationId": "app_001",
+    "sellerId": "seller_001",
+    "submissionDate": "2026-06-22T13:50:00Z",
+    "businessInformation": {
+      "legalName": "Bella Home Co. LLC",
+      "taxId": "XX-5221919",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Home Decor"
+      ],
+      "topSkuCount": 58,
+      "avgPricePoint": 25.81
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "California"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_001_1",
+      "doc_001_2"
+    ],
+    "currentStatus": "New",
+    "reviewedBy": null,
+    "reviewDate": null
+  },
+  {
+    "applicationId": "app_002",
+    "sellerId": "seller_002",
+    "submissionDate": "2026-06-24T14:59:00Z",
+    "businessInformation": {
+      "legalName": "Greenleaf Home Co. LLC",
+      "taxId": "XX-1504824",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Party Supplies"
+      ],
+      "topSkuCount": 95,
+      "avgPricePoint": 26.94
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "North Carolina"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_002_1",
+      "doc_002_2"
+    ],
+    "currentStatus": "New",
+    "reviewedBy": null,
+    "reviewDate": null
+  },
+  {
+    "applicationId": "app_003",
+    "sellerId": "seller_003",
+    "submissionDate": "2026-06-23T18:57:00Z",
+    "businessInformation": {
+      "legalName": "Mosaic Home Co. LLC",
+      "taxId": "XX-8915325",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Outdoor Living"
+      ],
+      "topSkuCount": 12,
+      "avgPricePoint": 21.06
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "Texas"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_003_1",
+      "doc_003_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-26T08:30:00Z"
+  },
+  {
+    "applicationId": "app_004",
+    "sellerId": "seller_004",
+    "submissionDate": "2026-06-27T09:07:00Z",
+    "businessInformation": {
+      "legalName": "Solara Home Co. LLC",
+      "taxId": "XX-8716734",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Kitchen & Dining"
+      ],
+      "topSkuCount": 23,
+      "avgPricePoint": 35.58
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "North Carolina"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_004_1",
+      "doc_004_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-25T14:28:00Z"
+  },
+  {
+    "applicationId": "app_005",
+    "sellerId": "seller_005",
+    "submissionDate": "2026-06-21T11:04:00Z",
+    "businessInformation": {
+      "legalName": "Maven Home Co. LLC",
+      "taxId": "XX-5464250",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Storage & Organization"
+      ],
+      "topSkuCount": 68,
+      "avgPricePoint": 38.23
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_005_1",
+      "doc_005_2"
+    ],
+    "currentStatus": "New",
+    "reviewedBy": null,
+    "reviewDate": null
+  },
+  {
+    "applicationId": "app_006",
+    "sellerId": "seller_006",
+    "submissionDate": "2026-06-28T11:30:00Z",
+    "businessInformation": {
+      "legalName": "Terra Home Co. LLC",
+      "taxId": "XX-4621639",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Storage & Organization"
+      ],
+      "topSkuCount": 26,
+      "avgPricePoint": 21.45
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_006_1",
+      "doc_006_2"
+    ],
+    "currentStatus": "New",
+    "reviewedBy": null,
+    "reviewDate": null
+  },
+  {
+    "applicationId": "app_007",
+    "sellerId": "seller_007",
+    "submissionDate": "2026-06-28T10:32:00Z",
+    "businessInformation": {
+      "legalName": "Luma Home Co. LLC",
+      "taxId": "XX-6306167",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Lighting"
+      ],
+      "topSkuCount": 24,
+      "avgPricePoint": 22.4
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "North Carolina"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_007_1",
+      "doc_007_2"
+    ],
+    "currentStatus": "New",
+    "reviewedBy": null,
+    "reviewDate": null
+  },
+  {
+    "applicationId": "app_008",
+    "sellerId": "seller_008",
+    "submissionDate": "2026-06-22T09:51:00Z",
+    "businessInformation": {
+      "legalName": "Oak Home Co. LLC",
+      "taxId": "XX-8600321",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Outdoor Living"
+      ],
+      "topSkuCount": 24,
+      "avgPricePoint": 27.41
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_008_1",
+      "doc_008_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-27T15:16:00Z"
+  },
+  {
+    "applicationId": "app_009",
+    "sellerId": "seller_009",
+    "submissionDate": "2026-06-28T08:40:00Z",
+    "businessInformation": {
+      "legalName": "Willow Home Co. LLC",
+      "taxId": "XX-9634538",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Kitchen & Dining"
+      ],
+      "topSkuCount": 94,
+      "avgPricePoint": 38.27
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "California"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_009_1",
+      "doc_009_2"
+    ],
+    "currentStatus": "New",
+    "reviewedBy": null,
+    "reviewDate": null
+  },
+  {
+    "applicationId": "app_010",
+    "sellerId": "seller_010",
+    "submissionDate": "2026-06-22T18:23:00Z",
+    "businessInformation": {
+      "legalName": "Atlas Home Co. LLC",
+      "taxId": "XX-3433299",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Kitchen & Dining"
+      ],
+      "topSkuCount": 53,
+      "avgPricePoint": 49.35
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "California"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_010_1",
+      "doc_010_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-24T17:29:00Z"
+  },
+  {
+    "applicationId": "app_011",
+    "sellerId": "seller_011",
+    "submissionDate": "2026-06-21T15:13:00Z",
+    "businessInformation": {
+      "legalName": "Nord Home Co. LLC",
+      "taxId": "XX-1602444",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Storage & Organization"
+      ],
+      "topSkuCount": 68,
+      "avgPricePoint": 58.98
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "Texas"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_011_1",
+      "doc_011_2"
+    ],
+    "currentStatus": "Approved",
+    "reviewedBy": "Mina Shah",
+    "reviewDate": "2026-06-28T11:04:00Z"
+  },
+  {
+    "applicationId": "app_012",
+    "sellerId": "seller_012",
+    "submissionDate": "2026-06-20T18:10:00Z",
+    "businessInformation": {
+      "legalName": "Harbor Home Co. LLC",
+      "taxId": "XX-1211570",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Kitchen & Dining"
+      ],
+      "topSkuCount": 73,
+      "avgPricePoint": 28.55
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "Texas"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_012_1",
+      "doc_012_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Mina Shah",
+    "reviewDate": "2026-06-25T17:57:00Z"
+  },
+  {
+    "applicationId": "app_013",
+    "sellerId": "seller_013",
+    "submissionDate": "2026-06-23T15:12:00Z",
+    "businessInformation": {
+      "legalName": "Purely Home Co. LLC",
+      "taxId": "XX-6199074",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Furniture"
+      ],
+      "topSkuCount": 46,
+      "avgPricePoint": 28.27
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_013_1",
+      "doc_013_2"
+    ],
+    "currentStatus": "New",
+    "reviewedBy": null,
+    "reviewDate": null
+  },
+  {
+    "applicationId": "app_014",
+    "sellerId": "seller_014",
+    "submissionDate": "2026-06-22T13:26:00Z",
+    "businessInformation": {
+      "legalName": "Summit Home Co. LLC",
+      "taxId": "XX-1385116",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Kitchen & Dining"
+      ],
+      "topSkuCount": 32,
+      "avgPricePoint": 28.77
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "California"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_014_1",
+      "doc_014_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Mina Shah",
+    "reviewDate": "2026-06-28T15:30:00Z"
+  },
+  {
+    "applicationId": "app_015",
+    "sellerId": "seller_015",
+    "submissionDate": "2026-06-28T14:08:00Z",
+    "businessInformation": {
+      "legalName": "Bright Home Co. LLC",
+      "taxId": "XX-5380080",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Home Decor"
+      ],
+      "topSkuCount": 83,
+      "avgPricePoint": 23.93
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "California"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_015_1",
+      "doc_015_2"
+    ],
+    "currentStatus": "Approved",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-28T10:37:00Z"
+  },
+  {
+    "applicationId": "app_016",
+    "sellerId": "seller_016",
+    "submissionDate": "2026-06-20T10:14:00Z",
+    "businessInformation": {
+      "legalName": "Clover Home Co. LLC",
+      "taxId": "XX-8094146",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Holiday & Festive Decor"
+      ],
+      "topSkuCount": 22,
+      "avgPricePoint": 43.0
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "North Carolina"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_016_1",
+      "doc_016_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Mina Shah",
+    "reviewDate": "2026-06-28T18:14:00Z"
+  },
+  {
+    "applicationId": "app_017",
+    "sellerId": "seller_017",
+    "submissionDate": "2026-06-24T14:06:00Z",
+    "businessInformation": {
+      "legalName": "Hearth Home Co. LLC",
+      "taxId": "XX-1865547",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Furniture"
+      ],
+      "topSkuCount": 25,
+      "avgPricePoint": 58.66
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_017_1",
+      "doc_017_2"
+    ],
+    "currentStatus": "New",
+    "reviewedBy": null,
+    "reviewDate": null
+  },
+  {
+    "applicationId": "app_018",
+    "sellerId": "seller_018",
+    "submissionDate": "2026-06-22T10:26:00Z",
+    "businessInformation": {
+      "legalName": "Vista Home Co. LLC",
+      "taxId": "XX-2230479",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Bedding"
+      ],
+      "topSkuCount": 50,
+      "avgPricePoint": 52.08
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "North Carolina"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_018_1",
+      "doc_018_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-27T18:33:00Z"
+  },
+  {
+    "applicationId": "app_019",
+    "sellerId": "seller_019",
+    "submissionDate": "2026-06-25T16:35:00Z",
+    "businessInformation": {
+      "legalName": "Prairie Home Co. LLC",
+      "taxId": "XX-4232717",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Outdoor Living"
+      ],
+      "topSkuCount": 21,
+      "avgPricePoint": 43.27
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "North Carolina"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_019_1",
+      "doc_019_2"
+    ],
+    "currentStatus": "Approved",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-26T18:15:00Z"
+  },
+  {
+    "applicationId": "app_020",
+    "sellerId": "seller_020",
+    "submissionDate": "2026-06-25T16:16:00Z",
+    "businessInformation": {
+      "legalName": "Bloom Home Co. LLC",
+      "taxId": "XX-2231870",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Holiday & Festive Decor"
+      ],
+      "topSkuCount": 91,
+      "avgPricePoint": 46.97
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "Texas"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_020_1",
+      "doc_020_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-27T15:21:00Z"
+  },
+  {
+    "applicationId": "app_021",
+    "sellerId": "seller_021",
+    "submissionDate": "2026-06-22T15:20:00Z",
+    "businessInformation": {
+      "legalName": "Cedar Home Co. LLC",
+      "taxId": "XX-4907523",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Party Supplies"
+      ],
+      "topSkuCount": 23,
+      "avgPricePoint": 58.26
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "North Carolina"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_021_1",
+      "doc_021_2"
+    ],
+    "currentStatus": "Approved",
+    "reviewedBy": "Mina Shah",
+    "reviewDate": "2026-06-25T11:23:00Z"
+  },
+  {
+    "applicationId": "app_022",
+    "sellerId": "seller_022",
+    "submissionDate": "2026-06-25T14:42:00Z",
+    "businessInformation": {
+      "legalName": "Amber Home Co. LLC",
+      "taxId": "XX-9293665",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Bath"
+      ],
+      "topSkuCount": 28,
+      "avgPricePoint": 59.89
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "Texas"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_022_1",
+      "doc_022_2"
+    ],
+    "currentStatus": "Approved",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-24T16:08:00Z"
+  },
+  {
+    "applicationId": "app_023",
+    "sellerId": "seller_023",
+    "submissionDate": "2026-06-26T18:04:00Z",
+    "businessInformation": {
+      "legalName": "Sage Home Co. LLC",
+      "taxId": "XX-8878115",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Storage & Organization"
+      ],
+      "topSkuCount": 54,
+      "avgPricePoint": 42.65
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "Texas"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_023_1",
+      "doc_023_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Mina Shah",
+    "reviewDate": "2026-06-26T10:51:00Z"
+  },
+  {
+    "applicationId": "app_024",
+    "sellerId": "seller_024",
+    "submissionDate": "2026-06-20T18:43:00Z",
+    "businessInformation": {
+      "legalName": "Coast Home Co. LLC",
+      "taxId": "XX-3700093",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Outdoor Living"
+      ],
+      "topSkuCount": 59,
+      "avgPricePoint": 23.79
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "California"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_024_1",
+      "doc_024_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-28T11:23:00Z"
+  },
+  {
+    "applicationId": "app_025",
+    "sellerId": "seller_025",
+    "submissionDate": "2026-06-24T10:52:00Z",
+    "businessInformation": {
+      "legalName": "Drift Home Co. LLC",
+      "taxId": "XX-2086005",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Kitchen & Dining"
+      ],
+      "topSkuCount": 97,
+      "avgPricePoint": 54.87
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "California"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_025_1",
+      "doc_025_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-28T16:26:00Z"
+  },
+  {
+    "applicationId": "app_026",
+    "sellerId": "seller_026",
+    "submissionDate": "2026-06-28T12:01:00Z",
+    "businessInformation": {
+      "legalName": "Plush Home Co. LLC",
+      "taxId": "XX-2175262",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Lighting"
+      ],
+      "topSkuCount": 34,
+      "avgPricePoint": 22.51
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_026_1",
+      "doc_026_2"
+    ],
+    "currentStatus": "Approved",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-25T10:16:00Z"
+  },
+  {
+    "applicationId": "app_027",
+    "sellerId": "seller_027",
+    "submissionDate": "2026-06-23T08:01:00Z",
+    "businessInformation": {
+      "legalName": "Radiant Home Co. LLC",
+      "taxId": "XX-2916422",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Home Decor"
+      ],
+      "topSkuCount": 23,
+      "avgPricePoint": 58.76
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "North Carolina"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_027_1",
+      "doc_027_2"
+    ],
+    "currentStatus": "Approved",
+    "reviewedBy": "Mina Shah",
+    "reviewDate": "2026-06-24T16:22:00Z"
+  },
+  {
+    "applicationId": "app_028",
+    "sellerId": "seller_028",
+    "submissionDate": "2026-06-24T14:47:00Z",
+    "businessInformation": {
+      "legalName": "Wild Home Co. LLC",
+      "taxId": "XX-9033641",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Holiday & Festive Decor"
+      ],
+      "topSkuCount": 54,
+      "avgPricePoint": 21.24
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "Texas"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_028_1",
+      "doc_028_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-26T09:04:00Z"
+  },
+  {
+    "applicationId": "app_029",
+    "sellerId": "seller_029",
+    "submissionDate": "2026-06-20T12:08:00Z",
+    "businessInformation": {
+      "legalName": "Fresh Home Co. LLC",
+      "taxId": "XX-6513886",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Furniture"
+      ],
+      "topSkuCount": 76,
+      "avgPricePoint": 39.15
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_029_1",
+      "doc_029_2"
+    ],
+    "currentStatus": "Approved",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-27T14:18:00Z"
+  },
+  {
+    "applicationId": "app_030",
+    "sellerId": "seller_030",
+    "submissionDate": "2026-06-20T11:19:00Z",
+    "businessInformation": {
+      "legalName": "Urban Home Co. LLC",
+      "taxId": "XX-2210565",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Party Supplies"
+      ],
+      "topSkuCount": 24,
+      "avgPricePoint": 21.68
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "California"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_030_1",
+      "doc_030_2"
+    ],
+    "currentStatus": "Approved",
+    "reviewedBy": "Mina Shah",
+    "reviewDate": "2026-06-27T11:39:00Z"
+  },
+  {
+    "applicationId": "app_031",
+    "sellerId": "seller_031",
+    "submissionDate": "2026-06-27T17:27:00Z",
+    "businessInformation": {
+      "legalName": "Bella Living Co. LLC",
+      "taxId": "XX-3318749",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Outdoor Living"
+      ],
+      "topSkuCount": 36,
+      "avgPricePoint": 57.27
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_031_1",
+      "doc_031_2"
+    ],
+    "currentStatus": "New",
+    "reviewedBy": null,
+    "reviewDate": null
+  },
+  {
+    "applicationId": "app_032",
+    "sellerId": "seller_032",
+    "submissionDate": "2026-06-27T11:48:00Z",
+    "businessInformation": {
+      "legalName": "Greenleaf Living Co. LLC",
+      "taxId": "XX-5337461",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Storage & Organization"
+      ],
+      "topSkuCount": 78,
+      "avgPricePoint": 40.85
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "3PL",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_032_1",
+      "doc_032_2"
+    ],
+    "currentStatus": "Approved",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-24T11:32:00Z"
+  },
+  {
+    "applicationId": "app_033",
+    "sellerId": "seller_033",
+    "submissionDate": "2026-06-23T18:45:00Z",
+    "businessInformation": {
+      "legalName": "Mosaic Living Co. LLC",
+      "taxId": "XX-8620890",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Storage & Organization"
+      ],
+      "topSkuCount": 35,
+      "avgPricePoint": 27.38
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "Texas"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_033_1",
+      "doc_033_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Ethan Brooks",
+    "reviewDate": "2026-06-25T08:14:00Z"
+  },
+  {
+    "applicationId": "app_034",
+    "sellerId": "seller_034",
+    "submissionDate": "2026-06-25T18:44:00Z",
+    "businessInformation": {
+      "legalName": "Solara Living Co. LLC",
+      "taxId": "XX-6195550",
+      "entityType": "Corporation"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Bedding"
+      ],
+      "topSkuCount": 52,
+      "avgPricePoint": 40.43
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_034_1",
+      "doc_034_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Mina Shah",
+    "reviewDate": "2026-06-24T12:03:00Z"
+  },
+  {
+    "applicationId": "app_035",
+    "sellerId": "seller_035",
+    "submissionDate": "2026-06-28T11:09:00Z",
+    "businessInformation": {
+      "legalName": "Maven Living Co. LLC",
+      "taxId": "XX-3940766",
+      "entityType": "LLC"
+    },
+    "assortmentDetails": {
+      "coreCategories": [
+        "Outdoor Living"
+      ],
+      "topSkuCount": 71,
+      "avgPricePoint": 20.23
+    },
+    "logisticsDetails": {
+      "fulfillmentModel": "Drop Ship",
+      "warehouseLocations": [
+        "New Jersey"
+      ]
+    },
+    "uploadedDocuments": [
+      "doc_035_1",
+      "doc_035_2"
+    ],
+    "currentStatus": "In Review",
+    "reviewedBy": "Mina Shah",
+    "reviewDate": "2026-06-27T16:19:00Z"
+  }
+]

@@ -1,26 +1,19 @@
 import { AssortmentGapView } from "@/features/assortment-gap/components/assortment-gap-view";
-import {
-  getKitchenSubcategories,
-  getMissingProducts,
-  getServewareGapItems,
-  getTreemapItems,
-} from "@/services/analytics.service";
+import { getAssortmentGapAnalysis } from "@/lib/mock-data/assortment-gap";
 
 export default async function AssortmentGapPage() {
-  const [treemapItems, kitchenSubcategories, servewareGapItems, products] =
-    await Promise.all([
-      getTreemapItems(),
-      getKitchenSubcategories(),
-      getServewareGapItems(),
-      getMissingProducts(),
-    ]);
+  const analysis = await getAssortmentGapAnalysis();
 
   return (
     <AssortmentGapView
-      treemapItems={treemapItems}
-      kitchenSubcategories={kitchenSubcategories}
-      servewareGapItems={servewareGapItems}
-      products={products}
+      lastUpdatedLabel={analysis.lastUpdatedLabel}
+      revenueOpportunity={analysis.revenueOpportunity}
+      selectedCategoryCount={analysis.selectedCategoryCount}
+      competitors={analysis.competitors}
+      treemapRoot={analysis.treemapRoot}
+      servewareGapItems={analysis.servewareGapItems}
+      beaconRecommendedItems={analysis.beaconRecommendedItems}
+      products={analysis.missingProducts}
     />
   );
 }

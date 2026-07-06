@@ -1,0 +1,346 @@
+{
+  "lastUpdatedAt": "2026-07-04T09:30:00.000Z",
+  "revenueOpportunity": "$52.8M",
+  "selectedCategoryCount": 8,
+  "competitors": ["Amazon"],
+  "treemapCategories": [
+    {
+      "id": "kitchen",
+      "categoryId": "cat_kitchen_dining",
+      "label": "Kitchen & Dining",
+      "lag": "high",
+      "gridArea": "1 / 1 / 3 / 3",
+      "revenue": "$22.8M",
+      "gapPercent": "35%",
+      "gapRate": 0.35,
+      "competitorLeader": "Amazon",
+      "drillDown": true
+    },
+    {
+      "id": "outdoor",
+      "categoryId": "cat_outdoor_living",
+      "label": "Outdoor Living & Garden",
+      "lag": "medium-high",
+      "gridArea": "1 / 3 / 3 / 4",
+      "revenue": "$9.4M",
+      "gapPercent": "32%",
+      "gapRate": 0.32,
+      "competitorLeader": "Home Depot"
+    },
+    {
+      "id": "holiday",
+      "categoryId": "cat_holiday_decor",
+      "label": "Holiday",
+      "lag": "medium-high",
+      "gridArea": "1 / 4 / 2 / 5",
+      "revenue": "$6.8M",
+      "gapPercent": "25%",
+      "gapRate": 0.25,
+      "competitorLeader": "Amazon"
+    },
+    {
+      "id": "lighting",
+      "categoryId": "cat_lighting",
+      "label": "Lighting",
+      "lag": "medium-high",
+      "gridArea": "2 / 4 / 3 / 5",
+      "revenue": "$8.1M",
+      "gapPercent": "27%",
+      "gapRate": 0.27,
+      "competitorLeader": "Amazon"
+    },
+    {
+      "id": "furniture",
+      "categoryId": "cat_furniture",
+      "label": "Furniture",
+      "lag": "medium",
+      "gridArea": "3 / 1 / 4 / 3",
+      "revenue": "$5.2M",
+      "gapPercent": "17%",
+      "gapRate": 0.17,
+      "competitorLeader": "Walmart"
+    },
+    {
+      "id": "party",
+      "categoryId": "cat_party_supplies",
+      "label": "Party Supp...",
+      "lag": "low",
+      "gridArea": "3 / 3 / 4 / 4",
+      "revenue": "$2.1M",
+      "gapPercent": "29%",
+      "gapRate": 0.29,
+      "competitorLeader": "Amazon"
+    },
+    {
+      "id": "rugs",
+      "categoryId": "cat_home_decor",
+      "label": "Rugs",
+      "lag": "low",
+      "gridArea": "3 / 4 / 4 / 5",
+      "revenue": "$1.8M",
+      "gapPercent": "18%",
+      "gapRate": 0.18,
+      "competitorLeader": "Wayfair"
+    }
+  ],
+  "kitchenSubcategories": [
+    {
+      "id": "deals",
+      "label": "Kitchen & Dining Deals",
+      "lag": "high",
+      "gridArea": "1 / 1 / 2 / 3",
+      "revenue": "$3.2M",
+      "gapPercent": "22%",
+      "competitorLeader": "Amazon"
+    },
+    {
+      "id": "dining",
+      "label": "Dining & Entertaining",
+      "lag": "high",
+      "gridArea": "1 / 3 / 2 / 5",
+      "revenue": "$4.5M",
+      "gapPercent": "28%",
+      "competitorLeader": "Amazon"
+    },
+    {
+      "id": "countertop",
+      "label": "Countertop Storage",
+      "lag": "medium-high",
+      "gridArea": "2 / 1 / 3 / 2",
+      "revenue": "$2.4M",
+      "gapPercent": "19%",
+      "competitorLeader": "Walmart"
+    },
+    {
+      "id": "linens",
+      "label": "Kitchen & Table Linens",
+      "lag": "medium-high",
+      "gridArea": "2 / 2 / 3 / 3",
+      "revenue": "$1.9M",
+      "gapPercent": "16%",
+      "competitorLeader": "Amazon"
+    },
+    {
+      "id": "serveware",
+      "label": "Serveware",
+      "lag": "medium-high",
+      "gridArea": "2 / 3 / 4 / 5",
+      "revenue": "$1.8M",
+      "gapPercent": "18%",
+      "competitorLeader": "Amazon",
+      "opensDrawer": "Serveware"
+    },
+    {
+      "id": "appliances",
+      "label": "Kitchen Appliances",
+      "lag": "medium",
+      "gridArea": "3 / 1 / 4 / 2",
+      "revenue": "$2.8M",
+      "gapPercent": "14%",
+      "competitorLeader": "Best Buy"
+    },
+    {
+      "id": "bakeware",
+      "label": "Bakeware",
+      "lag": "medium",
+      "gridArea": "3 / 2 / 4 / 3",
+      "revenue": "$1.5M",
+      "gapPercent": "12%",
+      "competitorLeader": "Amazon"
+    }
+  ],
+  "missingProducts": [
+    {
+      "id": "mp-001",
+      "name": "Ceramic Table Lamp",
+      "category": "Lighting",
+      "categoryId": "cat_lighting",
+      "gapOpportunity": "High",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$1.4M",
+      "opportunityScore": 0.82,
+      "imageUrl": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-002",
+      "name": "Glass Beverage Dispenser",
+      "category": "Kitchen & Dining",
+      "categoryId": "cat_kitchen_dining",
+      "gapOpportunity": "High",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$1.1M",
+      "opportunityScore": 0.78,
+      "imageUrl": "https://images.unsplash.com/photo-1578911372073-04023f07e135?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-003",
+      "name": "Storage Basket Set",
+      "category": "Storage & Organization",
+      "categoryId": "cat_storage_org",
+      "gapOpportunity": "High",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$980K",
+      "opportunityScore": 0.75,
+      "imageUrl": "https://images.unsplash.com/photo-1555041469-a586c61e1947?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-004",
+      "name": "Decorative Wall Mirror",
+      "category": "Home Decor",
+      "categoryId": "cat_home_decor",
+      "gapOpportunity": "Medium",
+      "topCompetitor": "Wayfair",
+      "estimatedRevenue": "$860K",
+      "opportunityScore": 0.71,
+      "imageUrl": "https://images.unsplash.com/photo-1618220179425-227479641fd2?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-005",
+      "name": "Linen Dining Chair Cover",
+      "category": "Furniture",
+      "categoryId": "cat_furniture",
+      "gapOpportunity": "Medium",
+      "topCompetitor": "Walmart",
+      "estimatedRevenue": "$720K",
+      "opportunityScore": 0.68,
+      "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-006",
+      "name": "Outdoor String Lights",
+      "category": "Outdoor Living",
+      "categoryId": "cat_outdoor_living",
+      "gapOpportunity": "High",
+      "topCompetitor": "Home Depot",
+      "estimatedRevenue": "$1.2M",
+      "opportunityScore": 0.8,
+      "imageUrl": "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-007",
+      "name": "Ceramic Serving High Bowls",
+      "category": "Kitchen & Dining",
+      "categoryId": "cat_kitchen_dining",
+      "gapOpportunity": "High",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$1.5M",
+      "opportunityScore": 0.84,
+      "imageUrl": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-008",
+      "name": "Halloween Lantern Set",
+      "category": "Holiday & Festive Decor",
+      "categoryId": "cat_holiday_decor",
+      "gapOpportunity": "High",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$940K",
+      "opportunityScore": 0.77,
+      "imageUrl": "https://images.unsplash.com/photo-1509551194663-1ead447b2273?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-009",
+      "name": "Cupcake Stand Tiered Server",
+      "category": "Party Supplies",
+      "categoryId": "cat_party_supplies",
+      "gapOpportunity": "Medium",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$650K",
+      "opportunityScore": 0.66,
+      "imageUrl": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-010",
+      "name": "Pendant Light Fixture",
+      "category": "Lighting",
+      "categoryId": "cat_lighting",
+      "gapOpportunity": "High",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$1.3M",
+      "opportunityScore": 0.81,
+      "imageUrl": "https://images.unsplash.com/photo-1513506001158-0101e2952467?w=96&h=96&fit=crop"
+    }
+  ],
+  "beaconRecommendedItems": [
+    {
+      "id": "bp-1",
+      "name": "Ceramic Serving High Bowls",
+      "lagPercent": 28,
+      "lagSeverity": "high",
+      "estimatedRevenue": "$1.5M",
+      "competitor": "Amazon",
+      "skuCount": 102,
+      "imageUrl": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "bp-2",
+      "name": "Sugar Bowl & Creamer Sets",
+      "lagPercent": 18.2,
+      "lagSeverity": "medium-high",
+      "estimatedRevenue": "$1.5M",
+      "competitor": "Amazon",
+      "skuCount": 102,
+      "imageUrl": "https://images.unsplash.com/photo-1603199508936-b5735cab581e?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "bp-3",
+      "name": "Dip & Condiment Servers",
+      "lagPercent": 9.8,
+      "lagSeverity": "medium",
+      "estimatedRevenue": "$1.5M",
+      "competitor": "Amazon",
+      "skuCount": 102,
+      "imageUrl": "https://images.unsplash.com/photo-1604719312566-8912b06350af?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "bp-4",
+      "name": "Cake Stands & Tiered Servers",
+      "lagPercent": 14,
+      "lagSeverity": "medium-high",
+      "estimatedRevenue": "$1.5M",
+      "competitor": "Amazon",
+      "skuCount": 102,
+      "imageUrl": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "bp-5",
+      "name": "Glass Cake Domes",
+      "lagPercent": 25,
+      "lagSeverity": "high",
+      "estimatedRevenue": "$1.5M",
+      "competitor": "Amazon",
+      "skuCount": 102,
+      "imageUrl": "https://images.unsplash.com/photo-1464305796206-3f0dd815fc22?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "bp-6",
+      "name": "Outdoor String Lights",
+      "lagPercent": 22,
+      "lagSeverity": "high",
+      "estimatedRevenue": "$1.2M",
+      "competitor": "Home Depot",
+      "skuCount": 86,
+      "imageUrl": "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "bp-7",
+      "name": "Pendant Light Fixture",
+      "lagPercent": 16,
+      "lagSeverity": "medium-high",
+      "estimatedRevenue": "$1.3M",
+      "competitor": "Amazon",
+      "skuCount": 94,
+      "imageUrl": "https://images.unsplash.com/photo-1513506001158-0101e2952467?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "bp-8",
+      "name": "Halloween Lantern Set",
+      "lagPercent": 12,
+      "lagSeverity": "medium-high",
+      "estimatedRevenue": "$940K",
+      "competitor": "Amazon",
+      "skuCount": 67,
+      "imageUrl": "https://images.unsplash.com/photo-1509551194663-1ead447b2273?w=96&h=96&fit=crop"
+    }
+  ]
+}

@@ -20,46 +20,58 @@ export async function getDashboardMetrics(): Promise<DashboardMetric[]> {
 
 export async function getIndustrySegments() {
   return [
-    { label: "Target", value: 30, color: "#ea4335" },
-    { label: "Walmart", value: 22, color: "#f48fb1" },
-    { label: "Amazon", value: 20, color: "#4285f4" },
-    { label: "Lowe's", value: 14, color: "#9c27b0" },
-    { label: "Home Depot", value: 14, color: "#ff9800" },
+    { label: "Target", value: 30, color: "#ea4335", revenue: "$14.4B" },
+    { label: "Walmart", value: 22, color: "#f48fb1", revenue: "$10.6B" },
+    { label: "Amazon", value: 20, color: "#4285f4", revenue: "$9.6B" },
+    { label: "Lowe's", value: 14, color: "#9c27b0", revenue: "$6.7B" },
+    { label: "Home Depot", value: 14, color: "#ff9800", revenue: "$6.7B" },
   ];
 }
 
 export async function getGapBarData() {
   return [
-    { label: "Lighting", value: 40 },
-    { label: "Furniture", value: 35 },
-    { label: "Holiday", value: 30 },
-    { label: "Storage", value: 25 },
-    { label: "Kitchen", value: 20 },
-    { label: "Outdoor", value: 15 },
-    { label: "Party", value: 10 },
+    { label: "Lighting", value: 22, revenueOpportunity: "$4.2M" },
+    { label: "Furniture", value: 20, revenueOpportunity: "$3.8M" },
+    { label: "Holiday & Fes...", value: 18, revenueOpportunity: "$3.1M" },
+    { label: "Storage & Or...", value: 12, revenueOpportunity: "$2.4M" },
+    { label: "Kitchen & Din...", value: 28, revenueOpportunity: "$5.6M" },
+    { label: "Outdoor Livi...", value: 10, revenueOpportunity: "$1.9M" },
+    { label: "Party Sup...", value: 5, revenueOpportunity: "$0.9M" },
   ];
+}
+
+const PIPELINE_STAGES = [
+  "Established",
+  "Onboarding",
+  "New Lead",
+  "Contacted",
+  "Shortlisted",
+  "Discovered",
+] as const;
+
+const PIPELINE_COLUMNS = [
+  "Lighting",
+  "Furniture",
+  "Holiday & Fes...",
+  "Storage & Or...",
+  "Kitchen & Din...",
+  "Outdoor Livi...",
+  "Party Supplies",
+  "Rugs",
+] as const;
+
+function pipelineCellValue(rowIndex: number, colIndex: number): number {
+  const seed = rowIndex * 997 + colIndex * 7919 + 104729;
+  return 20 + (seed % 41);
 }
 
 export async function getPipelineData() {
   return {
-    columns: [
-      "Lighting",
-      "Furniture",
-      "Holiday & Fes...",
-      "Storage & Or...",
-      "Kitchen & Din...",
-      "Outdoor Livi...",
-      "Party Supplies",
-      "Rugs",
-    ],
-    rows: [
-      { stage: "Established", values: [46, 45, 44, 43, 42, 41, 40, 39] },
-      { stage: "Onboarding", values: [46, 45, 44, 43, 42, 41, 40, 39] },
-      { stage: "New Lead", values: [46, 45, 44, 43, 42, 41, 40, 39] },
-      { stage: "Contacted", values: [46, 45, 44, 43, 42, 41, 40, 39] },
-      { stage: "Shortlisted", values: [46, 45, 44, 43, 42, 41, 40, 39] },
-      { stage: "Discovered", values: [46, 45, 44, 43, 42, 41, 40, 39] },
-    ],
+    columns: [...PIPELINE_COLUMNS],
+    rows: PIPELINE_STAGES.map((stage, rowIndex) => ({
+      stage,
+      values: PIPELINE_COLUMNS.map((_, colIndex) => pipelineCellValue(rowIndex, colIndex)),
+    })),
   };
 }
 
@@ -242,6 +254,72 @@ export const planTasks: RecommendedTask[] = [
     title: "Dorm Kitchen products peak during July-August demand window",
     description: "Requires acquisition kickoff before March",
     actionLabel: "Schedule Launch",
+  },
+];
+
+export const sellerProfileTasks: RecommendedTask[] = [
+  {
+    id: "sp-1",
+    title: "Introduction Mail Ready",
+    description: "Beacon has drafted a personalized outreach email for this seller.",
+    actionLabel: "Send Mail →",
+  },
+  {
+    id: "sp-2",
+    title: "Strong category fit detected",
+    description: "This seller aligns with multiple item types in your assortment plan.",
+    actionLabel: "View Matches",
+  },
+];
+
+export const partnerOnboardingDetailTasks: RecommendedTask[] = [
+  {
+    id: "pod-1",
+    title: "Onboarding Mail Ready",
+    description: "Send Orange Inc the Onboarding Mail and next steps.",
+    actionLabel: "Send Mail →",
+  },
+  {
+    id: "pod-2",
+    title: "Banner/ Cover Image",
+    description: "Low resolution, does not meet guidelines.",
+    actionLabel: "Add Comment",
+  },
+];
+
+export const partnerOnboardingTasks: RecommendedTask[] = [
+  {
+    id: "po-1",
+    title: "Documents Missing",
+    description: "Orange Inc has pending W9 and contract documentation.",
+    actionLabel: "Send Reminder Mail →",
+  },
+  {
+    id: "po-2",
+    title: "Lag in Assortment Analysis",
+    description: "3 partners awaiting assortment file review.",
+    actionLabel: "Open →",
+  },
+  {
+    id: "po-3",
+    title: "SKU Validation & Ramp up",
+    description: "42 SKUs failed compliance checks across onboarding partners.",
+    actionLabel: "Review →",
+  },
+];
+
+export const partnerLeadFormTasks: RecommendedTask[] = [
+  {
+    id: "plf-1",
+    title: "Reject Orange Inc",
+    description: "Low marketplace ratings, operational risk indicators, & recurring customer experience concerns.",
+    actionLabel: "Reject Lead →",
+  },
+  {
+    id: "plf-2",
+    title: "Documents Missing",
+    description: "W9 form uploaded but contract signature pending verification.",
+    actionLabel: "Send Reminder Mail →",
   },
 ];
 

@@ -6,11 +6,7 @@ import {
 } from "@/components/data-display/assortment-calendar";
 import { PageHeader } from "@/components/layout/page-header";
 
-interface AssortmentPlanViewProps {
-  defaultItemTypes: string[];
-}
-
-export function AssortmentPlanView({ defaultItemTypes }: AssortmentPlanViewProps) {
+export function AssortmentPlanView() {
   return (
     <>
       <PageHeader
@@ -23,7 +19,7 @@ export function AssortmentPlanView({ defaultItemTypes }: AssortmentPlanViewProps
         actions={<PlanPageActions />}
       />
 
-      <AssortmentCalendar defaultItemTypes={defaultItemTypes} />
+      <AssortmentCalendar />
     </>
   );
 }

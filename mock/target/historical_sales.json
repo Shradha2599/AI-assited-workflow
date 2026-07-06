@@ -1,0 +1,182 @@
+[
+  {
+    "category": "Kitchen & Dining",
+    "year": "2024",
+    "revenue": 101680000,
+    "growthRate": 0.07
+  },
+  {
+    "category": "Kitchen & Dining",
+    "year": "2025",
+    "revenue": 116560000,
+    "growthRate": 0.23
+  },
+  {
+    "category": "Kitchen & Dining",
+    "year": "2026",
+    "revenue": 124000000,
+    "growthRate": 0.19
+  },
+  {
+    "category": "Home Decor",
+    "year": "2024",
+    "revenue": 80360000,
+    "growthRate": 0.22
+  },
+  {
+    "category": "Home Decor",
+    "year": "2025",
+    "revenue": 92120000,
+    "growthRate": 0.11
+  },
+  {
+    "category": "Home Decor",
+    "year": "2026",
+    "revenue": 98000000,
+    "growthRate": 0.12
+  },
+  {
+    "category": "Outdoor Living",
+    "year": "2024",
+    "revenue": 62320000,
+    "growthRate": 0.12
+  },
+  {
+    "category": "Outdoor Living",
+    "year": "2025",
+    "revenue": 71440000,
+    "growthRate": 0.24
+  },
+  {
+    "category": "Outdoor Living",
+    "year": "2026",
+    "revenue": 76000000,
+    "growthRate": 0.16
+  },
+  {
+    "category": "Storage & Organization",
+    "year": "2024",
+    "revenue": 50840000,
+    "growthRate": 0.12
+  },
+  {
+    "category": "Storage & Organization",
+    "year": "2025",
+    "revenue": 58280000,
+    "growthRate": 0.13
+  },
+  {
+    "category": "Storage & Organization",
+    "year": "2026",
+    "revenue": 62000000,
+    "growthRate": 0.1
+  },
+  {
+    "category": "Furniture",
+    "year": "2024",
+    "revenue": 118900000,
+    "growthRate": 0.06
+  },
+  {
+    "category": "Furniture",
+    "year": "2025",
+    "revenue": 136300000,
+    "growthRate": 0.07
+  },
+  {
+    "category": "Furniture",
+    "year": "2026",
+    "revenue": 145000000,
+    "growthRate": 0.21
+  },
+  {
+    "category": "Party Supplies",
+    "year": "2024",
+    "revenue": 33620000,
+    "growthRate": 0.1
+  },
+  {
+    "category": "Party Supplies",
+    "year": "2025",
+    "revenue": 38540000,
+    "growthRate": 0.23
+  },
+  {
+    "category": "Party Supplies",
+    "year": "2026",
+    "revenue": 41000000,
+    "growthRate": 0.1
+  },
+  {
+    "category": "Holiday & Festive Decor",
+    "year": "2024",
+    "revenue": 44280000,
+    "growthRate": 0.1
+  },
+  {
+    "category": "Holiday & Festive Decor",
+    "year": "2025",
+    "revenue": 50760000,
+    "growthRate": 0.15
+  },
+  {
+    "category": "Holiday & Festive Decor",
+    "year": "2026",
+    "revenue": 54000000,
+    "growthRate": 0.09
+  },
+  {
+    "category": "Lighting",
+    "year": "2024",
+    "revenue": 72160000,
+    "growthRate": 0.12
+  },
+  {
+    "category": "Lighting",
+    "year": "2025",
+    "revenue": 82720000,
+    "growthRate": 0.23
+  },
+  {
+    "category": "Lighting",
+    "year": "2026",
+    "revenue": 88000000,
+    "growthRate": 0.22
+  },
+  {
+    "category": "Bedding",
+    "year": "2024",
+    "revenue": 76260000,
+    "growthRate": 0.2
+  },
+  {
+    "category": "Bedding",
+    "year": "2025",
+    "revenue": 87420000,
+    "growthRate": 0.17
+  },
+  {
+    "category": "Bedding",
+    "year": "2026",
+    "revenue": 93000000,
+    "growthRate": 0.22
+  },
+  {
+    "category": "Bath",
+    "year": "2024",
+    "revenue": 56580000,
+    "growthRate": 0.23
+  },
+  {
+    "category": "Bath",
+    "year": "2025",
+    "revenue": 64860000,
+    "growthRate": 0.15
+  },
+  {
+    "category": "Bath",
+    "year": "2026",
+    "revenue": 69000000,
+    "growthRate": 0.19
+  }
+]

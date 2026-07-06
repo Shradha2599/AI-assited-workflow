@@ -1,0 +1,562 @@
+[
+  {
+    "keyword": "Halloween Lanterns",
+    "searchVolume": 129403,
+    "avgPrice": 23.99,
+    "competition": "High",
+    "opportunityScore": 0.84
+  },
+  {
+    "keyword": "Bath Towels",
+    "searchVolume": 47465,
+    "avgPrice": 115.86,
+    "competition": "High",
+    "opportunityScore": 0.9
+  },
+  {
+    "keyword": "Halloween Lanterns",
+    "searchVolume": 102879,
+    "avgPrice": 12.39,
+    "competition": "High",
+    "opportunityScore": 0.55
+  },
+  {
+    "keyword": "Desk Organizers",
+    "searchVolume": 30130,
+    "avgPrice": 21.98,
+    "competition": "Medium",
+    "opportunityScore": 0.72
+  },
+  {
+    "keyword": "Balloons",
+    "searchVolume": 52744,
+    "avgPrice": 81.76,
+    "competition": "Medium",
+    "opportunityScore": 0.89
+  },
+  {
+    "keyword": "Bed Skirts",
+    "searchVolume": 49905,
+    "avgPrice": 45.55,
+    "competition": "High",
+    "opportunityScore": 0.54
+  },
+  {
+    "keyword": "Salt & Pepper Grinder Sets",
+    "searchVolume": 66395,
+    "avgPrice": 62.26,
+    "competition": "Medium",
+    "opportunityScore": 0.87
+  },
+  {
+    "keyword": "Christmas Ornaments",
+    "searchVolume": 104038,
+    "avgPrice": 62.98,
+    "competition": "High",
+    "opportunityScore": 0.9
+  },
+  {
+    "keyword": "Table Covers",
+    "searchVolume": 19412,
+    "avgPrice": 31.9,
+    "competition": "Low",
+    "opportunityScore": 0.73
+  },
+  {
+    "keyword": "Throw Pillows",
+    "searchVolume": 54327,
+    "avgPrice": 76.04,
+    "competition": "Medium",
+    "opportunityScore": 0.58
+  },
+  {
+    "keyword": "Party Favors",
+    "searchVolume": 43132,
+    "avgPrice": 30.36,
+    "competition": "High",
+    "opportunityScore": 0.66
+  },
+  {
+    "keyword": "Linen Napkin Sets",
+    "searchVolume": 87552,
+    "avgPrice": 52.97,
+    "competition": "Medium",
+    "opportunityScore": 0.85
+  },
+  {
+    "keyword": "Picture Frames",
+    "searchVolume": 108999,
+    "avgPrice": 92.88,
+    "competition": "Low",
+    "opportunityScore": 0.8
+  },
+  {
+    "keyword": "Candle Rings",
+    "searchVolume": 82365,
+    "avgPrice": 52.18,
+    "competition": "Low",
+    "opportunityScore": 0.71
+  },
+  {
+    "keyword": "Serving Platters",
+    "searchVolume": 23074,
+    "avgPrice": 61.17,
+    "competition": "Low",
+    "opportunityScore": 0.93
+  },
+  {
+    "keyword": "Decorative Planters",
+    "searchVolume": 42043,
+    "avgPrice": 119.56,
+    "competition": "Medium",
+    "opportunityScore": 0.58
+  },
+  {
+    "keyword": "Cupcake Stands",
+    "searchVolume": 96273,
+    "avgPrice": 31.87,
+    "competition": "Low",
+    "opportunityScore": 0.63
+  },
+  {
+    "keyword": "Valentine Decor",
+    "searchVolume": 25577,
+    "avgPrice": 26.07,
+    "competition": "Medium",
+    "opportunityScore": 0.8
+  },
+  {
+    "keyword": "Cabinet Organizers",
+    "searchVolume": 25570,
+    "avgPrice": 12.44,
+    "competition": "Medium",
+    "opportunityScore": 0.56
+  },
+  {
+    "keyword": "Ceramic Serving Bowls",
+    "searchVolume": 92088,
+    "avgPrice": 108.18,
+    "competition": "Low",
+    "opportunityScore": 0.58
+  },
+  {
+    "keyword": "Blanket Throws",
+    "searchVolume": 22156,
+    "avgPrice": 43.02,
+    "competition": "Medium",
+    "opportunityScore": 0.92
+  },
+  {
+    "keyword": "Comforter Sets",
+    "searchVolume": 55735,
+    "avgPrice": 116.9,
+    "competition": "High",
+    "opportunityScore": 0.93
+  },
+  {
+    "keyword": "Stoneware Mugs",
+    "searchVolume": 89083,
+    "avgPrice": 72.73,
+    "competition": "Low",
+    "opportunityScore": 0.83
+  },
+  {
+    "keyword": "Christmas Ornaments",
+    "searchVolume": 99816,
+    "avgPrice": 32.62,
+    "competition": "Medium",
+    "opportunityScore": 0.93
+  },
+  {
+    "keyword": "Stoneware Mugs",
+    "searchVolume": 18542,
+    "avgPrice": 95.02,
+    "competition": "Medium",
+    "opportunityScore": 0.83
+  },
+  {
+    "keyword": "TV Stands",
+    "searchVolume": 54752,
+    "avgPrice": 64.8,
+    "competition": "Low",
+    "opportunityScore": 0.66
+  },
+  {
+    "keyword": "Floor Lamps",
+    "searchVolume": 49785,
+    "avgPrice": 75.34,
+    "competition": "Medium",
+    "opportunityScore": 0.81
+  },
+  {
+    "keyword": "Outdoor Lanterns",
+    "searchVolume": 20323,
+    "avgPrice": 76.31,
+    "competition": "High",
+    "opportunityScore": 0.93
+  },
+  {
+    "keyword": "Easter Basket Kits",
+    "searchVolume": 91522,
+    "avgPrice": 65.04,
+    "competition": "High",
+    "opportunityScore": 0.84
+  },
+  {
+    "keyword": "Table Covers",
+    "searchVolume": 115035,
+    "avgPrice": 108.41,
+    "competition": "Medium",
+    "opportunityScore": 0.93
+  },
+  {
+    "keyword": "Mattress Protectors",
+    "searchVolume": 89567,
+    "avgPrice": 103.18,
+    "competition": "Low",
+    "opportunityScore": 0.63
+  },
+  {
+    "keyword": "Cake Toppers",
+    "searchVolume": 93298,
+    "avgPrice": 22.01,
+    "competition": "High",
+    "opportunityScore": 0.89
+  },
+  {
+    "keyword": "Balloons",
+    "searchVolume": 117993,
+    "avgPrice": 87.45,
+    "competition": "Medium",
+    "opportunityScore": 0.55
+  },
+  {
+    "keyword": "Salt & Pepper Grinder Sets",
+    "searchVolume": 109294,
+    "avgPrice": 82.15,
+    "competition": "High",
+    "opportunityScore": 0.9
+  },
+  {
+    "keyword": "Decorative Baskets",
+    "searchVolume": 97211,
+    "avgPrice": 39.08,
+    "competition": "High",
+    "opportunityScore": 0.74
+  },
+  {
+    "keyword": "Planter Stands",
+    "searchVolume": 108042,
+    "avgPrice": 12.25,
+    "competition": "High",
+    "opportunityScore": 0.77
+  },
+  {
+    "keyword": "Accent Chairs",
+    "searchVolume": 78652,
+    "avgPrice": 101.04,
+    "competition": "Medium",
+    "opportunityScore": 0.77
+  },
+  {
+    "keyword": "Outdoor Lighting",
+    "searchVolume": 7759,
+    "avgPrice": 96.78,
+    "competition": "Medium",
+    "opportunityScore": 0.91
+  },
+  {
+    "keyword": "Outdoor Side Tables",
+    "searchVolume": 128908,
+    "avgPrice": 45.02,
+    "competition": "High",
+    "opportunityScore": 0.96
+  },
+  {
+    "keyword": "Drawer Dividers",
+    "searchVolume": 97074,
+    "avgPrice": 56.96,
+    "competition": "Low",
+    "opportunityScore": 0.85
+  },
+  {
+    "keyword": "Dining Chairs",
+    "searchVolume": 53613,
+    "avgPrice": 11.24,
+    "competition": "High",
+    "opportunityScore": 0.59
+  },
+  {
+    "keyword": "Dining Chairs",
+    "searchVolume": 43133,
+    "avgPrice": 117.12,
+    "competition": "High",
+    "opportunityScore": 0.52
+  },
+  {
+    "keyword": "Outdoor Rugs",
+    "searchVolume": 127372,
+    "avgPrice": 40.11,
+    "competition": "Medium",
+    "opportunityScore": 0.78
+  },
+  {
+    "keyword": "Decorative Vases",
+    "searchVolume": 38283,
+    "avgPrice": 73.74,
+    "competition": "Low",
+    "opportunityScore": 0.94
+  },
+  {
+    "keyword": "Planter Stands",
+    "searchVolume": 116591,
+    "avgPrice": 13.33,
+    "competition": "Low",
+    "opportunityScore": 0.67
+  },
+  {
+    "keyword": "LED Lanterns",
+    "searchVolume": 129432,
+    "avgPrice": 104.92,
+    "competition": "Medium",
+    "opportunityScore": 0.94
+  },
+  {
+    "keyword": "Cake Stands",
+    "searchVolume": 67328,
+    "avgPrice": 44.94,
+    "competition": "High",
+    "opportunityScore": 0.93
+  },
+  {
+    "keyword": "Pendant Lights",
+    "searchVolume": 60822,
+    "avgPrice": 102.64,
+    "competition": "Medium",
+    "opportunityScore": 0.63
+  },
+  {
+    "keyword": "Pendant Lights",
+    "searchVolume": 60478,
+    "avgPrice": 60.17,
+    "competition": "Low",
+    "opportunityScore": 0.55
+  },
+  {
+    "keyword": "Mattress Protectors",
+    "searchVolume": 84728,
+    "avgPrice": 25.41,
+    "competition": "Low",
+    "opportunityScore": 0.89
+  },
+  {
+    "keyword": "Soap Dispensers",
+    "searchVolume": 38550,
+    "avgPrice": 43.87,
+    "competition": "Low",
+    "opportunityScore": 0.77
+  },
+  {
+    "keyword": "Bed Skirts",
+    "searchVolume": 17611,
+    "avgPrice": 17.84,
+    "competition": "Low",
+    "opportunityScore": 0.8
+  },
+  {
+    "keyword": "Decorative Vases",
+    "searchVolume": 21930,
+    "avgPrice": 11.94,
+    "competition": "Medium",
+    "opportunityScore": 0.92
+  },
+  {
+    "keyword": "Decorative Planters",
+    "searchVolume": 48582,
+    "avgPrice": 86.32,
+    "competition": "High",
+    "opportunityScore": 0.59
+  },
+  {
+    "keyword": "Decorative Baskets",
+    "searchVolume": 77074,
+    "avgPrice": 17.61,
+    "competition": "Low",
+    "opportunityScore": 0.8
+  },
+  {
+    "keyword": "Coffee Tables",
+    "searchVolume": 17514,
+    "avgPrice": 48.22,
+    "competition": "High",
+    "opportunityScore": 0.77
+  },
+  {
+    "keyword": "Mattress Protectors",
+    "searchVolume": 70409,
+    "avgPrice": 108.09,
+    "competition": "Medium",
+    "opportunityScore": 0.65
+  },
+  {
+    "keyword": "Table Lamps",
+    "searchVolume": 126853,
+    "avgPrice": 52.66,
+    "competition": "Medium",
+    "opportunityScore": 0.64
+  },
+  {
+    "keyword": "Stoneware Mugs",
+    "searchVolume": 78791,
+    "avgPrice": 74.43,
+    "competition": "High",
+    "opportunityScore": 0.69
+  },
+  {
+    "keyword": "Side Tables",
+    "searchVolume": 123426,
+    "avgPrice": 43.43,
+    "competition": "Medium",
+    "opportunityScore": 0.65
+  },
+  {
+    "keyword": "Table Garlands",
+    "searchVolume": 123853,
+    "avgPrice": 14.47,
+    "competition": "High",
+    "opportunityScore": 0.67
+  },
+  {
+    "keyword": "Beverage Dispensers",
+    "searchVolume": 85053,
+    "avgPrice": 66.38,
+    "competition": "Low",
+    "opportunityScore": 0.68
+  },
+  {
+    "keyword": "Marble Serving Trays",
+    "searchVolume": 25051,
+    "avgPrice": 10.42,
+    "competition": "Low",
+    "opportunityScore": 0.75
+  },
+  {
+    "keyword": "Outdoor Lighting",
+    "searchVolume": 34842,
+    "avgPrice": 98.72,
+    "competition": "Medium",
+    "opportunityScore": 0.78
+  },
+  {
+    "keyword": "Glass Beverage Dispensers",
+    "searchVolume": 58245,
+    "avgPrice": 104.01,
+    "competition": "High",
+    "opportunityScore": 0.74
+  },
+  {
+    "keyword": "Marble Serving Trays",
+    "searchVolume": 10576,
+    "avgPrice": 71.76,
+    "competition": "Medium",
+    "opportunityScore": 0.82
+  },
+  {
+    "keyword": "Desk Organizers",
+    "searchVolume": 23163,
+    "avgPrice": 101.84,
+    "competition": "High",
+    "opportunityScore": 0.97
+  },
+  {
+    "keyword": "Toothbrush Holders",
+    "searchVolume": 92867,
+    "avgPrice": 23.8,
+    "competition": "Low",
+    "opportunityScore": 0.55
+  },
+  {
+    "keyword": "Decorative Vases",
+    "searchVolume": 92384,
+    "avgPrice": 23.86,
+    "competition": "High",
+    "opportunityScore": 0.83
+  },
+  {
+    "keyword": "Coffee Tables",
+    "searchVolume": 80732,
+    "avgPrice": 110.39,
+    "competition": "Medium",
+    "opportunityScore": 0.84
+  },
+  {
+    "keyword": "Table Lamps",
+    "searchVolume": 17787,
+    "avgPrice": 106.25,
+    "competition": "Medium",
+    "opportunityScore": 0.95
+  },
+  {
+    "keyword": "Shelf Baskets",
+    "searchVolume": 18129,
+    "avgPrice": 103.11,
+    "competition": "Low",
+    "opportunityScore": 0.81
+  },
+  {
+    "keyword": "Storage Baskets",
+    "searchVolume": 66447,
+    "avgPrice": 86.06,
+    "competition": "Medium",
+    "opportunityScore": 0.89
+  },
+  {
+    "keyword": "Ceramic Serving Bowls",
+    "searchVolume": 49479,
+    "avgPrice": 43.42,
+    "competition": "High",
+    "opportunityScore": 0.77
+  },
+  {
+    "keyword": "Linen Napkin Sets",
+    "searchVolume": 114841,
+    "avgPrice": 80.89,
+    "competition": "Medium",
+    "opportunityScore": 0.85
+  },
+  {
+    "keyword": "Party Plates",
+    "searchVolume": 88115,
+    "avgPrice": 111.16,
+    "competition": "Low",
+    "opportunityScore": 0.58
+  },
+  {
+    "keyword": "Dinnerware Sets",
+    "searchVolume": 44763,
+    "avgPrice": 30.98,
+    "competition": "Low",
+    "opportunityScore": 0.72
+  },
+  {
+    "keyword": "Mattress Protectors",
+    "searchVolume": 90850,
+    "avgPrice": 60.64,
+    "competition": "Low",
+    "opportunityScore": 0.65
+  },
+  {
+    "keyword": "Pendant Lights",
+    "searchVolume": 75569,
+    "avgPrice": 82.64,
+    "competition": "High",
+    "opportunityScore": 0.63
+  },
+  {
+    "keyword": "Christmas Ornaments",
+    "searchVolume": 11470,
+    "avgPrice": 24.76,
+    "competition": "Low",
+    "opportunityScore": 0.84
+  }
+]

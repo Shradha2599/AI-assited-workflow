@@ -21,7 +21,7 @@ interface BeaconPanelProps {
 
 export function BeaconPanel({ page }: BeaconPanelProps) {
   const { isOpen, toggle } = useBeaconStore();
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [inputValue, setInputValue] = useState("");
 
@@ -32,7 +32,8 @@ export function BeaconPanel({ page }: BeaconPanelProps) {
   });
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = messagesRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [messages]);
 
   function handleSubmit(text: string) {
@@ -79,13 +80,19 @@ export function BeaconPanel({ page }: BeaconPanelProps) {
             </p>
           </div>
         </div>
-        <Button variant="ghost" size="icon" onClick={toggle} aria-label="Close Beacon">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
+          onClick={toggle}
+          aria-label="Close Beacon"
+        >
           <X className="h-4 w-4" />
         </Button>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-[var(--space-4)]">
+      <div ref={messagesRef} className="flex-1 overflow-y-auto p-[var(--space-4)]">
         {messages.length === 0 && (
           <div className="space-y-[var(--space-3)]">
             <p className="text-[var(--text-label-size)] font-medium uppercase tracking-wide text-[var(--color-muted-foreground)]">
@@ -142,7 +149,6 @@ export function BeaconPanel({ page }: BeaconPanelProps) {
           </div>
         )}
 
-        <div ref={bottomRef} />
       </div>
 
       {/* Input */}

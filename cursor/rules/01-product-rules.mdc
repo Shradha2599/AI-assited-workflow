@@ -1,0 +1,246 @@
+---
+description: Product, workflow, and business rules for the Target Plus internal acquisition and onboarding workspace.
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# 01 Product Rules
+
+## Product identity
+This is a realistic internal enterprise application for Target Plus.
+It is used by internal Target team members to manage the seller acquisition and onboarding lifecycle.
+It is not a consumer app, not a generic dashboard, and not a toy demo.
+
+The experience must support:
+- Category Manager
+- Acquisition Manager
+- Onboarding Manager
+- Review and operational support roles where relevant
+
+The product spans:
+- Assortment Planning
+- Lead Discovery
+- Partner Onboarding
+- Beacon AI assistance
+- Activity and audit history
+
+## Product intent
+The application exists to reduce manual effort, reduce context switching, and increase visibility across the acquisition and onboarding lifecycle.
+It should feel like a believable internal Target workspace that could be used in daily operations.
+
+## Core design principles
+Always optimize for:
+- enterprise usability
+- clear hierarchy
+- fast decision making
+- traceable actions
+- explainable AI
+- human approval for important business decisions
+- trustworthy data presentation
+- consistent state transitions
+- minimal but meaningful interactions
+
+## Business scope
+The first build should focus on the internal Target member experience only.
+Do not design seller-facing UI unless it is necessary to support an internal workflow state.
+
+The main internal workflow is:
+1. Assortment planning
+2. Lead discovery
+3. Lead evaluation and outreach
+4. Application intake and partner creation
+5. Review and approval
+6. Onboarding execution
+7. Established partner state
+
+## Target business context
+Target Plus is an invite-only third-party marketplace.
+The experience should reflect a curated marketplace mindset where quality, fit, and operational readiness matter.
+The app should help Target employees identify the right sellers, guide them through the process, and monitor their progression.
+
+## Workflow source of truth
+Use one canonical lifecycle state for every lead, seller, or partner record.
+Do not invent alternate labels in different parts of the app.
+All views must map to the same lifecycle model.
+
+### Canonical lifecycle states
+- Discovered
+- Shortlisted
+- Contacted
+- New
+- In Review
+- Approved
+- Onboarding
+- Established
+
+### Review outcome values
+These are not lifecycle states.
+Use them as separate decision values.
+- Approved
+- Rejected
+- Future Interest
+
+## State meaning
+### Discovered
+A seller has been identified by discovery logic or manually by an Acquisition Manager.
+
+### Shortlisted
+A seller has been selected as a promising match for the assortment requirement.
+
+### Contacted
+An introduction email has been sent and the Seller Application Form has been shared.
+
+### New
+The seller has submitted the application form and is now present in the potential partner database.
+
+### In Review
+An internal Target member has started reviewing the application.
+
+### Approved
+The seller has been approved for onboarding, but no onboarding task has started yet.
+
+### Onboarding
+At least one onboarding task has started.
+
+### Established
+All onboarding tasks are complete and the partner is active.
+
+## Required transition rules
+The lifecycle must follow these rules:
+- Discovered -> Shortlisted when the Acquisition Manager shortlists a seller
+- Shortlisted -> Contacted when outreach email is sent
+- Contacted -> New when the application form is submitted
+- New -> In Review when a reviewer begins evaluation
+- In Review -> Approved when the application is approved
+- Approved -> Onboarding when the first onboarding task starts
+- Onboarding -> Established when all onboarding tasks are complete
+
+Do not allow direct transitions that bypass the lifecycle order unless the user explicitly approves a special exception.
+
+## Review handling rules
+The review stage must support three outcomes:
+- Approved
+- Rejected
+- Future Interest
+
+Behavior rules:
+- Approved sends the record into the onboarding path
+- Rejected ends the active pipeline for that seller
+- Future Interest keeps the seller searchable for later cycles but removes them from the active onboarding path
+
+## Ownership rules
+Use clear ownership across the lifecycle.
+Suggested ownership mapping:
+- Discovered: Acquisition Manager
+- Shortlisted: Acquisition Manager
+- Contacted: Acquisition Manager
+- New: Potential Partner Review queue
+- In Review: Acquisition Manager or Review Team
+- Approved: Onboarding Manager
+- Onboarding: Onboarding Manager
+- Established: Operations or partner success support
+
+The UI should always show who owns the current state or next action.
+
+## Business rule hierarchy
+Business rules take priority over UI convenience.
+If a UI interaction would conflict with the lifecycle rules, the UI must block or warn rather than silently changing state.
+
+## Lead Discovery rules
+The Lead Discovery flow must follow this logic:
+1. The assortment plan defines what Target needs.
+2. The Acquisition Manager understands the requirement from the assortment plan.
+3. The manager discovers sellers that match the requirement.
+4. The manager shortlists strong matches.
+5. The manager contacts shortlisted sellers with an introduction email.
+6. The seller fills the application form.
+7. The seller is added to the potential partner database as New.
+8. The record moves to In Review when evaluation begins.
+9. A decision is made: Approved, Rejected, or Future Interest.
+10. Approved partners move into onboarding.
+11. Onboarding completion changes status to Established.
+
+## Data consistency rules
+- Use the same seller name, brand name, and business identity across all views unless an explicit data issue exists.
+- Keep category, GMV, marketplace presence, and confidence score consistent across discovery, shortlist, review, and onboarding screens.
+- Update status in the data layer first, then reflect it in the UI.
+- Every state change must be recorded in activity history.
+
+## Activity rules
+Record all meaningful events such as:
+- seller discovered
+- seller shortlisted
+- outreach sent
+- application submitted
+- review started
+- review approved
+- review rejected
+- future interest marked
+- onboarding started
+- onboarding task completed
+- partner established
+
+The activity log should be chronological and readable.
+
+## UI behavior rules
+The UI should answer three things at all times:
+- What is the current state?
+- What action is available next?
+- Why is that the recommended action?
+
+Every screen should present:
+- summary metrics
+- current records
+- status labels
+- recommended next actions
+- contextual AI insights
+
+## Empty state rules
+Do not leave screens blank.
+Empty states should explain:
+- what data is missing
+- how the user can proceed
+- what Beacon can help with
+
+## Planning rules
+Assortment planning is the upstream driver of acquisition.
+The app should treat assortment output as the source of acquisition demand.
+The acquisition team should not appear to work in isolation from the plan.
+
+## Lead discovery hierarchy
+Priority should be visible and explainable using signals such as:
+- category fit
+- revenue potential
+- marketplace presence
+- ratings and reputation
+- operational readiness
+- seasonality
+- search or trend relevance
+- multi-marketplace presence
+
+## Confidence score rules
+If a confidence score is shown, it must be explainable.
+Show contributing signals where possible.
+Avoid showing arbitrary scores with no rationale.
+
+## Beacon product rules
+Beacon should feel context aware and helpful.
+It should not interrupt unnecessarily.
+It should offer recommendations, summaries, and action suggestions aligned to the current screen.
+
+## Human-in-the-loop rules
+Critical business decisions must remain user controlled.
+AI can recommend, summarize, draft, and prioritize.
+AI must not silently approve, reject, or establish partners on its own.
+
+## Quality bar
+The final product should feel like a real internal Target workspace where a team member can:
+- understand assortment requirements
+- find and evaluate sellers
+- contact and convert leads
+- review and approve partners
+- onboard partners
+- monitor progress end to end
+
+If a feature does not support one of those goals, question whether it belongs in the first version.

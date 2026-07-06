@@ -1,0 +1,562 @@
+[
+  {
+    "retailer": "Amazon",
+    "brand": "Bella Home Co.",
+    "category": "Holiday & Festive Decor",
+    "brandRank": 68,
+    "presenceScore": 0.9
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Greenleaf Home Co.",
+    "category": "Bath",
+    "brandRank": 75,
+    "presenceScore": 0.54
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Mosaic Home Co.",
+    "category": "Holiday & Festive Decor",
+    "brandRank": 30,
+    "presenceScore": 0.71
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Solara Home Co.",
+    "category": "Storage & Organization",
+    "brandRank": 19,
+    "presenceScore": 0.94
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Maven Home Co.",
+    "category": "Party Supplies",
+    "brandRank": 14,
+    "presenceScore": 0.44
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Terra Home Co.",
+    "category": "Bedding",
+    "brandRank": 5,
+    "presenceScore": 0.69
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Luma Home Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 64,
+    "presenceScore": 0.54
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Oak Home Co.",
+    "category": "Holiday & Festive Decor",
+    "brandRank": 54,
+    "presenceScore": 0.71
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Willow Home Co.",
+    "category": "Party Supplies",
+    "brandRank": 9,
+    "presenceScore": 0.65
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Atlas Home Co.",
+    "category": "Home Decor",
+    "brandRank": 34,
+    "presenceScore": 0.86
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Nord Home Co.",
+    "category": "Party Supplies",
+    "brandRank": 51,
+    "presenceScore": 0.8
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Harbor Home Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 47,
+    "presenceScore": 0.69
+  },
+  {
+    "retailer": "Lowe's",
+    "brand": "Purely Home Co.",
+    "category": "Home Decor",
+    "brandRank": 62,
+    "presenceScore": 0.61
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Summit Home Co.",
+    "category": "Holiday & Festive Decor",
+    "brandRank": 42,
+    "presenceScore": 0.5
+  },
+  {
+    "retailer": "Lowe's",
+    "brand": "Bright Home Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 17,
+    "presenceScore": 0.63
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Clover Home Co.",
+    "category": "Outdoor Living",
+    "brandRank": 22,
+    "presenceScore": 0.81
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Hearth Home Co.",
+    "category": "Party Supplies",
+    "brandRank": 34,
+    "presenceScore": 0.5
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Vista Home Co.",
+    "category": "Holiday & Festive Decor",
+    "brandRank": 67,
+    "presenceScore": 0.58
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Prairie Home Co.",
+    "category": "Storage & Organization",
+    "brandRank": 39,
+    "presenceScore": 0.76
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Bloom Home Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 69,
+    "presenceScore": 0.45
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Cedar Home Co.",
+    "category": "Bedding",
+    "brandRank": 60,
+    "presenceScore": 0.48
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Amber Home Co.",
+    "category": "Bedding",
+    "brandRank": 31,
+    "presenceScore": 0.89
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Sage Home Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 15,
+    "presenceScore": 0.5
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Coast Home Co.",
+    "category": "Holiday & Festive Decor",
+    "brandRank": 97,
+    "presenceScore": 0.79
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Drift Home Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 37,
+    "presenceScore": 0.53
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Plush Home Co.",
+    "category": "Furniture",
+    "brandRank": 81,
+    "presenceScore": 0.62
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Radiant Home Co.",
+    "category": "Lighting",
+    "brandRank": 58,
+    "presenceScore": 0.8
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Wild Home Co.",
+    "category": "Outdoor Living",
+    "brandRank": 85,
+    "presenceScore": 0.49
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Fresh Home Co.",
+    "category": "Holiday & Festive Decor",
+    "brandRank": 32,
+    "presenceScore": 0.93
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Urban Home Co.",
+    "category": "Party Supplies",
+    "brandRank": 80,
+    "presenceScore": 0.9
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Bella Living Co.",
+    "category": "Bedding",
+    "brandRank": 53,
+    "presenceScore": 0.84
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Greenleaf Living Co.",
+    "category": "Party Supplies",
+    "brandRank": 22,
+    "presenceScore": 0.51
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Mosaic Living Co.",
+    "category": "Party Supplies",
+    "brandRank": 84,
+    "presenceScore": 0.6
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Solara Living Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 20,
+    "presenceScore": 0.55
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Maven Living Co.",
+    "category": "Home Decor",
+    "brandRank": 90,
+    "presenceScore": 0.71
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Terra Living Co.",
+    "category": "Outdoor Living",
+    "brandRank": 19,
+    "presenceScore": 0.46
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Luma Living Co.",
+    "category": "Furniture",
+    "brandRank": 43,
+    "presenceScore": 0.54
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Oak Living Co.",
+    "category": "Lighting",
+    "brandRank": 86,
+    "presenceScore": 0.78
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Willow Living Co.",
+    "category": "Outdoor Living",
+    "brandRank": 100,
+    "presenceScore": 0.88
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Atlas Living Co.",
+    "category": "Storage & Organization",
+    "brandRank": 36,
+    "presenceScore": 0.83
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Nord Living Co.",
+    "category": "Furniture",
+    "brandRank": 63,
+    "presenceScore": 0.77
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Harbor Living Co.",
+    "category": "Furniture",
+    "brandRank": 77,
+    "presenceScore": 0.89
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Purely Living Co.",
+    "category": "Outdoor Living",
+    "brandRank": 49,
+    "presenceScore": 0.55
+  },
+  {
+    "retailer": "Lowe's",
+    "brand": "Summit Living Co.",
+    "category": "Home Decor",
+    "brandRank": 28,
+    "presenceScore": 0.54
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Bright Living Co.",
+    "category": "Outdoor Living",
+    "brandRank": 73,
+    "presenceScore": 0.56
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Clover Living Co.",
+    "category": "Lighting",
+    "brandRank": 86,
+    "presenceScore": 0.71
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Hearth Living Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 48,
+    "presenceScore": 0.58
+  },
+  {
+    "retailer": "Lowe's",
+    "brand": "Vista Living Co.",
+    "category": "Lighting",
+    "brandRank": 43,
+    "presenceScore": 0.56
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Prairie Living Co.",
+    "category": "Lighting",
+    "brandRank": 97,
+    "presenceScore": 0.55
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Bloom Living Co.",
+    "category": "Bedding",
+    "brandRank": 53,
+    "presenceScore": 0.56
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Cedar Living Co.",
+    "category": "Bath",
+    "brandRank": 45,
+    "presenceScore": 0.62
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Amber Living Co.",
+    "category": "Bedding",
+    "brandRank": 14,
+    "presenceScore": 0.96
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Sage Living Co.",
+    "category": "Home Decor",
+    "brandRank": 13,
+    "presenceScore": 0.83
+  },
+  {
+    "retailer": "Lowe's",
+    "brand": "Coast Living Co.",
+    "category": "Outdoor Living",
+    "brandRank": 44,
+    "presenceScore": 0.66
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Drift Living Co.",
+    "category": "Home Decor",
+    "brandRank": 59,
+    "presenceScore": 0.78
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Plush Living Co.",
+    "category": "Furniture",
+    "brandRank": 19,
+    "presenceScore": 0.68
+  },
+  {
+    "retailer": "Lowe's",
+    "brand": "Radiant Living Co.",
+    "category": "Bedding",
+    "brandRank": 70,
+    "presenceScore": 0.65
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Wild Living Co.",
+    "category": "Lighting",
+    "brandRank": 86,
+    "presenceScore": 0.63
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Fresh Living Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 78,
+    "presenceScore": 0.5
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Urban Living Co.",
+    "category": "Furniture",
+    "brandRank": 78,
+    "presenceScore": 0.89
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Bella Studio Co.",
+    "category": "Holiday & Festive Decor",
+    "brandRank": 65,
+    "presenceScore": 0.66
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Greenleaf Studio Co.",
+    "category": "Party Supplies",
+    "brandRank": 68,
+    "presenceScore": 0.6
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Mosaic Studio Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 73,
+    "presenceScore": 0.58
+  },
+  {
+    "retailer": "Lowe's",
+    "brand": "Solara Studio Co.",
+    "category": "Lighting",
+    "brandRank": 5,
+    "presenceScore": 0.58
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Maven Studio Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 64,
+    "presenceScore": 0.97
+  },
+  {
+    "retailer": "Lowe's",
+    "brand": "Terra Studio Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 55,
+    "presenceScore": 0.89
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Luma Studio Co.",
+    "category": "Storage & Organization",
+    "brandRank": 49,
+    "presenceScore": 0.78
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Oak Studio Co.",
+    "category": "Bath",
+    "brandRank": 92,
+    "presenceScore": 0.75
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Willow Studio Co.",
+    "category": "Home Decor",
+    "brandRank": 17,
+    "presenceScore": 0.95
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Atlas Studio Co.",
+    "category": "Furniture",
+    "brandRank": 97,
+    "presenceScore": 0.6
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Nord Studio Co.",
+    "category": "Home Decor",
+    "brandRank": 45,
+    "presenceScore": 0.84
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Harbor Studio Co.",
+    "category": "Storage & Organization",
+    "brandRank": 70,
+    "presenceScore": 0.53
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Purely Studio Co.",
+    "category": "Storage & Organization",
+    "brandRank": 31,
+    "presenceScore": 0.62
+  },
+  {
+    "retailer": "Home Depot",
+    "brand": "Summit Studio Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 38,
+    "presenceScore": 0.53
+  },
+  {
+    "retailer": "Amazon",
+    "brand": "Bright Studio Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 51,
+    "presenceScore": 0.89
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Clover Studio Co.",
+    "category": "Party Supplies",
+    "brandRank": 91,
+    "presenceScore": 0.66
+  },
+  {
+    "retailer": "Lowe's",
+    "brand": "Hearth Studio Co.",
+    "category": "Kitchen & Dining",
+    "brandRank": 66,
+    "presenceScore": 0.82
+  },
+  {
+    "retailer": "Wayfair",
+    "brand": "Vista Studio Co.",
+    "category": "Bedding",
+    "brandRank": 8,
+    "presenceScore": 0.83
+  },
+  {
+    "retailer": "Walmart",
+    "brand": "Prairie Studio Co.",
+    "category": "Lighting",
+    "brandRank": 34,
+    "presenceScore": 0.5
+  },
+  {
+    "retailer": "Lowe's",
+    "brand": "Bloom Studio Co.",
+    "category": "Holiday & Festive Decor",
+    "brandRank": 25,
+    "presenceScore": 0.74
+  }
+]

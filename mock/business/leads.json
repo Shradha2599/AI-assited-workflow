@@ -1,0 +1,1142 @@
+[
+  {
+    "id": "lead_001",
+    "sellerId": "seller_001",
+    "companyName": "Bella Home Co.",
+    "categories": [
+      "Home Decor"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Phoenix, AZ",
+    "estimatedGMV": 8603857,
+    "confidenceScore": 6.5,
+    "assortmentMatchScore": 0.8,
+    "trendScore": 0.53,
+    "riskScore": 0.28,
+    "status": "New",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-02T11:16:00Z"
+  },
+  {
+    "id": "lead_002",
+    "sellerId": "seller_002",
+    "companyName": "Greenleaf Home Co.",
+    "categories": [
+      "Party Supplies"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Seattle, WA",
+    "estimatedGMV": 4908274,
+    "confidenceScore": 9.5,
+    "assortmentMatchScore": 0.56,
+    "trendScore": 0.64,
+    "riskScore": 0.14,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-02T08:04:00Z"
+  },
+  {
+    "id": "lead_003",
+    "sellerId": "seller_003",
+    "companyName": "Mosaic Home Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Denver, CO",
+    "estimatedGMV": 1132426,
+    "confidenceScore": 7.1,
+    "assortmentMatchScore": 0.89,
+    "trendScore": 0.83,
+    "riskScore": 0.2,
+    "status": "Shortlisted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-13T13:20:00Z"
+  },
+  {
+    "id": "lead_004",
+    "sellerId": "seller_004",
+    "companyName": "Solara Home Co.",
+    "categories": [
+      "Kitchen & Dining"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Charlotte, NC",
+    "estimatedGMV": 6386676,
+    "confidenceScore": 8.3,
+    "assortmentMatchScore": 0.77,
+    "trendScore": 0.94,
+    "riskScore": 0.45,
+    "status": "Shortlisted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-18T09:55:00Z"
+  },
+  {
+    "id": "lead_005",
+    "sellerId": "seller_005",
+    "companyName": "Maven Home Co.",
+    "categories": [
+      "Storage & Organization"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Phoenix, AZ",
+    "estimatedGMV": 5822395,
+    "confidenceScore": 9.3,
+    "assortmentMatchScore": 0.87,
+    "trendScore": 0.72,
+    "riskScore": 0.41,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-12T10:08:00Z"
+  },
+  {
+    "id": "lead_006",
+    "sellerId": "seller_006",
+    "companyName": "Terra Home Co.",
+    "categories": [
+      "Storage & Organization"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Denver, CO",
+    "estimatedGMV": 3398816,
+    "confidenceScore": 7.4,
+    "assortmentMatchScore": 0.69,
+    "trendScore": 0.7,
+    "riskScore": 0.44,
+    "status": "New",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-24T09:53:00Z"
+  },
+  {
+    "id": "lead_007",
+    "sellerId": "seller_007",
+    "companyName": "Luma Home Co.",
+    "categories": [
+      "Lighting"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Portland, OR",
+    "estimatedGMV": 3700261,
+    "confidenceScore": 7.2,
+    "assortmentMatchScore": 0.57,
+    "trendScore": 0.54,
+    "riskScore": 0.1,
+    "status": "Shortlisted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-26T13:46:00Z"
+  },
+  {
+    "id": "lead_008",
+    "sellerId": "seller_008",
+    "companyName": "Oak Home Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Austin, TX",
+    "estimatedGMV": 7350328,
+    "confidenceScore": 9.0,
+    "assortmentMatchScore": 0.59,
+    "trendScore": 0.77,
+    "riskScore": 0.37,
+    "status": "Approved",
+    "reviewOutcome": "Approved",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-09T15:55:00Z"
+  },
+  {
+    "id": "lead_009",
+    "sellerId": "seller_009",
+    "companyName": "Willow Home Co.",
+    "categories": [
+      "Kitchen & Dining"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Seattle, WA",
+    "estimatedGMV": 2973790,
+    "confidenceScore": 8.6,
+    "assortmentMatchScore": 0.8,
+    "trendScore": 0.64,
+    "riskScore": 0.35,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-23T15:48:00Z"
+  },
+  {
+    "id": "lead_010",
+    "sellerId": "seller_010",
+    "companyName": "Atlas Home Co.",
+    "categories": [
+      "Kitchen & Dining"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Brooklyn, NY",
+    "estimatedGMV": 4228017,
+    "confidenceScore": 7.7,
+    "assortmentMatchScore": 0.95,
+    "trendScore": 0.93,
+    "riskScore": 0.31,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-02T16:32:00Z"
+  },
+  {
+    "id": "lead_011",
+    "sellerId": "seller_011",
+    "companyName": "Nord Home Co.",
+    "categories": [
+      "Storage & Organization"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Nashville, TN",
+    "estimatedGMV": 3975817,
+    "confidenceScore": 8.5,
+    "assortmentMatchScore": 0.69,
+    "trendScore": 0.86,
+    "riskScore": 0.25,
+    "status": "In Review",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-26T08:06:00Z"
+  },
+  {
+    "id": "lead_012",
+    "sellerId": "seller_012",
+    "companyName": "Harbor Home Co.",
+    "categories": [
+      "Kitchen & Dining"
+    ],
+    "businessType": "Brand",
+    "headquarters": "San Diego, CA",
+    "estimatedGMV": 6344239,
+    "confidenceScore": 7.1,
+    "assortmentMatchScore": 0.86,
+    "trendScore": 0.79,
+    "riskScore": 0.19,
+    "status": "In Review",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-07T10:30:00Z"
+  },
+  {
+    "id": "lead_013",
+    "sellerId": "seller_013",
+    "companyName": "Purely Home Co.",
+    "categories": [
+      "Furniture"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Austin, TX",
+    "estimatedGMV": 7766477,
+    "confidenceScore": 7.0,
+    "assortmentMatchScore": 0.9,
+    "trendScore": 0.96,
+    "riskScore": 0.19,
+    "status": "Onboarding",
+    "reviewOutcome": "Approved",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-26T09:09:00Z"
+  },
+  {
+    "id": "lead_014",
+    "sellerId": "seller_014",
+    "companyName": "Summit Home Co.",
+    "categories": [
+      "Kitchen & Dining"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Austin, TX",
+    "estimatedGMV": 1035420,
+    "confidenceScore": 6.8,
+    "assortmentMatchScore": 0.79,
+    "trendScore": 0.76,
+    "riskScore": 0.34,
+    "status": "Shortlisted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-02T13:04:00Z"
+  },
+  {
+    "id": "lead_015",
+    "sellerId": "seller_015",
+    "companyName": "Bright Home Co.",
+    "categories": [
+      "Home Decor"
+    ],
+    "businessType": "Brand",
+    "headquarters": "San Diego, CA",
+    "estimatedGMV": 1614473,
+    "confidenceScore": 7.3,
+    "assortmentMatchScore": 0.62,
+    "trendScore": 0.61,
+    "riskScore": 0.11,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-07T16:03:00Z"
+  },
+  {
+    "id": "lead_016",
+    "sellerId": "seller_016",
+    "companyName": "Clover Home Co.",
+    "categories": [
+      "Holiday & Festive Decor"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Chicago, IL",
+    "estimatedGMV": 6866187,
+    "confidenceScore": 9.3,
+    "assortmentMatchScore": 0.88,
+    "trendScore": 0.91,
+    "riskScore": 0.31,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-20T16:59:00Z"
+  },
+  {
+    "id": "lead_017",
+    "sellerId": "seller_017",
+    "companyName": "Hearth Home Co.",
+    "categories": [
+      "Furniture"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Seattle, WA",
+    "estimatedGMV": 5695161,
+    "confidenceScore": 7.9,
+    "assortmentMatchScore": 0.79,
+    "trendScore": 0.71,
+    "riskScore": 0.32,
+    "status": "In Review",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-17T13:37:00Z"
+  },
+  {
+    "id": "lead_018",
+    "sellerId": "seller_018",
+    "companyName": "Vista Home Co.",
+    "categories": [
+      "Bedding"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Phoenix, AZ",
+    "estimatedGMV": 8396326,
+    "confidenceScore": 8.3,
+    "assortmentMatchScore": 0.96,
+    "trendScore": 0.51,
+    "riskScore": 0.36,
+    "status": "Shortlisted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-17T11:33:00Z"
+  },
+  {
+    "id": "lead_019",
+    "sellerId": "seller_019",
+    "companyName": "Prairie Home Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Charlotte, NC",
+    "estimatedGMV": 6693920,
+    "confidenceScore": 6.7,
+    "assortmentMatchScore": 0.7,
+    "trendScore": 0.87,
+    "riskScore": 0.27,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-22T09:17:00Z"
+  },
+  {
+    "id": "lead_020",
+    "sellerId": "seller_020",
+    "companyName": "Bloom Home Co.",
+    "categories": [
+      "Holiday & Festive Decor"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Charlotte, NC",
+    "estimatedGMV": 698076,
+    "confidenceScore": 8.2,
+    "assortmentMatchScore": 0.55,
+    "trendScore": 0.6,
+    "riskScore": 0.3,
+    "status": "New",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-23T16:17:00Z"
+  },
+  {
+    "id": "lead_021",
+    "sellerId": "seller_021",
+    "companyName": "Cedar Home Co.",
+    "categories": [
+      "Party Supplies"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Charlotte, NC",
+    "estimatedGMV": 7243833,
+    "confidenceScore": 7.8,
+    "assortmentMatchScore": 0.8,
+    "trendScore": 0.6,
+    "riskScore": 0.17,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-20T11:54:00Z"
+  },
+  {
+    "id": "lead_022",
+    "sellerId": "seller_022",
+    "companyName": "Amber Home Co.",
+    "categories": [
+      "Bath"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Nashville, TN",
+    "estimatedGMV": 3356670,
+    "confidenceScore": 9.3,
+    "assortmentMatchScore": 0.73,
+    "trendScore": 0.72,
+    "riskScore": 0.27,
+    "status": "Onboarding",
+    "reviewOutcome": "Approved",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-22T11:47:00Z"
+  },
+  {
+    "id": "lead_023",
+    "sellerId": "seller_023",
+    "companyName": "Sage Home Co.",
+    "categories": [
+      "Storage & Organization"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "San Diego, CA",
+    "estimatedGMV": 6030246,
+    "confidenceScore": 8.0,
+    "assortmentMatchScore": 0.57,
+    "trendScore": 0.81,
+    "riskScore": 0.23,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-14T08:55:00Z"
+  },
+  {
+    "id": "lead_024",
+    "sellerId": "seller_024",
+    "companyName": "Coast Home Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Austin, TX",
+    "estimatedGMV": 5548035,
+    "confidenceScore": 7.4,
+    "assortmentMatchScore": 0.91,
+    "trendScore": 0.86,
+    "riskScore": 0.4,
+    "status": "New",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-10T11:08:00Z"
+  },
+  {
+    "id": "lead_025",
+    "sellerId": "seller_025",
+    "companyName": "Drift Home Co.",
+    "categories": [
+      "Kitchen & Dining"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Denver, CO",
+    "estimatedGMV": 5828334,
+    "confidenceScore": 6.5,
+    "assortmentMatchScore": 0.64,
+    "trendScore": 0.69,
+    "riskScore": 0.15,
+    "status": "New",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-26T15:25:00Z"
+  },
+  {
+    "id": "lead_026",
+    "sellerId": "seller_026",
+    "companyName": "Plush Home Co.",
+    "categories": [
+      "Lighting"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Charlotte, NC",
+    "estimatedGMV": 3940437,
+    "confidenceScore": 8.2,
+    "assortmentMatchScore": 0.62,
+    "trendScore": 0.85,
+    "riskScore": 0.34,
+    "status": "In Review",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-15T09:12:00Z"
+  },
+  {
+    "id": "lead_027",
+    "sellerId": "seller_027",
+    "companyName": "Radiant Home Co.",
+    "categories": [
+      "Home Decor"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Phoenix, AZ",
+    "estimatedGMV": 2983503,
+    "confidenceScore": 7.4,
+    "assortmentMatchScore": 0.66,
+    "trendScore": 0.74,
+    "riskScore": 0.16,
+    "status": "Shortlisted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-13T08:20:00Z"
+  },
+  {
+    "id": "lead_028",
+    "sellerId": "seller_028",
+    "companyName": "Wild Home Co.",
+    "categories": [
+      "Holiday & Festive Decor"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Seattle, WA",
+    "estimatedGMV": 1623635,
+    "confidenceScore": 7.4,
+    "assortmentMatchScore": 0.69,
+    "trendScore": 0.84,
+    "riskScore": 0.26,
+    "status": "In Review",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-07T15:17:00Z"
+  },
+  {
+    "id": "lead_029",
+    "sellerId": "seller_029",
+    "companyName": "Fresh Home Co.",
+    "categories": [
+      "Furniture"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Phoenix, AZ",
+    "estimatedGMV": 3661068,
+    "confidenceScore": 9.5,
+    "assortmentMatchScore": 0.82,
+    "trendScore": 0.5,
+    "riskScore": 0.2,
+    "status": "New",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-16T11:21:00Z"
+  },
+  {
+    "id": "lead_030",
+    "sellerId": "seller_030",
+    "companyName": "Urban Home Co.",
+    "categories": [
+      "Party Supplies"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Denver, CO",
+    "estimatedGMV": 2031194,
+    "confidenceScore": 7.8,
+    "assortmentMatchScore": 0.84,
+    "trendScore": 0.68,
+    "riskScore": 0.39,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-12T10:23:00Z"
+  },
+  {
+    "id": "lead_031",
+    "sellerId": "seller_031",
+    "companyName": "Bella Living Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Nashville, TN",
+    "estimatedGMV": 4526693,
+    "confidenceScore": 6.9,
+    "assortmentMatchScore": 0.77,
+    "trendScore": 0.72,
+    "riskScore": 0.22,
+    "status": "New",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-10T14:35:00Z"
+  },
+  {
+    "id": "lead_032",
+    "sellerId": "seller_032",
+    "companyName": "Greenleaf Living Co.",
+    "categories": [
+      "Storage & Organization"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Austin, TX",
+    "estimatedGMV": 7513586,
+    "confidenceScore": 7.7,
+    "assortmentMatchScore": 0.76,
+    "trendScore": 0.62,
+    "riskScore": 0.41,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-22T11:14:00Z"
+  },
+  {
+    "id": "lead_033",
+    "sellerId": "seller_033",
+    "companyName": "Mosaic Living Co.",
+    "categories": [
+      "Storage & Organization"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Denver, CO",
+    "estimatedGMV": 3466937,
+    "confidenceScore": 6.4,
+    "assortmentMatchScore": 0.94,
+    "trendScore": 0.68,
+    "riskScore": 0.23,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-26T11:09:00Z"
+  },
+  {
+    "id": "lead_034",
+    "sellerId": "seller_034",
+    "companyName": "Solara Living Co.",
+    "categories": [
+      "Bedding"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Denver, CO",
+    "estimatedGMV": 1450951,
+    "confidenceScore": 7.1,
+    "assortmentMatchScore": 0.81,
+    "trendScore": 0.89,
+    "riskScore": 0.37,
+    "status": "Approved",
+    "reviewOutcome": "Approved",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-21T13:37:00Z"
+  },
+  {
+    "id": "lead_035",
+    "sellerId": "seller_035",
+    "companyName": "Maven Living Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Seattle, WA",
+    "estimatedGMV": 4370192,
+    "confidenceScore": 9.3,
+    "assortmentMatchScore": 0.79,
+    "trendScore": 0.93,
+    "riskScore": 0.41,
+    "status": "Shortlisted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-13T14:50:00Z"
+  },
+  {
+    "id": "lead_036",
+    "sellerId": "seller_036",
+    "companyName": "Terra Living Co.",
+    "categories": [
+      "Party Supplies"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Nashville, TN",
+    "estimatedGMV": 2846625,
+    "confidenceScore": 7.5,
+    "assortmentMatchScore": 0.64,
+    "trendScore": 0.65,
+    "riskScore": 0.39,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-10T13:05:00Z"
+  },
+  {
+    "id": "lead_037",
+    "sellerId": "seller_037",
+    "companyName": "Luma Living Co.",
+    "categories": [
+      "Furniture"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Phoenix, AZ",
+    "estimatedGMV": 7016181,
+    "confidenceScore": 7.4,
+    "assortmentMatchScore": 0.68,
+    "trendScore": 0.9,
+    "riskScore": 0.37,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-06T14:33:00Z"
+  },
+  {
+    "id": "lead_038",
+    "sellerId": "seller_038",
+    "companyName": "Oak Living Co.",
+    "categories": [
+      "Kitchen & Dining"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Phoenix, AZ",
+    "estimatedGMV": 7850712,
+    "confidenceScore": 7.3,
+    "assortmentMatchScore": 0.67,
+    "trendScore": 0.63,
+    "riskScore": 0.34,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-17T08:58:00Z"
+  },
+  {
+    "id": "lead_039",
+    "sellerId": "seller_039",
+    "companyName": "Willow Living Co.",
+    "categories": [
+      "Lighting"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Brooklyn, NY",
+    "estimatedGMV": 3548405,
+    "confidenceScore": 8.3,
+    "assortmentMatchScore": 0.79,
+    "trendScore": 0.5,
+    "riskScore": 0.23,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-21T11:18:00Z"
+  },
+  {
+    "id": "lead_040",
+    "sellerId": "seller_040",
+    "companyName": "Atlas Living Co.",
+    "categories": [
+      "Bedding"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Phoenix, AZ",
+    "estimatedGMV": 2746879,
+    "confidenceScore": 7.1,
+    "assortmentMatchScore": 0.88,
+    "trendScore": 0.51,
+    "riskScore": 0.19,
+    "status": "Approved",
+    "reviewOutcome": "Approved",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-22T12:58:00Z"
+  },
+  {
+    "id": "lead_041",
+    "sellerId": "seller_041",
+    "companyName": "Nord Living Co.",
+    "categories": [
+      "Kitchen & Dining"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Nashville, TN",
+    "estimatedGMV": 4876977,
+    "confidenceScore": 6.8,
+    "assortmentMatchScore": 0.93,
+    "trendScore": 0.78,
+    "riskScore": 0.27,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-21T10:49:00Z"
+  },
+  {
+    "id": "lead_042",
+    "sellerId": "seller_042",
+    "companyName": "Harbor Living Co.",
+    "categories": [
+      "Party Supplies"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Seattle, WA",
+    "estimatedGMV": 5526889,
+    "confidenceScore": 7.6,
+    "assortmentMatchScore": 0.94,
+    "trendScore": 0.61,
+    "riskScore": 0.17,
+    "status": "Approved",
+    "reviewOutcome": "Approved",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-18T09:48:00Z"
+  },
+  {
+    "id": "lead_043",
+    "sellerId": "seller_043",
+    "companyName": "Purely Living Co.",
+    "categories": [
+      "Bath"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Brooklyn, NY",
+    "estimatedGMV": 7339724,
+    "confidenceScore": 8.6,
+    "assortmentMatchScore": 0.92,
+    "trendScore": 0.54,
+    "riskScore": 0.21,
+    "status": "Onboarding",
+    "reviewOutcome": "Approved",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-14T09:32:00Z"
+  },
+  {
+    "id": "lead_044",
+    "sellerId": "seller_044",
+    "companyName": "Summit Living Co.",
+    "categories": [
+      "Kitchen & Dining"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Austin, TX",
+    "estimatedGMV": 6791185,
+    "confidenceScore": 9.3,
+    "assortmentMatchScore": 0.6,
+    "trendScore": 0.82,
+    "riskScore": 0.34,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-23T09:49:00Z"
+  },
+  {
+    "id": "lead_045",
+    "sellerId": "seller_045",
+    "companyName": "Bright Living Co.",
+    "categories": [
+      "Bath"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "San Diego, CA",
+    "estimatedGMV": 457535,
+    "confidenceScore": 7.9,
+    "assortmentMatchScore": 0.86,
+    "trendScore": 0.69,
+    "riskScore": 0.27,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-19T16:38:00Z"
+  },
+  {
+    "id": "lead_046",
+    "sellerId": "seller_046",
+    "companyName": "Clover Living Co.",
+    "categories": [
+      "Kitchen & Dining"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Seattle, WA",
+    "estimatedGMV": 911547,
+    "confidenceScore": 7.1,
+    "assortmentMatchScore": 0.62,
+    "trendScore": 0.87,
+    "riskScore": 0.18,
+    "status": "Future Interest",
+    "reviewOutcome": "Future Interest",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-03T12:46:00Z"
+  },
+  {
+    "id": "lead_047",
+    "sellerId": "seller_047",
+    "companyName": "Hearth Living Co.",
+    "categories": [
+      "Home Decor"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Denver, CO",
+    "estimatedGMV": 8027816,
+    "confidenceScore": 7.0,
+    "assortmentMatchScore": 0.8,
+    "trendScore": 0.53,
+    "riskScore": 0.14,
+    "status": "Future Interest",
+    "reviewOutcome": "Future Interest",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-03T16:01:00Z"
+  },
+  {
+    "id": "lead_048",
+    "sellerId": "seller_048",
+    "companyName": "Vista Living Co.",
+    "categories": [
+      "Lighting"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Seattle, WA",
+    "estimatedGMV": 4825684,
+    "confidenceScore": 8.2,
+    "assortmentMatchScore": 0.81,
+    "trendScore": 0.75,
+    "riskScore": 0.2,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-10T09:02:00Z"
+  },
+  {
+    "id": "lead_049",
+    "sellerId": "seller_049",
+    "companyName": "Prairie Living Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Portland, OR",
+    "estimatedGMV": 4615075,
+    "confidenceScore": 8.1,
+    "assortmentMatchScore": 0.64,
+    "trendScore": 0.6,
+    "riskScore": 0.09,
+    "status": "Onboarding",
+    "reviewOutcome": "Approved",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-23T12:52:00Z"
+  },
+  {
+    "id": "lead_050",
+    "sellerId": "seller_050",
+    "companyName": "Bloom Living Co.",
+    "categories": [
+      "Bedding"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Seattle, WA",
+    "estimatedGMV": 1590854,
+    "confidenceScore": 9.2,
+    "assortmentMatchScore": 0.69,
+    "trendScore": 0.75,
+    "riskScore": 0.25,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-01T11:13:00Z"
+  },
+  {
+    "id": "lead_051",
+    "sellerId": "seller_051",
+    "companyName": "Cedar Living Co.",
+    "categories": [
+      "Party Supplies"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "San Diego, CA",
+    "estimatedGMV": 8278000,
+    "confidenceScore": 8.7,
+    "assortmentMatchScore": 0.74,
+    "trendScore": 0.55,
+    "riskScore": 0.42,
+    "status": "Contacted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Jordan Lee",
+    "discoveredDate": "2026-06-03T11:51:00Z"
+  },
+  {
+    "id": "lead_052",
+    "sellerId": "seller_052",
+    "companyName": "Amber Living Co.",
+    "categories": [
+      "Storage & Organization"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Austin, TX",
+    "estimatedGMV": 7341388,
+    "confidenceScore": 7.3,
+    "assortmentMatchScore": 0.61,
+    "trendScore": 0.49,
+    "riskScore": 0.36,
+    "status": "Shortlisted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-25T09:11:00Z"
+  },
+  {
+    "id": "lead_053",
+    "sellerId": "seller_053",
+    "companyName": "Sage Living Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Seattle, WA",
+    "estimatedGMV": 1702273,
+    "confidenceScore": 8.7,
+    "assortmentMatchScore": 0.82,
+    "trendScore": 0.78,
+    "riskScore": 0.25,
+    "status": "In Review",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-18T11:01:00Z"
+  },
+  {
+    "id": "lead_054",
+    "sellerId": "seller_054",
+    "companyName": "Coast Living Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Portland, OR",
+    "estimatedGMV": 6567093,
+    "confidenceScore": 7.3,
+    "assortmentMatchScore": 0.68,
+    "trendScore": 0.62,
+    "riskScore": 0.26,
+    "status": "In Review",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-25T11:00:00Z"
+  },
+  {
+    "id": "lead_055",
+    "sellerId": "seller_055",
+    "companyName": "Drift Living Co.",
+    "categories": [
+      "Home Decor"
+    ],
+    "businessType": "Wholesaler",
+    "headquarters": "Austin, TX",
+    "estimatedGMV": 2665581,
+    "confidenceScore": 9.2,
+    "assortmentMatchScore": 0.73,
+    "trendScore": 0.9,
+    "riskScore": 0.15,
+    "status": "Discovered",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-15T12:45:00Z"
+  },
+  {
+    "id": "lead_056",
+    "sellerId": "seller_056",
+    "companyName": "Plush Living Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "San Diego, CA",
+    "estimatedGMV": 6385932,
+    "confidenceScore": 9.4,
+    "assortmentMatchScore": 0.68,
+    "trendScore": 0.85,
+    "riskScore": 0.37,
+    "status": "New",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-26T09:34:00Z"
+  },
+  {
+    "id": "lead_057",
+    "sellerId": "seller_057",
+    "companyName": "Radiant Living Co.",
+    "categories": [
+      "Outdoor Living"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Charlotte, NC",
+    "estimatedGMV": 7637492,
+    "confidenceScore": 8.8,
+    "assortmentMatchScore": 0.96,
+    "trendScore": 0.56,
+    "riskScore": 0.24,
+    "status": "Shortlisted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Noah King",
+    "discoveredDate": "2026-06-23T12:48:00Z"
+  },
+  {
+    "id": "lead_058",
+    "sellerId": "seller_058",
+    "companyName": "Wild Living Co.",
+    "categories": [
+      "Holiday & Festive Decor"
+    ],
+    "businessType": "Manufacturer",
+    "headquarters": "Portland, OR",
+    "estimatedGMV": 1472756,
+    "confidenceScore": 8.8,
+    "assortmentMatchScore": 0.77,
+    "trendScore": 0.52,
+    "riskScore": 0.11,
+    "status": "In Review",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Maya Johnson",
+    "discoveredDate": "2026-06-24T15:41:00Z"
+  },
+  {
+    "id": "lead_059",
+    "sellerId": "seller_059",
+    "companyName": "Fresh Living Co.",
+    "categories": [
+      "Bedding"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Austin, TX",
+    "estimatedGMV": 6909271,
+    "confidenceScore": 9.1,
+    "assortmentMatchScore": 0.64,
+    "trendScore": 0.89,
+    "riskScore": 0.38,
+    "status": "Shortlisted",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-09T08:54:00Z"
+  },
+  {
+    "id": "lead_060",
+    "sellerId": "seller_060",
+    "companyName": "Urban Living Co.",
+    "categories": [
+      "Storage & Organization"
+    ],
+    "businessType": "Brand",
+    "headquarters": "Austin, TX",
+    "estimatedGMV": 1487148,
+    "confidenceScore": 7.4,
+    "assortmentMatchScore": 0.66,
+    "trendScore": 0.93,
+    "riskScore": 0.43,
+    "status": "New",
+    "reviewOutcome": "Pending",
+    "assignedTo": "Ava Patel",
+    "discoveredDate": "2026-06-12T16:46:00Z"
+  }
+]

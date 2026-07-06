@@ -1,0 +1,1352 @@
+[
+  {
+    "id": "act_001",
+    "entityType": "Partner",
+    "entityId": "app_006",
+    "actor": "Outreach Agent",
+    "action": "Added to Future Interest",
+    "timestamp": "2026-06-20T10:03:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_002",
+    "entityType": "Application",
+    "entityId": "partner_006",
+    "actor": "Discovery Agent",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-23T15:49:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_003",
+    "entityType": "Application",
+    "entityId": "app_009",
+    "actor": "Onboarding Agent",
+    "action": "Document Verified",
+    "timestamp": "2026-06-21T08:46:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_004",
+    "entityType": "Lead",
+    "entityId": "app_026",
+    "actor": "Outreach Agent",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-21T14:09:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_005",
+    "entityType": "Partner",
+    "entityId": "lead_039",
+    "actor": "Evaluation Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-22T16:20:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_006",
+    "entityType": "Lead",
+    "entityId": "lead_016",
+    "actor": "Discovery Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-27T13:02:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_007",
+    "entityType": "Partner",
+    "entityId": "app_034",
+    "actor": "Evaluation Agent",
+    "action": "Seller Approved",
+    "timestamp": "2026-06-27T11:17:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_008",
+    "entityType": "Application",
+    "entityId": "lead_024",
+    "actor": "Outreach Agent",
+    "action": "Task Completed",
+    "timestamp": "2026-06-25T10:38:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_009",
+    "entityType": "Partner",
+    "entityId": "lead_009",
+    "actor": "Outreach Agent",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-25T18:17:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_010",
+    "entityType": "Lead",
+    "entityId": "app_022",
+    "actor": "Nina Carter",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-28T13:24:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_011",
+    "entityType": "Partner",
+    "entityId": "partner_013",
+    "actor": "Evaluation Agent",
+    "action": "Seller Discovered",
+    "timestamp": "2026-06-20T15:44:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_012",
+    "entityType": "Partner",
+    "entityId": "app_033",
+    "actor": "Evaluation Agent",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-27T11:36:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_013",
+    "entityType": "Application",
+    "entityId": "lead_027",
+    "actor": "Ethan Brooks",
+    "action": "Added to Future Interest",
+    "timestamp": "2026-06-25T16:48:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_014",
+    "entityType": "Partner",
+    "entityId": "lead_046",
+    "actor": "Nina Carter",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-26T09:55:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_015",
+    "entityType": "Partner",
+    "entityId": "partner_002",
+    "actor": "Discovery Agent",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-28T14:40:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_016",
+    "entityType": "Application",
+    "entityId": "lead_027",
+    "actor": "Onboarding Agent",
+    "action": "Added to Future Interest",
+    "timestamp": "2026-06-28T17:48:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_017",
+    "entityType": "Application",
+    "entityId": "lead_005",
+    "actor": "Onboarding Agent",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-25T15:49:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_018",
+    "entityType": "Partner",
+    "entityId": "lead_034",
+    "actor": "Evaluation Agent",
+    "action": "Added to Future Interest",
+    "timestamp": "2026-06-22T18:48:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_019",
+    "entityType": "Partner",
+    "entityId": "app_020",
+    "actor": "Ethan Brooks",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-24T16:31:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_020",
+    "entityType": "Lead",
+    "entityId": "app_034",
+    "actor": "Outreach Agent",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-26T13:01:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_021",
+    "entityType": "Application",
+    "entityId": "lead_045",
+    "actor": "Ethan Brooks",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-22T10:26:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_022",
+    "entityType": "Lead",
+    "entityId": "lead_048",
+    "actor": "Nina Carter",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-22T09:19:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_023",
+    "entityType": "Partner",
+    "entityId": "lead_053",
+    "actor": "Evaluation Agent",
+    "action": "Added to Future Interest",
+    "timestamp": "2026-06-27T12:48:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_024",
+    "entityType": "Application",
+    "entityId": "lead_033",
+    "actor": "Ethan Brooks",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-20T11:21:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_025",
+    "entityType": "Application",
+    "entityId": "partner_005",
+    "actor": "Outreach Agent",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-24T13:01:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_026",
+    "entityType": "Application",
+    "entityId": "lead_002",
+    "actor": "Maya Johnson",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-22T11:23:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_027",
+    "entityType": "Partner",
+    "entityId": "lead_048",
+    "actor": "Evaluation Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-28T10:27:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_028",
+    "entityType": "Lead",
+    "entityId": "app_015",
+    "actor": "Onboarding Agent",
+    "action": "Task Completed",
+    "timestamp": "2026-06-24T13:33:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_029",
+    "entityType": "Partner",
+    "entityId": "lead_006",
+    "actor": "Evaluation Agent",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-24T16:11:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_030",
+    "entityType": "Application",
+    "entityId": "lead_043",
+    "actor": "Outreach Agent",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-24T17:44:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_031",
+    "entityType": "Lead",
+    "entityId": "lead_032",
+    "actor": "Outreach Agent",
+    "action": "Seller Discovered",
+    "timestamp": "2026-06-23T16:15:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_032",
+    "entityType": "Partner",
+    "entityId": "app_028",
+    "actor": "Nina Carter",
+    "action": "Task Completed",
+    "timestamp": "2026-06-25T15:23:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_033",
+    "entityType": "Lead",
+    "entityId": "app_026",
+    "actor": "Ethan Brooks",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-26T16:30:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_034",
+    "entityType": "Lead",
+    "entityId": "app_032",
+    "actor": "Evaluation Agent",
+    "action": "Seller Discovered",
+    "timestamp": "2026-06-21T12:22:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_035",
+    "entityType": "Application",
+    "entityId": "lead_020",
+    "actor": "Maya Johnson",
+    "action": "Document Verified",
+    "timestamp": "2026-06-22T18:06:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_036",
+    "entityType": "Partner",
+    "entityId": "lead_020",
+    "actor": "Nina Carter",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-22T12:13:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_037",
+    "entityType": "Application",
+    "entityId": "app_001",
+    "actor": "Discovery Agent",
+    "action": "Task Completed",
+    "timestamp": "2026-06-25T14:13:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_038",
+    "entityType": "Lead",
+    "entityId": "app_003",
+    "actor": "Onboarding Agent",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-23T16:32:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_039",
+    "entityType": "Partner",
+    "entityId": "partner_014",
+    "actor": "Onboarding Agent",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-23T17:48:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_040",
+    "entityType": "Application",
+    "entityId": "lead_020",
+    "actor": "Discovery Agent",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-28T18:20:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_041",
+    "entityType": "Partner",
+    "entityId": "lead_011",
+    "actor": "Onboarding Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-28T08:19:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_042",
+    "entityType": "Application",
+    "entityId": "app_001",
+    "actor": "Evaluation Agent",
+    "action": "Seller Approved",
+    "timestamp": "2026-06-24T16:53:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_043",
+    "entityType": "Lead",
+    "entityId": "app_003",
+    "actor": "Outreach Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-23T13:43:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_044",
+    "entityType": "Application",
+    "entityId": "lead_025",
+    "actor": "Ethan Brooks",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-21T16:45:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_045",
+    "entityType": "Partner",
+    "entityId": "lead_017",
+    "actor": "Discovery Agent",
+    "action": "Document Verified",
+    "timestamp": "2026-06-27T15:38:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_046",
+    "entityType": "Application",
+    "entityId": "lead_004",
+    "actor": "Onboarding Agent",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-24T16:02:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_047",
+    "entityType": "Lead",
+    "entityId": "lead_060",
+    "actor": "Outreach Agent",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-23T11:09:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_048",
+    "entityType": "Partner",
+    "entityId": "app_026",
+    "actor": "Ethan Brooks",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-24T10:31:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_049",
+    "entityType": "Application",
+    "entityId": "lead_001",
+    "actor": "Onboarding Agent",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-20T16:06:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_050",
+    "entityType": "Partner",
+    "entityId": "partner_013",
+    "actor": "Nina Carter",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-20T14:44:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_051",
+    "entityType": "Application",
+    "entityId": "partner_004",
+    "actor": "Onboarding Agent",
+    "action": "Email Sent",
+    "timestamp": "2026-06-22T16:25:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_052",
+    "entityType": "Partner",
+    "entityId": "lead_054",
+    "actor": "Evaluation Agent",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-21T11:07:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_053",
+    "entityType": "Partner",
+    "entityId": "lead_047",
+    "actor": "Maya Johnson",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-28T16:32:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_054",
+    "entityType": "Partner",
+    "entityId": "lead_028",
+    "actor": "Outreach Agent",
+    "action": "Seller Discovered",
+    "timestamp": "2026-06-21T13:14:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_055",
+    "entityType": "Lead",
+    "entityId": "lead_016",
+    "actor": "Discovery Agent",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-22T08:05:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_056",
+    "entityType": "Application",
+    "entityId": "app_025",
+    "actor": "Ethan Brooks",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-23T14:19:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_057",
+    "entityType": "Lead",
+    "entityId": "app_012",
+    "actor": "Ethan Brooks",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-27T15:10:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_058",
+    "entityType": "Application",
+    "entityId": "app_012",
+    "actor": "Nina Carter",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-25T09:46:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_059",
+    "entityType": "Application",
+    "entityId": "lead_014",
+    "actor": "Discovery Agent",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-25T18:33:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_060",
+    "entityType": "Partner",
+    "entityId": "app_012",
+    "actor": "Outreach Agent",
+    "action": "Added to Future Interest",
+    "timestamp": "2026-06-20T18:17:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_061",
+    "entityType": "Lead",
+    "entityId": "app_004",
+    "actor": "Maya Johnson",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-20T10:21:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_062",
+    "entityType": "Partner",
+    "entityId": "lead_054",
+    "actor": "Discovery Agent",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-23T16:33:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_063",
+    "entityType": "Partner",
+    "entityId": "lead_051",
+    "actor": "Outreach Agent",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-24T13:19:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_064",
+    "entityType": "Lead",
+    "entityId": "lead_057",
+    "actor": "Discovery Agent",
+    "action": "Seller Approved",
+    "timestamp": "2026-06-21T14:31:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_065",
+    "entityType": "Lead",
+    "entityId": "app_016",
+    "actor": "Discovery Agent",
+    "action": "Seller Approved",
+    "timestamp": "2026-06-20T11:36:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_066",
+    "entityType": "Lead",
+    "entityId": "lead_007",
+    "actor": "Ethan Brooks",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-27T18:20:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_067",
+    "entityType": "Lead",
+    "entityId": "partner_013",
+    "actor": "Ethan Brooks",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-27T12:52:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_068",
+    "entityType": "Application",
+    "entityId": "lead_050",
+    "actor": "Discovery Agent",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-22T13:07:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_069",
+    "entityType": "Partner",
+    "entityId": "partner_010",
+    "actor": "Ethan Brooks",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-27T10:03:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_070",
+    "entityType": "Partner",
+    "entityId": "lead_028",
+    "actor": "Discovery Agent",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-27T18:37:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_071",
+    "entityType": "Partner",
+    "entityId": "lead_017",
+    "actor": "Discovery Agent",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-20T14:26:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_072",
+    "entityType": "Partner",
+    "entityId": "app_032",
+    "actor": "Ethan Brooks",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-23T15:21:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_073",
+    "entityType": "Partner",
+    "entityId": "lead_042",
+    "actor": "Discovery Agent",
+    "action": "Task Completed",
+    "timestamp": "2026-06-22T16:21:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_074",
+    "entityType": "Application",
+    "entityId": "app_018",
+    "actor": "Discovery Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-24T14:59:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_075",
+    "entityType": "Lead",
+    "entityId": "app_022",
+    "actor": "Maya Johnson",
+    "action": "Seller Approved",
+    "timestamp": "2026-06-20T15:07:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_076",
+    "entityType": "Partner",
+    "entityId": "lead_027",
+    "actor": "Outreach Agent",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-28T17:09:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_077",
+    "entityType": "Application",
+    "entityId": "lead_033",
+    "actor": "Maya Johnson",
+    "action": "Added to Future Interest",
+    "timestamp": "2026-06-24T15:50:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_078",
+    "entityType": "Application",
+    "entityId": "lead_034",
+    "actor": "Ethan Brooks",
+    "action": "Task Completed",
+    "timestamp": "2026-06-23T17:10:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_079",
+    "entityType": "Lead",
+    "entityId": "lead_057",
+    "actor": "Outreach Agent",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-25T10:25:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_080",
+    "entityType": "Application",
+    "entityId": "partner_015",
+    "actor": "Onboarding Agent",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-22T13:57:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_081",
+    "entityType": "Application",
+    "entityId": "partner_011",
+    "actor": "Ethan Brooks",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-22T16:21:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_082",
+    "entityType": "Application",
+    "entityId": "lead_035",
+    "actor": "Nina Carter",
+    "action": "Email Sent",
+    "timestamp": "2026-06-22T13:44:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_083",
+    "entityType": "Partner",
+    "entityId": "app_008",
+    "actor": "Maya Johnson",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-22T10:41:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_084",
+    "entityType": "Partner",
+    "entityId": "partner_004",
+    "actor": "Maya Johnson",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-20T18:45:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_085",
+    "entityType": "Lead",
+    "entityId": "lead_009",
+    "actor": "Evaluation Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-23T09:52:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_086",
+    "entityType": "Partner",
+    "entityId": "app_004",
+    "actor": "Evaluation Agent",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-23T12:52:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_087",
+    "entityType": "Application",
+    "entityId": "app_027",
+    "actor": "Nina Carter",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-20T17:41:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_088",
+    "entityType": "Partner",
+    "entityId": "lead_006",
+    "actor": "Discovery Agent",
+    "action": "Email Sent",
+    "timestamp": "2026-06-24T16:05:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_089",
+    "entityType": "Application",
+    "entityId": "lead_025",
+    "actor": "Outreach Agent",
+    "action": "Task Completed",
+    "timestamp": "2026-06-28T13:29:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_090",
+    "entityType": "Application",
+    "entityId": "lead_033",
+    "actor": "Nina Carter",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-26T18:49:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_091",
+    "entityType": "Partner",
+    "entityId": "lead_039",
+    "actor": "Ethan Brooks",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-23T17:41:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_092",
+    "entityType": "Application",
+    "entityId": "lead_036",
+    "actor": "Evaluation Agent",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-21T11:49:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_093",
+    "entityType": "Lead",
+    "entityId": "app_019",
+    "actor": "Onboarding Agent",
+    "action": "Seller Approved",
+    "timestamp": "2026-06-22T18:27:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_094",
+    "entityType": "Application",
+    "entityId": "lead_032",
+    "actor": "Ethan Brooks",
+    "action": "Email Sent",
+    "timestamp": "2026-06-28T16:18:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_095",
+    "entityType": "Partner",
+    "entityId": "lead_015",
+    "actor": "Maya Johnson",
+    "action": "Email Sent",
+    "timestamp": "2026-06-20T11:23:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_096",
+    "entityType": "Partner",
+    "entityId": "app_001",
+    "actor": "Outreach Agent",
+    "action": "Document Verified",
+    "timestamp": "2026-06-26T17:29:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_097",
+    "entityType": "Lead",
+    "entityId": "lead_048",
+    "actor": "Nina Carter",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-20T18:20:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_098",
+    "entityType": "Lead",
+    "entityId": "app_018",
+    "actor": "Discovery Agent",
+    "action": "Email Sent",
+    "timestamp": "2026-06-22T12:18:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_099",
+    "entityType": "Partner",
+    "entityId": "app_028",
+    "actor": "Outreach Agent",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-22T16:42:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_100",
+    "entityType": "Application",
+    "entityId": "lead_023",
+    "actor": "Outreach Agent",
+    "action": "Task Completed",
+    "timestamp": "2026-06-22T15:25:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_101",
+    "entityType": "Lead",
+    "entityId": "lead_039",
+    "actor": "Onboarding Agent",
+    "action": "Email Sent",
+    "timestamp": "2026-06-28T13:35:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_102",
+    "entityType": "Application",
+    "entityId": "lead_048",
+    "actor": "Nina Carter",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-28T13:38:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_103",
+    "entityType": "Partner",
+    "entityId": "lead_013",
+    "actor": "Nina Carter",
+    "action": "Document Verified",
+    "timestamp": "2026-06-28T18:36:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_104",
+    "entityType": "Partner",
+    "entityId": "lead_033",
+    "actor": "Maya Johnson",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-22T13:20:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_105",
+    "entityType": "Lead",
+    "entityId": "app_009",
+    "actor": "Discovery Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-22T14:50:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_106",
+    "entityType": "Application",
+    "entityId": "lead_008",
+    "actor": "Outreach Agent",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-24T09:23:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_107",
+    "entityType": "Application",
+    "entityId": "app_024",
+    "actor": "Outreach Agent",
+    "action": "Task Completed",
+    "timestamp": "2026-06-27T18:51:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_108",
+    "entityType": "Application",
+    "entityId": "lead_039",
+    "actor": "Evaluation Agent",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-28T09:47:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_109",
+    "entityType": "Lead",
+    "entityId": "lead_046",
+    "actor": "Ethan Brooks",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-28T14:43:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_110",
+    "entityType": "Partner",
+    "entityId": "app_012",
+    "actor": "Maya Johnson",
+    "action": "Seller Approved",
+    "timestamp": "2026-06-27T12:08:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_111",
+    "entityType": "Application",
+    "entityId": "app_021",
+    "actor": "Discovery Agent",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-23T18:27:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_112",
+    "entityType": "Lead",
+    "entityId": "partner_009",
+    "actor": "Maya Johnson",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-28T16:11:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_113",
+    "entityType": "Partner",
+    "entityId": "app_009",
+    "actor": "Discovery Agent",
+    "action": "Email Sent",
+    "timestamp": "2026-06-23T09:43:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_114",
+    "entityType": "Partner",
+    "entityId": "lead_057",
+    "actor": "Ethan Brooks",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-20T11:03:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_115",
+    "entityType": "Lead",
+    "entityId": "app_033",
+    "actor": "Outreach Agent",
+    "action": "Email Sent",
+    "timestamp": "2026-06-26T16:56:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_116",
+    "entityType": "Lead",
+    "entityId": "partner_015",
+    "actor": "Maya Johnson",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-26T15:51:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_117",
+    "entityType": "Lead",
+    "entityId": "partner_013",
+    "actor": "Nina Carter",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-25T12:35:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_118",
+    "entityType": "Lead",
+    "entityId": "lead_047",
+    "actor": "Onboarding Agent",
+    "action": "Email Sent",
+    "timestamp": "2026-06-27T10:36:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_119",
+    "entityType": "Partner",
+    "entityId": "app_008",
+    "actor": "Evaluation Agent",
+    "action": "Added to Future Interest",
+    "timestamp": "2026-06-20T15:35:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_120",
+    "entityType": "Lead",
+    "entityId": "lead_002",
+    "actor": "Evaluation Agent",
+    "action": "Task Completed",
+    "timestamp": "2026-06-26T13:36:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_121",
+    "entityType": "Partner",
+    "entityId": "app_004",
+    "actor": "Discovery Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-27T09:05:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_122",
+    "entityType": "Application",
+    "entityId": "lead_042",
+    "actor": "Outreach Agent",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-27T18:05:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_123",
+    "entityType": "Partner",
+    "entityId": "partner_013",
+    "actor": "Nina Carter",
+    "action": "Document Verified",
+    "timestamp": "2026-06-27T17:19:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_124",
+    "entityType": "Partner",
+    "entityId": "app_010",
+    "actor": "Evaluation Agent",
+    "action": "Task Completed",
+    "timestamp": "2026-06-23T14:04:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_125",
+    "entityType": "Lead",
+    "entityId": "app_006",
+    "actor": "Evaluation Agent",
+    "action": "Recommendation Generated",
+    "timestamp": "2026-06-22T16:27:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_126",
+    "entityType": "Lead",
+    "entityId": "lead_029",
+    "actor": "Outreach Agent",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-25T08:25:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_127",
+    "entityType": "Application",
+    "entityId": "lead_008",
+    "actor": "Discovery Agent",
+    "action": "Document Verified",
+    "timestamp": "2026-06-26T12:58:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_128",
+    "entityType": "Application",
+    "entityId": "app_017",
+    "actor": "Ethan Brooks",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-22T15:29:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_129",
+    "entityType": "Application",
+    "entityId": "lead_052",
+    "actor": "Discovery Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-27T17:20:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_130",
+    "entityType": "Partner",
+    "entityId": "partner_016",
+    "actor": "Maya Johnson",
+    "action": "Seller Discovered",
+    "timestamp": "2026-06-27T10:14:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_131",
+    "entityType": "Application",
+    "entityId": "app_035",
+    "actor": "Maya Johnson",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-21T13:00:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_132",
+    "entityType": "Application",
+    "entityId": "lead_045",
+    "actor": "Onboarding Agent",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-21T13:21:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_133",
+    "entityType": "Application",
+    "entityId": "lead_019",
+    "actor": "Outreach Agent",
+    "action": "Seller Discovered",
+    "timestamp": "2026-06-21T15:34:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_134",
+    "entityType": "Lead",
+    "entityId": "app_005",
+    "actor": "Discovery Agent",
+    "action": "Seller Discovered",
+    "timestamp": "2026-06-25T11:26:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_135",
+    "entityType": "Application",
+    "entityId": "lead_043",
+    "actor": "Evaluation Agent",
+    "action": "Document Verified",
+    "timestamp": "2026-06-20T09:34:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_136",
+    "entityType": "Partner",
+    "entityId": "app_012",
+    "actor": "Ethan Brooks",
+    "action": "Seller Approved",
+    "timestamp": "2026-06-21T17:35:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_137",
+    "entityType": "Partner",
+    "entityId": "lead_033",
+    "actor": "Nina Carter",
+    "action": "Seller Discovered",
+    "timestamp": "2026-06-25T14:01:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_138",
+    "entityType": "Application",
+    "entityId": "lead_003",
+    "actor": "Evaluation Agent",
+    "action": "Seller Discovered",
+    "timestamp": "2026-06-20T11:35:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_139",
+    "entityType": "Partner",
+    "entityId": "lead_059",
+    "actor": "Discovery Agent",
+    "action": "Reminder Sent",
+    "timestamp": "2026-06-25T09:34:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_140",
+    "entityType": "Application",
+    "entityId": "lead_013",
+    "actor": "Outreach Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-27T15:50:00Z",
+    "description": "AI recommendation generated for internal review."
+  },
+  {
+    "id": "act_141",
+    "entityType": "Lead",
+    "entityId": "app_032",
+    "actor": "Maya Johnson",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-28T13:52:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_142",
+    "entityType": "Partner",
+    "entityId": "partner_005",
+    "actor": "Nina Carter",
+    "action": "Application Reviewed",
+    "timestamp": "2026-06-26T17:35:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_143",
+    "entityType": "Lead",
+    "entityId": "lead_011",
+    "actor": "Nina Carter",
+    "action": "Seller Discovered",
+    "timestamp": "2026-06-28T16:54:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_144",
+    "entityType": "Lead",
+    "entityId": "lead_019",
+    "actor": "Nina Carter",
+    "action": "Task Completed",
+    "timestamp": "2026-06-25T10:26:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_145",
+    "entityType": "Partner",
+    "entityId": "lead_038",
+    "actor": "Onboarding Agent",
+    "action": "Application Submitted",
+    "timestamp": "2026-06-20T18:05:00Z",
+    "description": "Partner progress updated."
+  },
+  {
+    "id": "act_146",
+    "entityType": "Lead",
+    "entityId": "lead_017",
+    "actor": "Evaluation Agent",
+    "action": "Task Completed",
+    "timestamp": "2026-06-22T08:48:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_147",
+    "entityType": "Partner",
+    "entityId": "partner_014",
+    "actor": "Evaluation Agent",
+    "action": "Seller Approved",
+    "timestamp": "2026-06-20T08:27:00Z",
+    "description": "Status updated according to business rules."
+  },
+  {
+    "id": "act_148",
+    "entityType": "Lead",
+    "entityId": "lead_031",
+    "actor": "Maya Johnson",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-27T11:59:00Z",
+    "description": "Workflow event generated from platform action."
+  },
+  {
+    "id": "act_149",
+    "entityType": "Partner",
+    "entityId": "app_029",
+    "actor": "Outreach Agent",
+    "action": "Seller Shortlisted",
+    "timestamp": "2026-06-23T11:06:00Z",
+    "description": "Seller communication action executed."
+  },
+  {
+    "id": "act_150",
+    "entityType": "Partner",
+    "entityId": "lead_015",
+    "actor": "Evaluation Agent",
+    "action": "Onboarding Started",
+    "timestamp": "2026-06-25T15:59:00Z",
+    "description": "AI recommendation generated for internal review."
+  }
+]

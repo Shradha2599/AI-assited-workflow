@@ -1,0 +1,722 @@
+[
+  {
+    "brand": "Bella Home Co.",
+    "domain": "bellahomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Greenleaf Home Co.",
+    "domain": "greenleafhomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Mosaic Home Co.",
+    "domain": "mosaichomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Solara Home Co.",
+    "domain": "solarahomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Maven Home Co.",
+    "domain": "mavenhomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Terra Home Co.",
+    "domain": "terrahomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Luma Home Co.",
+    "domain": "lumahomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Oak Home Co.",
+    "domain": "oakhomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Willow Home Co.",
+    "domain": "willowhomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Atlas Home Co.",
+    "domain": "atlashomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Nord Home Co.",
+    "domain": "nordhomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Harbor Home Co.",
+    "domain": "harborhomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Purely Home Co.",
+    "domain": "purelyhomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Summit Home Co.",
+    "domain": "summithomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Bright Home Co.",
+    "domain": "brighthomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Clover Home Co.",
+    "domain": "cloverhomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Hearth Home Co.",
+    "domain": "hearthhomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Vista Home Co.",
+    "domain": "vistahomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Prairie Home Co.",
+    "domain": "prairiehomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Bloom Home Co.",
+    "domain": "bloomhomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Cedar Home Co.",
+    "domain": "cedarhomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Amber Home Co.",
+    "domain": "amberhomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Sage Home Co.",
+    "domain": "sagehomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Coast Home Co.",
+    "domain": "coasthomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Drift Home Co.",
+    "domain": "drifthomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Plush Home Co.",
+    "domain": "plushhomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Radiant Home Co.",
+    "domain": "radianthomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Wild Home Co.",
+    "domain": "wildhomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Fresh Home Co.",
+    "domain": "freshhomeco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Urban Home Co.",
+    "domain": "urbanhomeco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Bella Living Co.",
+    "domain": "bellalivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Greenleaf Living Co.",
+    "domain": "greenleaflivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Mosaic Living Co.",
+    "domain": "mosaiclivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Solara Living Co.",
+    "domain": "solaralivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Maven Living Co.",
+    "domain": "mavenlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Terra Living Co.",
+    "domain": "terralivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Luma Living Co.",
+    "domain": "lumalivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Oak Living Co.",
+    "domain": "oaklivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Willow Living Co.",
+    "domain": "willowlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Atlas Living Co.",
+    "domain": "atlaslivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Nord Living Co.",
+    "domain": "nordlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Harbor Living Co.",
+    "domain": "harborlivingco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Purely Living Co.",
+    "domain": "purelylivingco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Summit Living Co.",
+    "domain": "summitlivingco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Bright Living Co.",
+    "domain": "brightlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Clover Living Co.",
+    "domain": "cloverlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Hearth Living Co.",
+    "domain": "hearthlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Vista Living Co.",
+    "domain": "vistalivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Prairie Living Co.",
+    "domain": "prairielivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Bloom Living Co.",
+    "domain": "bloomlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Cedar Living Co.",
+    "domain": "cedarlivingco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Amber Living Co.",
+    "domain": "amberlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Sage Living Co.",
+    "domain": "sagelivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Coast Living Co.",
+    "domain": "coastlivingco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Drift Living Co.",
+    "domain": "driftlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Plush Living Co.",
+    "domain": "plushlivingco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Radiant Living Co.",
+    "domain": "radiantlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Wild Living Co.",
+    "domain": "wildlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Fresh Living Co.",
+    "domain": "freshlivingco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Urban Living Co.",
+    "domain": "urbanlivingco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Bella Studio Co.",
+    "domain": "bellastudioco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Greenleaf Studio Co.",
+    "domain": "greenleafstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Mosaic Studio Co.",
+    "domain": "mosaicstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Solara Studio Co.",
+    "domain": "solarastudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Maven Studio Co.",
+    "domain": "mavenstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Terra Studio Co.",
+    "domain": "terrastudioco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Luma Studio Co.",
+    "domain": "lumastudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Oak Studio Co.",
+    "domain": "oakstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Willow Studio Co.",
+    "domain": "willowstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Atlas Studio Co.",
+    "domain": "atlasstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Nord Studio Co.",
+    "domain": "nordstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Harbor Studio Co.",
+    "domain": "harborstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Purely Studio Co.",
+    "domain": "purelystudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Summit Studio Co.",
+    "domain": "summitstudioco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Bright Studio Co.",
+    "domain": "brightstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Clover Studio Co.",
+    "domain": "cloverstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "Medium",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Hearth Studio Co.",
+    "domain": "hearthstudioco.example",
+    "ssl": true,
+    "contentQuality": "High",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  },
+  {
+    "brand": "Vista Studio Co.",
+    "domain": "vistastudioco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Medium",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Partial"
+  },
+  {
+    "brand": "Prairie Studio Co.",
+    "domain": "prairiestudioco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Weak",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Complete"
+  },
+  {
+    "brand": "Bloom Studio Co.",
+    "domain": "bloomstudioco.example",
+    "ssl": true,
+    "contentQuality": "Medium",
+    "productBreadth": "Strong",
+    "ecommerceReadiness": "High",
+    "policyCompleteness": "Mostly Complete"
+  }
+]

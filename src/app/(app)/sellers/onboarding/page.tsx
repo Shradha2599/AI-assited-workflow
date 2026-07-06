@@ -1,21 +1,7 @@
-import { EmptyState } from "@/components/feedback/empty-state";
-import { PageHeader } from "@/components/layout/page-header";
+import { PartnerOnboardingView } from "@/features/partner-onboarding/components/partner-onboarding-view";
+import { getPipelineData } from "@/services/analytics.service";
 
-export default function SellerOnboardingPage() {
-  return (
-    <>
-      <PageHeader
-        title="Seller Onboarding"
-        description="Manage seller onboarding workflows and progress tracking."
-        breadcrumbs={[
-          { label: "Dashboard", href: "/dashboard" },
-          { label: "Seller Onboarding" },
-        ]}
-      />
-      <EmptyState
-        title="Coming soon"
-        description="Seller onboarding will be available after Figma designs are finalized."
-      />
-    </>
-  );
+export default async function PartnerOnboardingPage() {
+  const pipeline = await getPipelineData();
+  return <PartnerOnboardingView pipeline={pipeline} />;
 }

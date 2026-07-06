@@ -81,7 +81,7 @@ export const onboardingPartners: OnboardingPartner[] = [
       },
       {
         id: "item-listing",
-        title: "Item Listing",
+        title: "Item listing",
         totalSteps: 1,
         completedSteps: 0,
         tasks: [
@@ -90,7 +90,7 @@ export const onboardingPartners: OnboardingPartner[] = [
       },
       {
         id: "stripe",
-        title: "Stripe Setup",
+        title: "Stripe setup",
         totalSteps: 2,
         completedSteps: 0,
         tasks: [
@@ -136,10 +136,10 @@ export const onboardingPartners: OnboardingPartner[] = [
         id: "documentation",
         title: "Documentation",
         totalSteps: 2,
-        completedSteps: 0,
+        completedSteps: 2,
         tasks: [
-          { id: "t-109", sellerId: "seller-012", section: "documentation", title: "W9 form uploaded", status: "pending", autoValidated: true },
-          { id: "t-110", sellerId: "seller-012", section: "documentation", title: "Contract signed", status: "pending", autoValidated: false },
+          { id: "t-109", sellerId: "seller-012", section: "documentation", title: "W9 form uploaded", status: "complete", autoValidated: true },
+          { id: "t-110", sellerId: "seller-012", section: "documentation", title: "Contract signed", status: "complete", autoValidated: true },
         ],
       },
       {
@@ -153,7 +153,7 @@ export const onboardingPartners: OnboardingPartner[] = [
       },
       {
         id: "item-listing",
-        title: "Item Listing",
+        title: "Item listing",
         totalSteps: 1,
         completedSteps: 0,
         tasks: [
@@ -162,12 +162,84 @@ export const onboardingPartners: OnboardingPartner[] = [
       },
       {
         id: "stripe",
-        title: "Stripe Setup",
+        title: "Stripe setup",
         totalSteps: 2,
         completedSteps: 0,
         tasks: [
           { id: "t-113", sellerId: "seller-012", section: "stripe", title: "Stripe account creation", status: "pending", autoValidated: false },
           { id: "t-114", sellerId: "seller-012", section: "stripe", title: "Bank deposit verified", status: "pending", autoValidated: false },
+        ],
+      },
+    ],
+  },
+  {
+    sellerId: "seller-017",
+    sellerName: "Dot & Dash",
+    assignedTo: "Shaun Doe",
+    overallProgress: 0,
+    startedAt: "2026-02-05",
+    targetLaunchDate: "2026-05-15",
+    sections: [
+      {
+        id: "profile",
+        title: "Profile Information",
+        totalSteps: 7,
+        completedSteps: 0,
+        tasks: [
+          { id: "t-201", sellerId: "seller-017", section: "profile", title: "Brand profile", status: "pending", autoValidated: false },
+          { id: "t-202", sellerId: "seller-017", section: "profile", title: "Brand display name", status: "pending", autoValidated: false },
+          { id: "t-203", sellerId: "seller-017", section: "profile", title: "Business identity and address", status: "pending", autoValidated: false },
+          { id: "t-204", sellerId: "seller-017", section: "profile", title: "Marketplace users", status: "pending", autoValidated: false },
+          { id: "t-205", sellerId: "seller-017", section: "profile", title: "Fulfilment details", status: "pending", autoValidated: false },
+          { id: "t-206", sellerId: "seller-017", section: "profile", title: "Returns policy", status: "pending", autoValidated: false },
+          { id: "t-207", sellerId: "seller-017", section: "profile", title: "Privacy policy", status: "pending", autoValidated: false },
+        ],
+      },
+      {
+        id: "assortment",
+        title: "Assortment Curation",
+        totalSteps: 1,
+        completedSteps: 0,
+        tasks: [
+          { id: "t-208", sellerId: "seller-017", section: "assortment", title: "Upload assortment file (SKUs)", status: "pending", autoValidated: false },
+        ],
+      },
+      {
+        id: "documentation",
+        title: "Documentation",
+        totalSteps: 2,
+        completedSteps: 0,
+        tasks: [
+          { id: "t-209", sellerId: "seller-017", section: "documentation", title: "W9 form uploaded", status: "pending", autoValidated: true },
+          { id: "t-210", sellerId: "seller-017", section: "documentation", title: "Contract signed", status: "pending", autoValidated: false },
+        ],
+      },
+      {
+        id: "integrations",
+        title: "Integrations",
+        totalSteps: 1,
+        completedSteps: 0,
+        tasks: [
+          { id: "t-211", sellerId: "seller-017", section: "integrations", title: "Channel partner integration", status: "pending", autoValidated: false },
+        ],
+      },
+      {
+        id: "item-listing",
+        title: "Item listing",
+        totalSteps: 1,
+        completedSteps: 0,
+        tasks: [
+          { id: "t-212", sellerId: "seller-017", section: "item-listing", title: "Item data setup and mapping", status: "pending", autoValidated: false },
+        ],
+      },
+      {
+        id: "stripe",
+        title: "Stripe setup",
+        totalSteps: 2,
+        completedSteps: 0,
+        tasks: [
+          { id: "t-213", sellerId: "seller-017", section: "stripe", title: "Stripe account creation", status: "pending", autoValidated: false },
+          { id: "t-214", sellerId: "seller-017", section: "stripe", title: "Bank deposit verified", status: "pending", autoValidated: false },
         ],
       },
     ],

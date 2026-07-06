@@ -11,42 +11,65 @@ import {
   type ScheduledCalendarItem,
 } from "@/features/assortment-plan/store/plan-store";
 
-const MONTHS = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"];
+// ─── Calendar structure ───────────────────────────────────────────────────────
 
+const MONTHS = [
+  "Nov", "Dec", "Jan",   // Q1
+  "Feb", "Mar", "Apr",   // Q2
+  "May", "Jun", "Jul",   // Q3
+  "Aug", "Sep", "Oct",   // Q4
+];
+
+// 4 equal quarters of 3 months each
 const QUARTER_SPANS = [
-  { label: "Q1", span: 2 },
-  { label: "Q2", span: 2 },
-  { label: "Q3", span: 4 },
-  { label: "Q4", span: 4 },
+  { label: "Q1", months: 3 },
+  { label: "Q2", months: 3 },
+  { label: "Q3", months: 3 },
+  { label: "Q4", months: 3 },
 ];
 
+// Seasons mapped to month indices (0 = Nov … 11 = Oct)
 const SEASON_SPANS = [
-  { label: "Fall", span: 2 },
-  { label: "Winter", span: 2 },
-  { label: "Summer", span: 4 },
-  { label: "Spring", span: 4 },
+  { label: "Fall",   span: 2 }, // Nov, Dec
+  { label: "Winter", span: 2 }, // Jan, Feb
+  { label: "Spring", span: 2 }, // Mar, Apr
+  { label: "Summer", span: 3 }, // May, Jun, Jul
+  { label: "Fall",   span: 3 }, // Aug, Sep, Oct
 ];
 
+// One event label per month (empty string = nothing to show)
 const EVENTS_PER_MONTH = [
-  "Thanksgiving",
-  "Christmas",
-  "New Year",
-  "Valentine's",
-  "Easter",
-  "",
-  "",
-  "",
-  "Labour Day",
-  "BTS / BTC",
-  "",
-  "Halloween",
+  "Thanksgiving & C.", // Nov
+  "",                  // Dec (Christmas absorbed above)
+  "New Year",          // Jan
+  "Valentine's",       // Feb
+  "",                  // Mar
+  "Easter",            // Apr
+  "Labour Day",        // May
+  "",                  // Jun
+  "",                  // Jul
+  "BTS / BTC",         // Aug
+  "",                  // Sep
+  "Halloween",         // Oct
 ];
 
-const CALENDAR_ROWS = ["Kitchen & Dining", "Lighting"];
-const LANE_HEIGHT = 52;
-const LABEL_COL_WIDTH = 140;
+// Quarter boundary indices (after which months a thick divider appears)
+const QUARTER_BOUNDARIES = new Set([2, 5, 8]); // after index 2, 5, 8 (0-based)
 
-const ITEM_COLORS: Record<string, { bg: string; border: string; text: string; handle: string }> = {
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/** Derive a category row label from an item name */
+function rowForItem(itemName: string): string {
+  const lower = itemName.toLowerCase();
+  if (lower.includes("light") || lower.includes("lamp") || lower.includes("pendant")) {
+    return "Lighting";
+  }
+  return "Kitchen & Dining";
+}
+
+const LANE_HEIGHT = 48;
+
+const ROW_COLORS: Record<string, { bg: string; border: string; text: string; handle: string }> = {
   "Kitchen & Dining": {
     bg: "bg-orange-50",
     border: "border-orange-300",
@@ -60,7 +83,7 @@ const ITEM_COLORS: Record<string, { bg: string; border: string; text: string; ha
     handle: "bg-amber-300/40",
   },
 };
-const DEFAULT_COLOR = {
+const DEFAULT_ROW_COLOR = {
   bg: "bg-blue-50",
   border: "border-blue-300",
   text: "text-blue-900",
@@ -89,12 +112,13 @@ function allocateLanes(items: ScheduledCalendarItem[]): Map<string, number> {
   return map;
 }
 
+// ─── Component ───────────────────────────────────────────────────────────────
+
 interface AssortmentCalendarProps {
-  defaultItemTypes?: string[];
   className?: string;
 }
 
-export function AssortmentCalendar({ defaultItemTypes = [], className }: AssortmentCalendarProps) {
+export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
   const planItems = usePlanStore((s) => s.planItems);
   const scheduledItems = usePlanStore((s) => s.scheduledItems);
   const addPlanItem = usePlanStore((s) => s.addPlanItem);
@@ -111,11 +135,27 @@ export function AssortmentCalendar({ defaultItemTypes = [], className }: Assortm
 
   const tableRef = useRef<HTMLDivElement>(null);
 
-  const itemTypes = planItems.length > 0 ? planItems : defaultItemTypes;
+  // Derive unique rows only from scheduled items
+  const activeRows = useMemo(() => {
+    const seen = new Set<string>();
+    const result: string[] = [];
+    for (const item of scheduledItems) {
+      if (!seen.has(item.row)) {
+        seen.add(item.row);
+        result.push(item.row);
+      }
+    }
+    // Stable order: Kitchen first, then Lighting, then others
+    result.sort((a, b) => {
+      const priority: Record<string, number> = { "Kitchen & Dining": 0, Lighting: 1 };
+      return (priority[a] ?? 99) - (priority[b] ?? 99);
+    });
+    return result;
+  }, [scheduledItems]);
 
   const laneMaps = useMemo(() => {
     const result: Record<string, Map<string, number>> = {};
-    for (const row of CALENDAR_ROWS) {
+    for (const row of activeRows) {
       const rowItems = scheduledItems
         .filter((item) => item.row === row)
         .map((item) =>
@@ -124,16 +164,16 @@ export function AssortmentCalendar({ defaultItemTypes = [], className }: Assortm
       result[row] = allocateLanes(rowItems);
     }
     return result;
-  }, [scheduledItems, resizeOverride]);
+  }, [scheduledItems, activeRows, resizeOverride]);
 
   const rowLaneCounts = useMemo(() => {
     const result: Record<string, number> = {};
-    for (const row of CALENDAR_ROWS) {
+    for (const row of activeRows) {
       const vals = [...(laneMaps[row]?.values() ?? [])];
       result[row] = vals.length === 0 ? 1 : Math.max(...vals) + 1;
     }
     return result;
-  }, [laneMaps]);
+  }, [laneMaps, activeRows]);
 
   const handleDragStart = useCallback((label: string) => setDraggingItem(label), []);
   const handleDragEnd = useCallback(() => {
@@ -144,7 +184,7 @@ export function AssortmentCalendar({ defaultItemTypes = [], className }: Assortm
   const handleDrop = useCallback(
     (row: string, month: number) => {
       if (!draggingItem) return;
-      scheduleItem(draggingItem, row, month, 2);
+      scheduleItem(draggingItem, row, month, 3);
       if (!planItems.includes(draggingItem)) addPlanItem(draggingItem);
       setDraggingItem(null);
       setDropTarget(null);
@@ -152,11 +192,21 @@ export function AssortmentCalendar({ defaultItemTypes = [], className }: Assortm
     [draggingItem, scheduleItem, addPlanItem, planItems],
   );
 
+  // When dropping on the empty body, derive row from item name
+  const handleDropOnEmpty = useCallback(
+    (month: number) => {
+      if (!draggingItem) return;
+      const row = rowForItem(draggingItem);
+      handleDrop(row, month);
+    },
+    [draggingItem, handleDrop],
+  );
+
   function handleResizeStart(e: React.MouseEvent, item: ScheduledCalendarItem) {
     e.preventDefault();
     e.stopPropagation();
     if (!tableRef.current) return;
-    const containerWidth = tableRef.current.clientWidth - LABEL_COL_WIDTH;
+    const containerWidth = tableRef.current.clientWidth;
     const cellWidth = containerWidth / 12;
     const startX = e.clientX;
     const initialSpan = item.span;
@@ -181,13 +231,13 @@ export function AssortmentCalendar({ defaultItemTypes = [], className }: Assortm
   }
 
   async function handleGenerateCalendar() {
-    if (itemTypes.length === 0) return;
+    if (planItems.length === 0) return;
     setGenerating(true);
     try {
       const res = await fetch("/api/generate-calendar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ planItems: itemTypes }),
+        body: JSON.stringify({ planItems }),
       });
       if (!res.ok) throw new Error("API error");
       const { scheduledItems: generated } = (await res.json()) as {
@@ -205,13 +255,20 @@ export function AssortmentCalendar({ defaultItemTypes = [], className }: Assortm
     }
   }
 
+  // ─── Shared header cell style ───────────────────────────────────────────────
+  const headerYellow = "bg-[#F9C74F] text-[#5C4A00]";
+  const headerYellowLight = "bg-[#FEF08A]/60 text-[#5C4A00]";
+  const headerWhite = "bg-white text-[var(--color-muted-foreground)]";
+
   return (
     <div className={cn("space-y-[var(--space-4)]", className)}>
-      {/* Item types panel */}
+      {/* ── Assortment Plan strip ─────────────────────────────────────────── */}
       <Card className="p-[var(--space-4)]">
-        <h3 className="mb-3 text-[var(--text-section-size)] font-semibold">Assortment Plan</h3>
+        <div className="mb-3 flex items-center gap-2">
+          <h3 className="text-[var(--text-section-size)] font-semibold">Assortment Plan</h3>
+        </div>
         <div className="flex flex-wrap gap-2">
-          {itemTypes.map((item) => (
+          {planItems.map((item) => (
             <span
               key={item}
               draggable
@@ -234,20 +291,18 @@ export function AssortmentCalendar({ defaultItemTypes = [], className }: Assortm
               </button>
             </span>
           ))}
-          {itemTypes.length === 0 && (
+          {planItems.length === 0 && (
             <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
               Add items from the Gap Analysis page, then generate or drag them onto the calendar.
             </p>
           )}
         </div>
         <div className="mt-3 flex gap-2">
-          <Button variant="outline" size="sm">
-            + Item Types
-          </Button>
+          <Button variant="outline" size="sm">+ Item Types</Button>
           <Button
             size="sm"
             onClick={handleGenerateCalendar}
-            disabled={generating || itemTypes.length === 0}
+            disabled={generating || planItems.length === 0}
           >
             {generating ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -259,7 +314,7 @@ export function AssortmentCalendar({ defaultItemTypes = [], className }: Assortm
         </div>
       </Card>
 
-      {/* Calendar grid */}
+      {/* ── Calendar grid ─────────────────────────────────────────────────── */}
       <Card className="overflow-hidden">
         <div className="flex items-center justify-between border-b border-[var(--color-border)] p-[var(--space-4)]">
           <h3 className="text-[var(--text-section-size)] font-semibold">Calendar Plan 2025-26</h3>
@@ -274,67 +329,80 @@ export function AssortmentCalendar({ defaultItemTypes = [], className }: Assortm
         <div className="overflow-x-auto" ref={tableRef}>
           <table className="w-full min-w-[860px] border-collapse text-center text-[var(--text-caption-size)]">
             <colgroup>
-              <col style={{ width: `${LABEL_COL_WIDTH}px`, minWidth: `${LABEL_COL_WIDTH}px` }} />
+              {/* Label column */}
+              <col style={{ width: "110px", minWidth: "110px" }} />
               {MONTHS.map((_, i) => (
                 <col key={i} />
               ))}
             </colgroup>
 
             <thead>
-              {/* Quarters — blue */}
-              <tr className="bg-blue-50">
-                <th className="border border-[var(--color-border)] px-2 py-1.5 text-left text-[var(--text-caption-size)] font-medium text-blue-600" />
+              {/* ── Quarters row ── */}
+              <tr>
+                <th className={cn("border border-[var(--color-border)] px-2 py-1.5 text-left text-[var(--text-caption-size)] font-semibold", headerYellow)}>
+                  Quarters
+                </th>
                 {QUARTER_SPANS.map((q) => (
                   <th
                     key={q.label}
-                    colSpan={q.span}
-                    className="border border-[var(--color-border)] px-2 py-1.5 text-[var(--text-caption-size)] font-semibold text-blue-700"
+                    colSpan={q.months}
+                    className={cn(
+                      "border border-[var(--color-border)] px-2 py-1.5 text-[var(--text-caption-size)] font-bold tracking-wide",
+                      headerYellow,
+                    )}
                   >
                     {q.label}
                   </th>
                 ))}
               </tr>
 
-              {/* Months — amber */}
-              <tr className="bg-amber-50">
-                <th className="border border-[var(--color-border)] px-2 py-1 text-left text-[var(--text-caption-size)] font-medium text-amber-700">
+              {/* ── Months row ── */}
+              <tr>
+                <th className={cn("border border-[var(--color-border)] px-2 py-1.5 text-left text-[var(--text-caption-size)] font-semibold", headerYellowLight)}>
                   Months
                 </th>
-                {MONTHS.map((m) => (
+                {MONTHS.map((m, i) => (
                   <th
-                    key={m}
-                    className="border border-[var(--color-border)] px-1 py-1 text-[var(--text-caption-size)] font-medium text-amber-700"
+                    key={i}
+                    className={cn(
+                      "border border-[var(--color-border)] px-1 py-1.5 text-[var(--text-caption-size)] font-medium",
+                      headerYellowLight,
+                      QUARTER_BOUNDARIES.has(i) && "border-r-2 border-r-[#5C4A00]/30",
+                    )}
                   >
                     {m}
                   </th>
                 ))}
               </tr>
 
-              {/* Seasons — orange */}
-              <tr className="bg-orange-50">
-                <td className="border border-[var(--color-border)] px-2 py-1 text-left text-[var(--text-caption-size)] font-medium text-orange-700">
+              {/* ── Season row ── */}
+              <tr>
+                <td className={cn("border border-[var(--color-border)] px-2 py-1.5 text-left text-[var(--text-caption-size)] font-semibold", headerWhite)}>
                   Season
                 </td>
-                {SEASON_SPANS.map((s) => (
+                {SEASON_SPANS.map((s, i) => (
                   <td
-                    key={s.label}
+                    key={i}
                     colSpan={s.span}
-                    className="border border-[var(--color-border)] px-1 py-1 text-[var(--text-caption-size)] text-orange-600"
+                    className="border border-[var(--color-border)] px-1 py-1.5 text-[var(--text-caption-size)] font-medium text-[var(--color-muted-foreground)]"
                   >
                     {s.label}
                   </td>
                 ))}
               </tr>
 
-              {/* Events — purple */}
-              <tr className="bg-purple-50">
-                <td className="border border-[var(--color-border)] px-2 py-1 text-left text-[var(--text-caption-size)] font-medium text-purple-700">
+              {/* ── Events row ── */}
+              <tr>
+                <td className={cn("border border-[var(--color-border)] px-2 py-1.5 text-left text-[var(--text-caption-size)] font-semibold", headerWhite)}>
                   Events
                 </td>
                 {EVENTS_PER_MONTH.map((ev, i) => (
                   <td
                     key={i}
-                    className="border border-[var(--color-border)] px-0.5 py-1 text-[9px] leading-tight text-purple-600"
+                    className={cn(
+                      "border border-[var(--color-border)] px-0.5 py-1 text-[9px] leading-tight text-[var(--color-muted-foreground)]",
+                      QUARTER_BOUNDARIES.has(i) && "border-r-2 border-r-[var(--color-border)]",
+                    )}
                   >
                     {ev}
                   </td>
@@ -343,126 +411,161 @@ export function AssortmentCalendar({ defaultItemTypes = [], className }: Assortm
             </thead>
 
             <tbody>
-              {CALENDAR_ROWS.map((row) => {
-                const rowItems = scheduledItems.filter((item) => item.row === row);
-                const laneMap = laneMaps[row] ?? new Map();
-                const numLanes = rowLaneCounts[row] ?? 1;
-                const rowHeight = numLanes * LANE_HEIGHT;
+              {activeRows.length > 0 ? (
+                activeRows.map((row) => {
+                  const rowItems = scheduledItems.filter((item) => item.row === row);
+                  const laneMap = laneMaps[row] ?? new Map();
+                  const numLanes = rowLaneCounts[row] ?? 1;
+                  const rowHeight = numLanes * LANE_HEIGHT;
+                  const colors = ROW_COLORS[row] ?? DEFAULT_ROW_COLOR;
 
-                return (
-                  <tr key={row}>
-                    <td
-                      className="border border-[var(--color-border)] bg-[var(--color-muted)] px-2 pt-2 text-left align-top text-[var(--text-caption-size)] font-medium"
-                      style={{ height: `${rowHeight}px` }}
-                    >
-                      {row}
-                    </td>
-                    <td
-                      colSpan={12}
-                      className="border border-[var(--color-border)] p-0"
-                      style={{ position: "relative", height: `${rowHeight}px` }}
-                    >
-                      {/* Drop target grid */}
-                      <div
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          display: "grid",
-                          gridTemplateColumns: "repeat(12, 1fr)",
-                        }}
+                  return (
+                    <tr key={row}>
+                      {/* Row label */}
+                      <td
+                        className="border border-[var(--color-border)] bg-[var(--color-muted)]/40 px-2 pt-2 text-left align-top text-[var(--text-caption-size)] font-medium text-[var(--color-foreground)]"
+                        style={{ height: `${rowHeight}px` }}
                       >
-                        {MONTHS.map((_, month) => (
-                          <div
-                            key={month}
-                            className={cn(
-                              "h-full border-r border-[var(--color-border)] last:border-r-0 transition-colors",
-                              dropTarget?.row === row && dropTarget.month === month
-                                ? "bg-[var(--color-primary-light)]"
-                                : draggingItem
-                                  ? "hover:bg-[var(--color-muted)]/40"
-                                  : "",
-                            )}
-                            onDragOver={(e) => {
-                              e.preventDefault();
-                              setDropTarget({ row, month });
-                            }}
-                            onDragLeave={() => setDropTarget(null)}
-                            onDrop={(e) => {
-                              e.preventDefault();
-                              handleDrop(row, month);
-                            }}
-                          />
-                        ))}
-                      </div>
+                        {row}
+                      </td>
 
-                      {/* Placed items */}
-                      {rowItems.map((item) => {
-                        const lane = laneMap.get(item.id) ?? 0;
-                        const activeSpan =
-                          resizeOverride?.id === item.id ? resizeOverride.span : item.span;
-                        const colors = ITEM_COLORS[item.row] ?? DEFAULT_COLOR;
-                        return (
-                          <div
-                            key={item.id}
-                            style={{
-                              position: "absolute",
-                              left: `${(item.startMonth / 12) * 100}%`,
-                              width: `${(activeSpan / 12) * 100}%`,
-                              top: `${lane * LANE_HEIGHT + 5}px`,
-                              height: `${LANE_HEIGHT - 10}px`,
-                              zIndex: resizeOverride?.id === item.id ? 10 : 1,
-                            }}
-                            className={cn(
-                              "group flex items-center overflow-hidden rounded-[var(--radius-sm)] border px-2 text-[10px] font-medium shadow-sm transition-shadow",
-                              colors.bg,
-                              colors.border,
-                              colors.text,
-                              resizeOverride?.id === item.id && "shadow-md",
-                            )}
-                          >
-                            <span className="flex-1 truncate">{item.label}</span>
-
-                            {/* Delete button — revealed on hover */}
-                            <button
-                              type="button"
-                              onClick={() => removeScheduledItem(item.id)}
-                              aria-label={`Remove ${item.label}`}
-                              className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100"
-                            >
-                              <Trash2 className="h-3 w-3" />
-                            </button>
-
-                            {/* Right-edge resize handle */}
+                      {/* Droppable cells (one per month) with absolute-positioned items on top */}
+                      <td
+                        colSpan={12}
+                        className="border border-[var(--color-border)] p-0"
+                        style={{ position: "relative", height: `${rowHeight}px` }}
+                      >
+                        {/* Drop target grid */}
+                        <div
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            display: "grid",
+                            gridTemplateColumns: "repeat(12, 1fr)",
+                          }}
+                        >
+                          {MONTHS.map((_, month) => (
                             <div
+                              key={month}
                               className={cn(
-                                "absolute right-0 top-0 h-full w-2.5 cursor-col-resize rounded-r-[var(--radius-sm)] opacity-0 transition-opacity group-hover:opacity-100",
-                                colors.handle,
+                                "h-full transition-colors",
+                                month < 11 ? (QUARTER_BOUNDARIES.has(month) ? "border-r-2 border-r-[var(--color-border)]" : "border-r border-[var(--color-border)]") : "",
+                                dropTarget?.row === row && dropTarget.month === month
+                                  ? "bg-[var(--color-primary)]/10"
+                                  : draggingItem
+                                    ? "hover:bg-[var(--color-muted)]/40"
+                                    : "",
                               )}
-                              onMouseDown={(e) => handleResizeStart(e, item)}
+                              onDragOver={(e) => {
+                                e.preventDefault();
+                                setDropTarget({ row, month });
+                              }}
+                              onDragLeave={() => setDropTarget(null)}
+                              onDrop={(e) => {
+                                e.preventDefault();
+                                handleDrop(row, month);
+                              }}
                             />
-                          </div>
-                        );
-                      })}
-
-                      {rowItems.length === 0 && draggingItem && (
-                        <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
-                          Drop here to schedule
+                          ))}
                         </div>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
 
-              {scheduledItems.length === 0 && !draggingItem && (
+                        {/* Scheduled item bars */}
+                        {rowItems.map((item) => {
+                          const lane = laneMap.get(item.id) ?? 0;
+                          const activeSpan =
+                            resizeOverride?.id === item.id ? resizeOverride.span : item.span;
+                          return (
+                            <div
+                              key={item.id}
+                              style={{
+                                position: "absolute",
+                                left: `${(item.startMonth / 12) * 100}%`,
+                                width: `${(activeSpan / 12) * 100}%`,
+                                top: `${lane * LANE_HEIGHT + 6}px`,
+                                height: `${LANE_HEIGHT - 12}px`,
+                                zIndex: resizeOverride?.id === item.id ? 10 : 1,
+                              }}
+                              className={cn(
+                                "group flex items-center overflow-hidden rounded-[var(--radius-sm)] border px-2 text-[10px] font-medium shadow-sm transition-shadow",
+                                colors.bg,
+                                colors.border,
+                                colors.text,
+                                resizeOverride?.id === item.id && "shadow-md",
+                              )}
+                            >
+                              <span className="flex-1 truncate">{item.label}</span>
+                              <button
+                                type="button"
+                                onClick={() => removeScheduledItem(item.id)}
+                                aria-label={`Remove ${item.label}`}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </button>
+                              <div
+                                className={cn(
+                                  "absolute right-0 top-0 h-full w-2.5 cursor-col-resize rounded-r-[var(--radius-sm)] opacity-0 transition-opacity group-hover:opacity-100",
+                                  colors.handle,
+                                )}
+                                onMouseDown={(e) => handleResizeStart(e, item)}
+                              />
+                            </div>
+                          );
+                        })}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                /* ── Empty body — shown until first item is dropped ── */
                 <tr>
+                  <td className="border border-[var(--color-border)] bg-[var(--color-muted)]/20 px-2 py-1 text-left text-[var(--text-caption-size)] font-medium text-[var(--color-muted-foreground)]">
+                    {/* label column intentionally empty */}
+                  </td>
                   <td
-                    colSpan={13}
-                    className="border border-[var(--color-border)] bg-[var(--color-muted)]/30 px-4 py-10 text-center text-[var(--text-body-size)] text-[var(--color-muted-foreground)]"
+                    colSpan={12}
+                    className="border border-[var(--color-border)] p-0"
+                    style={{ position: "relative", height: "160px" }}
                   >
-                    Drag items onto the calendar, or click{" "}
-                    <strong className="text-[var(--color-foreground)]">Generate Calendar</strong> to
-                    let Beacon schedule them automatically.
+                    {/* Month drop cells */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        display: "grid",
+                        gridTemplateColumns: "repeat(12, 1fr)",
+                      }}
+                    >
+                      {MONTHS.map((_, month) => (
+                        <div
+                          key={month}
+                          className={cn(
+                            "h-full transition-colors",
+                            month < 11 ? (QUARTER_BOUNDARIES.has(month) ? "border-r-2 border-r-[var(--color-border)]" : "border-r border-[var(--color-border)]") : "",
+                            dropTarget?.month === month && dropTarget.row === "empty"
+                              ? "bg-[var(--color-primary)]/10"
+                              : draggingItem
+                                ? "hover:bg-[var(--color-muted)]/40"
+                                : "",
+                          )}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDropTarget({ row: "empty", month });
+                          }}
+                          onDragLeave={() => setDropTarget(null)}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            handleDropOnEmpty(month);
+                          }}
+                        />
+                      ))}
+                    </div>
+                    {/* Centre message */}
+                    <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1">
+                      <p className="text-[var(--text-body-size)] font-medium text-[var(--color-muted-foreground)]">
+                        Drag &amp; Drop Item types to plan your Assortment Calendar
+                      </p>
+                    </div>
                   </td>
                 </tr>
               )}

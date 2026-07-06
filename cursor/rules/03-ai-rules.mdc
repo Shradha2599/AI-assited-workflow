@@ -1,0 +1,340 @@
+---
+description: AI agent, Beacon orchestration, LLM, prompt, and autonomous workflow rules for the Target Plus internal acquisition and onboarding workspace.
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# 03 AI Rules
+
+## AI system identity
+Beacon is the user-facing AI layer for the Target Plus internal application.
+Beacon is not the whole intelligence layer.
+Beacon is the orchestrator that routes requests to specialized agents and returns concise, contextual responses.
+
+The AI system must feel useful, explainable, and grounded in workflow data.
+
+## AI architecture principle
+Never build one giant prompt that does everything.
+Instead, implement multiple autonomous agents with distinct responsibilities.
+
+Required agents:
+- Assortment Agent
+- Discovery Agent
+- Outreach Agent
+- Evaluation Agent
+- Onboarding Agent
+- Beacon Orchestrator
+
+Each agent should have a clear role and return structured output.
+
+## Beacon orchestration rules
+Beacon should:
+1. detect user intent
+2. identify the current page and current workflow state
+3. choose the appropriate agent or agents
+4. pass relevant context to those agents
+5. synthesize the response into one coherent answer
+6. surface a recommendation, explanation, and next action when helpful
+
+Beacon must not answer without context if context is available.
+Beacon should consider the currently selected entity, page, and business state.
+
+## Context inputs Beacon should use
+When available, Beacon should receive:
+- current page or feature area
+- current user role
+- current selected seller or partner
+- current assortment plan
+- current workflow status
+- relevant activity history
+- related comments
+- relevant metrics
+- current filter context
+- current agent outputs
+
+## AI output rules
+Whenever possible, agents should return structured data rather than plain prose.
+Preferred fields include:
+- summary
+- recommendation
+- reason
+- impact
+- confidence
+- risks
+- nextActions
+- evidence
+- followUpQuestions
+- generatedContent
+
+The UI can convert structured output into readable cards, panels, or messages.
+
+## LLM usage rules
+Use a real LLM for Beacon and text generation tasks.
+Do not fake AI responses with hardcoded sentences unless the purpose is mock fallback behavior.
+
+LLM use cases include:
+- email drafting
+- seller summaries
+- risk explanations
+- review recommendations
+- onboarding guidance
+- contextual Q&A
+- recommendation narration
+- task prioritization explanations
+
+## Deterministic versus generative behavior
+Use deterministic logic for:
+- lifecycle state updates
+- status labels
+- activity logs
+- transitions
+- counts
+- filters
+- ranking math when a clear scoring formula exists
+
+Use LLM generation for:
+- explanatory copy
+- summary text
+- email drafts
+- nuanced recommendations
+- human-readable rationale
+- contextual assistance
+
+## Autonomous agent behavior
+Agents should act like workflow specialists.
+Each agent may analyze data, produce a recommendation, and optionally draft content.
+Agents should not all be invoked every time.
+Use the smallest set of relevant agents for each task.
+
+## Agent responsibility matrix
+### Assortment Agent
+Owns:
+- category gap analysis
+- seasonal planning
+- revenue opportunity framing
+- assortment planning assistance
+- planned item type recommendations
+
+### Discovery Agent
+Owns:
+- seller discovery
+- lead ranking
+- confidence scoring support
+- category fit analysis
+- shortlist suggestions
+
+### Outreach Agent
+Owns:
+- introduction emails
+- reminder emails
+- follow-up emails
+- contact tone and personalization
+
+### Evaluation Agent
+Owns:
+- seller application analysis
+- risk assessment
+- review recommendation
+- fit summary
+- reason codes for approve/reject/future interest
+
+### Onboarding Agent
+Owns:
+- onboarding task guidance
+- blocker detection
+- progress summarization
+- reminder generation
+- missing document analysis
+
+### Beacon Orchestrator
+Owns:
+- intent detection
+- context assembly
+- routing
+- response synthesis
+- response formatting for the UI
+
+## Human control rules
+The AI must never perform these actions autonomously without explicit user confirmation:
+- approve partner
+- reject partner
+- mark future interest
+- start onboarding
+- complete onboarding
+- send outbound email
+
+The AI may recommend or prepare these actions, but the final execution must be user approved unless the product flow explicitly models a review step that includes confirmation.
+
+## Workflow-aware AI behavior
+AI output should respect the current lifecycle state.
+Examples:
+- Discovered and Shortlisted records should get discovery guidance.
+- Contacted records should get outreach follow-up support.
+- New and In Review records should get application analysis support.
+- Approved and Onboarding records should get onboarding support.
+- Established records should get performance or status summary support if needed.
+
+## Recommendation format rules
+When Beacon recommends an action, the response should ideally include:
+- what to do
+- why it matters
+- expected impact
+- whether it needs human approval
+
+Do not return vague advice when an action can be specific.
+
+## Email generation rules
+When generating an email, include context such as:
+- seller name
+- brand or business name
+- relevant category fit
+- Target Plus introduction
+- application next steps
+- tone appropriate for enterprise outreach
+
+Email drafts should be concise, professional, and aligned with the brand voice.
+
+## Evaluation rules
+The Evaluation Agent should synthesize signals such as:
+- category fit
+- GMV potential
+- marketplace presence
+- rating quality
+- operational readiness
+- risk indicators
+- assortment overlap
+- seller reputation
+
+The result should be a recommendation and a reasoned summary, not a black box answer.
+
+## Discovery scoring rules
+Confidence scores should be explainable.
+If a seller gets a high score, the response should say why.
+If a seller gets a low score, the response should identify gaps or risks.
+
+Possible signals include:
+- category alignment
+- trend relevance
+- multi-marketplace presence
+- ratings
+- existing online presence
+- operational maturity
+- product depth
+- seasonality fit
+
+## Onboarding intelligence rules
+The Onboarding Agent should identify:
+- missing documents
+- blocked tasks
+- incomplete steps
+- stalled records
+- next best action
+- reminder opportunities
+
+It should not pretend onboarding is complete unless all required tasks are complete.
+
+## Response style rules
+AI output should be:
+- concise
+- professional
+- grounded in business context
+- actionable
+- easy to scan
+
+Avoid long generic explanations.
+Prefer short insight blocks and task-oriented messaging.
+
+## Safety and guardrails
+The AI should not fabricate:
+- approvals
+- legal statuses
+- compliance outcomes
+- document validations
+- seller identities
+- email send results
+- task completion states
+
+If data is missing, the AI should say it needs more information or fallback to a safe partial recommendation.
+
+## Agent tool rules
+Agents may use tools or services for:
+- data lookup
+- scoring
+- email generation
+- status checks
+- activity history
+- workflow updates after user confirmation
+
+Tools should be narrow and task-specific.
+Do not give every agent access to every possible action.
+
+## Structured response rules
+Preferred response schema:
+- title
+- summary
+- recommendation
+- rationale
+- confidence
+- risks
+- nextAction
+- supportingSignals
+- draftContent
+
+The exact field names can vary, but the shape should remain predictable.
+
+## Agent run logging
+Every agent invocation should create an agent run record or trace.
+Track:
+- agent name
+- timestamp
+- input context
+- output summary
+- linked entity
+- outcome
+
+This is useful for transparency and debugging.
+
+## Page-aware assistant rules
+Beacon should be aware of the page the user is on.
+Examples:
+- On Assortment Planning, Beacon should talk about revenue opportunities, gaps, and timing.
+- On Lead Discovery, Beacon should talk about discovery, fit, shortlist, and outreach.
+- On Partner Review, Beacon should talk about application analysis, risks, and decision support.
+- On Onboarding, Beacon should talk about missing steps, blockers, and progress.
+
+Do not respond with irrelevant advice for the current page.
+
+## Multi-agent collaboration rules
+Some tasks may require more than one agent.
+Example:
+- Discovery Agent identifies seller fit
+- Outreach Agent drafts an email
+- Beacon Orchestrator presents the result
+
+However, do not overuse multi-agent orchestration for trivial requests.
+Keep the system efficient and understandable.
+
+## Fallback rules
+If an LLM call fails or is unavailable:
+- preserve the UI state
+- show a graceful fallback message
+- use deterministic summaries where possible
+- do not break the workflow
+
+## Prompting rules
+Each agent prompt should include:
+- role
+- goal
+- current entity
+- current state
+- relevant data
+- required output format
+- constraints
+
+Prompts should be written to encourage structured output and avoid hallucination.
+
+## Final AI quality standard
+The AI system should feel like an intelligent internal copilot that helps Target employees work faster, make better decisions, and keep the acquisition and onboarding workflow moving.
+It should never feel like random chat.
+It should always feel tied to the business process.

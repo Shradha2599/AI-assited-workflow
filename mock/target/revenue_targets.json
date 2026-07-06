@@ -1,0 +1,202 @@
+[
+  {
+    "categoryId": "cat_kitchen_dining",
+    "quarter": "Q1",
+    "targetRevenue": 1107517
+  },
+  {
+    "categoryId": "cat_kitchen_dining",
+    "quarter": "Q2",
+    "targetRevenue": 2623380
+  },
+  {
+    "categoryId": "cat_kitchen_dining",
+    "quarter": "Q3",
+    "targetRevenue": 2791045
+  },
+  {
+    "categoryId": "cat_kitchen_dining",
+    "quarter": "Q4",
+    "targetRevenue": 1481215
+  },
+  {
+    "categoryId": "cat_home_decor",
+    "quarter": "Q1",
+    "targetRevenue": 2100444
+  },
+  {
+    "categoryId": "cat_home_decor",
+    "quarter": "Q2",
+    "targetRevenue": 2936649
+  },
+  {
+    "categoryId": "cat_home_decor",
+    "quarter": "Q3",
+    "targetRevenue": 1105424
+  },
+  {
+    "categoryId": "cat_home_decor",
+    "quarter": "Q4",
+    "targetRevenue": 1433982
+  },
+  {
+    "categoryId": "cat_outdoor_living",
+    "quarter": "Q1",
+    "targetRevenue": 1616231
+  },
+  {
+    "categoryId": "cat_outdoor_living",
+    "quarter": "Q2",
+    "targetRevenue": 2880483
+  },
+  {
+    "categoryId": "cat_outdoor_living",
+    "quarter": "Q3",
+    "targetRevenue": 2640076
+  },
+  {
+    "categoryId": "cat_outdoor_living",
+    "quarter": "Q4",
+    "targetRevenue": 2341426
+  },
+  {
+    "categoryId": "cat_storage_org",
+    "quarter": "Q1",
+    "targetRevenue": 2081728
+  },
+  {
+    "categoryId": "cat_storage_org",
+    "quarter": "Q2",
+    "targetRevenue": 2148945
+  },
+  {
+    "categoryId": "cat_storage_org",
+    "quarter": "Q3",
+    "targetRevenue": 1972662
+  },
+  {
+    "categoryId": "cat_storage_org",
+    "quarter": "Q4",
+    "targetRevenue": 1991228
+  },
+  {
+    "categoryId": "cat_furniture",
+    "quarter": "Q1",
+    "targetRevenue": 2603765
+  },
+  {
+    "categoryId": "cat_furniture",
+    "quarter": "Q2",
+    "targetRevenue": 1901033
+  },
+  {
+    "categoryId": "cat_furniture",
+    "quarter": "Q3",
+    "targetRevenue": 2161798
+  },
+  {
+    "categoryId": "cat_furniture",
+    "quarter": "Q4",
+    "targetRevenue": 2926612
+  },
+  {
+    "categoryId": "cat_party_supplies",
+    "quarter": "Q1",
+    "targetRevenue": 2554098
+  },
+  {
+    "categoryId": "cat_party_supplies",
+    "quarter": "Q2",
+    "targetRevenue": 1402236
+  },
+  {
+    "categoryId": "cat_party_supplies",
+    "quarter": "Q3",
+    "targetRevenue": 1601843
+  },
+  {
+    "categoryId": "cat_party_supplies",
+    "quarter": "Q4",
+    "targetRevenue": 1578038
+  },
+  {
+    "categoryId": "cat_holiday_decor",
+    "quarter": "Q1",
+    "targetRevenue": 1215288
+  },
+  {
+    "categoryId": "cat_holiday_decor",
+    "quarter": "Q2",
+    "targetRevenue": 1771880
+  },
+  {
+    "categoryId": "cat_holiday_decor",
+    "quarter": "Q3",
+    "targetRevenue": 2999688
+  },
+  {
+    "categoryId": "cat_holiday_decor",
+    "quarter": "Q4",
+    "targetRevenue": 2984886
+  },
+  {
+    "categoryId": "cat_lighting",
+    "quarter": "Q1",
+    "targetRevenue": 1822852
+  },
+  {
+    "categoryId": "cat_lighting",
+    "quarter": "Q2",
+    "targetRevenue": 2799961
+  },
+  {
+    "categoryId": "cat_lighting",
+    "quarter": "Q3",
+    "targetRevenue": 2296008
+  },
+  {
+    "categoryId": "cat_lighting",
+    "quarter": "Q4",
+    "targetRevenue": 2787270
+  },
+  {
+    "categoryId": "cat_bedding",
+    "quarter": "Q1",
+    "targetRevenue": 2692742
+  },
+  {
+    "categoryId": "cat_bedding",
+    "quarter": "Q2",
+    "targetRevenue": 1485508
+  },
+  {
+    "categoryId": "cat_bedding",
+    "quarter": "Q3",
+    "targetRevenue": 3197578
+  },
+  {
+    "categoryId": "cat_bedding",
+    "quarter": "Q4",
+    "targetRevenue": 1707013
+  },
+  {
+    "categoryId": "cat_bath",
+    "quarter": "Q1",
+    "targetRevenue": 1923769
+  },
+  {
+    "categoryId": "cat_bath",
+    "quarter": "Q2",
+    "targetRevenue": 1280484
+  },
+  {
+    "categoryId": "cat_bath",
+    "quarter": "Q3",
+    "targetRevenue": 1632724
+  },
+  {
+    "categoryId": "cat_bath",
+    "quarter": "Q4",
+    "targetRevenue": 2334264
+  }
+]

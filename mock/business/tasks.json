@@ -1,0 +1,1230 @@
+[
+  {
+    "id": "task_001",
+    "partnerId": "partner_001",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-09",
+    "dependencies": [],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_002",
+    "partnerId": "partner_001",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-18",
+    "dependencies": [
+      "task_001"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_003",
+    "partnerId": "partner_001",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-06",
+    "dependencies": [
+      "task_002"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_004",
+    "partnerId": "partner_001",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-12",
+    "dependencies": [
+      "task_003"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_005",
+    "partnerId": "partner_001",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-05",
+    "dependencies": [
+      "task_004"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_006",
+    "partnerId": "partner_001",
+    "title": "Create Item Listings",
+    "description": "Create Item Listings required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-11",
+    "dependencies": [
+      "task_005"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_007",
+    "partnerId": "partner_001",
+    "title": "Upload Brand Assets",
+    "description": "Upload Brand Assets required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-11",
+    "dependencies": [
+      "task_006"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_008",
+    "partnerId": "partner_002",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-15",
+    "dependencies": [],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_009",
+    "partnerId": "partner_002",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-15",
+    "dependencies": [
+      "task_008"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_010",
+    "partnerId": "partner_002",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-16",
+    "dependencies": [
+      "task_009"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_011",
+    "partnerId": "partner_002",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-12",
+    "dependencies": [
+      "task_010"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_012",
+    "partnerId": "partner_002",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-10",
+    "dependencies": [
+      "task_011"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_013",
+    "partnerId": "partner_002",
+    "title": "Create Item Listings",
+    "description": "Create Item Listings required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-23",
+    "dependencies": [
+      "task_012"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_014",
+    "partnerId": "partner_003",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-07",
+    "dependencies": [],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_015",
+    "partnerId": "partner_003",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-17",
+    "dependencies": [
+      "task_014"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_016",
+    "partnerId": "partner_003",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-22",
+    "dependencies": [
+      "task_015"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_017",
+    "partnerId": "partner_003",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-04",
+    "dependencies": [
+      "task_016"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_018",
+    "partnerId": "partner_003",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-09",
+    "dependencies": [
+      "task_017"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_019",
+    "partnerId": "partner_003",
+    "title": "Create Item Listings",
+    "description": "Create Item Listings required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-03",
+    "dependencies": [
+      "task_018"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_020",
+    "partnerId": "partner_003",
+    "title": "Upload Brand Assets",
+    "description": "Upload Brand Assets required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-19",
+    "dependencies": [
+      "task_019"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_021",
+    "partnerId": "partner_004",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-23",
+    "dependencies": [],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_022",
+    "partnerId": "partner_004",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-19",
+    "dependencies": [
+      "task_021"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_023",
+    "partnerId": "partner_004",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-27",
+    "dependencies": [
+      "task_022"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_024",
+    "partnerId": "partner_004",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-07",
+    "dependencies": [
+      "task_023"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_025",
+    "partnerId": "partner_004",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-19",
+    "dependencies": [
+      "task_024"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_026",
+    "partnerId": "partner_004",
+    "title": "Create Item Listings",
+    "description": "Create Item Listings required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-13",
+    "dependencies": [
+      "task_025"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_027",
+    "partnerId": "partner_004",
+    "title": "Upload Brand Assets",
+    "description": "Upload Brand Assets required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-20",
+    "dependencies": [
+      "task_026"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_028",
+    "partnerId": "partner_005",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-17",
+    "dependencies": [],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_029",
+    "partnerId": "partner_005",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-12",
+    "dependencies": [
+      "task_028"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_030",
+    "partnerId": "partner_005",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-02",
+    "dependencies": [
+      "task_029"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_031",
+    "partnerId": "partner_005",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-06",
+    "dependencies": [
+      "task_030"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_032",
+    "partnerId": "partner_006",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-12",
+    "dependencies": [],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_033",
+    "partnerId": "partner_006",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-18",
+    "dependencies": [
+      "task_032"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_034",
+    "partnerId": "partner_006",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-06",
+    "dependencies": [
+      "task_033"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_035",
+    "partnerId": "partner_006",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-04",
+    "dependencies": [
+      "task_034"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_036",
+    "partnerId": "partner_006",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-10",
+    "dependencies": [
+      "task_035"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_037",
+    "partnerId": "partner_006",
+    "title": "Create Item Listings",
+    "description": "Create Item Listings required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-14",
+    "dependencies": [
+      "task_036"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_038",
+    "partnerId": "partner_007",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-08",
+    "dependencies": [],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_039",
+    "partnerId": "partner_007",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-08",
+    "dependencies": [
+      "task_038"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_040",
+    "partnerId": "partner_007",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-27",
+    "dependencies": [
+      "task_039"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_041",
+    "partnerId": "partner_007",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-25",
+    "dependencies": [
+      "task_040"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_042",
+    "partnerId": "partner_008",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-14",
+    "dependencies": [],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_043",
+    "partnerId": "partner_008",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-25",
+    "dependencies": [
+      "task_042"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_044",
+    "partnerId": "partner_008",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-22",
+    "dependencies": [
+      "task_043"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_045",
+    "partnerId": "partner_008",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-17",
+    "dependencies": [
+      "task_044"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_046",
+    "partnerId": "partner_008",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-20",
+    "dependencies": [
+      "task_045"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_047",
+    "partnerId": "partner_008",
+    "title": "Create Item Listings",
+    "description": "Create Item Listings required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-03",
+    "dependencies": [
+      "task_046"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_048",
+    "partnerId": "partner_008",
+    "title": "Upload Brand Assets",
+    "description": "Upload Brand Assets required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-25",
+    "dependencies": [
+      "task_047"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_049",
+    "partnerId": "partner_009",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-21",
+    "dependencies": [],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_050",
+    "partnerId": "partner_009",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-25",
+    "dependencies": [
+      "task_049"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_051",
+    "partnerId": "partner_009",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-17",
+    "dependencies": [
+      "task_050"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_052",
+    "partnerId": "partner_009",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-22",
+    "dependencies": [
+      "task_051"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_053",
+    "partnerId": "partner_010",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-14",
+    "dependencies": [],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_054",
+    "partnerId": "partner_010",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-23",
+    "dependencies": [
+      "task_053"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_055",
+    "partnerId": "partner_010",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-19",
+    "dependencies": [
+      "task_054"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_056",
+    "partnerId": "partner_010",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-04",
+    "dependencies": [
+      "task_055"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_057",
+    "partnerId": "partner_010",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-10",
+    "dependencies": [
+      "task_056"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_058",
+    "partnerId": "partner_011",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-04",
+    "dependencies": [],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_059",
+    "partnerId": "partner_011",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-06",
+    "dependencies": [
+      "task_058"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_060",
+    "partnerId": "partner_011",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-14",
+    "dependencies": [
+      "task_059"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_061",
+    "partnerId": "partner_011",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-03",
+    "dependencies": [
+      "task_060"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_062",
+    "partnerId": "partner_011",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-01",
+    "dependencies": [
+      "task_061"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_063",
+    "partnerId": "partner_011",
+    "title": "Create Item Listings",
+    "description": "Create Item Listings required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-04",
+    "dependencies": [
+      "task_062"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_064",
+    "partnerId": "partner_012",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-18",
+    "dependencies": [],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_065",
+    "partnerId": "partner_012",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-11",
+    "dependencies": [
+      "task_064"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_066",
+    "partnerId": "partner_012",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-22",
+    "dependencies": [
+      "task_065"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_067",
+    "partnerId": "partner_012",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-02",
+    "dependencies": [
+      "task_066"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_068",
+    "partnerId": "partner_012",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "Medium",
+    "dueDate": "2026-07-23",
+    "dependencies": [
+      "task_067"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_069",
+    "partnerId": "partner_012",
+    "title": "Create Item Listings",
+    "description": "Create Item Listings required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-05",
+    "dependencies": [
+      "task_068"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_070",
+    "partnerId": "partner_012",
+    "title": "Upload Brand Assets",
+    "description": "Upload Brand Assets required for onboarding.",
+    "owner": "Mina Shah",
+    "priority": "High",
+    "dueDate": "2026-07-02",
+    "dependencies": [
+      "task_069"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_071",
+    "partnerId": "partner_013",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-13",
+    "dependencies": [],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_072",
+    "partnerId": "partner_013",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-07",
+    "dependencies": [
+      "task_071"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_073",
+    "partnerId": "partner_013",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-19",
+    "dependencies": [
+      "task_072"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_074",
+    "partnerId": "partner_013",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-03",
+    "dependencies": [
+      "task_073"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_075",
+    "partnerId": "partner_013",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "High",
+    "dueDate": "2026-07-05",
+    "dependencies": [
+      "task_074"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_076",
+    "partnerId": "partner_013",
+    "title": "Create Item Listings",
+    "description": "Create Item Listings required for onboarding.",
+    "owner": "Ethan Brooks",
+    "priority": "Medium",
+    "dueDate": "2026-07-14",
+    "dependencies": [
+      "task_075"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_077",
+    "partnerId": "partner_014",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-19",
+    "dependencies": [],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_078",
+    "partnerId": "partner_014",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-04",
+    "dependencies": [
+      "task_077"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_079",
+    "partnerId": "partner_014",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-02",
+    "dependencies": [
+      "task_078"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_080",
+    "partnerId": "partner_014",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-12",
+    "dependencies": [
+      "task_079"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_081",
+    "partnerId": "partner_015",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-23",
+    "dependencies": [],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_082",
+    "partnerId": "partner_015",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-15",
+    "dependencies": [
+      "task_081"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_083",
+    "partnerId": "partner_015",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-01",
+    "dependencies": [
+      "task_082"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_084",
+    "partnerId": "partner_015",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-18",
+    "dependencies": [
+      "task_083"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  },
+  {
+    "id": "task_085",
+    "partnerId": "partner_015",
+    "title": "Integration Mapping",
+    "description": "Integration Mapping required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-21",
+    "dependencies": [
+      "task_084"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_086",
+    "partnerId": "partner_015",
+    "title": "Create Item Listings",
+    "description": "Create Item Listings required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-23",
+    "dependencies": [
+      "task_085"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_087",
+    "partnerId": "partner_016",
+    "title": "Complete Seller Profile",
+    "description": "Complete Seller Profile required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-03",
+    "dependencies": [],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_088",
+    "partnerId": "partner_016",
+    "title": "Verify Documents",
+    "description": "Verify Documents required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "High",
+    "dueDate": "2026-07-05",
+    "dependencies": [
+      "task_087"
+    ],
+    "status": "Not Started",
+    "completionDate": null
+  },
+  {
+    "id": "task_089",
+    "partnerId": "partner_016",
+    "title": "Stripe Setup",
+    "description": "Stripe Setup required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-03",
+    "dependencies": [
+      "task_088"
+    ],
+    "status": "In Progress",
+    "completionDate": null
+  },
+  {
+    "id": "task_090",
+    "partnerId": "partner_016",
+    "title": "Catalog Upload",
+    "description": "Catalog Upload required for onboarding.",
+    "owner": "Nina Carter",
+    "priority": "Medium",
+    "dueDate": "2026-07-28",
+    "dependencies": [
+      "task_089"
+    ],
+    "status": "Completed",
+    "completionDate": null
+  }
+]

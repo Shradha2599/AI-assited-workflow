@@ -1,0 +1,178 @@
+[
+  {
+    "partnerId": "partner_001",
+    "sellerId": "seller_008",
+    "onboardingOwner": "Nina Carter",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Not Started",
+    "stripeStatus": "Pending",
+    "performanceTier": "Growth"
+  },
+  {
+    "partnerId": "partner_002",
+    "sellerId": "seller_013",
+    "onboardingOwner": "Ethan Brooks",
+    "onboardingStatus": "Onboarding",
+    "onboardingProgress": 65,
+    "activationDate": null,
+    "integrationStatus": "In Progress",
+    "stripeStatus": "Pending",
+    "performanceTier": "Starter"
+  },
+  {
+    "partnerId": "partner_003",
+    "sellerId": "seller_022",
+    "onboardingOwner": "Mina Shah",
+    "onboardingStatus": "Onboarding",
+    "onboardingProgress": 75,
+    "activationDate": null,
+    "integrationStatus": "Not Started",
+    "stripeStatus": "Complete",
+    "performanceTier": "Starter"
+  },
+  {
+    "partnerId": "partner_004",
+    "sellerId": "seller_034",
+    "onboardingOwner": "Ethan Brooks",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Complete",
+    "stripeStatus": "Complete",
+    "performanceTier": "Growth"
+  },
+  {
+    "partnerId": "partner_005",
+    "sellerId": "seller_040",
+    "onboardingOwner": "Ethan Brooks",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Complete",
+    "stripeStatus": "Complete",
+    "performanceTier": "Growth"
+  },
+  {
+    "partnerId": "partner_006",
+    "sellerId": "seller_042",
+    "onboardingOwner": "Ethan Brooks",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Complete",
+    "stripeStatus": "Pending",
+    "performanceTier": "New"
+  },
+  {
+    "partnerId": "partner_007",
+    "sellerId": "seller_043",
+    "onboardingOwner": "Ethan Brooks",
+    "onboardingStatus": "Onboarding",
+    "onboardingProgress": 21,
+    "activationDate": null,
+    "integrationStatus": "Complete",
+    "stripeStatus": "Complete",
+    "performanceTier": "New"
+  },
+  {
+    "partnerId": "partner_008",
+    "sellerId": "seller_049",
+    "onboardingOwner": "Nina Carter",
+    "onboardingStatus": "Onboarding",
+    "onboardingProgress": 81,
+    "activationDate": null,
+    "integrationStatus": "Not Started",
+    "stripeStatus": "Pending",
+    "performanceTier": "Starter"
+  },
+  {
+    "partnerId": "partner_009",
+    "sellerId": "seller_011",
+    "onboardingOwner": "Mina Shah",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Complete",
+    "stripeStatus": "Pending",
+    "performanceTier": "Starter"
+  },
+  {
+    "partnerId": "partner_010",
+    "sellerId": "seller_012",
+    "onboardingOwner": "Mina Shah",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Not Started",
+    "stripeStatus": "Complete",
+    "performanceTier": "Starter"
+  },
+  {
+    "partnerId": "partner_011",
+    "sellerId": "seller_017",
+    "onboardingOwner": "Mina Shah",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Not Started",
+    "stripeStatus": "Pending",
+    "performanceTier": "Starter"
+  },
+  {
+    "partnerId": "partner_012",
+    "sellerId": "seller_026",
+    "onboardingOwner": "Mina Shah",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Not Started",
+    "stripeStatus": "Pending",
+    "performanceTier": "New"
+  },
+  {
+    "partnerId": "partner_013",
+    "sellerId": "seller_028",
+    "onboardingOwner": "Ethan Brooks",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Complete",
+    "stripeStatus": "Pending",
+    "performanceTier": "Growth"
+  },
+  {
+    "partnerId": "partner_014",
+    "sellerId": "seller_053",
+    "onboardingOwner": "Nina Carter",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Complete",
+    "stripeStatus": "Pending",
+    "performanceTier": "Starter"
+  },
+  {
+    "partnerId": "partner_015",
+    "sellerId": "seller_054",
+    "onboardingOwner": "Nina Carter",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Complete",
+    "stripeStatus": "Complete",
+    "performanceTier": "New"
+  },
+  {
+    "partnerId": "partner_016",
+    "sellerId": "seller_058",
+    "onboardingOwner": "Nina Carter",
+    "onboardingStatus": "Approved",
+    "onboardingProgress": 0,
+    "activationDate": null,
+    "integrationStatus": "Not Started",
+    "stripeStatus": "Complete",
+    "performanceTier": "Starter"
+  }
+]

@@ -15,13 +15,17 @@ interface PipelineHeatmapProps {
   className?: string;
 }
 
-function heatmapColor(value: number, min: number, max: number): string {
-  const ratio = (value - min) / (max - min);
-  if (ratio > 0.7) return "var(--color-heatmap-high)";
-  if (ratio > 0.4) return "#aecbfa";
-  if (ratio > 0.2) return "#d2e3fc";
-  return "var(--color-heatmap-low)";
-}
+const STAGE_COLUMN_WIDTH = 132;
+const DATA_CELL_BORDER = "#D6D6D6";
+
+const ROW_HEAT_COLORS = [
+  "#89A8E6",
+  "#A5BDEC",
+  "#D1DDF5",
+  "#EEF3FB",
+  "#FFFCEB",
+  "#FFF9DB",
+];
 
 export function PipelineHeatmap({
   columns,
@@ -29,15 +33,11 @@ export function PipelineHeatmap({
   fyLabel = "FY 2025-26",
   className,
 }: PipelineHeatmapProps) {
-  const allValues = rows.flatMap((r) => r.values);
-  const min = Math.min(...allValues);
-  const max = Math.max(...allValues);
-
   return (
-    <Card className={cn(className)}>
+    <Card className={cn("min-w-0 overflow-hidden", className)}>
       <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
         <h3 className="text-[var(--text-section-size)] font-semibold">Pipeline Overview</h3>
-        <div className="flex gap-2">
+        <div className="flex shrink-0 gap-2">
           <button
             type="button"
             className="rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]"
@@ -52,39 +52,49 @@ export function PipelineHeatmap({
           </button>
         </div>
       </CardHeader>
-      <CardContent className="overflow-x-auto">
-        <table className="w-full min-w-[640px] border-collapse text-center text-[var(--text-caption-size)]">
+      <CardContent className="min-w-0 overflow-hidden p-[var(--space-4)] pt-0">
+        <table className="w-full table-fixed border-collapse text-[var(--text-caption-size)]">
+          <colgroup>
+            <col style={{ width: STAGE_COLUMN_WIDTH }} />
+            {columns.map((col) => (
+              <col key={col} />
+            ))}
+          </colgroup>
           <thead>
-            <tr>
-              <th className="pb-2 text-left font-medium text-[var(--color-muted-foreground)]" />
+            <tr className="align-top">
+              <th className="bg-[var(--color-card)] pb-2 pl-0 pr-3 pt-0 text-left font-medium text-[var(--color-muted-foreground)]" />
               {columns.map((col) => (
                 <th
                   key={col}
-                  className="px-1 pb-2 font-medium text-[var(--color-muted-foreground)]"
+                  className="bg-[var(--color-card)] px-1 pb-2 pt-0 text-center align-top font-medium text-[var(--color-muted-foreground)]"
                 >
-                  {col}
+                  <span className="block truncate" title={col}>
+                    {col}
+                  </span>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.stage}>
-                <td className="py-1 pr-2 text-left font-medium text-[var(--color-foreground)]">
-                  {row.stage}
-                </td>
-                {row.values.map((value, i) => (
-                  <td key={i} className="p-0.5">
-                    <div
-                      className="rounded-[var(--radius-sm)] px-1 py-2 font-medium text-[var(--color-foreground)]"
-                      style={{ backgroundColor: heatmapColor(value, min, max) }}
+            {rows.map((row, rowIndex) => {
+              const rowColor = ROW_HEAT_COLORS[rowIndex] ?? ROW_HEAT_COLORS.at(-1)!;
+              return (
+                <tr key={row.stage}>
+                  <td className="bg-[var(--color-card)] px-0 py-2 pr-3 text-left align-middle font-medium text-[var(--color-foreground)]">
+                    {row.stage}
+                  </td>
+                  {row.values.map((value, colIndex) => (
+                    <td
+                      key={`${row.stage}-${colIndex}`}
+                      className="border border-[#D6D6D6] px-1 py-2 text-center align-middle font-medium text-[var(--color-foreground)]"
+                      style={{ backgroundColor: rowColor }}
                     >
                       {value}
-                    </div>
-                  </td>
-                ))}
-              </tr>
-            ))}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </CardContent>

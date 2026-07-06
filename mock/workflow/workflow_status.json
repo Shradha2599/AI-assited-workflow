@@ -1,0 +1,548 @@
+[
+  {
+    "entityType": "Lead",
+    "entityId": "lead_001",
+    "status": "New",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_002",
+    "status": "Discovered",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_003",
+    "status": "Shortlisted",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_004",
+    "status": "Shortlisted",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_005",
+    "status": "Contacted",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_006",
+    "status": "New",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_007",
+    "status": "Shortlisted",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_008",
+    "status": "Approved",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_009",
+    "status": "Contacted",
+    "owner": "Ava Patel"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_010",
+    "status": "Discovered",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_011",
+    "status": "In Review",
+    "owner": "Ava Patel"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_012",
+    "status": "In Review",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_013",
+    "status": "Onboarding",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_014",
+    "status": "Shortlisted",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_015",
+    "status": "Contacted",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_016",
+    "status": "Contacted",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_017",
+    "status": "In Review",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_018",
+    "status": "Shortlisted",
+    "owner": "Ava Patel"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_019",
+    "status": "Contacted",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_020",
+    "status": "New",
+    "owner": "Ava Patel"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_021",
+    "status": "Contacted",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_022",
+    "status": "Onboarding",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_023",
+    "status": "Contacted",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_024",
+    "status": "New",
+    "owner": "Ava Patel"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_025",
+    "status": "New",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_026",
+    "status": "In Review",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_027",
+    "status": "Shortlisted",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_028",
+    "status": "In Review",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_029",
+    "status": "New",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_030",
+    "status": "Discovered",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_031",
+    "status": "New",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_032",
+    "status": "Discovered",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_033",
+    "status": "Discovered",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_034",
+    "status": "Approved",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_035",
+    "status": "Shortlisted",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_036",
+    "status": "Contacted",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_037",
+    "status": "Contacted",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_038",
+    "status": "Discovered",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_039",
+    "status": "Discovered",
+    "owner": "Ava Patel"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_040",
+    "status": "Approved",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_041",
+    "status": "Contacted",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_042",
+    "status": "Approved",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_043",
+    "status": "Onboarding",
+    "owner": "Maya Johnson"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_044",
+    "status": "Discovered",
+    "owner": "Ava Patel"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_045",
+    "status": "Discovered",
+    "owner": "Jordan Lee"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_046",
+    "status": "Future Interest",
+    "owner": "Ava Patel"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_047",
+    "status": "Future Interest",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_048",
+    "status": "Discovered",
+    "owner": "Ava Patel"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_049",
+    "status": "Onboarding",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Lead",
+    "entityId": "lead_050",
+    "status": "Discovered",
+    "owner": "Noah King"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_001",
+    "status": "New",
+    "owner": "Review Team"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_002",
+    "status": "New",
+    "owner": "Review Team"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_003",
+    "status": "In Review",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_004",
+    "status": "In Review",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_005",
+    "status": "New",
+    "owner": "Review Team"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_006",
+    "status": "New",
+    "owner": "Review Team"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_007",
+    "status": "New",
+    "owner": "Review Team"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_008",
+    "status": "In Review",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_009",
+    "status": "New",
+    "owner": "Review Team"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_010",
+    "status": "In Review",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_011",
+    "status": "Approved",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_012",
+    "status": "In Review",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_013",
+    "status": "New",
+    "owner": "Review Team"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_014",
+    "status": "In Review",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_015",
+    "status": "Approved",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_016",
+    "status": "In Review",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_017",
+    "status": "New",
+    "owner": "Review Team"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_018",
+    "status": "In Review",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_019",
+    "status": "Approved",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_020",
+    "status": "In Review",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_021",
+    "status": "Approved",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_022",
+    "status": "Approved",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_023",
+    "status": "In Review",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_024",
+    "status": "In Review",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Application",
+    "entityId": "app_025",
+    "status": "In Review",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_001",
+    "status": "Approved",
+    "owner": "Nina Carter"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_002",
+    "status": "Onboarding",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_003",
+    "status": "Onboarding",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_004",
+    "status": "Approved",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_005",
+    "status": "Approved",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_006",
+    "status": "Approved",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_007",
+    "status": "Onboarding",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_008",
+    "status": "Onboarding",
+    "owner": "Nina Carter"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_009",
+    "status": "Approved",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_010",
+    "status": "Approved",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_011",
+    "status": "Approved",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_012",
+    "status": "Approved",
+    "owner": "Mina Shah"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_013",
+    "status": "Approved",
+    "owner": "Ethan Brooks"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_014",
+    "status": "Approved",
+    "owner": "Nina Carter"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_015",
+    "status": "Approved",
+    "owner": "Nina Carter"
+  },
+  {
+    "entityType": "Partner",
+    "entityId": "partner_016",
+    "status": "Approved",
+    "owner": "Nina Carter"
+  }
+]

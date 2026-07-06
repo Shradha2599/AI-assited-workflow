@@ -1,0 +1,62 @@
+[
+  {
+    "categoryId": "cat_kitchen_dining",
+    "topGap": "Cutting Boards",
+    "gapRate": 0.14,
+    "pipelineHealth": "On Track"
+  },
+  {
+    "categoryId": "cat_home_decor",
+    "topGap": "Candle Holders",
+    "gapRate": 0.18,
+    "pipelineHealth": "At Risk"
+  },
+  {
+    "categoryId": "cat_outdoor_living",
+    "topGap": "Outdoor Lanterns",
+    "gapRate": 0.32,
+    "pipelineHealth": "At Risk"
+  },
+  {
+    "categoryId": "cat_storage_org",
+    "topGap": "Shelf Baskets",
+    "gapRate": 0.2,
+    "pipelineHealth": "At Risk"
+  },
+  {
+    "categoryId": "cat_furniture",
+    "topGap": "Bar Carts",
+    "gapRate": 0.17,
+    "pipelineHealth": "Watch"
+  },
+  {
+    "categoryId": "cat_party_supplies",
+    "topGap": "Cupcake Stands",
+    "gapRate": 0.29,
+    "pipelineHealth": "Watch"
+  },
+  {
+    "categoryId": "cat_holiday_decor",
+    "topGap": "Halloween Lanterns",
+    "gapRate": 0.25,
+    "pipelineHealth": "Watch"
+  },
+  {
+    "categoryId": "cat_lighting",
+    "topGap": "Floor Lamps",
+    "gapRate": 0.27,
+    "pipelineHealth": "At Risk"
+  },
+  {
+    "categoryId": "cat_bedding",
+    "topGap": "Pillow Shams",
+    "gapRate": 0.14,
+    "pipelineHealth": "On Track"
+  },
+  {
+    "categoryId": "cat_bath",
+    "topGap": "Bathroom Rugs",
+    "gapRate": 0.21,
+    "pipelineHealth": "Watch"
+  }
+]

@@ -1,0 +1,362 @@
+---
+description: Code architecture, TypeScript, React, state, and implementation rules for the Target Plus internal acquisition and onboarding workspace.
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# 02 Code Rules
+
+## Architecture goals
+Build the app like a production internal enterprise system.
+The codebase should be modular, easy to extend, and easy for Cursor to modify safely.
+
+Prefer a clean separation between:
+- UI components
+- feature modules
+- state and data access
+- agent logic
+- mock data
+- business rules
+- utilities
+
+## Recommended stack
+Use a modern React stack with TypeScript.
+Preferred choices:
+- React with a component-based architecture
+- Next.js or a similarly structured React framework
+- TypeScript everywhere
+- Tailwind or a similar utility-based styling approach
+- reusable UI primitives
+- mock service layer for data and AI behavior
+
+Do not tightly couple the app to a specific backend unless required.
+The initial experience should work with mock data and local agent simulation.
+
+## File organization
+Keep code organized by feature and responsibility.
+Suggested structure:
+- src/components
+- src/features
+- src/pages or src/app
+- src/services
+- src/agents
+- src/mock
+- src/types
+- src/utils
+- src/hooks
+- src/contexts
+- src/constants
+
+Do not place all logic inside page files.
+Do not put agent logic in components.
+Do not put mock data inside JSX files.
+
+## Component rules
+All components should be:
+- small
+- reusable
+- composable
+- typed
+- easy to test
+
+Avoid giant page components that include business logic, data shaping, and rendering in one file.
+Split complex pages into:
+- header sections
+- summary cards
+- tables
+- side panels
+- drawers
+- filters
+- action bars
+- status components
+
+## Design system rules
+Create shared primitives before building screens.
+At minimum support components for:
+- Button
+- Card
+- Badge
+- Table
+- Drawer
+- Modal
+- Tabs
+- Input
+- Select
+- Textarea
+- Search field
+- Metric card
+- Timeline
+- Progress bar
+- Empty state
+- Comment block
+- Activity item
+- Agent insight card
+- Recommendation card
+- Email composer
+- Status chip
+
+If a UI pattern repeats twice, extract it into a reusable component.
+
+## State management rules
+Use a predictable state model.
+Source of truth should come from mock data services or a centralized store.
+Avoid hidden local state that creates inconsistent screens.
+
+Recommended state categories:
+- workflow records
+- selected entity
+- filters
+- UI visibility state
+- agent responses
+- activity feed
+- form state
+- asynchronous loading/error state
+
+Status changes must flow through explicit update functions.
+Do not mutate records in arbitrary places.
+
+## Data modeling rules
+Use explicit types or interfaces for every important entity.
+At minimum define types for:
+- Category
+- ItemType
+- AssortmentPlan
+- Lead
+- SellerProfile
+- Application
+- Partner
+- OnboardingTask
+- ActivityEvent
+- EmailDraft
+- BeaconRecommendation
+- AgentRun
+
+Keep the same ID values across related entities.
+Do not generate unrelated duplicate records unless the product needs them.
+
+## Data access rules
+All application data should come from structured mock sources or a mock service layer.
+The UI should not depend on hardcoded inline arrays unless the data is tiny and local to one component.
+
+Use service functions such as:
+- getAssortmentPlans
+- getLeads
+- getPartnerById
+- updateLeadStatus
+- createEmailDraft
+- submitApplication
+- startOnboarding
+- completeTask
+- runBeaconAgent
+
+The exact function names can vary, but the architecture should stay service oriented.
+
+## Mock data rules
+Mock data must feel realistic and internally consistent.
+Use believable combinations of:
+- seller names
+- categories
+- GMV values
+- marketplace presence
+- ratings
+- confidence scores
+- onboarding tasks
+- communication history
+
+Mock data should support all major screens and business states.
+Do not create a dataset that only works for one page.
+
+## Workflow logic rules
+Implement workflow changes as explicit actions.
+Each action should update the canonical lifecycle state and create an activity event.
+
+Examples:
+- shortlistLead()
+- sendOutreachEmail()
+- submitSellerApplication()
+- beginReview()
+- approvePartner()
+- rejectPartner()
+- markFutureInterest()
+- startOnboardingTask()
+- completeOnboardingTask()
+
+Do not let random UI clicks alter the business state without a controlled action.
+
+## Business logic rules
+Do not encode business rules directly inside JSX.
+Business logic should live in:
+- services
+- reducers
+- state machines
+- hooks
+- utility functions
+- agent modules
+
+If a rule is important enough to explain to a user, it is important enough to live outside the view layer.
+
+## Status and review model
+Use two separate fields when relevant:
+- lifecycle status
+- review outcome
+
+Do not collapse them into one ambiguous field if the data model needs both.
+
+## Rendering rules
+The UI should render from state.
+Avoid manual DOM manipulation.
+Avoid duplicated conditional blocks when a status configuration map can be used instead.
+
+Prefer configuration objects for:
+- status labels
+- colors
+- next actions
+- empty states
+- step descriptions
+- recommended prompts
+
+## Table and list rules
+The app will rely heavily on tables and list views.
+Tables should support:
+- sorting
+- filtering
+- search
+- pagination or virtualization if needed
+- row actions
+- row click to open detail view
+- status badges
+- contextual summary columns
+
+List rows should be informative, not cluttered.
+Keep the most important business signals visible.
+
+## Detail view rules
+Use a drawer or side panel for deep details when appropriate.
+The detail view should show:
+- entity summary
+- status
+- key metrics
+- activity timeline
+- comments
+- AI insight
+- next actions
+
+Avoid forcing a full page navigation when a drawer is enough.
+
+## Form rules
+Use controlled or well-managed forms.
+Validate forms clearly.
+Return human-readable error messages.
+Do not hide validation failures.
+
+Forms relevant to this product include:
+- seller application review
+- email drafts
+- onboarding tasks
+- assortment plan inputs
+- search and filtering controls
+
+## Error handling rules
+Handle loading, empty, and error states explicitly.
+Never leave a dead end.
+Every error should say what happened and how the user can recover.
+
+## Performance rules
+Keep the app responsive.
+Avoid unnecessary rerenders.
+Memoize expensive derived data if needed.
+Do not compute complex summaries repeatedly inside render functions if they can be derived once.
+
+## Accessibility rules
+Use semantic HTML wherever possible.
+Buttons must be buttons.
+Inputs must have labels.
+Status text should be readable without color alone.
+Ensure keyboard accessibility for drawers, modals, tabs, and tables.
+
+## Naming rules
+Use clear business names.
+Prefer Target Plus terminology over generic placeholders.
+Examples:
+- lead instead of record when the page is about discovery
+- partner instead of generic user when the record is an approved seller
+- onboarding task instead of generic todo
+- assortment plan instead of generic plan
+
+Use consistent naming across files, types, and UI labels.
+
+## API and service rules
+Even if the app is mock-first, design the code as if APIs exist.
+Use typed service boundaries and predictable response shapes.
+Return structured objects rather than raw strings whenever possible.
+
+## Asynchronous behavior rules
+AI calls and data updates should show:
+- loading state
+- success state
+- error state
+- final state update
+
+Never pretend asynchronous work is instant unless the UI specifically models it that way.
+
+## Commenting rules
+Comment only where the logic is not obvious.
+Do not comment on every line.
+Use comments to explain business meaning, agent behavior, or tricky state transitions.
+
+## Testing mindset
+Even if tests are not implemented immediately, code should be written so that it could be tested easily.
+Prefer pure functions for:
+- status transitions
+- ranking logic
+- recommendation generation
+- formatting utilities
+- data transforms
+
+## Module boundaries
+Keep modules responsible for one thing.
+Examples:
+- discovery module
+- onboarding module
+- assortment module
+- beacon module
+- mock data module
+- activity module
+
+Do not create circular dependencies between features.
+
+## Seed data rules
+Seed data should power the demo story.
+At least support these user journeys:
+- a seller is discovered and shortlisted
+- the lead is contacted
+- the application is submitted
+- the partner enters review
+- the partner is approved
+- onboarding starts
+- onboarding completes
+- another seller is rejected or marked future interest
+
+## Implementation order
+Build in this order:
+1. application shell
+2. shared design system
+3. mock data layer
+4. assortment planning screens
+5. lead discovery screens
+6. potential partner review screens
+7. onboarding screens
+8. activity and comments
+9. Beacon UI
+10. agent integration
+
+## Final code quality standard
+The app should feel maintainable by a real team.
+When in doubt, choose code that is:
+- explicit
+- typed
+- modular
+- state driven
+- easy to extend
+- aligned to the business workflow

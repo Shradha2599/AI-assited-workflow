@@ -1,6 +1,7 @@
 import { generateObject } from "ai";
 import { createGroq } from "@ai-sdk/groq";
 import { z } from "zod";
+import { loadMockJson, type ItemType } from "@/lib/agents/mock-loader";
 
 const groq = createGroq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -29,12 +30,53 @@ const scheduleSchema = z.object({
   ),
 });
 
+// Quarter → starting month index mapping (0=Nov, fiscal year start)
+const QUARTER_START: Record<string, number> = {
+  Q1: 0,  // Nov-Dec
+  Q2: 2,  // Jan-Feb
+  Q3: 4,  // Mar-Jun
+  Q4: 8,  // Jul-Oct (8=Jul in our index)
+};
+
 export async function POST(req: Request) {
   const { planItems } = (await req.json()) as { planItems: string[] };
 
   if (!planItems?.length) {
     return Response.json({ error: "No items to schedule" }, { status: 400 });
   }
+
+  // Load item types to extract launch quarter guidance
+  const itemTypes = loadMockJson<ItemType>("mock/target/item_types.json");
+
+  // For each plan item, find a matching item type to get the recommended quarter
+  const itemHints = planItems.map((planItem) => {
+    const planWords = planItem.toLowerCase().split(/\s+/);
+    const match = itemTypes.find((it) =>
+      planWords.some(
+        (w) => w.length > 3 && it.name.toLowerCase().includes(w),
+      ) ||
+      it.name
+        .toLowerCase()
+        .split(/\s+/)
+        .some((w) => w.length > 3 && planItem.toLowerCase().includes(w)),
+    );
+    return {
+      name: planItem,
+      recommendedQuarter: match?.recommendedLaunchQuarter ?? null,
+      recommendedStartMonth: match ? QUARTER_START[match.recommendedLaunchQuarter] ?? null : null,
+      opportunityScore: match ? Math.round(match.opportunityScore * 100) : null,
+    };
+  });
+
+  const hintsContext = itemHints.some((h) => h.recommendedQuarter)
+    ? `\n## Market Intelligence — Recommended Launch Windows\n${itemHints
+        .filter((h) => h.recommendedQuarter)
+        .map(
+          (h) =>
+            `- ${h.name}: recommended ${h.recommendedQuarter} (startMonth ~${h.recommendedStartMonth})${h.opportunityScore ? `, ${h.opportunityScore}% opportunity score` : ""}`,
+        )
+        .join("\n")}\n`
+    : "";
 
   const { object } = await generateObject({
     model: groq("llama-3.3-70b-versatile"),
@@ -43,21 +85,19 @@ export async function POST(req: Request) {
 
 Items to schedule:
 ${planItems.map((item, i) => `${i + 1}. ${item}`).join("\n")}
-
+${hintsContext}
 Calendar structure:
-- 12 months: Nov(0), Dec(1), Jan(2), Feb(3), Mar(4), Apr(5), May(6), Jun(7), Aug(8), Sep(9), Oct(10), Nov(11)
-- Wait — correct month indices: 0=Nov, 1=Dec, 2=Jan, 3=Feb, 4=Mar, 5=Apr, 6=May, 7=Jun, 8=Jul, 9=Aug, 10=Sep, 11=Oct
+- 12 months: Nov(0), Dec(1), Jan(2), Feb(3), Mar(4), Apr(5), May(6), Jun(7), Jul(8), Aug(9), Sep(10), Oct(11)
 - Two rows: "Kitchen & Dining" and "Lighting"
-- Seasons: Fall=Nov-Dec, Winter=Jan-Feb, Summer=Mar-Jun, Spring=Jul-Oct
-- Key retail events: Thanksgiving(Nov), Christmas(Dec), New Year(Jan), Valentine's(Feb), Easter(Mar), Labour Day(Jul), Back to School(Aug), Halloween(Oct)
+- Seasons: Fall=Nov-Dec(0-1), Winter=Jan-Feb(2-3), Summer=Mar-Jun(4-7), Spring=Jul-Oct(8-11)
+- Key retail events: Thanksgiving(Nov/0), Christmas(Dec/1), New Year(Jan/2), Valentine's(Feb/3), Easter(Mar/4), Labour Day(Jul/8), Back to School(Aug/9), Halloween(Oct/11)
 
 Scheduling rules:
 1. Kitchen & Dining items → row "Kitchen & Dining". Lighting items → row "Lighting". If unsure, use "Kitchen & Dining".
-2. Schedule serving/entertaining items (bowls, platters, cake stands) for peak holiday windows: Nov-Jan (startMonth 0-2).
-3. Schedule lighting items for spring/summer: Mar-Aug (startMonth 4-8).
-4. Give each item a span of 2-4 months.
-5. Do NOT schedule two items in the same row with overlapping months. Stagger start months so they don't collide.
-6. Every item in the input list must appear in the output exactly once.
+2. If Market Intelligence above provides a recommended startMonth, use it (±1 month is fine to avoid collisions).
+3. Give each item a span of 2-4 months.
+4. Do NOT schedule two items in the same row with overlapping months. Stagger start months.
+5. Every item in the input list must appear in the output exactly once.
 
 Return a schedule for all ${planItems.length} items.`,
     temperature: 0.2,

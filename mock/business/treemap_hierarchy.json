@@ -1,0 +1,475 @@
+{
+  "id": "root",
+  "label": "All Categories",
+  "gridConfig": { "columns": 5, "rowTemplate": "1.2fr 1fr 0.8fr" },
+  "children": [
+    {
+      "id": "kitchen",
+      "categoryId": "cat_kitchen_dining",
+      "label": "Kitchen & Dining",
+      "lag": "high",
+      "gridArea": "1 / 1 / 3 / 3",
+      "revenue": "$22.8M",
+      "gapPercent": "35%",
+      "gapRate": 0.35,
+      "competitorLeader": "Amazon",
+      "gridConfig": { "columns": 6, "rowTemplate": "1fr 1fr 1fr" },
+      "children": [
+        {
+          "id": "kitchen-deals",
+          "label": "Kitchen & Dining Deals",
+          "lag": "high",
+          "gridArea": "1 / 1 / 2 / 3",
+          "revenue": "$3.2M",
+          "gapPercent": "22%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "dining-entertaining",
+          "label": "Dining & Entertaining",
+          "lag": "high",
+          "gridArea": "1 / 3 / 2 / 5",
+          "revenue": "$4.5M",
+          "gapPercent": "28%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "kids-dining",
+          "label": "Kids' Dining",
+          "lag": "medium",
+          "gridArea": "1 / 5 / 2 / 6",
+          "revenue": "$680K",
+          "gapPercent": "9%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "bar-wine",
+          "label": "Bar & Wine",
+          "lag": "medium",
+          "gridArea": "1 / 6 / 2 / 7",
+          "revenue": "$920K",
+          "gapPercent": "8%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "countertop-storage",
+          "label": "Countertop Storage",
+          "lag": "high",
+          "gridArea": "2 / 1 / 3 / 2",
+          "revenue": "$2.4M",
+          "gapPercent": "19%",
+          "competitorLeader": "Walmart"
+        },
+        {
+          "id": "table-linens",
+          "label": "Kitchen & Table Linens",
+          "lag": "high",
+          "gridArea": "2 / 2 / 3 / 3",
+          "revenue": "$1.9M",
+          "gapPercent": "16%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "dorm-kitchen",
+          "label": "Dorm Kitchen & Dining",
+          "lag": "medium-high",
+          "gridArea": "2 / 3 / 3 / 4",
+          "revenue": "$1.1M",
+          "gapPercent": "14%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "cutlery",
+          "label": "Cutlery & Knife Acc...",
+          "lag": "medium",
+          "gridArea": "2 / 4 / 3 / 5",
+          "revenue": "$740K",
+          "gapPercent": "7%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "serveware",
+          "label": "Serveware",
+          "lag": "medium-high",
+          "gridArea": "2 / 5 / 4 / 7",
+          "revenue": "$1.8M",
+          "gapPercent": "18%",
+          "competitorLeader": "Amazon",
+          "opensDrawer": "Serveware"
+        },
+        {
+          "id": "appliances",
+          "label": "Kitchen Appliances",
+          "lag": "high",
+          "gridArea": "3 / 1 / 4 / 2",
+          "revenue": "$2.8M",
+          "gapPercent": "14%",
+          "competitorLeader": "Best Buy"
+        },
+        {
+          "id": "bakeware",
+          "label": "Bakeware",
+          "lag": "high",
+          "gridArea": "3 / 2 / 4 / 3",
+          "revenue": "$1.5M",
+          "gapPercent": "12%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "cookware",
+          "label": "Cookware",
+          "lag": "high",
+          "gridArea": "3 / 3 / 4 / 4",
+          "revenue": "$2.2M",
+          "gapPercent": "21%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "glassware",
+          "label": "Glassware & Drinkware",
+          "lag": "high",
+          "gridArea": "3 / 4 / 4 / 5",
+          "revenue": "$1.6M",
+          "gapPercent": "15%",
+          "competitorLeader": "Amazon"
+        }
+      ]
+    },
+    {
+      "id": "outdoor",
+      "categoryId": "cat_outdoor_living",
+      "label": "Outdoor Living & Garden",
+      "lag": "medium-high",
+      "gridArea": "1 / 3 / 3 / 4",
+      "revenue": "$9.4M",
+      "gapPercent": "32%",
+      "gapRate": 0.32,
+      "competitorLeader": "Home Depot",
+      "gridConfig": { "columns": 4, "rowTemplate": "1fr 1fr 1fr" },
+      "children": [
+        {
+          "id": "outdoor-furniture",
+          "label": "Patio Furniture",
+          "lag": "high",
+          "gridArea": "1 / 1 / 2 / 3",
+          "revenue": "$2.8M",
+          "gapPercent": "24%",
+          "competitorLeader": "Home Depot"
+        },
+        {
+          "id": "outdoor-decor",
+          "label": "Outdoor Decor",
+          "lag": "medium-high",
+          "gridArea": "1 / 3 / 2 / 5",
+          "revenue": "$1.6M",
+          "gapPercent": "18%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "garden-tools",
+          "label": "Garden Tools",
+          "lag": "medium-high",
+          "gridArea": "2 / 1 / 3 / 2",
+          "revenue": "$1.2M",
+          "gapPercent": "16%",
+          "competitorLeader": "Home Depot"
+        },
+        {
+          "id": "outdoor-cooking",
+          "label": "Grills & Outdoor Cooking",
+          "lag": "high",
+          "gridArea": "2 / 2 / 3 / 4",
+          "revenue": "$2.1M",
+          "gapPercent": "22%",
+          "competitorLeader": "Home Depot"
+        },
+        {
+          "id": "outdoor-lighting",
+          "label": "Outdoor Lighting",
+          "lag": "medium-high",
+          "gridArea": "2 / 4 / 3 / 5",
+          "revenue": "$980K",
+          "gapPercent": "14%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "planters",
+          "label": "Planters & Garden",
+          "lag": "medium",
+          "gridArea": "3 / 1 / 4 / 3",
+          "revenue": "$720K",
+          "gapPercent": "11%",
+          "competitorLeader": "Lowe's"
+        }
+      ]
+    },
+    {
+      "id": "holiday",
+      "categoryId": "cat_holiday_decor",
+      "label": "Holiday",
+      "lag": "medium-high",
+      "gridArea": "1 / 4 / 2 / 5",
+      "revenue": "$6.8M",
+      "gapPercent": "25%",
+      "gapRate": 0.25,
+      "competitorLeader": "Amazon",
+      "gridConfig": { "columns": 3, "rowTemplate": "1fr 1fr" },
+      "children": [
+        {
+          "id": "halloween",
+          "label": "Halloween",
+          "lag": "high",
+          "gridArea": "1 / 1 / 2 / 2",
+          "revenue": "$2.4M",
+          "gapPercent": "20%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "christmas",
+          "label": "Christmas",
+          "lag": "high",
+          "gridArea": "1 / 2 / 2 / 4",
+          "revenue": "$3.1M",
+          "gapPercent": "23%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "thanksgiving",
+          "label": "Thanksgiving",
+          "lag": "medium-high",
+          "gridArea": "2 / 1 / 3 / 2",
+          "revenue": "$680K",
+          "gapPercent": "15%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "easter",
+          "label": "Easter",
+          "lag": "medium",
+          "gridArea": "2 / 2 / 3 / 3",
+          "revenue": "$420K",
+          "gapPercent": "9%",
+          "competitorLeader": "Amazon"
+        }
+      ]
+    },
+    {
+      "id": "lighting",
+      "categoryId": "cat_lighting",
+      "label": "Lighting",
+      "lag": "medium-high",
+      "gridArea": "2 / 4 / 3 / 5",
+      "revenue": "$8.1M",
+      "gapPercent": "27%",
+      "gapRate": 0.27,
+      "competitorLeader": "Amazon",
+      "gridConfig": { "columns": 4, "rowTemplate": "1fr 1fr 1fr" },
+      "children": [
+        {
+          "id": "ceiling-lights",
+          "label": "Ceiling Lights",
+          "lag": "high",
+          "gridArea": "1 / 1 / 2 / 3",
+          "revenue": "$2.6M",
+          "gapPercent": "21%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "table-lamps",
+          "label": "Table Lamps",
+          "lag": "high",
+          "gridArea": "1 / 3 / 2 / 5",
+          "revenue": "$1.9M",
+          "gapPercent": "19%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "floor-lamps",
+          "label": "Floor Lamps",
+          "lag": "medium-high",
+          "gridArea": "2 / 1 / 3 / 2",
+          "revenue": "$1.1M",
+          "gapPercent": "14%",
+          "competitorLeader": "Wayfair"
+        },
+        {
+          "id": "wall-lights",
+          "label": "Wall Lights",
+          "lag": "medium-high",
+          "gridArea": "2 / 2 / 3 / 3",
+          "revenue": "$980K",
+          "gapPercent": "13%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "lighting-outdoor",
+          "label": "Outdoor Lighting",
+          "lag": "medium",
+          "gridArea": "2 / 3 / 3 / 4",
+          "revenue": "$840K",
+          "gapPercent": "10%",
+          "competitorLeader": "Home Depot"
+        },
+        {
+          "id": "smart-lighting",
+          "label": "Smart Lighting",
+          "lag": "medium",
+          "gridArea": "3 / 1 / 4 / 3",
+          "revenue": "$720K",
+          "gapPercent": "8%",
+          "competitorLeader": "Amazon"
+        }
+      ]
+    },
+    {
+      "id": "furniture",
+      "categoryId": "cat_furniture",
+      "label": "Furniture",
+      "lag": "medium",
+      "gridArea": "3 / 1 / 4 / 3",
+      "revenue": "$5.2M",
+      "gapPercent": "17%",
+      "gapRate": 0.17,
+      "competitorLeader": "Walmart",
+      "gridConfig": { "columns": 4, "rowTemplate": "1fr 1fr" },
+      "children": [
+        {
+          "id": "living-room",
+          "label": "Living Room",
+          "lag": "medium-high",
+          "gridArea": "1 / 1 / 2 / 3",
+          "revenue": "$1.8M",
+          "gapPercent": "16%",
+          "competitorLeader": "Walmart"
+        },
+        {
+          "id": "bedroom",
+          "label": "Bedroom",
+          "lag": "medium-high",
+          "gridArea": "1 / 3 / 2 / 5",
+          "revenue": "$1.5M",
+          "gapPercent": "14%",
+          "competitorLeader": "Wayfair"
+        },
+        {
+          "id": "dining-furniture",
+          "label": "Dining Furniture",
+          "lag": "medium",
+          "gridArea": "2 / 1 / 3 / 2",
+          "revenue": "$920K",
+          "gapPercent": "11%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "office-furniture",
+          "label": "Office Furniture",
+          "lag": "medium",
+          "gridArea": "2 / 2 / 3 / 3",
+          "revenue": "$680K",
+          "gapPercent": "9%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "entryway",
+          "label": "Entryway",
+          "lag": "low",
+          "gridArea": "2 / 3 / 3 / 4",
+          "revenue": "$420K",
+          "gapPercent": "6%",
+          "competitorLeader": "Target"
+        }
+      ]
+    },
+    {
+      "id": "party",
+      "categoryId": "cat_party_supplies",
+      "label": "Party Supp...",
+      "lag": "low",
+      "gridArea": "3 / 3 / 4 / 4",
+      "revenue": "$2.1M",
+      "gapPercent": "29%",
+      "gapRate": 0.29,
+      "competitorLeader": "Amazon",
+      "gridConfig": { "columns": 3, "rowTemplate": "1fr 1fr" },
+      "children": [
+        {
+          "id": "party-tableware",
+          "label": "Party Tableware",
+          "lag": "medium-high",
+          "gridArea": "1 / 1 / 2 / 2",
+          "revenue": "$680K",
+          "gapPercent": "15%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "party-decor",
+          "label": "Party Decorations",
+          "lag": "medium-high",
+          "gridArea": "1 / 2 / 2 / 4",
+          "revenue": "$820K",
+          "gapPercent": "17%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "party-favors",
+          "label": "Party Favors",
+          "lag": "medium",
+          "gridArea": "2 / 1 / 3 / 2",
+          "revenue": "$340K",
+          "gapPercent": "8%",
+          "competitorLeader": "Amazon"
+        },
+        {
+          "id": "party-baking",
+          "label": "Baking & Serving",
+          "lag": "medium",
+          "gridArea": "2 / 2 / 3 / 3",
+          "revenue": "$280K",
+          "gapPercent": "7%",
+          "competitorLeader": "Amazon"
+        }
+      ]
+    },
+    {
+      "id": "rugs",
+      "categoryId": "cat_home_decor",
+      "label": "Rugs",
+      "lag": "low",
+      "gridArea": "3 / 4 / 4 / 5",
+      "revenue": "$1.8M",
+      "gapPercent": "18%",
+      "gapRate": 0.18,
+      "competitorLeader": "Wayfair",
+      "gridConfig": { "columns": 2, "rowTemplate": "1fr 1fr" },
+      "children": [
+        {
+          "id": "area-rugs",
+          "label": "Area Rugs",
+          "lag": "medium-high",
+          "gridArea": "1 / 1 / 2 / 3",
+          "revenue": "$980K",
+          "gapPercent": "14%",
+          "competitorLeader": "Wayfair"
+        },
+        {
+          "id": "runners",
+          "label": "Runners",
+          "lag": "medium",
+          "gridArea": "2 / 1 / 3 / 2",
+          "revenue": "$420K",
+          "gapPercent": "9%",
+          "competitorLeader": "Wayfair"
+        },
+        {
+          "id": "outdoor-rugs",
+          "label": "Outdoor Rugs",
+          "lag": "medium",
+          "gridArea": "2 / 2 / 3 / 3",
+          "revenue": "$380K",
+          "gapPercent": "8%",
+          "competitorLeader": "Home Depot"
+        }
+      ]
+    }
+  ]
+}

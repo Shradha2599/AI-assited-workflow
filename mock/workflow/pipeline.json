@@ -1,0 +1,112 @@
+[
+  {
+    "category": "Kitchen & Dining",
+    "discovered": 33,
+    "shortlisted": 18,
+    "contacted": 12,
+    "new": 1,
+    "inReview": 2,
+    "approved": 3,
+    "onboarding": 3,
+    "established": 1
+  },
+  {
+    "category": "Home Decor",
+    "discovered": 14,
+    "shortlisted": 6,
+    "contacted": 8,
+    "new": 4,
+    "inReview": 3,
+    "approved": 0,
+    "onboarding": 0,
+    "established": 1
+  },
+  {
+    "category": "Outdoor Living",
+    "discovered": 31,
+    "shortlisted": 7,
+    "contacted": 2,
+    "new": 4,
+    "inReview": 5,
+    "approved": 3,
+    "onboarding": 3,
+    "established": 3
+  },
+  {
+    "category": "Storage & Organization",
+    "discovered": 32,
+    "shortlisted": 7,
+    "contacted": 10,
+    "new": 6,
+    "inReview": 3,
+    "approved": 3,
+    "onboarding": 1,
+    "established": 3
+  },
+  {
+    "category": "Furniture",
+    "discovered": 26,
+    "shortlisted": 6,
+    "contacted": 10,
+    "new": 4,
+    "inReview": 1,
+    "approved": 2,
+    "onboarding": 2,
+    "established": 1
+  },
+  {
+    "category": "Party Supplies",
+    "discovered": 23,
+    "shortlisted": 10,
+    "contacted": 8,
+    "new": 5,
+    "inReview": 3,
+    "approved": 4,
+    "onboarding": 3,
+    "established": 3
+  },
+  {
+    "category": "Holiday & Festive Decor",
+    "discovered": 17,
+    "shortlisted": 9,
+    "contacted": 4,
+    "new": 2,
+    "inReview": 2,
+    "approved": 0,
+    "onboarding": 0,
+    "established": 2
+  },
+  {
+    "category": "Lighting",
+    "discovered": 15,
+    "shortlisted": 18,
+    "contacted": 3,
+    "new": 5,
+    "inReview": 3,
+    "approved": 3,
+    "onboarding": 0,
+    "established": 3
+  },
+  {
+    "category": "Bedding",
+    "discovered": 12,
+    "shortlisted": 4,
+    "contacted": 9,
+    "new": 3,
+    "inReview": 1,
+    "approved": 0,
+    "onboarding": 4,
+    "established": 1
+  },
+  {
+    "category": "Bath",
+    "discovered": 20,
+    "shortlisted": 14,
+    "contacted": 7,
+    "new": 2,
+    "inReview": 1,
+    "approved": 2,
+    "onboarding": 4,
+    "established": 1
+  }
+]

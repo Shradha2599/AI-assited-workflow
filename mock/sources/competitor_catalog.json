@@ -1,0 +1,562 @@
+[
+  {
+    "retailer": "Amazon",
+    "category": "Holiday & Festive Decor",
+    "itemType": "Halloween Lanterns",
+    "assortmentDepth": 36,
+    "avgPrice": 56.36
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Bath",
+    "itemType": "Bath Towels",
+    "assortmentDepth": 94,
+    "avgPrice": 72.45
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Holiday & Festive Decor",
+    "itemType": "Halloween Lanterns",
+    "assortmentDepth": 126,
+    "avgPrice": 120.93
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Storage & Organization",
+    "itemType": "Desk Organizers",
+    "assortmentDepth": 32,
+    "avgPrice": 123.79
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Party Supplies",
+    "itemType": "Balloons",
+    "assortmentDepth": 102,
+    "avgPrice": 62.52
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Bedding",
+    "itemType": "Bed Skirts",
+    "assortmentDepth": 121,
+    "avgPrice": 13.91
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Kitchen & Dining",
+    "itemType": "Salt & Pepper Grinder Sets",
+    "assortmentDepth": 144,
+    "avgPrice": 25.05
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Holiday & Festive Decor",
+    "itemType": "Christmas Ornaments",
+    "assortmentDepth": 39,
+    "avgPrice": 34.2
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Party Supplies",
+    "itemType": "Table Covers",
+    "assortmentDepth": 166,
+    "avgPrice": 31.77
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Home Decor",
+    "itemType": "Throw Pillows",
+    "assortmentDepth": 63,
+    "avgPrice": 63.33
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Party Supplies",
+    "itemType": "Party Favors",
+    "assortmentDepth": 122,
+    "avgPrice": 21.26
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Kitchen & Dining",
+    "itemType": "Linen Napkin Sets",
+    "assortmentDepth": 41,
+    "avgPrice": 58.14
+  },
+  {
+    "retailer": "Lowe's",
+    "category": "Home Decor",
+    "itemType": "Picture Frames",
+    "assortmentDepth": 29,
+    "avgPrice": 127.03
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Holiday & Festive Decor",
+    "itemType": "Candle Rings",
+    "assortmentDepth": 27,
+    "avgPrice": 89.81
+  },
+  {
+    "retailer": "Lowe's",
+    "category": "Kitchen & Dining",
+    "itemType": "Serving Platters",
+    "assortmentDepth": 120,
+    "avgPrice": 21.95
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Outdoor Living",
+    "itemType": "Decorative Planters",
+    "assortmentDepth": 143,
+    "avgPrice": 43.82
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Party Supplies",
+    "itemType": "Cupcake Stands",
+    "assortmentDepth": 61,
+    "avgPrice": 104.84
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Holiday & Festive Decor",
+    "itemType": "Valentine Decor",
+    "assortmentDepth": 30,
+    "avgPrice": 44.85
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Storage & Organization",
+    "itemType": "Cabinet Organizers",
+    "assortmentDepth": 75,
+    "avgPrice": 58.99
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Kitchen & Dining",
+    "itemType": "Ceramic Serving Bowls",
+    "assortmentDepth": 18,
+    "avgPrice": 14.31
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Bedding",
+    "itemType": "Blanket Throws",
+    "assortmentDepth": 129,
+    "avgPrice": 99.16
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Bedding",
+    "itemType": "Comforter Sets",
+    "assortmentDepth": 21,
+    "avgPrice": 29.53
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Kitchen & Dining",
+    "itemType": "Stoneware Mugs",
+    "assortmentDepth": 55,
+    "avgPrice": 12.97
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Holiday & Festive Decor",
+    "itemType": "Christmas Ornaments",
+    "assortmentDepth": 51,
+    "avgPrice": 20.83
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Kitchen & Dining",
+    "itemType": "Stoneware Mugs",
+    "assortmentDepth": 41,
+    "avgPrice": 78.51
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Furniture",
+    "itemType": "TV Stands",
+    "assortmentDepth": 161,
+    "avgPrice": 104.21
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Lighting",
+    "itemType": "Floor Lamps",
+    "assortmentDepth": 151,
+    "avgPrice": 27.78
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Outdoor Living",
+    "itemType": "Outdoor Lanterns",
+    "assortmentDepth": 44,
+    "avgPrice": 28.91
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Holiday & Festive Decor",
+    "itemType": "Easter Basket Kits",
+    "assortmentDepth": 121,
+    "avgPrice": 9.66
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Party Supplies",
+    "itemType": "Table Covers",
+    "assortmentDepth": 141,
+    "avgPrice": 64.07
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Bedding",
+    "itemType": "Mattress Protectors",
+    "assortmentDepth": 112,
+    "avgPrice": 72.11
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Party Supplies",
+    "itemType": "Cake Toppers",
+    "assortmentDepth": 118,
+    "avgPrice": 64.91
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Party Supplies",
+    "itemType": "Balloons",
+    "assortmentDepth": 89,
+    "avgPrice": 52.31
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Kitchen & Dining",
+    "itemType": "Salt & Pepper Grinder Sets",
+    "assortmentDepth": 133,
+    "avgPrice": 50.91
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Home Decor",
+    "itemType": "Decorative Baskets",
+    "assortmentDepth": 137,
+    "avgPrice": 118.55
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Outdoor Living",
+    "itemType": "Planter Stands",
+    "assortmentDepth": 142,
+    "avgPrice": 100.61
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Furniture",
+    "itemType": "Accent Chairs",
+    "assortmentDepth": 144,
+    "avgPrice": 104.82
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Lighting",
+    "itemType": "Outdoor Lighting",
+    "assortmentDepth": 39,
+    "avgPrice": 34.7
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Outdoor Living",
+    "itemType": "Outdoor Side Tables",
+    "assortmentDepth": 28,
+    "avgPrice": 108.79
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Storage & Organization",
+    "itemType": "Drawer Dividers",
+    "assortmentDepth": 51,
+    "avgPrice": 66.14
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Furniture",
+    "itemType": "Dining Chairs",
+    "assortmentDepth": 171,
+    "avgPrice": 29.08
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Furniture",
+    "itemType": "Dining Chairs",
+    "assortmentDepth": 21,
+    "avgPrice": 109.58
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Outdoor Living",
+    "itemType": "Outdoor Rugs",
+    "assortmentDepth": 156,
+    "avgPrice": 75.98
+  },
+  {
+    "retailer": "Lowe's",
+    "category": "Home Decor",
+    "itemType": "Decorative Vases",
+    "assortmentDepth": 168,
+    "avgPrice": 33.42
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Outdoor Living",
+    "itemType": "Planter Stands",
+    "assortmentDepth": 162,
+    "avgPrice": 67.83
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Lighting",
+    "itemType": "LED Lanterns",
+    "assortmentDepth": 77,
+    "avgPrice": 86.51
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Kitchen & Dining",
+    "itemType": "Cake Stands",
+    "assortmentDepth": 44,
+    "avgPrice": 65.95
+  },
+  {
+    "retailer": "Lowe's",
+    "category": "Lighting",
+    "itemType": "Pendant Lights",
+    "assortmentDepth": 178,
+    "avgPrice": 53.28
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Lighting",
+    "itemType": "Pendant Lights",
+    "assortmentDepth": 91,
+    "avgPrice": 23.41
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Bedding",
+    "itemType": "Mattress Protectors",
+    "assortmentDepth": 129,
+    "avgPrice": 13.9
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Bath",
+    "itemType": "Soap Dispensers",
+    "assortmentDepth": 32,
+    "avgPrice": 71.72
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Bedding",
+    "itemType": "Bed Skirts",
+    "assortmentDepth": 33,
+    "avgPrice": 44.27
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Home Decor",
+    "itemType": "Decorative Vases",
+    "assortmentDepth": 44,
+    "avgPrice": 51.42
+  },
+  {
+    "retailer": "Lowe's",
+    "category": "Outdoor Living",
+    "itemType": "Decorative Planters",
+    "assortmentDepth": 31,
+    "avgPrice": 103.0
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Home Decor",
+    "itemType": "Decorative Baskets",
+    "assortmentDepth": 119,
+    "avgPrice": 102.96
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Furniture",
+    "itemType": "Coffee Tables",
+    "assortmentDepth": 169,
+    "avgPrice": 73.58
+  },
+  {
+    "retailer": "Lowe's",
+    "category": "Bedding",
+    "itemType": "Mattress Protectors",
+    "assortmentDepth": 74,
+    "avgPrice": 31.84
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Lighting",
+    "itemType": "Table Lamps",
+    "assortmentDepth": 57,
+    "avgPrice": 59.42
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Kitchen & Dining",
+    "itemType": "Stoneware Mugs",
+    "assortmentDepth": 89,
+    "avgPrice": 114.59
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Furniture",
+    "itemType": "Side Tables",
+    "assortmentDepth": 102,
+    "avgPrice": 48.18
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Holiday & Festive Decor",
+    "itemType": "Table Garlands",
+    "assortmentDepth": 43,
+    "avgPrice": 58.54
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Party Supplies",
+    "itemType": "Beverage Dispensers",
+    "assortmentDepth": 125,
+    "avgPrice": 85.35
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Kitchen & Dining",
+    "itemType": "Marble Serving Trays",
+    "assortmentDepth": 145,
+    "avgPrice": 102.03
+  },
+  {
+    "retailer": "Lowe's",
+    "category": "Lighting",
+    "itemType": "Outdoor Lighting",
+    "assortmentDepth": 108,
+    "avgPrice": 42.32
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Kitchen & Dining",
+    "itemType": "Glass Beverage Dispensers",
+    "assortmentDepth": 82,
+    "avgPrice": 125.15
+  },
+  {
+    "retailer": "Lowe's",
+    "category": "Kitchen & Dining",
+    "itemType": "Marble Serving Trays",
+    "assortmentDepth": 34,
+    "avgPrice": 125.3
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Storage & Organization",
+    "itemType": "Desk Organizers",
+    "assortmentDepth": 73,
+    "avgPrice": 96.41
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Bath",
+    "itemType": "Toothbrush Holders",
+    "assortmentDepth": 116,
+    "avgPrice": 12.46
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Home Decor",
+    "itemType": "Decorative Vases",
+    "assortmentDepth": 178,
+    "avgPrice": 113.2
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Furniture",
+    "itemType": "Coffee Tables",
+    "assortmentDepth": 59,
+    "avgPrice": 61.11
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Home Decor",
+    "itemType": "Table Lamps",
+    "assortmentDepth": 99,
+    "avgPrice": 34.42
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Storage & Organization",
+    "itemType": "Shelf Baskets",
+    "assortmentDepth": 161,
+    "avgPrice": 40.59
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Storage & Organization",
+    "itemType": "Storage Baskets",
+    "assortmentDepth": 54,
+    "avgPrice": 80.08
+  },
+  {
+    "retailer": "Home Depot",
+    "category": "Kitchen & Dining",
+    "itemType": "Ceramic Serving Bowls",
+    "assortmentDepth": 137,
+    "avgPrice": 77.86
+  },
+  {
+    "retailer": "Amazon",
+    "category": "Kitchen & Dining",
+    "itemType": "Linen Napkin Sets",
+    "assortmentDepth": 25,
+    "avgPrice": 12.05
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Party Supplies",
+    "itemType": "Party Plates",
+    "assortmentDepth": 178,
+    "avgPrice": 120.44
+  },
+  {
+    "retailer": "Lowe's",
+    "category": "Kitchen & Dining",
+    "itemType": "Dinnerware Sets",
+    "assortmentDepth": 36,
+    "avgPrice": 89.05
+  },
+  {
+    "retailer": "Wayfair",
+    "category": "Bedding",
+    "itemType": "Mattress Protectors",
+    "assortmentDepth": 176,
+    "avgPrice": 18.84
+  },
+  {
+    "retailer": "Walmart",
+    "category": "Lighting",
+    "itemType": "Pendant Lights",
+    "assortmentDepth": 162,
+    "avgPrice": 62.4
+  },
+  {
+    "retailer": "Lowe's",
+    "category": "Holiday & Festive Decor",
+    "itemType": "Christmas Ornaments",
+    "assortmentDepth": 118,
+    "avgPrice": 74.85
+  }
+]

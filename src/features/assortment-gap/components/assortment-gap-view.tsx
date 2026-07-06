@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Calendar } from "lucide-react";
 
+import { AssortmentAnalysisBanner } from "@/components/data-display/assortment-analysis-banner";
 import {
   CategoryTreemap,
-  TreemapTooltip,
   type TreemapItem,
 } from "@/components/data-display/category-treemap";
 import { GapsDrawer, type GapItem } from "@/components/data-display/gaps-drawer";
@@ -15,32 +15,71 @@ import { RevenueGoalPanel } from "@/components/data-display/revenue-goal-panel";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
+import {
+  getTreemapBreadcrumbLabels,
+  getTreemapGridConfig,
+  getTreemapLevelItems,
+  type TreemapHierarchyRoot,
+  type TreemapNode,
+} from "@/lib/mock-data/treemap-hierarchy";
 
 interface AssortmentGapViewProps {
-  treemapItems: TreemapItem[];
-  kitchenSubcategories: TreemapItem[];
+  lastUpdatedLabel: string;
+  revenueOpportunity: string;
+  selectedCategoryCount: number;
+  competitors: string[];
+  treemapRoot: TreemapHierarchyRoot;
   servewareGapItems: GapItem[];
+  beaconRecommendedItems: GapItem[];
   products: MissingProduct[];
 }
 
+function nodeToTreemapItem(node: TreemapNode): TreemapItem {
+  return {
+    id: node.id,
+    label: node.label,
+    lag: node.lag,
+    gridArea: node.gridArea,
+    revenue: node.revenue,
+    gapPercent: node.gapPercent,
+    competitorLeader: node.competitorLeader,
+    opensDrawer: node.opensDrawer,
+    children: node.children,
+  };
+}
+
 export function AssortmentGapView({
-  treemapItems,
-  kitchenSubcategories,
+  lastUpdatedLabel,
+  revenueOpportunity,
+  selectedCategoryCount,
+  competitors,
+  treemapRoot,
   servewareGapItems,
+  beaconRecommendedItems,
   products,
 }: AssortmentGapViewProps) {
+  const [drillPath, setDrillPath] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [hoveredItem, setHoveredItem] = useState<import("@/components/data-display/category-treemap").TreemapItem | null>(null);
-  const [drillDown, setDrillDown] = useState(false);
   const [drawerCategory, setDrawerCategory] = useState<string | null>(null);
-  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const planItems = usePlanStore((state) => state.planItems);
   const addPlanItem = usePlanStore((state) => state.addPlanItem);
   const removePlanItem = usePlanStore((state) => state.removePlanItem);
 
-  const activeItems = drillDown ? kitchenSubcategories : treemapItems;
-  const selectedItem = activeItems.find((item) => item.id === selectedId) ?? null;
+  const activeItems = useMemo(
+    () => getTreemapLevelItems(treemapRoot, drillPath).map(nodeToTreemapItem),
+    [treemapRoot, drillPath],
+  );
+
+  const gridConfig = useMemo(
+    () => getTreemapGridConfig(treemapRoot, drillPath),
+    [treemapRoot, drillPath],
+  );
+
+  const breadcrumbLabels = useMemo(
+    () => getTreemapBreadcrumbLabels(treemapRoot, drillPath),
+    [treemapRoot, drillPath],
+  );
 
   const drawerItems = useMemo(
     () =>
@@ -54,52 +93,49 @@ export function AssortmentGapView({
   const revenuePlannedPercent = Math.min(planItems.length * 2, 100);
   const plannedRevenue = planItems.length > 0 ? `$${(planItems.length * 1.6).toFixed(1)}M` : "$0M";
 
-  function cancelHide() {
-    if (hideTimerRef.current) {
-      clearTimeout(hideTimerRef.current);
-      hideTimerRef.current = null;
-    }
+  function handleViewGapsFromTooltip(item: TreemapItem) {
+    const category = item.opensDrawer ?? item.label;
+    setDrawerCategory(category);
+    setSelectedId(item.id);
   }
 
-  function scheduleHide() {
-    hideTimerRef.current = setTimeout(() => setHoveredItem(null), 200);
-  }
-
-  function handleTileHover(item: TreemapItem | null) {
-    if (item) {
-      cancelHide();
-      setHoveredItem(item);
-    } else {
-      scheduleHide();
+  function handleBeaconAddToPlan(itemIds: string[], items: GapItem[]) {
+    for (const id of itemIds) {
+      const entry = items.find((item) => item.id === id);
+      if (entry) addPlanItem(entry.name);
     }
   }
 
   function handleTreemapSelect(item: TreemapItem) {
+    if (item.opensDrawer && !(item.children?.length ?? 0)) {
+      setDrawerCategory(item.opensDrawer);
+      setSelectedId(item.id);
+      return;
+    }
+
+    if ((item.children?.length ?? 0) > 0) {
+      setDrillPath((prev) => [...prev, item.id]);
+      setSelectedId(item.id);
+      setDrawerCategory(null);
+      return;
+    }
+
     if (item.opensDrawer) {
       setDrawerCategory(item.opensDrawer);
       setSelectedId(item.id);
       return;
     }
-    if (item.drillDown) {
-      setDrillDown(true);
-      setSelectedId(item.id);
-      return;
-    }
+
     setSelectedId(selectedId === item.id ? null : item.id);
   }
 
-  function handleViewGaps() {
-    const target = hoveredItem ?? selectedItem;
-    if (!target) return;
-    const category = target.opensDrawer ?? target.label;
-    setDrawerCategory(category);
-    setHoveredItem(null);
-  }
-
-  function handleBack() {
-    setDrillDown(false);
+  function handleBreadcrumbNavigate(index: number) {
+    if (index < 0) {
+      setDrillPath([]);
+    } else {
+      setDrillPath((prev) => prev.slice(0, index + 1));
+    }
     setSelectedId(null);
-    setHoveredItem(null);
     setDrawerCategory(null);
   }
 
@@ -112,7 +148,7 @@ export function AssortmentGapView({
           { label: "Assortment Gap Analysis" },
         ]}
         actions={
-          <Button variant="ghost" size="icon" aria-label="Open assortment calendar" asChild>
+          <Button variant="secondary" size="icon" aria-label="Open assortment calendar" asChild>
             <Link href="/assortment/plan">
               <Calendar className="h-4 w-4" />
             </Link>
@@ -120,47 +156,43 @@ export function AssortmentGapView({
         }
       />
 
+      <AssortmentAnalysisBanner lastUpdatedLabel={lastUpdatedLabel} />
+
       <RevenueGoalPanel
-        revenueOpportunity="$52.8M"
-        revenueGoal="$50.0M"
+        revenueOpportunity={revenueOpportunity}
         revenuePlannedPercent={revenuePlannedPercent}
         plannedMessage={
           planItems.length > 0
             ? `You are $${(50 - planItems.length * 1.6).toFixed(1)}M away from completing your assortment plan`
             : "You are $50.0M away from completing your assortment plan"
         }
-        assortmentPlanMessage={
-          planItems.length > 0
-            ? undefined
-            : "You haven't added any item types to your assortment plan"
-        }
-        planItems={planItems}
-        showCreatePlan={planItems.length === 0}
-        showGenerateCalendar={planItems.length > 0}
+        beaconRecommendedItems={beaconRecommendedItems}
+        planItemCount={planItems.length}
+        planItemNames={planItems}
+        onAddToPlan={handleBeaconAddToPlan}
+        onRemoveFromPlan={(name) => removePlanItem(name)}
+        onBeaconDrawerOpen={() => {
+          setDrawerCategory(null);
+          setSelectedId(null);
+        }}
       />
 
-      <div className="relative mb-[var(--space-4)]">
-        <CategoryTreemap
-          items={activeItems}
-          selectedId={selectedId}
-          hoveredId={hoveredItem?.id ?? null}
-          onSelect={handleTreemapSelect}
-          onHover={handleTileHover}
-          breadcrumb={drillDown ? "Kitchen & Dining" : undefined}
-          onBack={drillDown ? handleBack : undefined}
-        />
-        {hoveredItem?.revenue && !drawerCategory && (
-          <TreemapTooltip
-            item={hoveredItem}
-            onViewGaps={handleViewGaps}
-            onMouseEnter={cancelHide}
-            onMouseLeave={scheduleHide}
-          />
-        )}
-      </div>
+      <CategoryTreemap
+        items={activeItems}
+        selectedId={selectedId}
+        onSelect={handleTreemapSelect}
+        onViewGaps={handleViewGapsFromTooltip}
+        breadcrumbLabels={breadcrumbLabels}
+        onBreadcrumbNavigate={handleBreadcrumbNavigate}
+        gridConfig={gridConfig}
+        selectedCategoryCount={selectedCategoryCount}
+        competitors={competitors}
+        className="mb-[var(--space-4)]"
+      />
 
       <MissingProductsTable
         products={products}
+        totalCount={products.length}
         onAddToPlan={(name) => addPlanItem(name)}
       />
 

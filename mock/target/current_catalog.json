@@ -1,0 +1,402 @@
+[
+  {
+    "sku": "TGT-1001",
+    "category": "Kitchen & Dining",
+    "itemType": "Ceramic Serving Bowls",
+    "activeSellers": 8,
+    "targetCoverage": 0.53,
+    "avgPrice": 45.71
+  },
+  {
+    "sku": "TGT-1002",
+    "category": "Kitchen & Dining",
+    "itemType": "Cake Stands",
+    "activeSellers": 11,
+    "targetCoverage": 0.45,
+    "avgPrice": 16.03
+  },
+  {
+    "sku": "TGT-1003",
+    "category": "Kitchen & Dining",
+    "itemType": "Glass Beverage Dispensers",
+    "activeSellers": 9,
+    "targetCoverage": 0.25,
+    "avgPrice": 52.43
+  },
+  {
+    "sku": "TGT-1004",
+    "category": "Kitchen & Dining",
+    "itemType": "Salt & Pepper Grinder Sets",
+    "activeSellers": 8,
+    "targetCoverage": 0.31,
+    "avgPrice": 29.5
+  },
+  {
+    "sku": "TGT-1005",
+    "category": "Kitchen & Dining",
+    "itemType": "Marble Serving Trays",
+    "activeSellers": 8,
+    "targetCoverage": 0.69,
+    "avgPrice": 58.86
+  },
+  {
+    "sku": "TGT-1006",
+    "category": "Kitchen & Dining",
+    "itemType": "Linen Napkin Sets",
+    "activeSellers": 12,
+    "targetCoverage": 0.26,
+    "avgPrice": 66.28
+  },
+  {
+    "sku": "TGT-1007",
+    "category": "Kitchen & Dining",
+    "itemType": "Stoneware Mugs",
+    "activeSellers": 9,
+    "targetCoverage": 0.29,
+    "avgPrice": 20.05
+  },
+  {
+    "sku": "TGT-1008",
+    "category": "Kitchen & Dining",
+    "itemType": "Dinnerware Sets",
+    "activeSellers": 9,
+    "targetCoverage": 0.45,
+    "avgPrice": 18.62
+  },
+  {
+    "sku": "TGT-1009",
+    "category": "Kitchen & Dining",
+    "itemType": "Cutting Boards",
+    "activeSellers": 12,
+    "targetCoverage": 0.66,
+    "avgPrice": 41.05
+  },
+  {
+    "sku": "TGT-1010",
+    "category": "Kitchen & Dining",
+    "itemType": "Serving Platters",
+    "activeSellers": 2,
+    "targetCoverage": 0.59,
+    "avgPrice": 61.53
+  },
+  {
+    "sku": "TGT-1011",
+    "category": "Home Decor",
+    "itemType": "Throw Pillows",
+    "activeSellers": 4,
+    "targetCoverage": 0.56,
+    "avgPrice": 55.1
+  },
+  {
+    "sku": "TGT-1012",
+    "category": "Home Decor",
+    "itemType": "Curtain Panels",
+    "activeSellers": 4,
+    "targetCoverage": 0.58,
+    "avgPrice": 27.68
+  },
+  {
+    "sku": "TGT-1013",
+    "category": "Home Decor",
+    "itemType": "Wall Mirrors",
+    "activeSellers": 11,
+    "targetCoverage": 0.24,
+    "avgPrice": 68.66
+  },
+  {
+    "sku": "TGT-1014",
+    "category": "Home Decor",
+    "itemType": "Decorative Vases",
+    "activeSellers": 8,
+    "targetCoverage": 0.45,
+    "avgPrice": 61.49
+  },
+  {
+    "sku": "TGT-1015",
+    "category": "Home Decor",
+    "itemType": "Table Lamps",
+    "activeSellers": 2,
+    "targetCoverage": 0.44,
+    "avgPrice": 41.34
+  },
+  {
+    "sku": "TGT-1016",
+    "category": "Home Decor",
+    "itemType": "Candle Holders",
+    "activeSellers": 11,
+    "targetCoverage": 0.52,
+    "avgPrice": 30.79
+  },
+  {
+    "sku": "TGT-1017",
+    "category": "Home Decor",
+    "itemType": "Picture Frames",
+    "activeSellers": 1,
+    "targetCoverage": 0.53,
+    "avgPrice": 48.92
+  },
+  {
+    "sku": "TGT-1018",
+    "category": "Home Decor",
+    "itemType": "Area Rugs",
+    "activeSellers": 11,
+    "targetCoverage": 0.45,
+    "avgPrice": 25.9
+  },
+  {
+    "sku": "TGT-1019",
+    "category": "Home Decor",
+    "itemType": "Decorative Baskets",
+    "activeSellers": 10,
+    "targetCoverage": 0.4,
+    "avgPrice": 23.1
+  },
+  {
+    "sku": "TGT-1020",
+    "category": "Home Decor",
+    "itemType": "Taper Candle Sets",
+    "activeSellers": 5,
+    "targetCoverage": 0.34,
+    "avgPrice": 50.82
+  },
+  {
+    "sku": "TGT-1021",
+    "category": "Outdoor Living",
+    "itemType": "Decorative Planters",
+    "activeSellers": 12,
+    "targetCoverage": 0.41,
+    "avgPrice": 31.73
+  },
+  {
+    "sku": "TGT-1022",
+    "category": "Outdoor Living",
+    "itemType": "Solar String Lights",
+    "activeSellers": 10,
+    "targetCoverage": 0.29,
+    "avgPrice": 22.33
+  },
+  {
+    "sku": "TGT-1023",
+    "category": "Outdoor Living",
+    "itemType": "Patio Umbrellas",
+    "activeSellers": 8,
+    "targetCoverage": 0.29,
+    "avgPrice": 18.33
+  },
+  {
+    "sku": "TGT-1024",
+    "category": "Outdoor Living",
+    "itemType": "Outdoor Lanterns",
+    "activeSellers": 5,
+    "targetCoverage": 0.5,
+    "avgPrice": 68.48
+  },
+  {
+    "sku": "TGT-1025",
+    "category": "Outdoor Living",
+    "itemType": "Garden Decor",
+    "activeSellers": 2,
+    "targetCoverage": 0.51,
+    "avgPrice": 53.06
+  },
+  {
+    "sku": "TGT-1026",
+    "category": "Outdoor Living",
+    "itemType": "Planter Stands",
+    "activeSellers": 11,
+    "targetCoverage": 0.68,
+    "avgPrice": 41.92
+  },
+  {
+    "sku": "TGT-1027",
+    "category": "Outdoor Living",
+    "itemType": "Outdoor Side Tables",
+    "activeSellers": 12,
+    "targetCoverage": 0.44,
+    "avgPrice": 43.4
+  },
+  {
+    "sku": "TGT-1028",
+    "category": "Outdoor Living",
+    "itemType": "Fire Pits",
+    "activeSellers": 8,
+    "targetCoverage": 0.42,
+    "avgPrice": 40.61
+  },
+  {
+    "sku": "TGT-1029",
+    "category": "Outdoor Living",
+    "itemType": "Hanging Planters",
+    "activeSellers": 2,
+    "targetCoverage": 0.48,
+    "avgPrice": 69.62
+  },
+  {
+    "sku": "TGT-1030",
+    "category": "Outdoor Living",
+    "itemType": "Outdoor Rugs",
+    "activeSellers": 9,
+    "targetCoverage": 0.24,
+    "avgPrice": 25.95
+  },
+  {
+    "sku": "TGT-1031",
+    "category": "Storage & Organization",
+    "itemType": "Storage Baskets",
+    "activeSellers": 2,
+    "targetCoverage": 0.37,
+    "avgPrice": 66.48
+  },
+  {
+    "sku": "TGT-1032",
+    "category": "Storage & Organization",
+    "itemType": "Closet Organizers",
+    "activeSellers": 1,
+    "targetCoverage": 0.7,
+    "avgPrice": 30.92
+  },
+  {
+    "sku": "TGT-1033",
+    "category": "Storage & Organization",
+    "itemType": "Drawer Dividers",
+    "activeSellers": 2,
+    "targetCoverage": 0.25,
+    "avgPrice": 60.08
+  },
+  {
+    "sku": "TGT-1034",
+    "category": "Storage & Organization",
+    "itemType": "Laundry Hampers",
+    "activeSellers": 8,
+    "targetCoverage": 0.46,
+    "avgPrice": 69.66
+  },
+  {
+    "sku": "TGT-1035",
+    "category": "Storage & Organization",
+    "itemType": "Desk Organizers",
+    "activeSellers": 7,
+    "targetCoverage": 0.21,
+    "avgPrice": 26.53
+  },
+  {
+    "sku": "TGT-1036",
+    "category": "Storage & Organization",
+    "itemType": "Pantry Bins",
+    "activeSellers": 4,
+    "targetCoverage": 0.55,
+    "avgPrice": 19.09
+  },
+  {
+    "sku": "TGT-1037",
+    "category": "Storage & Organization",
+    "itemType": "Shelf Baskets",
+    "activeSellers": 2,
+    "targetCoverage": 0.31,
+    "avgPrice": 22.79
+  },
+  {
+    "sku": "TGT-1038",
+    "category": "Storage & Organization",
+    "itemType": "Wall Hooks",
+    "activeSellers": 9,
+    "targetCoverage": 0.59,
+    "avgPrice": 29.39
+  },
+  {
+    "sku": "TGT-1039",
+    "category": "Storage & Organization",
+    "itemType": "Underbed Storage",
+    "activeSellers": 6,
+    "targetCoverage": 0.31,
+    "avgPrice": 22.28
+  },
+  {
+    "sku": "TGT-1040",
+    "category": "Storage & Organization",
+    "itemType": "Cabinet Organizers",
+    "activeSellers": 11,
+    "targetCoverage": 0.21,
+    "avgPrice": 42.97
+  },
+  {
+    "sku": "TGT-1041",
+    "category": "Furniture",
+    "itemType": "Dining Chairs",
+    "activeSellers": 2,
+    "targetCoverage": 0.68,
+    "avgPrice": 53.67
+  },
+  {
+    "sku": "TGT-1042",
+    "category": "Furniture",
+    "itemType": "Coffee Tables",
+    "activeSellers": 4,
+    "targetCoverage": 0.31,
+    "avgPrice": 42.37
+  },
+  {
+    "sku": "TGT-1043",
+    "category": "Furniture",
+    "itemType": "Side Tables",
+    "activeSellers": 8,
+    "targetCoverage": 0.51,
+    "avgPrice": 36.66
+  },
+  {
+    "sku": "TGT-1044",
+    "category": "Furniture",
+    "itemType": "TV Stands",
+    "activeSellers": 3,
+    "targetCoverage": 0.6,
+    "avgPrice": 15.19
+  },
+  {
+    "sku": "TGT-1045",
+    "category": "Furniture",
+    "itemType": "Accent Chairs",
+    "activeSellers": 8,
+    "targetCoverage": 0.58,
+    "avgPrice": 52.48
+  },
+  {
+    "sku": "TGT-1046",
+    "category": "Furniture",
+    "itemType": "Nightstands",
+    "activeSellers": 7,
+    "targetCoverage": 0.24,
+    "avgPrice": 31.6
+  },
+  {
+    "sku": "TGT-1047",
+    "category": "Furniture",
+    "itemType": "Console Tables",
+    "activeSellers": 3,
+    "targetCoverage": 0.24,
+    "avgPrice": 37.88
+  },
+  {
+    "sku": "TGT-1048",
+    "category": "Furniture",
+    "itemType": "Bookcases",
+    "activeSellers": 7,
+    "targetCoverage": 0.5,
+    "avgPrice": 32.37
+  },
+  {
+    "sku": "TGT-1049",
+    "category": "Furniture",
+    "itemType": "Bar Carts",
+    "activeSellers": 6,
+    "targetCoverage": 0.44,
+    "avgPrice": 15.09
+  },
+  {
+    "sku": "TGT-1050",
+    "category": "Furniture",
+    "itemType": "Entryway Benches",
+    "activeSellers": 6,
+    "targetCoverage": 0.21,
+    "avgPrice": 61.14
+  }
+]

@@ -1,0 +1,642 @@
+[
+  {
+    "brand": "Bella Home Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.3,
+    "reviewCount": 6331,
+    "sentiment": "Mixed",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Greenleaf Home Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.5,
+    "reviewCount": 4402,
+    "sentiment": "Mixed",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Mosaic Home Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.3,
+    "reviewCount": 5600,
+    "sentiment": "Mixed",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Solara Home Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.5,
+    "reviewCount": 5072,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Maven Home Co.",
+    "retailer": "Walmart",
+    "avgRating": 4.4,
+    "reviewCount": 3905,
+    "sentiment": "Mixed",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Terra Home Co.",
+    "retailer": "Walmart",
+    "avgRating": 4.6,
+    "reviewCount": 3962,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Luma Home Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.9,
+    "reviewCount": 7889,
+    "sentiment": "Mixed",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Oak Home Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.4,
+    "reviewCount": 1391,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Willow Home Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.1,
+    "reviewCount": 2084,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Atlas Home Co.",
+    "retailer": "Walmart",
+    "avgRating": 4.7,
+    "reviewCount": 1665,
+    "sentiment": "Mixed",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Nord Home Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.1,
+    "reviewCount": 1741,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Harbor Home Co.",
+    "retailer": "Walmart",
+    "avgRating": 4.2,
+    "reviewCount": 7791,
+    "sentiment": "Mixed",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Purely Home Co.",
+    "retailer": "Lowe's",
+    "avgRating": 4.7,
+    "reviewCount": 6667,
+    "sentiment": "Mixed",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Summit Home Co.",
+    "retailer": "Walmart",
+    "avgRating": 3.9,
+    "reviewCount": 2098,
+    "sentiment": "Mixed",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Bright Home Co.",
+    "retailer": "Lowe's",
+    "avgRating": 4.3,
+    "reviewCount": 5142,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Clover Home Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.6,
+    "reviewCount": 6751,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Hearth Home Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.2,
+    "reviewCount": 5289,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Vista Home Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.2,
+    "reviewCount": 741,
+    "sentiment": "Mixed",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Prairie Home Co.",
+    "retailer": "Amazon",
+    "avgRating": 3.8,
+    "reviewCount": 2982,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Bloom Home Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.5,
+    "reviewCount": 4813,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Cedar Home Co.",
+    "retailer": "Amazon",
+    "avgRating": 3.9,
+    "reviewCount": 7360,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Amber Home Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.1,
+    "reviewCount": 7681,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Sage Home Co.",
+    "retailer": "Walmart",
+    "avgRating": 4.1,
+    "reviewCount": 1811,
+    "sentiment": "Mixed",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Coast Home Co.",
+    "retailer": "Walmart",
+    "avgRating": 3.9,
+    "reviewCount": 357,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Drift Home Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.2,
+    "reviewCount": 5847,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Plush Home Co.",
+    "retailer": "Walmart",
+    "avgRating": 3.9,
+    "reviewCount": 5289,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Radiant Home Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.6,
+    "reviewCount": 5034,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Wild Home Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.2,
+    "reviewCount": 2010,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Fresh Home Co.",
+    "retailer": "Walmart",
+    "avgRating": 4.5,
+    "reviewCount": 3870,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Urban Home Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.1,
+    "reviewCount": 3352,
+    "sentiment": "Mixed",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Bella Living Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.3,
+    "reviewCount": 1754,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Greenleaf Living Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.1,
+    "reviewCount": 3355,
+    "sentiment": "Mixed",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Mosaic Living Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.6,
+    "reviewCount": 8126,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Solara Living Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.1,
+    "reviewCount": 906,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Maven Living Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.1,
+    "reviewCount": 1216,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Terra Living Co.",
+    "retailer": "Amazon",
+    "avgRating": 3.9,
+    "reviewCount": 6108,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Luma Living Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.2,
+    "reviewCount": 4201,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Oak Living Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.8,
+    "reviewCount": 5086,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Willow Living Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.3,
+    "reviewCount": 5332,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Atlas Living Co.",
+    "retailer": "Amazon",
+    "avgRating": 3.8,
+    "reviewCount": 5558,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Nord Living Co.",
+    "retailer": "Amazon",
+    "avgRating": 3.8,
+    "reviewCount": 5405,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Harbor Living Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.6,
+    "reviewCount": 6853,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Purely Living Co.",
+    "retailer": "Walmart",
+    "avgRating": 4.7,
+    "reviewCount": 6686,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Summit Living Co.",
+    "retailer": "Lowe's",
+    "avgRating": 4.8,
+    "reviewCount": 7325,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Bright Living Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.1,
+    "reviewCount": 5048,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Clover Living Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.5,
+    "reviewCount": 7629,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Hearth Living Co.",
+    "retailer": "Walmart",
+    "avgRating": 3.8,
+    "reviewCount": 1704,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Vista Living Co.",
+    "retailer": "Lowe's",
+    "avgRating": 4.5,
+    "reviewCount": 3780,
+    "sentiment": "Mixed",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Prairie Living Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.3,
+    "reviewCount": 1331,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Bloom Living Co.",
+    "retailer": "Wayfair",
+    "avgRating": 3.8,
+    "reviewCount": 6892,
+    "sentiment": "Mixed",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Cedar Living Co.",
+    "retailer": "Wayfair",
+    "avgRating": 3.8,
+    "reviewCount": 5745,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Amber Living Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.2,
+    "reviewCount": 2079,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Sage Living Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.5,
+    "reviewCount": 4797,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Coast Living Co.",
+    "retailer": "Lowe's",
+    "avgRating": 4.5,
+    "reviewCount": 5013,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Drift Living Co.",
+    "retailer": "Walmart",
+    "avgRating": 4.3,
+    "reviewCount": 4210,
+    "sentiment": "Mixed",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Plush Living Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.0,
+    "reviewCount": 569,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Radiant Living Co.",
+    "retailer": "Lowe's",
+    "avgRating": 4.1,
+    "reviewCount": 3989,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Wild Living Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.3,
+    "reviewCount": 6099,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Fresh Living Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.3,
+    "reviewCount": 7961,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Urban Living Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.0,
+    "reviewCount": 4788,
+    "sentiment": "Positive",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Bella Studio Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.5,
+    "reviewCount": 3786,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Greenleaf Studio Co.",
+    "retailer": "Home Depot",
+    "avgRating": 3.9,
+    "reviewCount": 7402,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Mosaic Studio Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.1,
+    "reviewCount": 6973,
+    "sentiment": "Mixed",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Solara Studio Co.",
+    "retailer": "Lowe's",
+    "avgRating": 3.9,
+    "reviewCount": 177,
+    "sentiment": "Mixed",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Maven Studio Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.1,
+    "reviewCount": 7438,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Terra Studio Co.",
+    "retailer": "Lowe's",
+    "avgRating": 3.9,
+    "reviewCount": 4447,
+    "sentiment": "Mixed",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Luma Studio Co.",
+    "retailer": "Wayfair",
+    "avgRating": 3.9,
+    "reviewCount": 3706,
+    "sentiment": "Mixed",
+    "topIssue": "None"
+  },
+  {
+    "brand": "Oak Studio Co.",
+    "retailer": "Walmart",
+    "avgRating": 4.6,
+    "reviewCount": 5627,
+    "sentiment": "Positive",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Willow Studio Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.6,
+    "reviewCount": 2388,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Atlas Studio Co.",
+    "retailer": "Home Depot",
+    "avgRating": 4.6,
+    "reviewCount": 5912,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Nord Studio Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.4,
+    "reviewCount": 5776,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Harbor Studio Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.7,
+    "reviewCount": 4085,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Purely Studio Co.",
+    "retailer": "Wayfair",
+    "avgRating": 3.9,
+    "reviewCount": 5325,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Summit Studio Co.",
+    "retailer": "Home Depot",
+    "avgRating": 3.9,
+    "reviewCount": 2605,
+    "sentiment": "Mixed",
+    "topIssue": "Product quality"
+  },
+  {
+    "brand": "Bright Studio Co.",
+    "retailer": "Amazon",
+    "avgRating": 4.5,
+    "reviewCount": 7736,
+    "sentiment": "Positive",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Clover Studio Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.7,
+    "reviewCount": 2152,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Hearth Studio Co.",
+    "retailer": "Lowe's",
+    "avgRating": 4.6,
+    "reviewCount": 97,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Vista Studio Co.",
+    "retailer": "Wayfair",
+    "avgRating": 4.9,
+    "reviewCount": 7519,
+    "sentiment": "Mixed",
+    "topIssue": "Packaging"
+  },
+  {
+    "brand": "Prairie Studio Co.",
+    "retailer": "Walmart",
+    "avgRating": 4.2,
+    "reviewCount": 4832,
+    "sentiment": "Positive",
+    "topIssue": "Shipping delays"
+  },
+  {
+    "brand": "Bloom Studio Co.",
+    "retailer": "Lowe's",
+    "avgRating": 4.4,
+    "reviewCount": 4230,
+    "sentiment": "Mixed",
+    "topIssue": "None"
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "id": "cat_kitchen_dining",
+    "name": "Kitchen & Dining",
+    "businessUnit": "Home",
+    "annualRevenue": 124000000,
+    "growthRate": 0.18,
+    "assortmentGapScore": 0.87,
+    "priority": "High",
+    "seasonality": "Q4",
+    "categoryManager": "Ava Patel"
+  },
+  {
+    "id": "cat_home_decor",
+    "name": "Home Decor",
+    "businessUnit": "Home",
+    "annualRevenue": 98000000,
+    "growthRate": 0.14,
+    "assortmentGapScore": 0.74,
+    "priority": "High",
+    "seasonality": "Q2",
+    "categoryManager": "Jordan Lee"
+  },
+  {
+    "id": "cat_outdoor_living",
+    "name": "Outdoor Living",
+    "businessUnit": "Seasonal Home",
+    "annualRevenue": 76000000,
+    "growthRate": 0.21,
+    "assortmentGapScore": 0.79,
+    "priority": "Medium",
+    "seasonality": "Q2",
+    "categoryManager": "Maya Thompson"
+  },
+  {
+    "id": "cat_storage_org",
+    "name": "Storage & Organization",
+    "businessUnit": "Home",
+    "annualRevenue": 62000000,
+    "growthRate": 0.09,
+    "assortmentGapScore": 0.67,
+    "priority": "Medium",
+    "seasonality": "Q1",
+    "categoryManager": "Elena Ross"
+  },
+  {
+    "id": "cat_furniture",
+    "name": "Furniture",
+    "businessUnit": "Home",
+    "annualRevenue": 145000000,
+    "growthRate": 0.12,
+    "assortmentGapScore": 0.58,
+    "priority": "High",
+    "seasonality": "Q3",
+    "categoryManager": "Noah Kim"
+  },
+  {
+    "id": "cat_party_supplies",
+    "name": "Party Supplies",
+    "businessUnit": "Seasonal",
+    "annualRevenue": 41000000,
+    "growthRate": 0.17,
+    "assortmentGapScore": 0.81,
+    "priority": "Medium",
+    "seasonality": "Q4",
+    "categoryManager": "Sophia Patel"
+  },
+  {
+    "id": "cat_holiday_decor",
+    "name": "Holiday & Festive Decor",
+    "businessUnit": "Seasonal",
+    "annualRevenue": 54000000,
+    "growthRate": 0.24,
+    "assortmentGapScore": 0.91,
+    "priority": "High",
+    "seasonality": "Q4",
+    "categoryManager": "Liam Chen"
+  },
+  {
+    "id": "cat_lighting",
+    "name": "Lighting",
+    "businessUnit": "Home",
+    "annualRevenue": 88000000,
+    "growthRate": 0.16,
+    "assortmentGapScore": 0.83,
+    "priority": "High",
+    "seasonality": "Q4",
+    "categoryManager": "Zoe Martin"
+  },
+  {
+    "id": "cat_bedding",
+    "name": "Bedding",
+    "businessUnit": "Home",
+    "annualRevenue": 93000000,
+    "growthRate": 0.11,
+    "assortmentGapScore": 0.55,
+    "priority": "Medium",
+    "seasonality": "Q2",
+    "categoryManager": "Aiden Brooks"
+  },
+  {
+    "id": "cat_bath",
+    "name": "Bath",
+    "businessUnit": "Home",
+    "annualRevenue": 69000000,
+    "growthRate": 0.1,
+    "assortmentGapScore": 0.49,
+    "priority": "Medium",
+    "seasonality": "Q2",
+    "categoryManager": "Mia Clarke"
+  }
+]

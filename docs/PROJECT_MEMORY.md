@@ -318,19 +318,10 @@ Color should never be the only indicator.
 
 Version 0.1
 
-Completed
-
-* Documentation structure
-* Dashboard analysis
-* Assortment Gap analysis
-* Planning flow analysis
-
 Pending
 
 * Seller onboarding
 * Seller verification
-* Admin
-* Settings
 * Remaining Figma pages
 
 This document should evolve throughout the project as additional Figma designs and business requirements are added.

@@ -1,0 +1,562 @@
+[
+  {
+    "itemType": "Halloween Lanterns",
+    "category": "Holiday & Festive Decor",
+    "revenueLast90Days": 2105031,
+    "unitsLast90Days": 78462,
+    "growthRate": 0.25
+  },
+  {
+    "itemType": "Bath Towels",
+    "category": "Bath",
+    "revenueLast90Days": 1954716,
+    "unitsLast90Days": 16197,
+    "growthRate": 0.07
+  },
+  {
+    "itemType": "Halloween Lanterns",
+    "category": "Holiday & Festive Decor",
+    "revenueLast90Days": 1881674,
+    "unitsLast90Days": 12128,
+    "growthRate": 0.14
+  },
+  {
+    "itemType": "Desk Organizers",
+    "category": "Storage & Organization",
+    "revenueLast90Days": 1056689,
+    "unitsLast90Days": 65076,
+    "growthRate": 0.21
+  },
+  {
+    "itemType": "Balloons",
+    "category": "Party Supplies",
+    "revenueLast90Days": 1427897,
+    "unitsLast90Days": 51126,
+    "growthRate": 0.41
+  },
+  {
+    "itemType": "Bed Skirts",
+    "category": "Bedding",
+    "revenueLast90Days": 1843027,
+    "unitsLast90Days": 34007,
+    "growthRate": 0.39
+  },
+  {
+    "itemType": "Salt & Pepper Grinder Sets",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 1741160,
+    "unitsLast90Days": 34405,
+    "growthRate": 0.44
+  },
+  {
+    "itemType": "Christmas Ornaments",
+    "category": "Holiday & Festive Decor",
+    "revenueLast90Days": 561330,
+    "unitsLast90Days": 10958,
+    "growthRate": 0.14
+  },
+  {
+    "itemType": "Table Covers",
+    "category": "Party Supplies",
+    "revenueLast90Days": 763079,
+    "unitsLast90Days": 38377,
+    "growthRate": 0.43
+  },
+  {
+    "itemType": "Throw Pillows",
+    "category": "Home Decor",
+    "revenueLast90Days": 435061,
+    "unitsLast90Days": 50289,
+    "growthRate": 0.26
+  },
+  {
+    "itemType": "Party Favors",
+    "category": "Party Supplies",
+    "revenueLast90Days": 2198802,
+    "unitsLast90Days": 73333,
+    "growthRate": 0.24
+  },
+  {
+    "itemType": "Linen Napkin Sets",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 1941016,
+    "unitsLast90Days": 22021,
+    "growthRate": 0.21
+  },
+  {
+    "itemType": "Picture Frames",
+    "category": "Home Decor",
+    "revenueLast90Days": 1385066,
+    "unitsLast90Days": 18100,
+    "growthRate": 0.41
+  },
+  {
+    "itemType": "Candle Rings",
+    "category": "Holiday & Festive Decor",
+    "revenueLast90Days": 927804,
+    "unitsLast90Days": 6886,
+    "growthRate": 0.43
+  },
+  {
+    "itemType": "Serving Platters",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 2042203,
+    "unitsLast90Days": 25036,
+    "growthRate": 0.39
+  },
+  {
+    "itemType": "Decorative Planters",
+    "category": "Outdoor Living",
+    "revenueLast90Days": 932467,
+    "unitsLast90Days": 18751,
+    "growthRate": 0.47
+  },
+  {
+    "itemType": "Cupcake Stands",
+    "category": "Party Supplies",
+    "revenueLast90Days": 1286847,
+    "unitsLast90Days": 44468,
+    "growthRate": 0.43
+  },
+  {
+    "itemType": "Valentine Decor",
+    "category": "Holiday & Festive Decor",
+    "revenueLast90Days": 1084888,
+    "unitsLast90Days": 24667,
+    "growthRate": 0.3
+  },
+  {
+    "itemType": "Cabinet Organizers",
+    "category": "Storage & Organization",
+    "revenueLast90Days": 566117,
+    "unitsLast90Days": 70062,
+    "growthRate": 0.18
+  },
+  {
+    "itemType": "Ceramic Serving Bowls",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 2290898,
+    "unitsLast90Days": 66099,
+    "growthRate": 0.13
+  },
+  {
+    "itemType": "Blanket Throws",
+    "category": "Bedding",
+    "revenueLast90Days": 2124563,
+    "unitsLast90Days": 72069,
+    "growthRate": 0.02
+  },
+  {
+    "itemType": "Comforter Sets",
+    "category": "Bedding",
+    "revenueLast90Days": 1030145,
+    "unitsLast90Days": 12696,
+    "growthRate": 0.42
+  },
+  {
+    "itemType": "Stoneware Mugs",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 446326,
+    "unitsLast90Days": 75582,
+    "growthRate": 0.44
+  },
+  {
+    "itemType": "Christmas Ornaments",
+    "category": "Holiday & Festive Decor",
+    "revenueLast90Days": 486874,
+    "unitsLast90Days": 39165,
+    "growthRate": 0.24
+  },
+  {
+    "itemType": "Stoneware Mugs",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 2376034,
+    "unitsLast90Days": 75699,
+    "growthRate": 0.12
+  },
+  {
+    "itemType": "TV Stands",
+    "category": "Furniture",
+    "revenueLast90Days": 459246,
+    "unitsLast90Days": 65763,
+    "growthRate": 0.38
+  },
+  {
+    "itemType": "Floor Lamps",
+    "category": "Lighting",
+    "revenueLast90Days": 262120,
+    "unitsLast90Days": 47176,
+    "growthRate": 0.29
+  },
+  {
+    "itemType": "Outdoor Lanterns",
+    "category": "Outdoor Living",
+    "revenueLast90Days": 913870,
+    "unitsLast90Days": 35406,
+    "growthRate": 0.47
+  },
+  {
+    "itemType": "Easter Basket Kits",
+    "category": "Holiday & Festive Decor",
+    "revenueLast90Days": 714804,
+    "unitsLast90Days": 35213,
+    "growthRate": 0.3
+  },
+  {
+    "itemType": "Table Covers",
+    "category": "Party Supplies",
+    "revenueLast90Days": 776234,
+    "unitsLast90Days": 34275,
+    "growthRate": 0.41
+  },
+  {
+    "itemType": "Mattress Protectors",
+    "category": "Bedding",
+    "revenueLast90Days": 2115379,
+    "unitsLast90Days": 68633,
+    "growthRate": 0.03
+  },
+  {
+    "itemType": "Cake Toppers",
+    "category": "Party Supplies",
+    "revenueLast90Days": 2330718,
+    "unitsLast90Days": 30193,
+    "growthRate": 0.48
+  },
+  {
+    "itemType": "Balloons",
+    "category": "Party Supplies",
+    "revenueLast90Days": 899678,
+    "unitsLast90Days": 64620,
+    "growthRate": 0.02
+  },
+  {
+    "itemType": "Salt & Pepper Grinder Sets",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 718663,
+    "unitsLast90Days": 32123,
+    "growthRate": 0.11
+  },
+  {
+    "itemType": "Decorative Baskets",
+    "category": "Home Decor",
+    "revenueLast90Days": 2188113,
+    "unitsLast90Days": 74533,
+    "growthRate": 0.05
+  },
+  {
+    "itemType": "Planter Stands",
+    "category": "Outdoor Living",
+    "revenueLast90Days": 1506032,
+    "unitsLast90Days": 13817,
+    "growthRate": 0.25
+  },
+  {
+    "itemType": "Accent Chairs",
+    "category": "Furniture",
+    "revenueLast90Days": 2244096,
+    "unitsLast90Days": 46694,
+    "growthRate": 0.47
+  },
+  {
+    "itemType": "Outdoor Lighting",
+    "category": "Lighting",
+    "revenueLast90Days": 736779,
+    "unitsLast90Days": 79659,
+    "growthRate": 0.42
+  },
+  {
+    "itemType": "Outdoor Side Tables",
+    "category": "Outdoor Living",
+    "revenueLast90Days": 349083,
+    "unitsLast90Days": 66743,
+    "growthRate": 0.28
+  },
+  {
+    "itemType": "Drawer Dividers",
+    "category": "Storage & Organization",
+    "revenueLast90Days": 489682,
+    "unitsLast90Days": 30105,
+    "growthRate": 0.42
+  },
+  {
+    "itemType": "Dining Chairs",
+    "category": "Furniture",
+    "revenueLast90Days": 454204,
+    "unitsLast90Days": 52480,
+    "growthRate": 0.16
+  },
+  {
+    "itemType": "Dining Chairs",
+    "category": "Furniture",
+    "revenueLast90Days": 1512676,
+    "unitsLast90Days": 80906,
+    "growthRate": 0.35
+  },
+  {
+    "itemType": "Outdoor Rugs",
+    "category": "Outdoor Living",
+    "revenueLast90Days": 2217051,
+    "unitsLast90Days": 46962,
+    "growthRate": 0.27
+  },
+  {
+    "itemType": "Decorative Vases",
+    "category": "Home Decor",
+    "revenueLast90Days": 2308833,
+    "unitsLast90Days": 43573,
+    "growthRate": 0.24
+  },
+  {
+    "itemType": "Planter Stands",
+    "category": "Outdoor Living",
+    "revenueLast90Days": 514620,
+    "unitsLast90Days": 5901,
+    "growthRate": 0.11
+  },
+  {
+    "itemType": "LED Lanterns",
+    "category": "Lighting",
+    "revenueLast90Days": 497307,
+    "unitsLast90Days": 35210,
+    "growthRate": 0.17
+  },
+  {
+    "itemType": "Cake Stands",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 1373227,
+    "unitsLast90Days": 78804,
+    "growthRate": 0.29
+  },
+  {
+    "itemType": "Pendant Lights",
+    "category": "Lighting",
+    "revenueLast90Days": 1472938,
+    "unitsLast90Days": 32155,
+    "growthRate": 0.24
+  },
+  {
+    "itemType": "Pendant Lights",
+    "category": "Lighting",
+    "revenueLast90Days": 358458,
+    "unitsLast90Days": 29176,
+    "growthRate": 0.28
+  },
+  {
+    "itemType": "Mattress Protectors",
+    "category": "Bedding",
+    "revenueLast90Days": 2328664,
+    "unitsLast90Days": 39038,
+    "growthRate": 0.11
+  },
+  {
+    "itemType": "Soap Dispensers",
+    "category": "Bath",
+    "revenueLast90Days": 2299200,
+    "unitsLast90Days": 54993,
+    "growthRate": 0.41
+  },
+  {
+    "itemType": "Bed Skirts",
+    "category": "Bedding",
+    "revenueLast90Days": 1466282,
+    "unitsLast90Days": 51489,
+    "growthRate": 0.29
+  },
+  {
+    "itemType": "Decorative Vases",
+    "category": "Home Decor",
+    "revenueLast90Days": 2313248,
+    "unitsLast90Days": 32743,
+    "growthRate": 0.34
+  },
+  {
+    "itemType": "Decorative Planters",
+    "category": "Outdoor Living",
+    "revenueLast90Days": 271864,
+    "unitsLast90Days": 53356,
+    "growthRate": 0.47
+  },
+  {
+    "itemType": "Decorative Baskets",
+    "category": "Home Decor",
+    "revenueLast90Days": 207358,
+    "unitsLast90Days": 31053,
+    "growthRate": 0.08
+  },
+  {
+    "itemType": "Coffee Tables",
+    "category": "Furniture",
+    "revenueLast90Days": 2274944,
+    "unitsLast90Days": 36681,
+    "growthRate": 0.06
+  },
+  {
+    "itemType": "Mattress Protectors",
+    "category": "Bedding",
+    "revenueLast90Days": 1422350,
+    "unitsLast90Days": 5558,
+    "growthRate": 0.13
+  },
+  {
+    "itemType": "Table Lamps",
+    "category": "Lighting",
+    "revenueLast90Days": 578203,
+    "unitsLast90Days": 69779,
+    "growthRate": 0.12
+  },
+  {
+    "itemType": "Stoneware Mugs",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 747606,
+    "unitsLast90Days": 56276,
+    "growthRate": 0.41
+  },
+  {
+    "itemType": "Side Tables",
+    "category": "Furniture",
+    "revenueLast90Days": 1092815,
+    "unitsLast90Days": 13025,
+    "growthRate": 0.4
+  },
+  {
+    "itemType": "Table Garlands",
+    "category": "Holiday & Festive Decor",
+    "revenueLast90Days": 163535,
+    "unitsLast90Days": 10448,
+    "growthRate": 0.26
+  },
+  {
+    "itemType": "Beverage Dispensers",
+    "category": "Party Supplies",
+    "revenueLast90Days": 1560135,
+    "unitsLast90Days": 68199,
+    "growthRate": 0.43
+  },
+  {
+    "itemType": "Marble Serving Trays",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 184764,
+    "unitsLast90Days": 5370,
+    "growthRate": 0.11
+  },
+  {
+    "itemType": "Outdoor Lighting",
+    "category": "Lighting",
+    "revenueLast90Days": 1474013,
+    "unitsLast90Days": 20364,
+    "growthRate": 0.35
+  },
+  {
+    "itemType": "Glass Beverage Dispensers",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 2030267,
+    "unitsLast90Days": 41303,
+    "growthRate": 0.21
+  },
+  {
+    "itemType": "Marble Serving Trays",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 1737312,
+    "unitsLast90Days": 45524,
+    "growthRate": 0.21
+  },
+  {
+    "itemType": "Desk Organizers",
+    "category": "Storage & Organization",
+    "revenueLast90Days": 1127406,
+    "unitsLast90Days": 22369,
+    "growthRate": 0.19
+  },
+  {
+    "itemType": "Toothbrush Holders",
+    "category": "Bath",
+    "revenueLast90Days": 503650,
+    "unitsLast90Days": 72618,
+    "growthRate": 0.41
+  },
+  {
+    "itemType": "Decorative Vases",
+    "category": "Home Decor",
+    "revenueLast90Days": 1811890,
+    "unitsLast90Days": 62378,
+    "growthRate": 0.38
+  },
+  {
+    "itemType": "Coffee Tables",
+    "category": "Furniture",
+    "revenueLast90Days": 289667,
+    "unitsLast90Days": 54539,
+    "growthRate": 0.04
+  },
+  {
+    "itemType": "Table Lamps",
+    "category": "Home Decor",
+    "revenueLast90Days": 1145327,
+    "unitsLast90Days": 16073,
+    "growthRate": 0.04
+  },
+  {
+    "itemType": "Shelf Baskets",
+    "category": "Storage & Organization",
+    "revenueLast90Days": 913965,
+    "unitsLast90Days": 7226,
+    "growthRate": 0.46
+  },
+  {
+    "itemType": "Storage Baskets",
+    "category": "Storage & Organization",
+    "revenueLast90Days": 1375658,
+    "unitsLast90Days": 18984,
+    "growthRate": 0.43
+  },
+  {
+    "itemType": "Ceramic Serving Bowls",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 593907,
+    "unitsLast90Days": 22644,
+    "growthRate": 0.17
+  },
+  {
+    "itemType": "Linen Napkin Sets",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 1174498,
+    "unitsLast90Days": 33742,
+    "growthRate": 0.06
+  },
+  {
+    "itemType": "Party Plates",
+    "category": "Party Supplies",
+    "revenueLast90Days": 362103,
+    "unitsLast90Days": 6907,
+    "growthRate": 0.07
+  },
+  {
+    "itemType": "Dinnerware Sets",
+    "category": "Kitchen & Dining",
+    "revenueLast90Days": 2264506,
+    "unitsLast90Days": 57263,
+    "growthRate": 0.09
+  },
+  {
+    "itemType": "Mattress Protectors",
+    "category": "Bedding",
+    "revenueLast90Days": 767452,
+    "unitsLast90Days": 54107,
+    "growthRate": 0.46
+  },
+  {
+    "itemType": "Pendant Lights",
+    "category": "Lighting",
+    "revenueLast90Days": 1866411,
+    "unitsLast90Days": 48686,
+    "growthRate": 0.26
+  },
+  {
+    "itemType": "Christmas Ornaments",
+    "category": "Holiday & Festive Decor",
+    "revenueLast90Days": 600723,
+    "unitsLast90Days": 69022,
+    "growthRate": 0.07
+  }
+]

@@ -1,0 +1,642 @@
+[
+  {
+    "brand": "Bella Home Co.",
+    "category": "Holiday & Festive Decor",
+    "sellerCount": 254,
+    "marketShare": 0.025,
+    "brandHealth": "Strong",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Greenleaf Home Co.",
+    "category": "Bath",
+    "sellerCount": 144,
+    "marketShare": 0.096,
+    "brandHealth": "Strong",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Mosaic Home Co.",
+    "category": "Holiday & Festive Decor",
+    "sellerCount": 273,
+    "marketShare": 0.185,
+    "brandHealth": "Growing",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Solara Home Co.",
+    "category": "Storage & Organization",
+    "sellerCount": 384,
+    "marketShare": 0.169,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Maven Home Co.",
+    "category": "Party Supplies",
+    "sellerCount": 241,
+    "marketShare": 0.026,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Terra Home Co.",
+    "category": "Bedding",
+    "sellerCount": 386,
+    "marketShare": 0.134,
+    "brandHealth": "Growing",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Luma Home Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 325,
+    "marketShare": 0.024,
+    "brandHealth": "Strong",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Oak Home Co.",
+    "category": "Holiday & Festive Decor",
+    "sellerCount": 360,
+    "marketShare": 0.147,
+    "brandHealth": "Growing",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Willow Home Co.",
+    "category": "Party Supplies",
+    "sellerCount": 138,
+    "marketShare": 0.161,
+    "brandHealth": "Growing",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Atlas Home Co.",
+    "category": "Home Decor",
+    "sellerCount": 124,
+    "marketShare": 0.19,
+    "brandHealth": "Strong",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Nord Home Co.",
+    "category": "Party Supplies",
+    "sellerCount": 46,
+    "marketShare": 0.066,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Harbor Home Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 107,
+    "marketShare": 0.036,
+    "brandHealth": "Growing",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Purely Home Co.",
+    "category": "Home Decor",
+    "sellerCount": 334,
+    "marketShare": 0.162,
+    "brandHealth": "Growing",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Summit Home Co.",
+    "category": "Holiday & Festive Decor",
+    "sellerCount": 357,
+    "marketShare": 0.076,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Bright Home Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 180,
+    "marketShare": 0.15,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Clover Home Co.",
+    "category": "Outdoor Living",
+    "sellerCount": 277,
+    "marketShare": 0.184,
+    "brandHealth": "Growing",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Hearth Home Co.",
+    "category": "Party Supplies",
+    "sellerCount": 294,
+    "marketShare": 0.123,
+    "brandHealth": "Growing",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Vista Home Co.",
+    "category": "Holiday & Festive Decor",
+    "sellerCount": 241,
+    "marketShare": 0.085,
+    "brandHealth": "Growing",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Prairie Home Co.",
+    "category": "Storage & Organization",
+    "sellerCount": 346,
+    "marketShare": 0.036,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Bloom Home Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 122,
+    "marketShare": 0.103,
+    "brandHealth": "Watch",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Cedar Home Co.",
+    "category": "Bedding",
+    "sellerCount": 375,
+    "marketShare": 0.18,
+    "brandHealth": "Growing",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Amber Home Co.",
+    "category": "Bedding",
+    "sellerCount": 360,
+    "marketShare": 0.161,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Sage Home Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 397,
+    "marketShare": 0.018,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Coast Home Co.",
+    "category": "Holiday & Festive Decor",
+    "sellerCount": 328,
+    "marketShare": 0.101,
+    "brandHealth": "Growing",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Drift Home Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 114,
+    "marketShare": 0.184,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Plush Home Co.",
+    "category": "Furniture",
+    "sellerCount": 239,
+    "marketShare": 0.172,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Radiant Home Co.",
+    "category": "Lighting",
+    "sellerCount": 376,
+    "marketShare": 0.053,
+    "brandHealth": "Strong",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Wild Home Co.",
+    "category": "Outdoor Living",
+    "sellerCount": 163,
+    "marketShare": 0.047,
+    "brandHealth": "Growing",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Fresh Home Co.",
+    "category": "Holiday & Festive Decor",
+    "sellerCount": 137,
+    "marketShare": 0.132,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Urban Home Co.",
+    "category": "Party Supplies",
+    "sellerCount": 74,
+    "marketShare": 0.017,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Bella Living Co.",
+    "category": "Bedding",
+    "sellerCount": 215,
+    "marketShare": 0.082,
+    "brandHealth": "Strong",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Greenleaf Living Co.",
+    "category": "Party Supplies",
+    "sellerCount": 231,
+    "marketShare": 0.094,
+    "brandHealth": "Growing",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Mosaic Living Co.",
+    "category": "Party Supplies",
+    "sellerCount": 309,
+    "marketShare": 0.173,
+    "brandHealth": "Strong",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Solara Living Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 121,
+    "marketShare": 0.099,
+    "brandHealth": "Strong",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Maven Living Co.",
+    "category": "Home Decor",
+    "sellerCount": 171,
+    "marketShare": 0.161,
+    "brandHealth": "Growing",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Terra Living Co.",
+    "category": "Outdoor Living",
+    "sellerCount": 127,
+    "marketShare": 0.061,
+    "brandHealth": "Growing",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Luma Living Co.",
+    "category": "Furniture",
+    "sellerCount": 45,
+    "marketShare": 0.082,
+    "brandHealth": "Strong",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Oak Living Co.",
+    "category": "Lighting",
+    "sellerCount": 91,
+    "marketShare": 0.152,
+    "brandHealth": "Watch",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Willow Living Co.",
+    "category": "Outdoor Living",
+    "sellerCount": 263,
+    "marketShare": 0.149,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Atlas Living Co.",
+    "category": "Storage & Organization",
+    "sellerCount": 63,
+    "marketShare": 0.063,
+    "brandHealth": "Watch",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Nord Living Co.",
+    "category": "Furniture",
+    "sellerCount": 233,
+    "marketShare": 0.096,
+    "brandHealth": "Growing",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Harbor Living Co.",
+    "category": "Furniture",
+    "sellerCount": 154,
+    "marketShare": 0.058,
+    "brandHealth": "Strong",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Purely Living Co.",
+    "category": "Outdoor Living",
+    "sellerCount": 24,
+    "marketShare": 0.152,
+    "brandHealth": "Growing",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Summit Living Co.",
+    "category": "Home Decor",
+    "sellerCount": 272,
+    "marketShare": 0.077,
+    "brandHealth": "Strong",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Bright Living Co.",
+    "category": "Outdoor Living",
+    "sellerCount": 112,
+    "marketShare": 0.078,
+    "brandHealth": "Strong",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Clover Living Co.",
+    "category": "Lighting",
+    "sellerCount": 50,
+    "marketShare": 0.172,
+    "brandHealth": "Strong",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Hearth Living Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 38,
+    "marketShare": 0.038,
+    "brandHealth": "Strong",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Vista Living Co.",
+    "category": "Lighting",
+    "sellerCount": 33,
+    "marketShare": 0.059,
+    "brandHealth": "Growing",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Prairie Living Co.",
+    "category": "Lighting",
+    "sellerCount": 391,
+    "marketShare": 0.186,
+    "brandHealth": "Strong",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Bloom Living Co.",
+    "category": "Bedding",
+    "sellerCount": 331,
+    "marketShare": 0.142,
+    "brandHealth": "Growing",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Cedar Living Co.",
+    "category": "Bath",
+    "sellerCount": 207,
+    "marketShare": 0.017,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Amber Living Co.",
+    "category": "Bedding",
+    "sellerCount": 105,
+    "marketShare": 0.028,
+    "brandHealth": "Growing",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Sage Living Co.",
+    "category": "Home Decor",
+    "sellerCount": 297,
+    "marketShare": 0.117,
+    "brandHealth": "Strong",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Coast Living Co.",
+    "category": "Outdoor Living",
+    "sellerCount": 368,
+    "marketShare": 0.178,
+    "brandHealth": "Strong",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Drift Living Co.",
+    "category": "Home Decor",
+    "sellerCount": 148,
+    "marketShare": 0.032,
+    "brandHealth": "Strong",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Plush Living Co.",
+    "category": "Furniture",
+    "sellerCount": 252,
+    "marketShare": 0.12,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Radiant Living Co.",
+    "category": "Bedding",
+    "sellerCount": 130,
+    "marketShare": 0.063,
+    "brandHealth": "Strong",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Wild Living Co.",
+    "category": "Lighting",
+    "sellerCount": 342,
+    "marketShare": 0.138,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Fresh Living Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 184,
+    "marketShare": 0.011,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Urban Living Co.",
+    "category": "Furniture",
+    "sellerCount": 294,
+    "marketShare": 0.149,
+    "brandHealth": "Watch",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Bella Studio Co.",
+    "category": "Holiday & Festive Decor",
+    "sellerCount": 291,
+    "marketShare": 0.144,
+    "brandHealth": "Strong",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Greenleaf Studio Co.",
+    "category": "Party Supplies",
+    "sellerCount": 343,
+    "marketShare": 0.125,
+    "brandHealth": "Strong",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Mosaic Studio Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 280,
+    "marketShare": 0.029,
+    "brandHealth": "Strong",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Solara Studio Co.",
+    "category": "Lighting",
+    "sellerCount": 42,
+    "marketShare": 0.089,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Maven Studio Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 144,
+    "marketShare": 0.026,
+    "brandHealth": "Strong",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Terra Studio Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 194,
+    "marketShare": 0.155,
+    "brandHealth": "Strong",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Luma Studio Co.",
+    "category": "Storage & Organization",
+    "sellerCount": 325,
+    "marketShare": 0.172,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Oak Studio Co.",
+    "category": "Bath",
+    "sellerCount": 205,
+    "marketShare": 0.155,
+    "brandHealth": "Growing",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Willow Studio Co.",
+    "category": "Home Decor",
+    "sellerCount": 147,
+    "marketShare": 0.19,
+    "brandHealth": "Growing",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Atlas Studio Co.",
+    "category": "Furniture",
+    "sellerCount": 150,
+    "marketShare": 0.177,
+    "brandHealth": "Watch",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Nord Studio Co.",
+    "category": "Home Decor",
+    "sellerCount": 237,
+    "marketShare": 0.09,
+    "brandHealth": "Growing",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Harbor Studio Co.",
+    "category": "Storage & Organization",
+    "sellerCount": 90,
+    "marketShare": 0.035,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Purely Studio Co.",
+    "category": "Storage & Organization",
+    "sellerCount": 78,
+    "marketShare": 0.134,
+    "brandHealth": "Strong",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Summit Studio Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 75,
+    "marketShare": 0.126,
+    "brandHealth": "Growing",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Bright Studio Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 187,
+    "marketShare": 0.078,
+    "brandHealth": "Watch",
+    "launchReadiness": "Medium"
+  },
+  {
+    "brand": "Clover Studio Co.",
+    "category": "Party Supplies",
+    "sellerCount": 136,
+    "marketShare": 0.039,
+    "brandHealth": "Growing",
+    "launchReadiness": "Low"
+  },
+  {
+    "brand": "Hearth Studio Co.",
+    "category": "Kitchen & Dining",
+    "sellerCount": 308,
+    "marketShare": 0.132,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Vista Studio Co.",
+    "category": "Bedding",
+    "sellerCount": 195,
+    "marketShare": 0.105,
+    "brandHealth": "Watch",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Prairie Studio Co.",
+    "category": "Lighting",
+    "sellerCount": 270,
+    "marketShare": 0.051,
+    "brandHealth": "Growing",
+    "launchReadiness": "High"
+  },
+  {
+    "brand": "Bloom Studio Co.",
+    "category": "Holiday & Festive Decor",
+    "sellerCount": 129,
+    "marketShare": 0.093,
+    "brandHealth": "Strong",
+    "launchReadiness": "Low"
+  }
+]
