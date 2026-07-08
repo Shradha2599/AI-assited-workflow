@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, Copy, ExternalLink, Loader2, Pencil, Plus, RotateCcw, Send, Sparkles, ThumbsDown, ThumbsUp, X } from "lucide-react";
+import { ArrowRight, Check, Copy, ExternalLink, Loader2, Pencil, Plus, RotateCcw, Sparkles, ThumbsDown, ThumbsUp, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -819,27 +819,24 @@ export function TasksPanel({
 
       {activeTab === "beacon" && (
         <div className="shrink-0 border-t border-[var(--color-border)] p-[var(--space-3)]">
-          <div className="flex items-end gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-[var(--space-3)] py-[var(--space-2)] focus-within:border-[var(--color-primary)]">
+          <div className="flex items-center gap-2">
             <textarea
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Input goes here"
               rows={1}
-              className="flex-1 resize-none bg-transparent text-[var(--text-caption-size)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none"
-              style={{ maxHeight: "80px", overflowY: "auto" }}
+              className="h-7 min-h-7 flex-1 resize-none rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-[var(--space-3)] py-0 text-[var(--text-caption-size)] leading-7 placeholder:text-[var(--color-muted-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
               aria-label="Message Beacon"
             />
-            <button
-              type="button"
+            <Button
+              size="sm"
+              className="shrink-0"
               onClick={() => handleSubmit(inputValue)}
               disabled={isLoading || !inputValue.trim()}
-              className="flex shrink-0 cursor-pointer items-center gap-1 rounded-[var(--radius-sm)] bg-[var(--color-primary)] px-2 py-1 text-[var(--text-caption-size)] font-medium text-[var(--color-primary-foreground)] transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
-              aria-label="Send"
             >
-              <Send className="h-3 w-3" />
               Send
-            </button>
+            </Button>
           </div>
           <p className="mt-1.5 text-center text-[10px] text-[var(--color-muted-foreground)]">
             GenAI related information

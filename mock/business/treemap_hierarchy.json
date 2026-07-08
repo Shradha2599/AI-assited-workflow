@@ -1,7 +1,10 @@
 {
   "id": "root",
   "label": "All Categories",
-  "gridConfig": { "columns": 5, "rowTemplate": "1.2fr 1fr 0.8fr" },
+  "gridConfig": {
+    "columns": 5,
+    "rowTemplate": "1.2fr 1fr 0.8fr"
+  },
   "children": [
     {
       "id": "kitchen",
@@ -9,11 +12,14 @@
       "label": "Kitchen & Dining",
       "lag": "high",
       "gridArea": "1 / 1 / 3 / 3",
-      "revenue": "$22.8M",
-      "gapPercent": "35%",
+      "revenue": "$21.4M",
+      "gapPercent": "33%",
       "gapRate": 0.35,
       "competitorLeader": "Amazon",
-      "gridConfig": { "columns": 6, "rowTemplate": "1fr 1fr 1fr" },
+      "gridConfig": {
+        "columns": 6,
+        "rowTemplate": "1fr 1fr 1fr"
+      },
       "children": [
         {
           "id": "kitchen-deals",
@@ -141,11 +147,14 @@
       "label": "Outdoor Living & Garden",
       "lag": "medium-high",
       "gridArea": "1 / 3 / 3 / 4",
-      "revenue": "$9.4M",
-      "gapPercent": "32%",
+      "revenue": "$8.8M",
+      "gapPercent": "30%",
       "gapRate": 0.32,
       "competitorLeader": "Home Depot",
-      "gridConfig": { "columns": 4, "rowTemplate": "1fr 1fr 1fr" },
+      "gridConfig": {
+        "columns": 4,
+        "rowTemplate": "1fr 1fr 1fr"
+      },
       "children": [
         {
           "id": "outdoor-furniture",
@@ -209,11 +218,14 @@
       "label": "Holiday",
       "lag": "medium-high",
       "gridArea": "1 / 4 / 2 / 5",
-      "revenue": "$6.8M",
-      "gapPercent": "25%",
+      "revenue": "$6.4M",
+      "gapPercent": "23%",
       "gapRate": 0.25,
       "competitorLeader": "Amazon",
-      "gridConfig": { "columns": 3, "rowTemplate": "1fr 1fr" },
+      "gridConfig": {
+        "columns": 3,
+        "rowTemplate": "1fr 1fr"
+      },
       "children": [
         {
           "id": "halloween",
@@ -259,11 +271,14 @@
       "label": "Lighting",
       "lag": "medium-high",
       "gridArea": "2 / 4 / 3 / 5",
-      "revenue": "$8.1M",
-      "gapPercent": "27%",
+      "revenue": "$7.7M",
+      "gapPercent": "25%",
       "gapRate": 0.27,
       "competitorLeader": "Amazon",
-      "gridConfig": { "columns": 4, "rowTemplate": "1fr 1fr 1fr" },
+      "gridConfig": {
+        "columns": 4,
+        "rowTemplate": "1fr 1fr 1fr"
+      },
       "children": [
         {
           "id": "ceiling-lights",
@@ -327,11 +342,14 @@
       "label": "Furniture",
       "lag": "medium",
       "gridArea": "3 / 1 / 4 / 3",
-      "revenue": "$5.2M",
+      "revenue": "$4.8M",
       "gapPercent": "17%",
       "gapRate": 0.17,
       "competitorLeader": "Walmart",
-      "gridConfig": { "columns": 4, "rowTemplate": "1fr 1fr" },
+      "gridConfig": {
+        "columns": 4,
+        "rowTemplate": "1fr 1fr"
+      },
       "children": [
         {
           "id": "living-room",
@@ -386,11 +404,14 @@
       "label": "Party Supp...",
       "lag": "low",
       "gridArea": "3 / 3 / 4 / 4",
-      "revenue": "$2.1M",
-      "gapPercent": "29%",
+      "revenue": "$1.9M",
+      "gapPercent": "27%",
       "gapRate": 0.29,
       "competitorLeader": "Amazon",
-      "gridConfig": { "columns": 3, "rowTemplate": "1fr 1fr" },
+      "gridConfig": {
+        "columns": 3,
+        "rowTemplate": "1fr 1fr"
+      },
       "children": [
         {
           "id": "party-tableware",
@@ -436,11 +457,14 @@
       "label": "Rugs",
       "lag": "low",
       "gridArea": "3 / 4 / 4 / 5",
-      "revenue": "$1.8M",
+      "revenue": "$1.6M",
       "gapPercent": "18%",
       "gapRate": 0.18,
       "competitorLeader": "Wayfair",
-      "gridConfig": { "columns": 2, "rowTemplate": "1fr 1fr" },
+      "gridConfig": {
+        "columns": 2,
+        "rowTemplate": "1fr 1fr"
+      },
       "children": [
         {
           "id": "area-rugs",

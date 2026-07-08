@@ -6,15 +6,16 @@ export interface DashboardMetric {
   label: string;
   value: string;
   change: string;
+  changeType?: "positive" | "negative" | "neutral";
   icon: "revenue" | "goal" | "gap" | "sellers";
 }
 
 export async function getDashboardMetrics(): Promise<DashboardMetric[]> {
   return [
-    { label: "Total Revenue", value: "$ 1.8B", change: "24%", icon: "revenue" },
-    { label: "Revenue Goal", value: "$ 2.5B", change: "10.4%", icon: "goal" },
-    { label: "Assortment Gap Covered", value: "23%", change: "4.5%", icon: "gap" },
-    { label: "Active Sellers", value: "2,345", change: "2.5%", icon: "sellers" },
+    { label: "Total Revenue", value: "$ 1.8B", change: "24%", changeType: "positive", icon: "revenue" },
+    { label: "Revenue Goal", value: "$ 2.5B", change: "10.4%", changeType: "positive", icon: "goal" },
+    { label: "Assortment Gap Covered", value: "23%", change: "4.5%", changeType: "positive", icon: "gap" },
+    { label: "Active Sellers", value: "2,345", change: "2.5%", changeType: "positive", icon: "sellers" },
   ];
 }
 
@@ -40,14 +41,16 @@ export async function getGapBarData() {
   ];
 }
 
-const PIPELINE_STAGES = [
+import { cellCount, type PartnerStage } from "@/lib/mock-data/pipeline-partners";
+
+const PIPELINE_STAGES: PartnerStage[] = [
   "Established",
   "Onboarding",
   "New Lead",
   "Contacted",
   "Shortlisted",
   "Discovered",
-] as const;
+];
 
 const PIPELINE_COLUMNS = [
   "Lighting",
@@ -60,17 +63,12 @@ const PIPELINE_COLUMNS = [
   "Rugs",
 ] as const;
 
-function pipelineCellValue(rowIndex: number, colIndex: number): number {
-  const seed = rowIndex * 997 + colIndex * 7919 + 104729;
-  return 20 + (seed % 41);
-}
-
 export async function getPipelineData() {
   return {
     columns: [...PIPELINE_COLUMNS],
-    rows: PIPELINE_STAGES.map((stage, rowIndex) => ({
+    rows: PIPELINE_STAGES.map((stage) => ({
       stage,
-      values: PIPELINE_COLUMNS.map((_, colIndex) => pipelineCellValue(rowIndex, colIndex)),
+      values: PIPELINE_COLUMNS.map((col) => cellCount(stage, col)),
     })),
   };
 }

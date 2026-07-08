@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Calendar } from "lucide-react";
 
 import { AssortmentAnalysisBanner } from "@/components/data-display/assortment-analysis-banner";
@@ -14,7 +14,9 @@ import { MissingProductsTable, type MissingProduct } from "@/components/data-dis
 import { RevenueGoalPanel } from "@/components/data-display/revenue-goal-panel";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
+import { NoGoalModal } from "@/components/ui/no-goal-modal";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
+import { abbreviateRevenueGoalInput, formatRevenueGoalDisplay, parseRevenueGoalToMillions } from "@/lib/utils/revenue-goal-input";
 import {
   getTreemapBreadcrumbLabels,
   getTreemapGridConfig,
@@ -59,9 +61,72 @@ export function AssortmentGapView({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drawerCategory, setDrawerCategory] = useState<string | null>(null);
 
-  const planItems = usePlanStore((state) => state.planItems);
-  const addPlanItem = usePlanStore((state) => state.addPlanItem);
+  const planItems      = usePlanStore((state) => state.planItems);
+  const planRevenues   = usePlanStore((state) => state.planRevenues);
+  const revenueGoal    = usePlanStore((state) => state.revenueGoal);
+  const storeSetGoal   = usePlanStore((state) => state.setRevenueGoal);
+  const addPlanItem    = usePlanStore((state) => state.addPlanItem);
   const removePlanItem = usePlanStore((state) => state.removePlanItem);
+
+  // ── No-goal modal ─────────────────────────────────────────────────────────
+  const [showNoGoalModal, setShowNoGoalModal] = useState(false);
+  // Stores the action to run once the user confirms / sets a goal
+  const pendingAddRef = useRef<(() => void) | null>(null);
+
+  /**
+   * Wrap every "add to plan" call. If no revenue goal is set yet, show the
+   * modal and queue the action. Otherwise fire immediately.
+   */
+  const guardedAdd = useCallback(
+    (action: () => void) => {
+      if (!revenueGoal) {
+        pendingAddRef.current = action;
+        setShowNoGoalModal(true);
+      } else {
+        action();
+      }
+    },
+    [revenueGoal],
+  );
+
+  function handleUseOpportunity() {
+    const goalStr = abbreviateRevenueGoalInput(revenueOpportunity);
+    storeSetGoal(goalStr);
+    setShowNoGoalModal(false);
+    pendingAddRef.current?.();
+    pendingAddRef.current = null;
+  }
+
+  function handleSetManually() {
+    setShowNoGoalModal(false);
+    pendingAddRef.current = null;
+    // Scroll the revenue goal input into view so user can set it
+    document.getElementById("revenue-goal-input")?.focus();
+  }
+
+  const plannedRevM = Object.values(planRevenues).reduce((a, b) => a + b, 0);
+  const hasSavedGoal = revenueGoal.length > 0;
+  const goalMillions = hasSavedGoal ? parseRevenueGoalToMillions(revenueGoal) : null;
+
+  const revenuePlannedStr = plannedRevM > 0 ? `$${plannedRevM.toFixed(1)}M` : "$0M";
+  const revenueGoalStr = hasSavedGoal && goalMillions
+    ? formatRevenueGoalDisplay(revenueGoal)
+    : "—";
+
+  const plannedPct =
+    hasSavedGoal && goalMillions && goalMillions > 0
+      ? Math.min(Math.round((plannedRevM / goalMillions) * 100), 100)
+      : 0;
+
+  const plannedMessage = !hasSavedGoal
+    ? "Set a revenue goal to track your plan progress"
+    : plannedRevM === 0
+      ? `You are ${formatRevenueGoalDisplay(revenueGoal)} away from completing your assortment plan`
+      : goalMillions && plannedRevM >= goalMillions
+        ? "Your assortment plan meets the revenue goal 🎉"
+        : goalMillions
+          ? `$${Math.max(goalMillions - plannedRevM, 0).toFixed(1)}M away from completing your assortment plan`
+          : "";
 
   const activeItems = useMemo(
     () => getTreemapLevelItems(treemapRoot, drillPath).map(nodeToTreemapItem),
@@ -93,7 +158,9 @@ export function AssortmentGapView({
   }
 
   function handleBeaconAddToPlan(items: Array<{ name: string; revenueM: number }>) {
-    for (const { name, revenueM } of items) addPlanItem(name, revenueM);
+    guardedAdd(() => {
+      for (const { name, revenueM } of items) addPlanItem(name, revenueM);
+    });
   }
 
   function handleTreemapSelect(item: TreemapItem) {
@@ -175,19 +242,28 @@ export function AssortmentGapView({
 
       <MissingProductsTable
         products={products}
-        totalCount={products.length}
-        onAddToPlan={(name) => addPlanItem(name)}
+        planItems={planItems}
+        onAddToPlan={(name, revenueM) => guardedAdd(() => addPlanItem(name, revenueM))}
       />
+
+      {showNoGoalModal && (
+        <NoGoalModal
+          revenueOpportunity={revenueOpportunity}
+          onUseOpportunity={handleUseOpportunity}
+          onSetManually={handleSetManually}
+          onClose={() => { setShowNoGoalModal(false); pendingAddRef.current = null; }}
+        />
+      )}
 
       {drawerCategory && (
         <GapsDrawer
           category={drawerCategory}
           gapCount={drawerItems.length}
           items={drawerItems}
-          revenueGoal="$50.0M"
-          revenuePlanned="$0M"
-          revenuePlannedPercent={0}
-          plannedMessage=""
+          revenueGoal={revenueGoalStr}
+          revenuePlanned={revenuePlannedStr}
+          revenuePlannedPercent={plannedPct}
+          plannedMessage={plannedMessage}
           onClose={() => {
             setDrawerCategory(null);
             setSelectedId(null);
@@ -196,7 +272,7 @@ export function AssortmentGapView({
             const item = drawerItems.find((g) => g.id === id);
             if (item) {
               const revM = parseFloat(item.estimatedRevenue.replace(/[^0-9.]/g, "")) || 0;
-              addPlanItem(item.name, revM);
+              guardedAdd(() => addPlanItem(item.name, revM));
             }
           }}
           onRemoveFromPlan={(id) => {

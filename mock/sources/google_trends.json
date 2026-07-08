@@ -1,562 +1,142 @@
 [
   {
-    "query": "Halloween Lanterns",
-    "category": "Holiday & Festive Decor",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.25,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Bath Towels",
-    "category": "Bath",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.07,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Halloween Lanterns",
-    "category": "Holiday & Festive Decor",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.14,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Desk Organizers",
-    "category": "Storage & Organization",
+    "query": "Ceramic Table Lamp",
+    "category": "Lighting",
     "trendDirection": "Rising",
-    "trendGrowth": 0.21,
+    "trendGrowth": 0.13,
     "seasonality": "Q1"
   },
   {
-    "query": "Balloons",
-    "category": "Party Supplies",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.41,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Bed Skirts",
-    "category": "Bedding",
+    "query": "Glass Beverage Dispenser",
+    "category": "Kitchen & Dining",
     "trendDirection": "Rising",
-    "trendGrowth": 0.39,
+    "trendGrowth": 0.13,
     "seasonality": "Q2"
   },
   {
-    "query": "Salt & Pepper Grinder Sets",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.44,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Christmas Ornaments",
-    "category": "Holiday & Festive Decor",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.14,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Table Covers",
-    "category": "Party Supplies",
+    "query": "Storage Basket Set",
+    "category": "Storage & Organization",
     "trendDirection": "Rising",
-    "trendGrowth": 0.43,
-    "seasonality": "Q4"
+    "trendGrowth": 0.13,
+    "seasonality": "Q1"
   },
   {
-    "query": "Throw Pillows",
-    "category": "Home Decor",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.26,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Party Favors",
-    "category": "Party Supplies",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.24,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Linen Napkin Sets",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.21,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Picture Frames",
-    "category": "Home Decor",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.41,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Candle Rings",
-    "category": "Holiday & Festive Decor",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.43,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Serving Platters",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.39,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Decorative Planters",
+    "query": "Outdoor String Lights",
     "category": "Outdoor Living",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.47,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Cupcake Stands",
-    "category": "Party Supplies",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.43,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Valentine Decor",
-    "category": "Holiday & Festive Decor",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.3,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Cabinet Organizers",
-    "category": "Storage & Organization",
     "trendDirection": "Rising",
-    "trendGrowth": 0.18,
-    "seasonality": "Q1"
+    "trendGrowth": 0.13,
+    "seasonality": "Q3"
   },
   {
-    "query": "Ceramic Serving Bowls",
-    "category": "Kitchen & Dining",
+    "query": "Halloween Lanterns",
+    "category": "Holiday & Festive Decor",
     "trendDirection": "Rising",
     "trendGrowth": 0.13,
     "seasonality": "Q4"
   },
   {
-    "query": "Blanket Throws",
-    "category": "Bedding",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.02,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Comforter Sets",
-    "category": "Bedding",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.42,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Stoneware Mugs",
+    "query": "Ceramic Serving Bowl",
     "category": "Kitchen & Dining",
     "trendDirection": "Rising",
-    "trendGrowth": 0.44,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Christmas Ornaments",
-    "category": "Holiday & Festive Decor",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.24,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Stoneware Mugs",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.12,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "TV Stands",
-    "category": "Furniture",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.38,
-    "seasonality": "Q3"
-  },
-  {
-    "query": "Floor Lamps",
-    "category": "Lighting",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.29,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Outdoor Lanterns",
-    "category": "Outdoor Living",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.47,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Easter Basket Kits",
-    "category": "Holiday & Festive Decor",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.3,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Table Covers",
-    "category": "Party Supplies",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.41,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Mattress Protectors",
-    "category": "Bedding",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.03,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Cake Toppers",
-    "category": "Party Supplies",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.48,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Balloons",
-    "category": "Party Supplies",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.02,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Salt & Pepper Grinder Sets",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.11,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Decorative Baskets",
-    "category": "Home Decor",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.05,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Planter Stands",
-    "category": "Outdoor Living",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.25,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Accent Chairs",
-    "category": "Furniture",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.47,
-    "seasonality": "Q3"
-  },
-  {
-    "query": "Outdoor Lighting",
-    "category": "Lighting",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.42,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Outdoor Side Tables",
-    "category": "Outdoor Living",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.28,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Drawer Dividers",
-    "category": "Storage & Organization",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.42,
-    "seasonality": "Q1"
-  },
-  {
-    "query": "Dining Chairs",
-    "category": "Furniture",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.16,
-    "seasonality": "Q3"
-  },
-  {
-    "query": "Dining Chairs",
-    "category": "Furniture",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.35,
-    "seasonality": "Q3"
-  },
-  {
-    "query": "Outdoor Rugs",
-    "category": "Outdoor Living",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.27,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Decorative Vases",
-    "category": "Home Decor",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.24,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Planter Stands",
-    "category": "Outdoor Living",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.11,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "LED Lanterns",
-    "category": "Lighting",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.17,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Cake Stands",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.29,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Pendant Lights",
-    "category": "Lighting",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.24,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Pendant Lights",
-    "category": "Lighting",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.28,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Mattress Protectors",
-    "category": "Bedding",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.11,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Soap Dispensers",
-    "category": "Bath",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.41,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Bed Skirts",
-    "category": "Bedding",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.29,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Decorative Vases",
-    "category": "Home Decor",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.34,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Decorative Planters",
-    "category": "Outdoor Living",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.47,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Decorative Baskets",
-    "category": "Home Decor",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.08,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Coffee Tables",
-    "category": "Furniture",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.06,
-    "seasonality": "Q3"
-  },
-  {
-    "query": "Mattress Protectors",
-    "category": "Bedding",
-    "trendDirection": "Peaking",
     "trendGrowth": 0.13,
     "seasonality": "Q2"
   },
   {
-    "query": "Table Lamps",
-    "category": "Lighting",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.12,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Stoneware Mugs",
+    "query": "Crystal Wine Glasses",
     "category": "Kitchen & Dining",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.41,
-    "seasonality": "Q4"
+    "trendDirection": "Rising",
+    "trendGrowth": 0.13,
+    "seasonality": "Q2"
   },
   {
-    "query": "Side Tables",
-    "category": "Furniture",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.4,
+    "query": "Modern Pendant Light",
+    "category": "Lighting",
+    "trendDirection": "Rising",
+    "trendGrowth": 0.13,
+    "seasonality": "Q2"
+  },
+  {
+    "query": "Accent Area Rug",
+    "category": "Rugs",
+    "trendDirection": "Rising",
+    "trendGrowth": 0.13,
+    "seasonality": "Q1"
+  },
+  {
+    "query": "Outdoor Dining Set",
+    "category": "Outdoor Living",
+    "trendDirection": "Rising",
+    "trendGrowth": 0.13,
     "seasonality": "Q3"
   },
   {
-    "query": "Table Garlands",
-    "category": "Holiday & Festive Decor",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.26,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Beverage Dispensers",
-    "category": "Party Supplies",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.43,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Marble Serving Trays",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.11,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Outdoor Lighting",
-    "category": "Lighting",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.35,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Glass Beverage Dispensers",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.21,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Marble Serving Trays",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.21,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Desk Organizers",
+    "query": "Floating Wall Shelf",
     "category": "Storage & Organization",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.19,
+    "trendDirection": "Rising",
+    "trendGrowth": 0.13,
     "seasonality": "Q1"
   },
   {
-    "query": "Toothbrush Holders",
-    "category": "Bath",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.41,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Decorative Vases",
-    "category": "Home Decor",
+    "query": "Holiday Garland Lights",
+    "category": "Holiday & Festive Decor",
     "trendDirection": "Rising",
-    "trendGrowth": 0.38,
-    "seasonality": "Q2"
+    "trendGrowth": 0.13,
+    "seasonality": "Q4"
   },
   {
-    "query": "Coffee Tables",
+    "query": "Velvet Accent Chair",
     "category": "Furniture",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.04,
-    "seasonality": "Q3"
-  },
-  {
-    "query": "Table Lamps",
-    "category": "Home Decor",
     "trendDirection": "Rising",
-    "trendGrowth": 0.04,
-    "seasonality": "Q2"
-  },
-  {
-    "query": "Shelf Baskets",
-    "category": "Storage & Organization",
-    "trendDirection": "Peaking",
-    "trendGrowth": 0.46,
+    "trendGrowth": 0.13,
     "seasonality": "Q1"
   },
   {
-    "query": "Storage Baskets",
-    "category": "Storage & Organization",
+    "query": "Modular Bookshelf",
+    "category": "Furniture",
     "trendDirection": "Rising",
-    "trendGrowth": 0.43,
+    "trendGrowth": 0.13,
     "seasonality": "Q1"
   },
   {
-    "query": "Ceramic Serving Bowls",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Rising",
-    "trendGrowth": 0.17,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Linen Napkin Sets",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.06,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Party Plates",
+    "query": "Party Tableware Set",
     "category": "Party Supplies",
     "trendDirection": "Rising",
-    "trendGrowth": 0.07,
+    "trendGrowth": 0.13,
     "seasonality": "Q4"
   },
   {
-    "query": "Dinnerware Sets",
-    "category": "Kitchen & Dining",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.09,
-    "seasonality": "Q4"
-  },
-  {
-    "query": "Mattress Protectors",
-    "category": "Bedding",
-    "trendDirection": "Steady",
-    "trendGrowth": 0.46,
+    "query": "Smart LED Strip Lights",
+    "category": "Lighting",
+    "trendDirection": "Rising",
+    "trendGrowth": 0.13,
     "seasonality": "Q2"
   },
   {
-    "query": "Pendant Lights",
-    "category": "Lighting",
+    "query": "Bamboo Cutting Board",
+    "category": "Kitchen & Dining",
     "trendDirection": "Rising",
-    "trendGrowth": 0.26,
+    "trendGrowth": 0.13,
+    "seasonality": "Q2"
+  },
+  {
+    "query": "Spice Rack Organizer",
+    "category": "Storage & Organization",
+    "trendDirection": "Rising",
+    "trendGrowth": 0.13,
+    "seasonality": "Q1"
+  },
+  {
+    "query": "Plush Throw Pillows",
+    "category": "Home Decor",
+    "trendDirection": "Rising",
+    "trendGrowth": 0.13,
     "seasonality": "Q4"
   },
   {
-    "query": "Christmas Ornaments",
-    "category": "Holiday & Festive Decor",
+    "query": "Canvas Wall Art Set",
+    "category": "Home Decor",
     "trendDirection": "Rising",
-    "trendGrowth": 0.07,
-    "seasonality": "Q4"
+    "trendGrowth": 0.13,
+    "seasonality": "Q1"
   }
 ]

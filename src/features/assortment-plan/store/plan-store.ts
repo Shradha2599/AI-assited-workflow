@@ -25,6 +25,10 @@ interface PlanStore {
   scheduledItems: ScheduledCalendarItem[];
   assortmentPlanningStarted: boolean;
 
+  /** Saved revenue goal string (e.g. "50,000,000" or "50M"). Empty = not set. */
+  revenueGoal: string;
+  setRevenueGoal: (goal: string) => void;
+
   // ── Versioning ─────────────────────────────────────────────────────────────
   calendarVersions: CalendarVersion[];
   activeVersionId: string;
@@ -65,6 +69,8 @@ export const usePlanStore = create<PlanStore>()(
       planRevenues: {},
       scheduledItems: [],
       assortmentPlanningStarted: false,
+      revenueGoal: "",
+      setRevenueGoal: (goal) => set({ revenueGoal: goal }),
 
       calendarVersions: [
         { id: DEFAULT_VERSION_ID, name: "Version 1", scheduledItems: [], createdAt: Date.now() },
@@ -223,9 +229,9 @@ export const usePlanStore = create<PlanStore>()(
         }),
     }),
     {
-      name: "assortment-plan-v4",
+      name: "assortment-plan-v5",
       skipHydration: true,
-      // Only persist calendar versions & schedule — plan items always start fresh
+      // Persist calendar versions & schedule only — plan items and revenue goal start fresh each session
       partialize: (state) => ({
         calendarVersions: state.calendarVersions,
         activeVersionId: state.activeVersionId,

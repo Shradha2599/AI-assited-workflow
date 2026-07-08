@@ -3,8 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  ArrowDownRight,
-  ArrowUpRight,
   Calendar,
   ChevronDown,
   Download,
@@ -14,6 +12,7 @@ import {
   Plus,
 } from "lucide-react";
 
+import { KpiMetric } from "@/components/data-display/dashboard-kpi-card";
 import { PipelineHeatmap } from "@/components/data-display/pipeline-heatmap";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
@@ -40,38 +39,6 @@ interface PartnerOnboardingViewProps {
 
 const ITEMS_PER_PAGE = 9;
 
-function OnboardingKpiCard({
-  label,
-  value,
-  change,
-  trend,
-}: {
-  label: string;
-  value: string;
-  change: string;
-  trend: "up" | "down";
-}) {
-  const isPositive = trend === "up";
-  return (
-    <Card className="p-[var(--space-4)]">
-      <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">{label}</p>
-      <p className="mt-1 text-[var(--text-kpi-size)] font-semibold">{value}</p>
-      <div
-        className={cn(
-          "mt-1 flex items-center gap-0.5 text-[var(--text-caption-size)] font-medium",
-          isPositive ? "text-[var(--color-success)]" : "text-[var(--color-warning)]",
-        )}
-      >
-        {change}
-        {isPositive ? (
-          <ArrowUpRight className="h-3 w-3" />
-        ) : (
-          <ArrowDownRight className="h-3 w-3" />
-        )}
-      </div>
-    </Card>
-  );
-}
 
 function partnerHref(partner: (typeof potentialPartners)[number]): string {
   return getPartnerProfilePath(partner.id);
@@ -118,7 +85,15 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
         className="mb-[var(--space-4)] grid gap-[var(--space-3)] sm:grid-cols-2 xl:grid-cols-4"
       >
         {onboardingKpis.map((kpi) => (
-          <OnboardingKpiCard key={kpi.label} {...kpi} />
+          <Card key={kpi.label} className="p-0 overflow-hidden">
+            <KpiMetric
+              label={kpi.label}
+              value={kpi.value}
+              change={kpi.change}
+              changeType={kpi.trend === "up" ? "positive" : "negative"}
+              className="first:pl-[var(--space-4)] last:pr-[var(--space-4)]"
+            />
+          </Card>
         ))}
       </section>
 

@@ -2,362 +2,452 @@
   {
     "brand": "Bella Home Co.",
     "category": "Holiday & Festive Decor",
-    "sellerCount": 254,
+    "sellerCount": 239,
     "marketShare": 0.025,
     "brandHealth": "Strong",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45361,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Greenleaf Home Co.",
     "category": "Bath",
-    "sellerCount": 144,
+    "sellerCount": 136,
     "marketShare": 0.096,
     "brandHealth": "Strong",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45357,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Mosaic Home Co.",
     "category": "Holiday & Festive Decor",
-    "sellerCount": 273,
+    "sellerCount": 257,
     "marketShare": 0.185,
     "brandHealth": "Growing",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45132,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Solara Home Co.",
     "category": "Storage & Organization",
-    "sellerCount": 384,
+    "sellerCount": 361,
     "marketShare": 0.169,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45136,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Maven Home Co.",
     "category": "Party Supplies",
-    "sellerCount": 241,
+    "sellerCount": 227,
     "marketShare": 0.026,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45146,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Terra Home Co.",
     "category": "Bedding",
-    "sellerCount": 386,
+    "sellerCount": 363,
     "marketShare": 0.134,
     "brandHealth": "Growing",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45150,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Luma Home Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 325,
+    "sellerCount": 306,
     "marketShare": 0.024,
     "brandHealth": "Strong",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45157,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Oak Home Co.",
     "category": "Holiday & Festive Decor",
-    "sellerCount": 360,
+    "sellerCount": 339,
     "marketShare": 0.147,
     "brandHealth": "Growing",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45163,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Willow Home Co.",
     "category": "Party Supplies",
-    "sellerCount": 138,
+    "sellerCount": 130,
     "marketShare": 0.161,
     "brandHealth": "Growing",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45170,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Atlas Home Co.",
     "category": "Home Decor",
-    "sellerCount": 124,
+    "sellerCount": 116,
     "marketShare": 0.19,
     "brandHealth": "Strong",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45177,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Nord Home Co.",
     "category": "Party Supplies",
-    "sellerCount": 46,
+    "sellerCount": 50,
     "marketShare": 0.066,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45184,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Harbor Home Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 107,
+    "sellerCount": 101,
     "marketShare": 0.036,
     "brandHealth": "Growing",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45190,
+    "marketShareLeader": "Amazon"
   },
   {
     "brand": "Purely Home Co.",
     "category": "Home Decor",
-    "sellerCount": 334,
+    "sellerCount": 314,
     "marketShare": 0.162,
     "brandHealth": "Growing",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45199,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Summit Home Co.",
     "category": "Holiday & Festive Decor",
-    "sellerCount": 357,
+    "sellerCount": 335,
     "marketShare": 0.076,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45200,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Bright Home Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 180,
+    "sellerCount": 169,
     "marketShare": 0.15,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45208,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Clover Home Co.",
     "category": "Outdoor Living",
-    "sellerCount": 277,
+    "sellerCount": 260,
     "marketShare": 0.184,
     "brandHealth": "Growing",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45217,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Hearth Home Co.",
     "category": "Party Supplies",
-    "sellerCount": 294,
+    "sellerCount": 276,
     "marketShare": 0.123,
     "brandHealth": "Growing",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45224,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Vista Home Co.",
     "category": "Holiday & Festive Decor",
-    "sellerCount": 241,
+    "sellerCount": 227,
     "marketShare": 0.085,
     "brandHealth": "Growing",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45226,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Prairie Home Co.",
     "category": "Storage & Organization",
-    "sellerCount": 346,
+    "sellerCount": 325,
     "marketShare": 0.036,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45233,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Bloom Home Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 122,
+    "sellerCount": 114,
     "marketShare": 0.103,
     "brandHealth": "Watch",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45243,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Cedar Home Co.",
     "category": "Bedding",
-    "sellerCount": 375,
+    "sellerCount": 352,
     "marketShare": 0.18,
     "brandHealth": "Growing",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45491,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Amber Home Co.",
     "category": "Bedding",
-    "sellerCount": 360,
+    "sellerCount": 338,
     "marketShare": 0.161,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45487,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Sage Home Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 397,
+    "sellerCount": 373,
     "marketShare": 0.018,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45512,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Coast Home Co.",
     "category": "Holiday & Festive Decor",
-    "sellerCount": 328,
+    "sellerCount": 308,
     "marketShare": 0.101,
     "brandHealth": "Growing",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45502,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Drift Home Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 114,
+    "sellerCount": 108,
     "marketShare": 0.184,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45523,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Plush Home Co.",
     "category": "Furniture",
-    "sellerCount": 239,
+    "sellerCount": 225,
     "marketShare": 0.172,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45523,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Radiant Home Co.",
     "category": "Lighting",
-    "sellerCount": 376,
+    "sellerCount": 354,
     "marketShare": 0.053,
     "brandHealth": "Strong",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45514,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Wild Home Co.",
     "category": "Outdoor Living",
-    "sellerCount": 163,
+    "sellerCount": 153,
     "marketShare": 0.047,
     "brandHealth": "Growing",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45536,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Fresh Home Co.",
     "category": "Holiday & Festive Decor",
-    "sellerCount": 137,
+    "sellerCount": 129,
     "marketShare": 0.132,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45527,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Urban Home Co.",
     "category": "Party Supplies",
-    "sellerCount": 74,
+    "sellerCount": 70,
     "marketShare": 0.017,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45553,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Bella Living Co.",
     "category": "Bedding",
-    "sellerCount": 215,
+    "sellerCount": 203,
     "marketShare": 0.082,
     "brandHealth": "Strong",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45546,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Greenleaf Living Co.",
     "category": "Party Supplies",
-    "sellerCount": 231,
+    "sellerCount": 218,
     "marketShare": 0.094,
     "brandHealth": "Growing",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45570,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Mosaic Living Co.",
     "category": "Party Supplies",
-    "sellerCount": 309,
+    "sellerCount": 291,
     "marketShare": 0.173,
     "brandHealth": "Strong",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45563,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Solara Living Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 121,
+    "sellerCount": 115,
     "marketShare": 0.099,
     "brandHealth": "Strong",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45557,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Maven Living Co.",
     "category": "Home Decor",
-    "sellerCount": 171,
+    "sellerCount": 161,
     "marketShare": 0.161,
     "brandHealth": "Growing",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45580,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Terra Living Co.",
     "category": "Outdoor Living",
-    "sellerCount": 127,
+    "sellerCount": 119,
     "marketShare": 0.061,
     "brandHealth": "Growing",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45574,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Luma Living Co.",
     "category": "Furniture",
-    "sellerCount": 45,
+    "sellerCount": 50,
     "marketShare": 0.082,
     "brandHealth": "Strong",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45597,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Oak Living Co.",
     "category": "Lighting",
-    "sellerCount": 91,
+    "sellerCount": 86,
     "marketShare": 0.152,
     "brandHealth": "Watch",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45592,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Willow Living Co.",
     "category": "Outdoor Living",
-    "sellerCount": 263,
+    "sellerCount": 249,
     "marketShare": 0.149,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45374,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Atlas Living Co.",
     "category": "Storage & Organization",
-    "sellerCount": 63,
+    "sellerCount": 59,
     "marketShare": 0.063,
     "brandHealth": "Watch",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45363,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Nord Living Co.",
     "category": "Furniture",
-    "sellerCount": 233,
+    "sellerCount": 220,
     "marketShare": 0.096,
     "brandHealth": "Growing",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45387,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Harbor Living Co.",
     "category": "Furniture",
-    "sellerCount": 154,
+    "sellerCount": 145,
     "marketShare": 0.058,
     "brandHealth": "Strong",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45392,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Purely Living Co.",
     "category": "Outdoor Living",
-    "sellerCount": 24,
+    "sellerCount": 50,
     "marketShare": 0.152,
     "brandHealth": "Growing",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45385,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Summit Living Co.",
     "category": "Home Decor",
-    "sellerCount": 272,
+    "sellerCount": 256,
     "marketShare": 0.077,
     "brandHealth": "Strong",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45405,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Bright Living Co.",
     "category": "Outdoor Living",
-    "sellerCount": 112,
+    "sellerCount": 106,
     "marketShare": 0.078,
     "brandHealth": "Strong",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45397,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Clover Living Co.",
@@ -365,278 +455,348 @@
     "sellerCount": 50,
     "marketShare": 0.172,
     "brandHealth": "Strong",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45418,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Hearth Living Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 38,
+    "sellerCount": 50,
     "marketShare": 0.038,
     "brandHealth": "Strong",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45410,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Vista Living Co.",
     "category": "Lighting",
-    "sellerCount": 33,
+    "sellerCount": 50,
     "marketShare": 0.059,
     "brandHealth": "Growing",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45432,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Prairie Living Co.",
     "category": "Lighting",
-    "sellerCount": 391,
+    "sellerCount": 369,
     "marketShare": 0.186,
     "brandHealth": "Strong",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45425,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Bloom Living Co.",
     "category": "Bedding",
-    "sellerCount": 331,
+    "sellerCount": 312,
     "marketShare": 0.142,
     "brandHealth": "Growing",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45426,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Cedar Living Co.",
     "category": "Bath",
-    "sellerCount": 207,
+    "sellerCount": 195,
     "marketShare": 0.017,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45450,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Amber Living Co.",
     "category": "Bedding",
-    "sellerCount": 105,
+    "sellerCount": 99,
     "marketShare": 0.028,
     "brandHealth": "Growing",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45443,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Sage Living Co.",
     "category": "Home Decor",
-    "sellerCount": 297,
+    "sellerCount": 280,
     "marketShare": 0.117,
     "brandHealth": "Strong",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45466,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Coast Living Co.",
     "category": "Outdoor Living",
-    "sellerCount": 368,
+    "sellerCount": 347,
     "marketShare": 0.178,
     "brandHealth": "Strong",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45453,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Drift Living Co.",
     "category": "Home Decor",
-    "sellerCount": 148,
+    "sellerCount": 140,
     "marketShare": 0.032,
     "brandHealth": "Strong",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45475,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Plush Living Co.",
     "category": "Furniture",
-    "sellerCount": 252,
+    "sellerCount": 238,
     "marketShare": 0.12,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45470,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Radiant Living Co.",
     "category": "Bedding",
-    "sellerCount": 130,
+    "sellerCount": 123,
     "marketShare": 0.063,
     "brandHealth": "Strong",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45741,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Wild Living Co.",
     "category": "Lighting",
-    "sellerCount": 342,
+    "sellerCount": 324,
     "marketShare": 0.138,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45737,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Fresh Living Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 184,
+    "sellerCount": 174,
     "marketShare": 0.011,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45746,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Urban Living Co.",
     "category": "Furniture",
-    "sellerCount": 294,
+    "sellerCount": 278,
     "marketShare": 0.149,
     "brandHealth": "Watch",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45722,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Bella Studio Co.",
     "category": "Holiday & Festive Decor",
-    "sellerCount": 291,
+    "sellerCount": 275,
     "marketShare": 0.144,
     "brandHealth": "Strong",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45730,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Greenleaf Studio Co.",
     "category": "Party Supplies",
-    "sellerCount": 343,
+    "sellerCount": 325,
     "marketShare": 0.125,
     "brandHealth": "Strong",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45772,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Mosaic Studio Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 280,
+    "sellerCount": 265,
     "marketShare": 0.029,
     "brandHealth": "Strong",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45779,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Solara Studio Co.",
     "category": "Lighting",
-    "sellerCount": 42,
+    "sellerCount": 50,
     "marketShare": 0.089,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45756,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Maven Studio Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 144,
+    "sellerCount": 136,
     "marketShare": 0.026,
     "brandHealth": "Strong",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45762,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Terra Studio Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 194,
+    "sellerCount": 184,
     "marketShare": 0.155,
     "brandHealth": "Strong",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45762,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Luma Studio Co.",
     "category": "Storage & Organization",
-    "sellerCount": 325,
+    "sellerCount": 308,
     "marketShare": 0.172,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45797,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Oak Studio Co.",
     "category": "Bath",
-    "sellerCount": 205,
+    "sellerCount": 195,
     "marketShare": 0.155,
     "brandHealth": "Growing",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45805,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Willow Studio Co.",
     "category": "Home Decor",
-    "sellerCount": 147,
+    "sellerCount": 139,
     "marketShare": 0.19,
     "brandHealth": "Growing",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45785,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Atlas Studio Co.",
     "category": "Furniture",
-    "sellerCount": 150,
+    "sellerCount": 142,
     "marketShare": 0.177,
     "brandHealth": "Watch",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45792,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Nord Studio Co.",
     "category": "Home Decor",
-    "sellerCount": 237,
+    "sellerCount": 224,
     "marketShare": 0.09,
     "brandHealth": "Growing",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45829,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Harbor Studio Co.",
     "category": "Storage & Organization",
-    "sellerCount": 90,
+    "sellerCount": 85,
     "marketShare": 0.035,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45840,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Purely Studio Co.",
     "category": "Storage & Organization",
-    "sellerCount": 78,
+    "sellerCount": 74,
     "marketShare": 0.134,
     "brandHealth": "Strong",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45817,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Summit Studio Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 75,
+    "sellerCount": 71,
     "marketShare": 0.126,
     "brandHealth": "Growing",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45812,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Bright Studio Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 187,
+    "sellerCount": 177,
     "marketShare": 0.078,
     "brandHealth": "Watch",
-    "launchReadiness": "Medium"
+    "launchReadiness": "Medium",
+    "avgMonthlyRevenue": 45819,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Clover Studio Co.",
     "category": "Party Supplies",
-    "sellerCount": 136,
+    "sellerCount": 128,
     "marketShare": 0.039,
     "brandHealth": "Growing",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45620,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Hearth Studio Co.",
     "category": "Kitchen & Dining",
-    "sellerCount": 308,
+    "sellerCount": 291,
     "marketShare": 0.132,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45628,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Vista Studio Co.",
     "category": "Bedding",
-    "sellerCount": 195,
+    "sellerCount": 185,
     "marketShare": 0.105,
     "brandHealth": "Watch",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45603,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Prairie Studio Co.",
     "category": "Lighting",
-    "sellerCount": 270,
+    "sellerCount": 256,
     "marketShare": 0.051,
     "brandHealth": "Growing",
-    "launchReadiness": "High"
+    "launchReadiness": "High",
+    "avgMonthlyRevenue": 45612,
+    "marketShareLeader": "Walmart"
   },
   {
     "brand": "Bloom Studio Co.",
     "category": "Holiday & Festive Decor",
-    "sellerCount": 129,
+    "sellerCount": 122,
     "marketShare": 0.093,
     "brandHealth": "Strong",
-    "launchReadiness": "Low"
+    "launchReadiness": "Low",
+    "avgMonthlyRevenue": 45647,
+    "marketShareLeader": "Walmart"
   }
 ]

@@ -896,9 +896,13 @@ function FinalizeShareButton() {
   );
 }
 
-export function PlanPageActions() {
+interface PlanPageActionsProps {
+  onOpenComments?: () => void;
+}
+
+export function PlanPageActions({ onOpenComments }: PlanPageActionsProps) {
   return (
-    <Button variant="outline" size="sm">
+    <Button variant="outline" size="sm" className="gap-1.5" onClick={onOpenComments}>
       <MessageSquare className="h-3.5 w-3.5" />
       Comments
     </Button>

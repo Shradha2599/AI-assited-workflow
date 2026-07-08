@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Sparkles, X, Send, Loader2 } from "lucide-react";
+import { Sparkles, X, Loader2 } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 
 import { Button } from "@/components/ui/button";
@@ -153,7 +153,7 @@ export function BeaconPanel({ page }: BeaconPanelProps) {
 
       {/* Input */}
       <div className="shrink-0 border-t border-[var(--color-border)] p-[var(--space-3)]">
-        <div className="flex items-end gap-2">
+        <div className="flex items-center gap-2">
           <textarea
             ref={inputRef}
             value={inputValue}
@@ -161,17 +161,16 @@ export function BeaconPanel({ page }: BeaconPanelProps) {
             onKeyDown={handleKeyDown}
             placeholder="Ask me anything…"
             rows={1}
-            className="flex-1 resize-none rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-[var(--space-3)] py-[var(--space-2)] text-[var(--text-body-size)] placeholder:text-[var(--color-muted-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
-            style={{ maxHeight: "120px", overflowY: "auto" }}
+            className="h-7 min-h-7 flex-1 resize-none rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-[var(--space-3)] py-0 text-[var(--text-caption-size)] leading-7 placeholder:text-[var(--color-muted-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
             aria-label="Message Beacon"
           />
           <Button
-            size="icon"
+            size="sm"
+            className="shrink-0"
             onClick={() => handleSubmit(inputValue)}
             disabled={isLoading || !inputValue.trim()}
-            aria-label="Send message"
           >
-            <Send className="h-4 w-4" />
+            Send
           </Button>
         </div>
         <p className="mt-1 text-center text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">

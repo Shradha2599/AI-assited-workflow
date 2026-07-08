@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, LayoutGrid, List, Plus } from "lucide-react";
+import { Check, ChevronDown, LayoutGrid, List, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -19,30 +19,45 @@ export interface MissingProduct {
   imageUrl?: string;
 }
 
+function parseRevM(revenue: string): number {
+  const n = parseFloat(revenue.replace(/[^0-9.]/g, ""));
+  if (revenue.toUpperCase().includes("K")) return n / 1000;
+  return isNaN(n) ? 0 : n;
+}
+
 const ITEMS_PER_PAGE = 10;
 
 interface MissingProductsTableProps {
   products: MissingProduct[];
   totalCount?: number;
   className?: string;
-  onAddToPlan?: (productName: string) => void;
+  planItems?: string[];
+  onAddToPlan?: (productName: string, revenueM: number) => void;
 }
 
 export function MissingProductsTable({
   products,
   totalCount,
   className,
+  planItems = [],
   onAddToPlan,
 }: MissingProductsTableProps) {
   const [page, setPage] = useState(1);
-  const resolvedTotal = totalCount ?? products.length;
+
+  // Only show High gap opportunity products
+  const highGapProducts = useMemo(
+    () => products.filter((p) => p.gapOpportunity === "High"),
+    [products],
+  );
+
+  const resolvedTotal = totalCount != null ? Math.min(totalCount, highGapProducts.length) : highGapProducts.length;
   const totalPages = Math.max(1, Math.ceil(resolvedTotal / ITEMS_PER_PAGE));
   const safePage = Math.min(page, totalPages);
 
   const pageProducts = useMemo(() => {
     const start = (safePage - 1) * ITEMS_PER_PAGE;
-    return products.slice(start, start + ITEMS_PER_PAGE);
-  }, [products, safePage]);
+    return highGapProducts.slice(start, start + ITEMS_PER_PAGE);
+  }, [highGapProducts, safePage]);
 
   const rangeStart = resolvedTotal === 0 ? 0 : (safePage - 1) * ITEMS_PER_PAGE + 1;
   const rangeEnd = Math.min(safePage * ITEMS_PER_PAGE, resolvedTotal);
@@ -51,7 +66,10 @@ export function MissingProductsTable({
     <Card className={cn(className)}>
       <CardHeader className="flex-row items-center justify-between space-y-0 px-6 pb-2 pt-[var(--space-4)]">
         <h3 className="text-[var(--text-section-size)] font-semibold">
-          Top Missing Products: {resolvedTotal}
+          Top Missing Products{" "}
+          <span className="font-normal text-[var(--color-muted-foreground)]">
+            · High Gap Opportunity ({resolvedTotal})
+          </span>
         </h3>
         <div className="flex items-center gap-2">
           <button
@@ -106,10 +124,22 @@ export function MissingProductsTable({
                   <td className="py-2.5 pr-4 text-[var(--text-body-size)]">{product.topCompetitor}</td>
                   <td className="py-2.5 pr-4 text-[var(--text-body-size)]">{product.estimatedRevenue}</td>
                   <td className="py-2.5">
-                    <Button variant="outline" size="sm" onClick={() => onAddToPlan?.(product.name)}>
-                      <Plus className="h-3 w-3" />
-                      Plan
-                    </Button>
+                    {planItems.includes(product.name) ? (
+                      <Button variant="outline" size="sm" disabled className="gap-1 text-[var(--color-success)] border-[var(--color-success)]">
+                        <Check className="h-3 w-3" />
+                        Added
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="gap-1"
+                        onClick={() => onAddToPlan?.(product.name, parseRevM(product.estimatedRevenue))}
+                      >
+                        <Plus className="h-3 w-3" />
+                        Plan
+                      </Button>
+                    )}
                   </td>
                 </tr>
               ))}

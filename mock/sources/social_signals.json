@@ -1,562 +1,72 @@
 [
   {
-    "brand": "Bella Home Co.",
+    "itemType": "Ceramic Table Lamp",
     "platform": "Instagram",
-    "followers": 208786,
-    "engagementRate": 0.016,
-    "mentionVelocity": 170
+    "engagementCount": 43043,
+    "isViral": false,
+    "capturedAt": "2026-07-07T20:26:43.677Z"
   },
   {
-    "brand": "Greenleaf Home Co.",
+    "itemType": "Outdoor String Lights",
+    "platform": "TikTok",
+    "engagementCount": 111994,
+    "isViral": true,
+    "capturedAt": "2026-07-07T20:26:43.677Z"
+  },
+  {
+    "itemType": "Halloween Lanterns",
+    "platform": "TikTok",
+    "engagementCount": 188098,
+    "isViral": true,
+    "capturedAt": "2026-07-07T20:26:43.677Z"
+  },
+  {
+    "itemType": "Crystal Wine Glasses",
     "platform": "Instagram",
-    "followers": 210721,
-    "engagementRate": 0.054,
-    "mentionVelocity": 22
+    "engagementCount": 60041,
+    "isViral": false,
+    "capturedAt": "2026-07-07T20:26:43.677Z"
   },
   {
-    "brand": "Mosaic Home Co.",
-    "platform": "TikTok",
-    "followers": 191806,
-    "engagementRate": 0.04,
-    "mentionVelocity": 710
-  },
-  {
-    "brand": "Solara Home Co.",
-    "platform": "Instagram",
-    "followers": 9694,
-    "engagementRate": 0.083,
-    "mentionVelocity": 157
-  },
-  {
-    "brand": "Maven Home Co.",
-    "platform": "Instagram",
-    "followers": 95634,
-    "engagementRate": 0.04,
-    "mentionVelocity": 918
-  },
-  {
-    "brand": "Terra Home Co.",
-    "platform": "TikTok",
-    "followers": 54602,
-    "engagementRate": 0.066,
-    "mentionVelocity": 932
-  },
-  {
-    "brand": "Luma Home Co.",
-    "platform": "TikTok",
-    "followers": 219180,
-    "engagementRate": 0.061,
-    "mentionVelocity": 166
-  },
-  {
-    "brand": "Oak Home Co.",
-    "platform": "TikTok",
-    "followers": 48901,
-    "engagementRate": 0.026,
-    "mentionVelocity": 438
-  },
-  {
-    "brand": "Willow Home Co.",
+    "itemType": "Velvet Accent Chair",
     "platform": "Pinterest",
-    "followers": 141468,
-    "engagementRate": 0.026,
-    "mentionVelocity": 839
+    "engagementCount": 78585,
+    "isViral": false,
+    "capturedAt": "2026-07-07T20:26:43.677Z"
   },
   {
-    "brand": "Atlas Home Co.",
-    "platform": "Instagram",
-    "followers": 31229,
-    "engagementRate": 0.057,
-    "mentionVelocity": 738
+    "itemType": "Smart LED Strip Lights",
+    "platform": "TikTok",
+    "engagementCount": 276794,
+    "isViral": true,
+    "capturedAt": "2026-07-07T20:26:43.677Z"
   },
   {
-    "brand": "Nord Home Co.",
+    "itemType": "Canvas Wall Art Set",
     "platform": "Pinterest",
-    "followers": 143484,
-    "engagementRate": 0.015,
-    "mentionVelocity": 179
+    "engagementCount": 48229,
+    "isViral": false,
+    "capturedAt": "2026-07-07T20:26:43.677Z"
   },
   {
-    "brand": "Harbor Home Co.",
+    "itemType": "Storage Basket Set",
     "platform": "Instagram",
-    "followers": 7388,
-    "engagementRate": 0.012,
-    "mentionVelocity": 157
+    "engagementCount": 34805,
+    "isViral": false,
+    "capturedAt": "2026-07-07T20:26:43.677Z"
   },
   {
-    "brand": "Purely Home Co.",
+    "itemType": "Modern Pendant Light",
+    "platform": "Instagram",
+    "engagementCount": 63378,
+    "isViral": false,
+    "capturedAt": "2026-07-07T20:26:43.677Z"
+  },
+  {
+    "itemType": "Accent Area Rug",
     "platform": "Pinterest",
-    "followers": 105184,
-    "engagementRate": 0.015,
-    "mentionVelocity": 741
-  },
-  {
-    "brand": "Summit Home Co.",
-    "platform": "TikTok",
-    "followers": 147692,
-    "engagementRate": 0.073,
-    "mentionVelocity": 808
-  },
-  {
-    "brand": "Bright Home Co.",
-    "platform": "Instagram",
-    "followers": 213813,
-    "engagementRate": 0.042,
-    "mentionVelocity": 534
-  },
-  {
-    "brand": "Clover Home Co.",
-    "platform": "Instagram",
-    "followers": 20674,
-    "engagementRate": 0.072,
-    "mentionVelocity": 637
-  },
-  {
-    "brand": "Hearth Home Co.",
-    "platform": "Instagram",
-    "followers": 170307,
-    "engagementRate": 0.074,
-    "mentionVelocity": 905
-  },
-  {
-    "brand": "Vista Home Co.",
-    "platform": "Pinterest",
-    "followers": 177484,
-    "engagementRate": 0.077,
-    "mentionVelocity": 762
-  },
-  {
-    "brand": "Prairie Home Co.",
-    "platform": "TikTok",
-    "followers": 167059,
-    "engagementRate": 0.072,
-    "mentionVelocity": 174
-  },
-  {
-    "brand": "Bloom Home Co.",
-    "platform": "Instagram",
-    "followers": 45237,
-    "engagementRate": 0.012,
-    "mentionVelocity": 809
-  },
-  {
-    "brand": "Cedar Home Co.",
-    "platform": "TikTok",
-    "followers": 49477,
-    "engagementRate": 0.025,
-    "mentionVelocity": 119
-  },
-  {
-    "brand": "Amber Home Co.",
-    "platform": "Instagram",
-    "followers": 199099,
-    "engagementRate": 0.078,
-    "mentionVelocity": 208
-  },
-  {
-    "brand": "Sage Home Co.",
-    "platform": "TikTok",
-    "followers": 40682,
-    "engagementRate": 0.062,
-    "mentionVelocity": 43
-  },
-  {
-    "brand": "Coast Home Co.",
-    "platform": "TikTok",
-    "followers": 91715,
-    "engagementRate": 0.041,
-    "mentionVelocity": 33
-  },
-  {
-    "brand": "Drift Home Co.",
-    "platform": "Pinterest",
-    "followers": 56462,
-    "engagementRate": 0.03,
-    "mentionVelocity": 780
-  },
-  {
-    "brand": "Plush Home Co.",
-    "platform": "TikTok",
-    "followers": 106941,
-    "engagementRate": 0.077,
-    "mentionVelocity": 775
-  },
-  {
-    "brand": "Radiant Home Co.",
-    "platform": "TikTok",
-    "followers": 47946,
-    "engagementRate": 0.044,
-    "mentionVelocity": 717
-  },
-  {
-    "brand": "Wild Home Co.",
-    "platform": "Instagram",
-    "followers": 42380,
-    "engagementRate": 0.069,
-    "mentionVelocity": 762
-  },
-  {
-    "brand": "Fresh Home Co.",
-    "platform": "Pinterest",
-    "followers": 153964,
-    "engagementRate": 0.053,
-    "mentionVelocity": 674
-  },
-  {
-    "brand": "Urban Home Co.",
-    "platform": "Pinterest",
-    "followers": 176804,
-    "engagementRate": 0.08,
-    "mentionVelocity": 199
-  },
-  {
-    "brand": "Bella Living Co.",
-    "platform": "Instagram",
-    "followers": 182900,
-    "engagementRate": 0.022,
-    "mentionVelocity": 538
-  },
-  {
-    "brand": "Greenleaf Living Co.",
-    "platform": "Pinterest",
-    "followers": 54138,
-    "engagementRate": 0.044,
-    "mentionVelocity": 587
-  },
-  {
-    "brand": "Mosaic Living Co.",
-    "platform": "TikTok",
-    "followers": 115826,
-    "engagementRate": 0.056,
-    "mentionVelocity": 99
-  },
-  {
-    "brand": "Solara Living Co.",
-    "platform": "Pinterest",
-    "followers": 47517,
-    "engagementRate": 0.055,
-    "mentionVelocity": 716
-  },
-  {
-    "brand": "Maven Living Co.",
-    "platform": "Instagram",
-    "followers": 144937,
-    "engagementRate": 0.054,
-    "mentionVelocity": 764
-  },
-  {
-    "brand": "Terra Living Co.",
-    "platform": "TikTok",
-    "followers": 167412,
-    "engagementRate": 0.018,
-    "mentionVelocity": 108
-  },
-  {
-    "brand": "Luma Living Co.",
-    "platform": "TikTok",
-    "followers": 36941,
-    "engagementRate": 0.053,
-    "mentionVelocity": 662
-  },
-  {
-    "brand": "Oak Living Co.",
-    "platform": "Instagram",
-    "followers": 30071,
-    "engagementRate": 0.059,
-    "mentionVelocity": 902
-  },
-  {
-    "brand": "Willow Living Co.",
-    "platform": "Pinterest",
-    "followers": 109576,
-    "engagementRate": 0.042,
-    "mentionVelocity": 26
-  },
-  {
-    "brand": "Atlas Living Co.",
-    "platform": "TikTok",
-    "followers": 195797,
-    "engagementRate": 0.065,
-    "mentionVelocity": 956
-  },
-  {
-    "brand": "Nord Living Co.",
-    "platform": "TikTok",
-    "followers": 154223,
-    "engagementRate": 0.064,
-    "mentionVelocity": 493
-  },
-  {
-    "brand": "Harbor Living Co.",
-    "platform": "TikTok",
-    "followers": 68016,
-    "engagementRate": 0.037,
-    "mentionVelocity": 713
-  },
-  {
-    "brand": "Purely Living Co.",
-    "platform": "Instagram",
-    "followers": 84625,
-    "engagementRate": 0.055,
-    "mentionVelocity": 705
-  },
-  {
-    "brand": "Summit Living Co.",
-    "platform": "Pinterest",
-    "followers": 79468,
-    "engagementRate": 0.036,
-    "mentionVelocity": 589
-  },
-  {
-    "brand": "Bright Living Co.",
-    "platform": "TikTok",
-    "followers": 28956,
-    "engagementRate": 0.081,
-    "mentionVelocity": 797
-  },
-  {
-    "brand": "Clover Living Co.",
-    "platform": "TikTok",
-    "followers": 226242,
-    "engagementRate": 0.02,
-    "mentionVelocity": 252
-  },
-  {
-    "brand": "Hearth Living Co.",
-    "platform": "TikTok",
-    "followers": 129673,
-    "engagementRate": 0.037,
-    "mentionVelocity": 463
-  },
-  {
-    "brand": "Vista Living Co.",
-    "platform": "Instagram",
-    "followers": 190598,
-    "engagementRate": 0.043,
-    "mentionVelocity": 922
-  },
-  {
-    "brand": "Prairie Living Co.",
-    "platform": "TikTok",
-    "followers": 72056,
-    "engagementRate": 0.085,
-    "mentionVelocity": 959
-  },
-  {
-    "brand": "Bloom Living Co.",
-    "platform": "Instagram",
-    "followers": 39695,
-    "engagementRate": 0.073,
-    "mentionVelocity": 546
-  },
-  {
-    "brand": "Cedar Living Co.",
-    "platform": "TikTok",
-    "followers": 27179,
-    "engagementRate": 0.009,
-    "mentionVelocity": 944
-  },
-  {
-    "brand": "Amber Living Co.",
-    "platform": "TikTok",
-    "followers": 138062,
-    "engagementRate": 0.01,
-    "mentionVelocity": 835
-  },
-  {
-    "brand": "Sage Living Co.",
-    "platform": "TikTok",
-    "followers": 35756,
-    "engagementRate": 0.044,
-    "mentionVelocity": 611
-  },
-  {
-    "brand": "Coast Living Co.",
-    "platform": "Pinterest",
-    "followers": 117685,
-    "engagementRate": 0.073,
-    "mentionVelocity": 589
-  },
-  {
-    "brand": "Drift Living Co.",
-    "platform": "Instagram",
-    "followers": 171684,
-    "engagementRate": 0.056,
-    "mentionVelocity": 951
-  },
-  {
-    "brand": "Plush Living Co.",
-    "platform": "Instagram",
-    "followers": 80465,
-    "engagementRate": 0.079,
-    "mentionVelocity": 603
-  },
-  {
-    "brand": "Radiant Living Co.",
-    "platform": "TikTok",
-    "followers": 6613,
-    "engagementRate": 0.079,
-    "mentionVelocity": 178
-  },
-  {
-    "brand": "Wild Living Co.",
-    "platform": "Instagram",
-    "followers": 165058,
-    "engagementRate": 0.055,
-    "mentionVelocity": 295
-  },
-  {
-    "brand": "Fresh Living Co.",
-    "platform": "Pinterest",
-    "followers": 123536,
-    "engagementRate": 0.03,
-    "mentionVelocity": 373
-  },
-  {
-    "brand": "Urban Living Co.",
-    "platform": "Instagram",
-    "followers": 115290,
-    "engagementRate": 0.077,
-    "mentionVelocity": 22
-  },
-  {
-    "brand": "Bella Studio Co.",
-    "platform": "Pinterest",
-    "followers": 43927,
-    "engagementRate": 0.076,
-    "mentionVelocity": 443
-  },
-  {
-    "brand": "Greenleaf Studio Co.",
-    "platform": "Instagram",
-    "followers": 135853,
-    "engagementRate": 0.077,
-    "mentionVelocity": 434
-  },
-  {
-    "brand": "Mosaic Studio Co.",
-    "platform": "Pinterest",
-    "followers": 138330,
-    "engagementRate": 0.085,
-    "mentionVelocity": 600
-  },
-  {
-    "brand": "Solara Studio Co.",
-    "platform": "Pinterest",
-    "followers": 20020,
-    "engagementRate": 0.035,
-    "mentionVelocity": 472
-  },
-  {
-    "brand": "Maven Studio Co.",
-    "platform": "Instagram",
-    "followers": 181045,
-    "engagementRate": 0.038,
-    "mentionVelocity": 747
-  },
-  {
-    "brand": "Terra Studio Co.",
-    "platform": "Pinterest",
-    "followers": 67708,
-    "engagementRate": 0.038,
-    "mentionVelocity": 490
-  },
-  {
-    "brand": "Luma Studio Co.",
-    "platform": "Instagram",
-    "followers": 81423,
-    "engagementRate": 0.081,
-    "mentionVelocity": 528
-  },
-  {
-    "brand": "Oak Studio Co.",
-    "platform": "Instagram",
-    "followers": 105719,
-    "engagementRate": 0.063,
-    "mentionVelocity": 723
-  },
-  {
-    "brand": "Willow Studio Co.",
-    "platform": "Instagram",
-    "followers": 99597,
-    "engagementRate": 0.06,
-    "mentionVelocity": 691
-  },
-  {
-    "brand": "Atlas Studio Co.",
-    "platform": "Pinterest",
-    "followers": 13784,
-    "engagementRate": 0.051,
-    "mentionVelocity": 656
-  },
-  {
-    "brand": "Nord Studio Co.",
-    "platform": "TikTok",
-    "followers": 185605,
-    "engagementRate": 0.065,
-    "mentionVelocity": 777
-  },
-  {
-    "brand": "Harbor Studio Co.",
-    "platform": "Instagram",
-    "followers": 146088,
-    "engagementRate": 0.028,
-    "mentionVelocity": 72
-  },
-  {
-    "brand": "Purely Studio Co.",
-    "platform": "Pinterest",
-    "followers": 114815,
-    "engagementRate": 0.067,
-    "mentionVelocity": 185
-  },
-  {
-    "brand": "Summit Studio Co.",
-    "platform": "Instagram",
-    "followers": 6334,
-    "engagementRate": 0.044,
-    "mentionVelocity": 780
-  },
-  {
-    "brand": "Bright Studio Co.",
-    "platform": "TikTok",
-    "followers": 52189,
-    "engagementRate": 0.082,
-    "mentionVelocity": 550
-  },
-  {
-    "brand": "Clover Studio Co.",
-    "platform": "Instagram",
-    "followers": 133098,
-    "engagementRate": 0.041,
-    "mentionVelocity": 760
-  },
-  {
-    "brand": "Hearth Studio Co.",
-    "platform": "Instagram",
-    "followers": 118500,
-    "engagementRate": 0.009,
-    "mentionVelocity": 857
-  },
-  {
-    "brand": "Vista Studio Co.",
-    "platform": "Pinterest",
-    "followers": 176105,
-    "engagementRate": 0.031,
-    "mentionVelocity": 596
-  },
-  {
-    "brand": "Prairie Studio Co.",
-    "platform": "Instagram",
-    "followers": 147184,
-    "engagementRate": 0.066,
-    "mentionVelocity": 238
-  },
-  {
-    "brand": "Bloom Studio Co.",
-    "platform": "Instagram",
-    "followers": 101375,
-    "engagementRate": 0.068,
-    "mentionVelocity": 70
+    "engagementCount": 55338,
+    "isViral": false,
+    "capturedAt": "2026-07-07T20:26:43.677Z"
   }
 ]

@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Info, Pencil, Save } from "lucide-react";
 
 import { AssortmentPlanItems } from "@/components/data-display/assortment-plan-items";
 import { BeaconPlanDrawer } from "@/components/data-display/beacon-plan-drawer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { NoGoalModal } from "@/components/ui/no-goal-modal";
 import { SvgIcon } from "@/components/ui/svg-icon";
 import {
   abbreviateRevenueGoalInput,
@@ -39,13 +40,16 @@ export function RevenueGoalPanel({
   onBeaconDrawerOpen,
   className,
 }: RevenueGoalPanelProps) {
-  const showToast     = useToastStore((state) => state.showToast);
-  const planRevenues  = usePlanStore((s) => s.planRevenues);
+  const showToast      = useToastStore((state) => state.showToast);
+  const planRevenues   = usePlanStore((s) => s.planRevenues);
+  const savedGoal      = usePlanStore((s) => s.revenueGoal);
+  const storeSetGoal   = usePlanStore((s) => s.setRevenueGoal);
 
-  const [goalInput, setGoalInput]       = useState("");
-  const [savedGoal, setSavedGoal]       = useState("");
-  const [isEditingGoal, setIsEditingGoal] = useState(false);
+  const [goalInput, setGoalInput]           = useState(savedGoal);
+  const [isEditingGoal, setIsEditingGoal]   = useState(false);
   const [beaconDrawerOpen, setBeaconDrawerOpen] = useState(false);
+  const [showNoGoalModal, setShowNoGoalModal] = useState(false);
+  const pendingBeaconOpenRef = useRef(false);
 
   const hasSavedGoal  = savedGoal.length > 0;
   const canSave       = isValidRevenueGoalInput(goalInput);
@@ -72,11 +76,10 @@ export function RevenueGoalPanel({
           ? `You are $${Math.max(goalMillions - plannedRevM, 0).toFixed(1)}M away from completing your assortment plan`
           : "";
 
+  // Keep local input in sync when store goal changes (e.g. set via modal)
   useEffect(() => {
-    if (hasSavedGoal && !isEditingGoal) {
-      setGoalInput(savedGoal);
-    }
-  }, [hasSavedGoal, isEditingGoal, savedGoal]);
+    if (!isEditingGoal) setGoalInput(savedGoal);
+  }, [savedGoal, isEditingGoal]);
 
   function handleGoalChange(raw: string) {
     if (!raw) { setGoalInput(""); return; }
@@ -92,12 +95,58 @@ export function RevenueGoalPanel({
     if (!canSave) return;
     const abbreviated = abbreviateRevenueGoalInput(goalInput);
     setGoalInput(abbreviated);
-    setSavedGoal(abbreviated);
+    storeSetGoal(abbreviated);
     setIsEditingGoal(false);
     showToast({
       title: "Revenue goal saved",
       description: `Your revenue goal of ${formatRevenueGoalDisplay(abbreviated)} has been saved.`,
     });
+    if (pendingBeaconOpenRef.current) {
+      pendingBeaconOpenRef.current = false;
+      onBeaconDrawerOpen?.();
+      setBeaconDrawerOpen(true);
+    }
+  }
+
+  function openBeaconDrawer() {
+    onBeaconDrawerOpen?.();
+    setBeaconDrawerOpen(true);
+  }
+
+  function handlePlanWithBeacon() {
+    if (!hasSavedGoal) {
+      pendingBeaconOpenRef.current = true;
+      setShowNoGoalModal(true);
+      return;
+    }
+    openBeaconDrawer();
+  }
+
+  function handleUseOpportunityAsGoal() {
+    const goalStr = abbreviateRevenueGoalInput(revenueOpportunity);
+    storeSetGoal(goalStr);
+    setGoalInput(goalStr);
+    setIsEditingGoal(false);
+    setShowNoGoalModal(false);
+    showToast({
+      title: "Revenue goal saved",
+      description: `Your revenue goal of ${formatRevenueGoalDisplay(goalStr)} has been saved.`,
+    });
+    if (pendingBeaconOpenRef.current) {
+      pendingBeaconOpenRef.current = false;
+      openBeaconDrawer();
+    }
+  }
+
+  function handleSetGoalManually() {
+    setShowNoGoalModal(false);
+    setIsEditingGoal(true);
+    document.getElementById("revenue-goal-input")?.focus();
+  }
+
+  function handleCloseNoGoalModal() {
+    setShowNoGoalModal(false);
+    pendingBeaconOpenRef.current = false;
   }
 
   function handleAddSelected(items: Array<{ name: string; revenueM: number }>) {
@@ -167,6 +216,7 @@ export function RevenueGoalPanel({
                   $
                 </span>
                 <input
+                  id="revenue-goal-input"
                   type="text"
                   value={goalInput}
                   onChange={(e) => handleGoalChange(e.target.value)}
@@ -223,13 +273,7 @@ export function RevenueGoalPanel({
           )}
 
           <div className="mt-[var(--space-3)] flex items-center gap-2">
-            <Button
-              size="sm"
-              onClick={() => {
-                onBeaconDrawerOpen?.();
-                setBeaconDrawerOpen(true);
-              }}
-            >
+            <Button size="sm" onClick={handlePlanWithBeacon}>
               <SvgIcon name="aiSparkle" size={14} variant="onPrimary" />
               Plan with Beacon
             </Button>
@@ -251,10 +295,19 @@ export function RevenueGoalPanel({
         </div>
       </Card>
 
+      {showNoGoalModal && (
+        <NoGoalModal
+          revenueOpportunity={revenueOpportunity}
+          onUseOpportunity={handleUseOpportunityAsGoal}
+          onSetManually={handleSetGoalManually}
+          onClose={handleCloseNoGoalModal}
+        />
+      )}
+
       <BeaconPlanDrawer
         open={beaconDrawerOpen}
         existingPlanItems={planItemNames}
-        revenueGoal={hasSavedGoal ? formatRevenueGoalDisplay(savedGoal) : "$50.0M"}
+        revenueGoal={hasSavedGoal ? formatRevenueGoalDisplay(savedGoal) : revenueOpportunity}
         revenuePlanned={plannedRevStr}
         revenuePlannedPercent={displayPercent}
         plannedMessage={revenuePlannedMessage}

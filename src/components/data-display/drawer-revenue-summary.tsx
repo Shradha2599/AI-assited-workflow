@@ -20,7 +20,13 @@ export function DrawerRevenueSummary({
           <span className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
             Revenue Goal
           </span>
-          <span className="text-[var(--text-kpi-size)] font-semibold leading-[var(--text-kpi-line-height)] text-[var(--color-foreground)]">
+          <span
+            className={`text-[var(--text-kpi-size)] font-semibold leading-[var(--text-kpi-line-height)] ${
+              revenueGoal === "—" || revenueGoal === "NA"
+                ? "text-[var(--color-muted-foreground)]"
+                : "text-[var(--color-foreground)]"
+            }`}
+          >
             {revenueGoal}
           </span>
         </div>
