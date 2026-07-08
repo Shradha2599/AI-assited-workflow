@@ -255,7 +255,7 @@ function usePlanTasks(isOnPlanPage: boolean): RecommendedTask[] | null {
         title: `✓ All ${planItems.length} item types scheduled`,
         description: `Spanning ${categories.length} categor${categories.length > 1 ? "ies" : "y"}: ${categories.slice(0, 3).join(", ")}${categories.length > 3 ? "…" : ""}. Your plan is ready to share.`,
         actionLabel: "Finalize & Share →",
-        actionHref: "/assortment/finalize",
+        actionType: "open_finalize_drawer",
       },
       {
         id: "apt-versions",

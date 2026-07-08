@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 export interface ScheduledCalendarItem {
   id: string;
@@ -51,6 +50,11 @@ interface PlanStore {
   switchVersion: (id: string) => void;
   renameVersion: (id: string, name: string) => void;
   deleteVersion: (id: string) => void;
+
+  // ── Finalize drawer ────────────────────────────────────────────────────────
+  finalizeDrawerOpen: boolean;
+  openFinalizeDrawer: () => void;
+  closeFinalizeDrawer: () => void;
 }
 
 /** Sync current scheduledItems back to the active version entry */
@@ -62,9 +66,7 @@ function syncActiveVersion(
   return versions.map((v) => (v.id === activeId ? { ...v, scheduledItems: items } : v));
 }
 
-export const usePlanStore = create<PlanStore>()(
-  persist(
-    (set) => ({
+export const usePlanStore = create<PlanStore>()((set) => ({
       planItems: [],
       planRevenues: {},
       scheduledItems: [],
@@ -172,7 +174,6 @@ export const usePlanStore = create<PlanStore>()(
       createVersion: (name) =>
         set((state) => {
           const newId = `v-${Date.now()}`;
-          // Persist current items into the active version before switching
           const savedVersions = syncActiveVersion(
             state.calendarVersions,
             state.activeVersionId,
@@ -194,7 +195,6 @@ export const usePlanStore = create<PlanStore>()(
       switchVersion: (id) =>
         set((state) => {
           if (id === state.activeVersionId) return {};
-          // Save current items to active version
           const savedVersions = syncActiveVersion(
             state.calendarVersions,
             state.activeVersionId,
@@ -217,7 +217,7 @@ export const usePlanStore = create<PlanStore>()(
 
       deleteVersion: (id) =>
         set((state) => {
-          if (state.calendarVersions.length <= 1) return {}; // keep at least one
+          if (state.calendarVersions.length <= 1) return {};
           const remaining = state.calendarVersions.filter((v) => v.id !== id);
           const needsSwitch = state.activeVersionId === id;
           const newActive = needsSwitch ? remaining[0] : remaining.find((v) => v.id === state.activeVersionId);
@@ -227,16 +227,8 @@ export const usePlanStore = create<PlanStore>()(
             scheduledItems: needsSwitch ? newActive!.scheduledItems : state.scheduledItems,
           };
         }),
-    }),
-    {
-      name: "assortment-plan-v5",
-      skipHydration: true,
-      // Persist calendar versions & schedule only — plan items and revenue goal start fresh each session
-      partialize: (state) => ({
-        calendarVersions: state.calendarVersions,
-        activeVersionId: state.activeVersionId,
-        scheduledItems: state.scheduledItems,
-      }),
-    },
-  ),
-);
+
+      finalizeDrawerOpen: false,
+      openFinalizeDrawer: () => set({ finalizeDrawerOpen: true }),
+      closeFinalizeDrawer: () => set({ finalizeDrawerOpen: false }),
+    }));

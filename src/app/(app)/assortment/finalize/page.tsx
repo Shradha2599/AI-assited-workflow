@@ -1,5 +1,18 @@
-import { FinalizeShareView } from "@/features/assortment-plan/components/finalize-share-view";
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 
 export default function FinalizePage() {
-  return <FinalizeShareView />;
+  const router = useRouter();
+  const openFinalizeDrawer = usePlanStore((s) => s.openFinalizeDrawer);
+
+  useEffect(() => {
+    openFinalizeDrawer();
+    router.replace("/assortment/plan");
+  }, [openFinalizeDrawer, router]);
+
+  return null;
 }

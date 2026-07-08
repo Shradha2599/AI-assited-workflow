@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { SvgIcon } from "@/components/ui/svg-icon";
 import { useOnboardingReviewStore } from "@/features/partner-onboarding/store/onboarding-review-store";
 import { useOutreachStore } from "@/features/outreach/store/outreach-store";
+import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { usePartnerReviewStore } from "@/features/partner-onboarding/store/partner-review-store";
 import { statusLabel } from "@/lib/mock-data/lead-form-analysis";
 import { cn } from "@/lib/utils";
@@ -23,7 +24,7 @@ export interface RecommendedTask {
   description: string;
   actionLabel: string;
   actionHref?: string;
-  actionType?: "open_analysis" | "open_onboarding_comment" | "approve_onboarding" | "navigate_review" | "open_outreach";
+  actionType?: "open_analysis" | "open_onboarding_comment" | "approve_onboarding" | "navigate_review" | "open_outreach" | "open_finalize_drawer";
   partnerId?: string;
   score?: number;
   sellerId?: string;
@@ -464,6 +465,7 @@ export function TasksPanel({
   const approveItem = useOnboardingReviewStore((s) => s.approveItem);
   const isApproved = useOnboardingReviewStore((s) => s.isApproved);
   const openOutreach = useOutreachStore((s) => s.openDrawer);
+  const openFinalizeDrawer = usePlanStore((s) => s.openFinalizeDrawer);
 
   const { messages, append, setMessages, reload, isLoading, error } = useChat({
     api: "/api/beacon",
@@ -500,6 +502,10 @@ export function TasksPanel({
         sellerWebsite: task.sellerWebsite,
         multiPartner: task.mailType === "document_reminder" && !task.partnerId,
       });
+      return;
+    }
+    if (task.actionType === "open_finalize_drawer") {
+      openFinalizeDrawer();
     }
   }
 

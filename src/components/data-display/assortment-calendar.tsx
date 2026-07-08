@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Check, ChevronDown, GripVertical, Loader2, MessageSquare, Plus, Sparkles, X } from "lucide-react";
+import { Check, ChevronDown, Download, GripVertical, Loader2, MessageSquare, Plus, Sparkles, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { downloadCalendarPdf } from "@/lib/utils/calendar-pdf";
 import {
   usePlanStore,
   type ScheduledCalendarItem,
@@ -591,7 +591,7 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
       <Card className="overflow-hidden border-0 shadow-none">
         <div className="flex items-center justify-between border-b border-[var(--color-border)] p-[var(--space-4)]">
           <h3 className="text-[var(--text-section-size)] font-semibold">Calendar Plan 2025-26</h3>
-          <VersionPicker />
+          <CalendarToolbar />
         </div>
 
         <div className="overflow-x-auto p-6" ref={tableRef}>
@@ -879,16 +879,41 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
   );
 }
 
+function CalendarToolbar() {
+  const scheduledItems = usePlanStore((s) => s.scheduledItems);
+  const calendarVersions = usePlanStore((s) => s.calendarVersions);
+  const activeVersionId = usePlanStore((s) => s.activeVersionId);
+
+  const activeVersion = calendarVersions.find((v) => v.id === activeVersionId) ?? calendarVersions[0];
+  const versionName = activeVersion?.name ?? "Version 1";
+  const hasItems = scheduledItems.length > 0;
+
+  function handleDownload() {
+    if (!hasItems) return;
+    downloadCalendarPdf(versionName, scheduledItems);
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <Button variant="secondary" size="sm" onClick={handleDownload} disabled={!hasItems}>
+        <Download className="h-3.5 w-3.5" />
+        Download
+      </Button>
+      <VersionPicker />
+    </div>
+  );
+}
+
 function FinalizeShareButton() {
   const scheduledItems = usePlanStore((s) => s.scheduledItems);
-  const router = useRouter();
+  const openFinalizeDrawer = usePlanStore((s) => s.openFinalizeDrawer);
   const hasItems = scheduledItems.length > 0;
 
   return (
     <Button
       size="sm"
       disabled={!hasItems}
-      onClick={() => hasItems && router.push("/assortment/finalize")}
+      onClick={() => hasItems && openFinalizeDrawer()}
       className={!hasItems ? "opacity-40" : undefined}
     >
       Finalize &amp; Share
