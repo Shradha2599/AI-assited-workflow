@@ -7,7 +7,6 @@ import {
   CircleDashed,
   ExternalLink,
   Loader2,
-  Mail,
   MessageSquare,
   MoreHorizontal,
   Plus,
@@ -17,11 +16,14 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ConfidenceScoreBadge } from "@/components/data-display/confidence-score-badge";
+import { RegisterPageHeader } from "@/components/layout/page-header";
+import { SvgIcon } from "@/components/ui/svg-icon";
 import { useOutreachMail } from "@/features/outreach/hooks/use-outreach-mail";
 import { cn } from "@/lib/utils";
 import type { Seller } from "@/lib/mock-data/sellers";
+import { getSellerMatchingItemTypes } from "@/lib/mock-data/seller-matching-items";
 import { getSellerProfileDetails } from "@/lib/mock-data/seller-profile-details";
-import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import {
   useDiscoveryStore,
   type VerificationResult,
@@ -49,27 +51,6 @@ function getInitials(name: string): string {
     .toUpperCase();
 }
 
-function ConfidenceBadge({ score }: { score: number }) {
-  const color =
-    score >= 9.0
-      ? "bg-green-600 text-white"
-      : score >= 8.0
-        ? "bg-green-500 text-white"
-        : score >= 7.0
-          ? "bg-amber-500 text-white"
-          : "bg-red-500 text-white";
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full px-3 py-1 text-[var(--text-caption-size)] font-semibold tabular-nums",
-        color,
-      )}
-    >
-      {score.toFixed(1)}/10
-    </span>
-  );
-}
-
 function SourceRow({ label, source }: { label: string; source: VerificationSource }) {
   const icon =
     source.status === "verified" ? (
@@ -93,7 +74,6 @@ function SourceRow({ label, source }: { label: string; source: VerificationSourc
 }
 
 export function SellerProfileView({ seller }: SellerProfileViewProps) {
-  const planItems = usePlanStore((s) => s.planItems);
   const verifications = useDiscoveryStore((s) => s.verifications);
   const shortlistedIds = useDiscoveryStore((s) => s.shortlistedIds);
   const shortlistSeller = useDiscoveryStore((s) => s.shortlistSeller);
@@ -110,6 +90,7 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
     });
 
   const details = getSellerProfileDetails(seller);
+  const matchingItems = getSellerMatchingItemTypes(seller);
   const cached = verifications[seller.id];
   const isShortlisted = shortlistedIds.includes(seller.id);
 
@@ -143,46 +124,37 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
 
   return (
     <div className="space-y-[var(--space-4)]">
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb">
-        <ol className="flex flex-wrap items-center gap-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-          <li>
-            <Link href="/dashboard" className="hover:text-[var(--color-foreground)]">
-              Acquisition &amp; Onboarding
-            </Link>
-          </li>
-          <li aria-hidden className="text-[var(--color-muted-foreground)]">
-            /
-          </li>
-          <li>
-            <Link href="/sellers/discovery" className="hover:text-[var(--color-foreground)]">
-              Lead Discovery
-            </Link>
-          </li>
-          <li aria-hidden className="text-[var(--color-muted-foreground)]">
-            /
-          </li>
-          <li>
-            <span className="font-medium text-[var(--color-foreground)]" aria-current="page">
-              {seller.legalBusinessName}
-            </span>
-          </li>
-        </ol>
-      </nav>
-
-      {/* Profile header */}
-      <Card className="overflow-hidden">
-        <div className="border-b border-[var(--color-border)] px-6 py-5">
-          <div className="flex flex-wrap items-start justify-between gap-4">
+      <RegisterPageHeader>
+        <div>
+          <nav aria-label="Breadcrumb" className="mb-1">
+            <ol className="flex flex-wrap items-center gap-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
+              <li>
+                <Link href="/dashboard" className="hover:text-[var(--color-foreground)]">
+                  Acquisition &amp; Onboarding
+                </Link>
+              </li>
+              <li>/</li>
+              <li>
+                <Link href="/sellers/discovery" className="hover:text-[var(--color-foreground)]">
+                  Lead Discovery
+                </Link>
+              </li>
+              <li>/</li>
+              <li>
+                <span className="font-medium text-[var(--color-foreground)]">
+                  {seller.legalBusinessName}
+                </span>
+              </li>
+            </ol>
+          </nav>
+          <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-blue-600 text-lg font-bold text-white">
                 {initials}
               </div>
-              <div>
-                <h1 className="text-[var(--text-page-title-size)] font-semibold leading-tight">
-                  {seller.legalBusinessName}
-                </h1>
-              </div>
+              <h1 className="text-[var(--text-headline-xl-size)] font-bold leading-[var(--text-headline-xl-line-height)]">
+                {seller.legalBusinessName}
+              </h1>
             </div>
             <div className="flex items-center gap-2">
               {isShortlisted ? (
@@ -195,16 +167,24 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
                 </Button>
               )}
               <Button variant="outline" size="sm" className="gap-1.5" onClick={openAcquisitionMail}>
-                <Mail className="h-3.5 w-3.5" /> Send Email
+                <SvgIcon name="mail" size={14} /> Send Email
               </Button>
-              <Button variant="outline" size="icon" className="h-8 w-8" aria-label="More actions">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
+                aria-label="More actions"
+              >
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </div>
           </div>
+        </div>
+      </RegisterPageHeader>
 
-          {/* Stats row */}
-          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <Card className="overflow-hidden">
+        <div className="px-6 py-5">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {[
               { label: "Avg. Annual GMV", value: formatCurrency(seller.gmv) },
               { label: "Categories", value: categoriesLabel },
@@ -222,35 +202,34 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
                 Confidence Score
               </p>
               <div className="mt-1">
-                <ConfidenceBadge score={seller.confidenceScore} />
+                <ConfidenceScoreBadge score={seller.confidenceScore} variant="profile" />
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Tabs */}
-        <div className="flex gap-6 border-b border-[var(--color-border)] px-6">
-          {(
-            [
-              { id: "overview" as const, label: "Overview" },
-              { id: "contacts" as const, label: "Contacts" },
-              { id: "products" as const, label: "Products & Categories" },
-            ] as const
-          ).map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "-mb-px border-b-2 py-3 text-[var(--text-caption-size)] font-medium transition-colors",
-                activeTab === tab.id
-                  ? "border-[var(--color-primary)] text-[var(--color-primary)]"
-                  : "border-transparent text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
+          <div className="mt-5 flex rounded-[var(--radius-md)] border border-[var(--color-border)] p-0.5">
+            {(
+              [
+                { id: "overview" as const, label: "Overview" },
+                { id: "contacts" as const, label: "Contacts" },
+                { id: "products" as const, label: "Products & Categories" },
+              ] as const
+            ).map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  "rounded-[var(--radius-sm)] px-4 py-1.5 text-[var(--text-caption-size)] font-medium transition-colors",
+                  activeTab === tab.id
+                    ? "bg-[var(--color-foreground)] text-[var(--color-background)]"
+                    : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
+                )}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </Card>
 
@@ -418,16 +397,16 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
           {/* Sidebar column */}
           <div className="space-y-[var(--space-4)]">
             {/* Item Type Match */}
-            {planItems.length > 0 && (
+            {matchingItems.length > 0 && (
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-[var(--text-body-size)]">
-                    Item Type Match ({planItems.length})
+                    Item Type Match ({matchingItems.length})
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-1.5">
-                    {planItems.map((item) => (
+                    {matchingItems.map((item) => (
                       <span
                         key={item}
                         className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1 text-[var(--text-caption-size)]"
@@ -510,27 +489,6 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
                 </dl>
               </CardContent>
             </Card>
-
-            {/* Recommended Mail */}
-            <Card className="border-[var(--color-ai-insight-border)] bg-[var(--color-ai-insight)]">
-              <CardHeader className="pb-2">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-[var(--color-primary)]" />
-                  <CardTitle className="text-[var(--text-body-size)]">Recommended Mail</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-[var(--text-label-size)] font-medium text-[var(--color-muted-foreground)]">
-                  {details.recommendedMailSubject}
-                </p>
-                <p className="mt-2 line-clamp-4 whitespace-pre-line text-[var(--text-caption-size)] leading-relaxed">
-                  {details.recommendedMailPreview}
-                </p>
-                <Button size="sm" className="mt-3 gap-1.5" onClick={openAcquisitionMail}>
-                  <Mail className="h-3.5 w-3.5" /> Send Mail
-                </Button>
-              </CardContent>
-            </Card>
           </div>
         </div>
       )}
@@ -587,13 +545,13 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
                 ))}
               </div>
             </div>
-            {planItems.length > 0 && (
+            {matchingItems.length > 0 && (
               <div>
                 <p className="mb-2 text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
                   Matching Item Types from Assortment Plan
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {planItems.map((item) => (
+                  {matchingItems.map((item) => (
                     <span
                       key={item}
                       className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-[var(--text-caption-size)]"

@@ -20,6 +20,8 @@ export interface Seller {
   socialFollowers?: number;
   t52wSales?: number;
   status: "discovered" | "shortlisted" | "contacted" | "applied" | "approved" | "onboarding" | "established";
+  /** Item types from the assortment plan that match this seller's categories */
+  matchingItemTypes: string[];
 }
 
 export const sellers: Seller[] = [
@@ -44,6 +46,7 @@ export const sellers: Seller[] = [
     walmartPresent: true,
     socialFollowers: 45000,
     t52wSales: 3200000,
+    matchingItemTypes: ["Pendant Lights", "String Lights", "Outdoor Lighting", "LED Lanterns", "Smart Bulbs"],
     status: "shortlisted",
   },
   {
@@ -67,6 +70,7 @@ export const sellers: Seller[] = [
     walmartPresent: true,
     socialFollowers: 32000,
     t52wSales: 2800000,
+    matchingItemTypes: ["Table Lamps", "Wall Sconces", "Floor Lamps", "Pendant Lights", "Desk Lamps"],
     status: "discovered",
   },
   {
@@ -90,6 +94,7 @@ export const sellers: Seller[] = [
     walmartPresent: false,
     socialFollowers: 18000,
     t52wSales: 1100000,
+    matchingItemTypes: ["String Lights", "LED Lanterns", "Wreaths", "Ornaments", "Party Banners"],
     status: "discovered",
   },
   {
@@ -113,6 +118,7 @@ export const sellers: Seller[] = [
     walmartPresent: true,
     socialFollowers: 67000,
     t52wSales: 3900000,
+    matchingItemTypes: ["Ceramic Serving Bowls", "Cake Stands", "Glass Beverage Dispensers", "Dinnerware Sets", "Cutting Boards"],
     status: "onboarding",
   },
   {
@@ -136,6 +142,7 @@ export const sellers: Seller[] = [
     walmartPresent: false,
     socialFollowers: 120000,
     t52wSales: 4200000,
+    matchingItemTypes: ["String Lights", "Smart Bulbs", "LED Lanterns", "Pendant Lights", "Outdoor Lighting"],
     status: "shortlisted",
   },
   {
@@ -159,6 +166,7 @@ export const sellers: Seller[] = [
     walmartPresent: true,
     socialFollowers: 21000,
     t52wSales: 5100000,
+    matchingItemTypes: ["Ceramic Serving Bowls", "Cutting Boards", "Outdoor Lighting", "Garden Planters", "Dinnerware Sets"],
     status: "discovered",
   },
   {
@@ -182,6 +190,7 @@ export const sellers: Seller[] = [
     walmartPresent: false,
     socialFollowers: 9000,
     t52wSales: 680000,
+    matchingItemTypes: ["Wreaths", "Ornaments", "Party Banners", "Balloon Kits", "Disposable Serveware"],
     status: "discovered",
   },
   {
@@ -205,6 +214,7 @@ export const sellers: Seller[] = [
     walmartPresent: false,
     socialFollowers: 14000,
     t52wSales: 920000,
+    matchingItemTypes: ["Flush Mount Lights", "Wall Sconces", "Pendant Lights", "Floor Lamps", "Table Lamps"],
     status: "discovered",
   },
   {
@@ -228,6 +238,7 @@ export const sellers: Seller[] = [
     walmartPresent: true,
     socialFollowers: 210000,
     t52wSales: 6800000,
+    matchingItemTypes: ["String Lights", "LED Lanterns", "Outdoor Lighting", "Pendant Lights", "Smart Bulbs"],
     status: "shortlisted",
   },
   {
@@ -251,6 +262,7 @@ export const sellers: Seller[] = [
     walmartPresent: true,
     socialFollowers: 38000,
     t52wSales: 3400000,
+    matchingItemTypes: ["Outdoor Lighting", "LED Lanterns", "String Lights", "Pendant Lights", "Flush Mount Lights"],
     status: "discovered",
   },
   {
@@ -274,6 +286,7 @@ export const sellers: Seller[] = [
     walmartPresent: true,
     socialFollowers: 29000,
     t52wSales: 2600000,
+    matchingItemTypes: ["Garden Planters", "Outdoor Lighting", "Wreaths", "LED Lanterns", "Ornaments"],
     status: "discovered",
   },
   {
@@ -297,6 +310,7 @@ export const sellers: Seller[] = [
     walmartPresent: false,
     socialFollowers: 55000,
     t52wSales: 3900000,
+    matchingItemTypes: ["Storage Baskets", "Drawer Organizers", "Ceramic Serving Bowls", "Pantry Bins", "Cutting Boards"],
     status: "onboarding",
   },
   {
@@ -320,6 +334,7 @@ export const sellers: Seller[] = [
     walmartPresent: false,
     socialFollowers: 82000,
     t52wSales: 4700000,
+    matchingItemTypes: ["Dining Chairs", "Console Tables", "Outdoor Benches", "Garden Planters", "Accent Chairs"],
     status: "discovered",
   },
   {
@@ -343,6 +358,7 @@ export const sellers: Seller[] = [
     walmartPresent: true,
     socialFollowers: 340000,
     t52wSales: 1800000,
+    matchingItemTypes: ["Ceramic Serving Bowls", "Cake Stands", "Glass Beverage Dispensers", "Marble Serving Trays", "Stoneware Mugs"],
     status: "shortlisted",
   },
   {
@@ -366,6 +382,7 @@ export const sellers: Seller[] = [
     walmartPresent: true,
     socialFollowers: 42000,
     t52wSales: 7200000,
+    matchingItemTypes: ["Outdoor Benches", "Garden Planters", "Patio Umbrellas", "Outdoor Lighting", "Outdoor Furniture Covers"],
     status: "discovered",
   },
 ];

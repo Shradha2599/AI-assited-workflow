@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 export interface DashboardMetric {
   label: string;
   value: string;
-  change: string;
+  change?: string;
   changeType?: "positive" | "negative" | "neutral";
   icon: "revenue" | "goal" | "gap" | "sellers";
 }
@@ -31,14 +31,24 @@ function inferDirection(change: string, changeType?: DashboardMetric["changeType
 export interface KpiMetricProps {
   label: string;
   value: string;
-  change: string;
+  change?: string;
   changeType?: "positive" | "negative" | "neutral";
   icon?: LucideIcon;
   className?: string;
+  showChange?: boolean;
 }
 
-export function KpiMetric({ label, value, change, changeType, icon: Icon, className }: KpiMetricProps) {
-  const dir = inferDirection(change, changeType);
+export function KpiMetric({
+  label,
+  value,
+  change,
+  changeType,
+  icon: Icon,
+  className,
+  showChange = true,
+}: KpiMetricProps) {
+  const showBadge = showChange && change != null && change !== "";
+  const dir = showBadge ? inferDirection(change, changeType) : "neutral";
 
   const badgeCls =
     dir === "positive"
@@ -61,15 +71,17 @@ export function KpiMetric({ label, value, change, changeType, icon: Icon, classN
         <p className="text-[21px] font-bold leading-tight tracking-tight text-[var(--color-foreground)]">
           {value}
         </p>
-        <span
-          className={cn(
-            "inline-flex shrink-0 items-center gap-0.5 rounded-[var(--radius-sm)] px-1.5 py-0.5 text-[var(--text-caption-size)] font-semibold",
-            badgeCls,
-          )}
-        >
-          {change}
-          {ArrowIcon && <ArrowIcon className="h-3 w-3 shrink-0" aria-hidden />}
-        </span>
+        {showBadge && (
+          <span
+            className={cn(
+              "inline-flex shrink-0 items-center gap-0.5 rounded-[var(--radius-sm)] px-1.5 py-0.5 text-[var(--text-caption-size)] font-semibold",
+              badgeCls,
+            )}
+          >
+            {change}
+            {ArrowIcon && <ArrowIcon className="h-3 w-3 shrink-0" aria-hidden />}
+          </span>
+        )}
       </div>
     </div>
   );
@@ -80,9 +92,16 @@ export function KpiMetric({ label, value, change, changeType, icon: Icon, classN
 interface DashboardKpiStripProps {
   metrics: DashboardMetric[];
   className?: string;
+  showChange?: boolean;
 }
 
-function KpiMetricCell({ metric }: { metric: DashboardMetric }) {
+function KpiMetricCell({
+  metric,
+  showChange,
+}: {
+  metric: DashboardMetric;
+  showChange?: boolean;
+}) {
   const Icon = iconMap[metric.icon];
   return (
     <KpiMetric
@@ -91,16 +110,17 @@ function KpiMetricCell({ metric }: { metric: DashboardMetric }) {
       change={metric.change}
       changeType={metric.changeType}
       icon={Icon}
+      showChange={showChange}
     />
   );
 }
 
-export function DashboardKpiStrip({ metrics, className }: DashboardKpiStripProps) {
+export function DashboardKpiStrip({ metrics, className, showChange = true }: DashboardKpiStripProps) {
   return (
     <Card className={cn("min-w-0 overflow-hidden p-0 shadow-[var(--shadow-low)]", className)}>
       <div className="flex min-w-0 divide-x divide-[var(--color-border)]">
         {metrics.map((metric) => (
-          <KpiMetricCell key={metric.label} metric={metric} />
+          <KpiMetricCell key={metric.label} metric={metric} showChange={showChange} />
         ))}
       </div>
     </Card>
