@@ -18,21 +18,23 @@
   --color-error-light: #fce8e6;
 
   /* Surfaces */
-  --color-background: #f5f6f8;
-  --color-foreground: #202124;
+  --color-background: #f7f7f7;
+  --color-background-page-brand: #212121;
+  --color-foreground: #3c4043;
   --color-muted: #f1f3f4;
+  --color-progress-track: #e0e0e0;
   --color-muted-foreground: #5f6368;
   --color-border: #dadce0;
   --color-card: #ffffff;
-  --color-card-foreground: #202124;
+  --color-card-foreground: #3c4043;
 
   /* Sidebar & panels */
   --color-sidebar: #ffffff;
   --color-sidebar-foreground: #5f6368;
   --color-sidebar-active: #e8f0fe;
   --color-subnav: #ffffff;
-  --color-subnav-heading: #202124;
-  --color-subnav-foreground: #202124;
+  --color-subnav-heading: #3c4043;
+  --color-subnav-foreground: #3c4043;
   --color-subnav-active-bg: #e8eaed;
   --color-subnav-border: #dadce0;
   --color-tasks-panel: #ffffff;

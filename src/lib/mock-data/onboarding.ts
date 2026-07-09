@@ -1,3 +1,9 @@
+import { getOnboardingPartners } from "@/lib/mock-data/pipeline-partners";
+import {
+  getPotentialPartnerById,
+  getPotentialPartnerBySellerId,
+} from "@/lib/mock-data/potential-partners";
+
 export interface OnboardingTask {
   id: string;
   sellerId: string;
@@ -25,6 +31,47 @@ export interface OnboardingSection {
   totalSteps: number;
   completedSteps: number;
   tasks: OnboardingTask[];
+}
+
+export const LOCKED_ONBOARDING_SECTION_IDS = new Set(["item-listing", "stripe"]);
+
+export function isOnboardingSectionLocked(
+  section: OnboardingSection,
+  sections: OnboardingSection[],
+): boolean {
+  if (!LOCKED_ONBOARDING_SECTION_IDS.has(section.id)) return false;
+  const prerequisites = sections.filter((s) => !LOCKED_ONBOARDING_SECTION_IDS.has(s.id));
+  return !prerequisites.every((s) => s.completedSteps >= s.totalSteps);
+}
+
+export function getOnboardingSectionProgressPercent(section: OnboardingSection): number {
+  if (!section.totalSteps) return 0;
+  return Math.round((section.completedSteps / section.totalSteps) * 100);
+}
+
+export function getOnboardingSectionStatusIconSrc(
+  section: OnboardingSection,
+  sections: OnboardingSection[],
+): string {
+  const locked = isOnboardingSectionLocked(section, sections);
+  if (locked) return "/icons/lock-fill.svg";
+  if (section.completedSteps >= section.totalSteps && section.totalSteps > 0) {
+    return "/icons/progress-check.svg";
+  }
+  return "/icons/time-clock.svg";
+}
+
+export function computeOnboardingOverallProgress(sections: OnboardingSection[]): number {
+  const totalSteps = sections.reduce((sum, section) => sum + section.totalSteps, 0);
+  if (totalSteps === 0) return 0;
+  const completedSteps = sections.reduce((sum, section) => sum + section.completedSteps, 0);
+  return Math.round((completedSteps / totalSteps) * 100);
+}
+
+export function countOnboardingSectionProgress(sections: OnboardingSection[]) {
+  const total = sections.length;
+  const remaining = sections.filter((section) => section.completedSteps < section.totalSteps).length;
+  return { total, remaining };
 }
 
 export const onboardingPartners: OnboardingPartner[] = [
@@ -246,12 +293,211 @@ export const onboardingPartners: OnboardingPartner[] = [
   },
 ];
 
-export function getOnboardingBySellerID(sellerId: string): OnboardingPartner | undefined {
-  return onboardingPartners.find((p) => p.sellerId === sellerId);
+function resolveSellerNameForOnboarding(sellerId: string): string {
+  const fromPotential =
+    getPotentialPartnerById(sellerId) ?? getPotentialPartnerBySellerId(sellerId);
+  if (fromPotential) return fromPotential.legalBusinessName;
+
+  const fromLegacy = onboardingPartners.find((p) => p.sellerId === sellerId);
+  if (fromLegacy) return fromLegacy.sellerName;
+
+  return "Partner";
+}
+
+function buildFreshOnboardingForPartner(
+  sellerId: string,
+  sellerName: string,
+): OnboardingPartner {
+  const task = (
+    section: string,
+    suffix: string,
+    title: string,
+    autoValidated = false,
+  ): OnboardingTask => ({
+    id: `t-${sellerId}-${suffix}`,
+    sellerId,
+    section,
+    title,
+    status: "pending",
+    autoValidated,
+  });
+
+  const sections: OnboardingSection[] = [
+    {
+      id: "profile",
+      title: "Profile Information",
+      totalSteps: 7,
+      completedSteps: 0,
+      tasks: [
+        task("profile", "01", "Brand profile"),
+        task("profile", "02", "Brand display name"),
+        task("profile", "03", "Business identity and address"),
+        task("profile", "04", "Marketplace users"),
+        task("profile", "05", "Fulfilment details"),
+        task("profile", "06", "Returns policy"),
+        task("profile", "07", "Privacy policy"),
+      ],
+    },
+    {
+      id: "assortment",
+      title: "Assortment Curation",
+      totalSteps: 1,
+      completedSteps: 0,
+      tasks: [task("assortment", "08", "Upload assortment file (SKUs)")],
+    },
+    {
+      id: "documentation",
+      title: "Documentation",
+      totalSteps: 2,
+      completedSteps: 0,
+      tasks: [
+        task("documentation", "09", "W9 form uploaded", true),
+        task("documentation", "10", "Contract signed"),
+      ],
+    },
+    {
+      id: "integrations",
+      title: "Integrations",
+      totalSteps: 1,
+      completedSteps: 0,
+      tasks: [task("integrations", "11", "Channel partner integration")],
+    },
+    {
+      id: "item-listing",
+      title: "Item listing",
+      totalSteps: 1,
+      completedSteps: 0,
+      tasks: [task("item-listing", "12", "Item data setup and mapping")],
+    },
+    {
+      id: "stripe",
+      title: "Stripe setup",
+      totalSteps: 2,
+      completedSteps: 0,
+      tasks: [
+        task("stripe", "13", "Stripe account creation"),
+        task("stripe", "14", "Bank deposit verified"),
+      ],
+    },
+  ];
+
+  return {
+    sellerId,
+    sellerName,
+    assignedTo: "Shaun Doe",
+    overallProgress: computeOnboardingOverallProgress(sections),
+    startedAt: new Date().toISOString().slice(0, 10),
+    targetLaunchDate: "2026-07-01",
+    sections,
+  };
+}
+
+function applyTaskUpdates(
+  base: OnboardingPartner,
+  updates: Record<string, Partial<OnboardingTask>>,
+  meta?: Partial<Pick<OnboardingPartner, "startedAt" | "targetLaunchDate">>,
+): OnboardingPartner {
+  const prefix = `t-${base.sellerId}-`;
+  const sections = base.sections.map((section) => {
+    const tasks = section.tasks.map((task) => {
+      const suffix = task.id.startsWith(prefix) ? task.id.slice(prefix.length) : "";
+      const patch = updates[suffix];
+      return patch ? { ...task, ...patch } : task;
+    });
+    return {
+      ...section,
+      tasks,
+      completedSteps: tasks.filter((t) => t.status === "complete").length,
+    };
+  });
+
+  return {
+    ...base,
+    ...meta,
+    sections,
+    overallProgress: computeOnboardingOverallProgress(sections),
+  };
+}
+
+/** Demo partners with partial checklist progress for profile & documentation review flows */
+const partialOnboardingProfiles: Record<string, OnboardingPartner> = {
+  // Pinnacle Goods — profile nearly complete (banner issue) + W9 uploaded
+  "p-k-o2": applyTaskUpdates(
+    buildFreshOnboardingForPartner("p-k-o2", "Pinnacle Goods"),
+    {
+      "01": {
+        status: "in_progress",
+        issue: "Invalid Banner/Cover Image",
+        issueSource: "Image quality analysis: low resolution, does not meet guidelines",
+        autoValidated: true,
+      },
+      "02": { status: "complete", autoValidated: true },
+      "03": { status: "complete", autoValidated: true },
+      "04": { status: "complete", autoValidated: false },
+      "05": { status: "complete", autoValidated: false },
+      "06": { status: "complete", autoValidated: false },
+      "07": { status: "complete", autoValidated: true },
+      "09": { status: "complete", autoValidated: true },
+    },
+    { startedAt: "2026-04-01", targetLaunchDate: "2026-07-01" },
+  ),
+  // Oasis & Co — profile complete, documentation in review with brand issue
+  "p-f-o2": applyTaskUpdates(
+    buildFreshOnboardingForPartner("p-f-o2", "Oasis & Co"),
+    {
+      "01": { status: "complete", autoValidated: true },
+      "02": { status: "complete", autoValidated: true },
+      "03": { status: "complete", autoValidated: true },
+      "04": { status: "complete", autoValidated: false },
+      "05": { status: "complete", autoValidated: false },
+      "06": { status: "complete", autoValidated: false },
+      "07": { status: "complete", autoValidated: true },
+      "09": { status: "complete", autoValidated: true },
+    },
+    { startedAt: "2026-05-15", targetLaunchDate: "2026-08-15" },
+  ),
+  // SunSet Decor — early profile progress only
+  "p-l-o3": applyTaskUpdates(
+    buildFreshOnboardingForPartner("p-l-o3", "SunSet Decor"),
+    {
+      "01": {
+        status: "in_progress",
+        issue: "Invalid Banner/Cover Image",
+        issueSource: "Image quality analysis: low resolution",
+        autoValidated: true,
+      },
+      "02": { status: "complete", autoValidated: true },
+      "03": { status: "complete", autoValidated: true },
+      "04": { status: "complete", autoValidated: false },
+    },
+    { startedAt: "2026-06-01", targetLaunchDate: "2026-09-01" },
+  ),
+};
+
+function resolveOnboardingProfile(sellerId: string, sellerName: string): OnboardingPartner {
+  return partialOnboardingProfiles[sellerId] ?? buildFreshOnboardingForPartner(sellerId, sellerName);
+}
+
+export function getOnboardingBySellerID(sellerId: string): OnboardingPartner {
+  return resolveOnboardingProfile(sellerId, resolveSellerNameForOnboarding(sellerId));
+}
+
+export function getOnboardingForPartner(partner: {
+  id: string;
+  sellerId: string;
+  legalBusinessName: string;
+}): OnboardingPartner {
+  return resolveOnboardingProfile(partner.sellerId, partner.legalBusinessName);
+}
+
+export function getAllOnboardingProfiles(): OnboardingPartner[] {
+  return getOnboardingPartners().map((partner) =>
+    resolveOnboardingProfile(partner.id, partner.name),
+  );
 }
 
 export function getBlockedOnboardingTasks(): OnboardingTask[] {
-  return onboardingPartners
+  return getAllOnboardingProfiles()
     .flatMap((p) => p.sections.flatMap((s) => s.tasks))
     .filter((t) => t.status === "blocked" || t.issue);
 }

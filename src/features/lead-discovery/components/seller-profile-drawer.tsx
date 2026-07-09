@@ -9,14 +9,14 @@ import {
   ChevronUp,
   CircleDashed,
   ExternalLink,
-  Globe,
   Loader2,
-  Mail,
   Plus,
   Sparkles,
   Star,
   XCircle,
 } from "lucide-react";
+import { SvgIcon } from "@/components/ui/svg-icon";
+import { StatusTag } from "@/components/ui/status-tag";
 import { Button } from "@/components/ui/button";
 import {
   DrawerHeaderShell,
@@ -86,12 +86,12 @@ function DrawerSectionCard({
 function ConfidenceChip({ score }: { score: number }) {
   const { bg, text } = getConfidenceBadgeStyle(score);
   return (
-    <span
-      className="inline-flex rounded-full px-2.5 py-0.5 text-[var(--text-caption-size)] font-semibold"
+    <StatusTag
+      className="px-2.5 text-[var(--text-caption-size)]"
       style={{ backgroundColor: bg, color: text }}
     >
       Confidence : {score.toFixed(1)}/10
-    </span>
+    </StatusTag>
   );
 }
 
@@ -223,7 +223,7 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
               })
             }
           >
-            <Mail className="h-3.5 w-3.5" /> Send Mail
+            <SvgIcon name="mail" size={14} variant="primary" /> Send Mail
           </Button>
           {isShortlisted ? (
             <Button
@@ -402,10 +402,6 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
           {drawerDetails.marketplaces.map((mp) => (
             <MarketplaceBlock key={mp.name} mp={mp} />
           ))}
-          <MarketplaceBlock
-            mp={drawerDetails.officialWebsite}
-            icon={<Globe className="h-4 w-4 text-[var(--color-muted-foreground)]" />}
-          />
         </DrawerSectionCard>
 
         <DrawerSectionCard title="Social media presence">

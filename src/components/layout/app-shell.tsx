@@ -39,6 +39,7 @@ import {
   showsLeadForm,
   showsOnboardingChecklist,
 } from "@/lib/mock-data/potential-partners";
+import { usePartnerReviewStore } from "@/features/partner-onboarding/store/partner-review-store";
 
 function isPartnerProfilePath(pathname: string): boolean {
   return /^\/sellers\/onboarding\/[^/]+$/.test(pathname);
@@ -87,7 +88,10 @@ function getOnboardingPanelData(partnerId: string, pathname: string) {
   return { tasks, insights, showInsightsTab: true };
 }
 
-function getTasksForPath(pathname: string): RecommendedTask[] {
+function getTasksForPath(
+  pathname: string,
+  statusOverrides: Record<string, import("@/lib/mock-data/potential-partners").PartnerPipelineStatus>,
+): RecommendedTask[] {
   const partnerId = extractPartnerId(pathname);
 
   if (isOnboardingReviewPath(pathname) && partnerId) {
@@ -98,7 +102,8 @@ function getTasksForPath(pathname: string): RecommendedTask[] {
   if (isPartnerProfilePath(pathname)) {
     const id = pathname.split("/").pop();
     const partner = id ? getPotentialPartnerById(id) : undefined;
-    if (partner && showsOnboardingChecklist(partner.status) && id) {
+    const effectiveStatus = partner && id ? (statusOverrides[id] ?? partner.status) : undefined;
+    if (partner && effectiveStatus && showsOnboardingChecklist(effectiveStatus) && id) {
       const evalTasks = getOnboardingTasksForPanel(partner.sellerId).map((t) => ({
         ...t,
         partnerId: id,
@@ -116,7 +121,7 @@ function getTasksForPath(pathname: string): RecommendedTask[] {
         ...evalTasks,
       ];
     }
-    if (partner && showsLeadForm(partner.status) && id) {
+    if (partner && effectiveStatus && showsLeadForm(effectiveStatus) && id) {
       const analysis = getLeadFormAnalysis(id);
       if (analysis) return getLeadFormTasksFromAnalysis(analysis);
     }
@@ -160,11 +165,15 @@ function getInsightsForPath(pathname: string): RecommendedTask[] {
   return onboardingPanel?.insights ?? [];
 }
 
-function shouldShowInsightsTab(pathname: string): boolean {
+function shouldShowInsightsTab(
+  pathname: string,
+  statusOverrides: Record<string, import("@/lib/mock-data/potential-partners").PartnerPipelineStatus>,
+): boolean {
   const partnerId = extractPartnerId(pathname);
   if (!partnerId) return false;
   const partner = getPotentialPartnerById(partnerId);
-  return Boolean(partner && showsOnboardingChecklist(partner.status));
+  const effectiveStatus = partner ? (statusOverrides[partnerId] ?? partner.status) : undefined;
+  return Boolean(partner && effectiveStatus && showsOnboardingChecklist(effectiveStatus));
 }
 
 function getPageForPath(pathname: string): BeaconPage {
@@ -270,12 +279,13 @@ function usePlanTasks(isOnPlanPage: boolean): RecommendedTask[] | null {
 function AppShellContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { showSubnav } = useSidebar();
+  const statusOverrides = usePartnerReviewStore((s) => s.statusOverrides);
   const isOnPlanPage = pathname.startsWith("/assortment/plan") || pathname.startsWith("/assortment/finalize");
   const dynamicPlanTasks = usePlanTasks(isOnPlanPage);
-  const staticTasks = getTasksForPath(pathname);
+  const staticTasks = getTasksForPath(pathname, statusOverrides);
   const tasks = dynamicPlanTasks ?? staticTasks;
   const insights = getInsightsForPath(pathname);
-  const showInsightsTab = shouldShowInsightsTab(pathname);
+  const showInsightsTab = shouldShowInsightsTab(pathname, statusOverrides);
   const page = getPageForPath(pathname);
 
   const mainOffset = showSubnav

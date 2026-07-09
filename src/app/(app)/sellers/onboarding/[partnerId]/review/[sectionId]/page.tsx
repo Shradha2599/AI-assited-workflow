@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { DocumentationReview } from "@/features/partner-onboarding/components/documentation-review";
 import { ProfileInformationReview } from "@/features/partner-onboarding/components/profile-information-review";
-import { getOnboardingBySellerID } from "@/lib/mock-data/onboarding";
+import { getOnboardingForPartner } from "@/lib/mock-data/onboarding";
 import { getPotentialPartnerById, showsOnboardingChecklist } from "@/lib/mock-data/potential-partners";
 
 interface SectionReviewPageProps {
@@ -19,10 +19,7 @@ export default async function SectionReviewPage({ params, searchParams }: Sectio
     notFound();
   }
 
-  const onboarding = getOnboardingBySellerID(partner.sellerId);
-  if (!onboarding) {
-    notFound();
-  }
+  const onboarding = getOnboardingForPartner(partner);
 
   if (sectionId === "profile") {
     const profileSection = onboarding.sections.find((s) => s.id === "profile");
@@ -30,7 +27,8 @@ export default async function SectionReviewPage({ params, searchParams }: Sectio
       task ??
       profileSection?.tasks.find((t) => t.issue || t.status === "in_progress")?.id ??
       profileSection?.tasks.find((t) => t.status === "complete")?.id ??
-      "t-101";
+      profileSection?.tasks[0]?.id ??
+      "";
 
     return (
       <ProfileInformationReview

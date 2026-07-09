@@ -4,6 +4,7 @@ import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { StatusTag } from "@/components/ui/status-tag";
 import {
   DrawerHeaderShell,
   DrawerPanel,
@@ -14,6 +15,7 @@ import {
   type PipelinePartner,
   type PartnerStage,
 } from "@/lib/mock-data/pipeline-partners";
+import { getOnboardingBySellerID } from "@/lib/mock-data/onboarding";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -126,9 +128,7 @@ function NewLeadBody({ partner }: { partner: PipelinePartner }) {
 }
 
 function OnboardingBody({ partner }: { partner: PipelinePartner }) {
-  const tasks = partner.tasks ?? [];
-  const completed = tasks.filter((t) => t.status === "completed").length;
-  const progress = tasks.length > 0 ? Math.round((completed / tasks.length) * 100) : 0;
+  const progress = getOnboardingBySellerID(partner.id).overallProgress;
   return (
     <div className="mt-3 space-y-2">
       <div className="flex items-center justify-between">
@@ -139,7 +139,7 @@ function OnboardingBody({ partner }: { partner: PipelinePartner }) {
           {progress}%
         </span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--color-muted)]">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--color-progress-track)]">
         <div
           className="h-full rounded-full bg-[var(--color-primary)] transition-all"
           style={{ width: `${progress}%` }}
@@ -158,9 +158,9 @@ function EstablishedBody({ partner }: { partner: PipelinePartner }) {
           <span className="font-medium text-[var(--color-foreground)]">{partner.joinedDate}</span>
         </p>
       )}
-      <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700">
+      <StatusTag className="bg-green-100 text-[10px] text-green-700">
         ✓ Live
-      </span>
+      </StatusTag>
     </div>
   );
 }

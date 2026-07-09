@@ -5,13 +5,13 @@ import {
   ChevronDown,
   Filter,
   Loader2,
-  Mail,
   Plus,
   Search,
   Sparkles,
   Trash2,
   X,
 } from "lucide-react";
+import { SvgIcon } from "@/components/ui/svg-icon";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -444,7 +444,7 @@ export function LeadDiscoveryView() {
                     SKUs
                   </th>
                   <th className="py-2.5 text-left text-[var(--text-label-size)] font-semibold text-[var(--color-muted-foreground)]">
-                    Viral/Trendy
+                    Viral
                   </th>
                   <th className="py-2.5 text-left text-[var(--text-label-size)] font-semibold text-[var(--color-muted-foreground)]">
                     Rating
@@ -524,9 +524,9 @@ export function LeadDiscoveryView() {
                                   sellerWebsite: seller.website,
                                 })
                               }
-                              className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+                              className="text-[var(--color-primary)] hover:opacity-80"
                             >
-                              <Mail className="h-4 w-4" />
+                              <SvgIcon name="mail" size={16} variant="primary" />
                             </button>
                             <button
                               type="button"

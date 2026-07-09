@@ -3,6 +3,7 @@
 import { Loader2, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { StatusTag } from "@/components/ui/status-tag";
 import { DrawerPanel } from "@/components/ui/drawer-panel";
 import { cn } from "@/lib/utils";
 import type { OutreachMailType } from "@/lib/mock-data/outreach-mail";
@@ -100,12 +101,12 @@ export function OutreachEmailDrawer() {
                         {partner.missingItems.length > 0 && (
                           <div className="mt-2 flex flex-wrap gap-1.5">
                             {partner.missingItems.map((item) => (
-                              <span
+                              <StatusTag
                                 key={item}
-                                className="rounded-full bg-[var(--color-muted)] px-2 py-0.5 text-[var(--text-label-size)] font-medium text-[var(--color-foreground)]"
+                                className="bg-[var(--color-muted)]"
                               >
                                 {item}
-                              </span>
+                              </StatusTag>
                             ))}
                           </div>
                         )}

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { StatusTag } from "@/components/ui/status-tag";
 
 export type GapOpportunityLevel = "high" | "medium" | "low";
 
@@ -30,14 +30,8 @@ export function GapOpportunityBadge({ value, className }: GapOpportunityBadgePro
   const style = GAP_OPPORTUNITY_STYLES[level];
 
   return (
-    <span
-      className={cn(
-        "inline-flex shrink-0 rounded-[var(--radius-full)] px-2 py-0.5 text-[var(--text-label-size)] font-medium",
-        className,
-      )}
-      style={{ backgroundColor: style.bg, color: style.text }}
-    >
+    <StatusTag className={className} style={{ backgroundColor: style.bg, color: style.text }}>
       {style.label}
-    </span>
+    </StatusTag>
   );
 }

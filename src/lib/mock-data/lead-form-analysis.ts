@@ -1,3 +1,6 @@
+import { getLeadFormByPartnerId } from "@/lib/mock-data/lead-forms";
+import { getPotentialPartnerById } from "@/lib/mock-data/potential-partners";
+
 export type ValidationStatus = "valid" | "invalid" | "partial" | "unverified";
 
 export interface FieldValidation {
@@ -36,6 +39,15 @@ export interface LeadFormAnalysis {
   risks: string[];
   sections: SectionValidation[];
   marketplaces: MarketplaceValidation[];
+  businessInfo?: {
+    partnerType: string;
+    website: string;
+    address: string;
+    founded: string;
+  };
+  socialPlatforms?: { platform: string; posts: number; followers: number }[];
+  legalRisks?: { label: string; status: ValidationStatus; detail: string }[];
+  rating?: number;
 }
 
 function statusLabel(status: ValidationStatus): string {
@@ -463,17 +475,111 @@ export const leadFormAnalyses: Record<string, LeadFormAnalysis> = {
 };
 
 export function getLeadFormAnalysis(partnerId: string): LeadFormAnalysis | undefined {
-  return leadFormAnalyses[partnerId];
+  if (leadFormAnalyses[partnerId]) return leadFormAnalyses[partnerId];
+  return buildDefaultLeadFormAnalysis(partnerId);
 }
 
+function buildDefaultLeadFormAnalysis(partnerId: string): LeadFormAnalysis | undefined {
+  const partner = getPotentialPartnerById(partnerId);
+  const form = getLeadFormByPartnerId(partnerId);
+  if (!partner || !form) return undefined;
+
+  const recommendation =
+    partner.confidenceScore >= 8.5
+      ? "accept"
+      : partner.confidenceScore >= 7
+        ? "future_interest"
+        : "reject";
+
+  const recommendationTitle =
+    recommendation === "accept"
+      ? `Accept ${partner.legalBusinessName}`
+      : recommendation === "reject"
+        ? `Reject ${partner.legalBusinessName}`
+        : `Future Interest — ${partner.legalBusinessName}`;
+
+  return {
+    partnerId,
+    recommendationTitle,
+    summary: `${partner.legalBusinessName} shows a ${partner.confidenceScore.toFixed(1)}/10 confidence score with validated business identity, marketplace presence, and lead form data.`,
+    confidenceScore: partner.confidenceScore,
+    recommendation,
+    checkedOn: partner.createdOn.replace("Jan ", "Jan ").replace(", 2026", ", 2026"),
+    strengths: [
+      "Business registry and submitted identity fields align",
+      "Marketplace footprint supports category expansion",
+      "Lead form documentation passes automated validation",
+    ],
+    risks:
+      recommendation === "reject"
+        ? ["Operational readiness gaps identified", "Assortment depth below category benchmark"]
+        : recommendation === "future_interest"
+          ? ["Timing does not align with active category priorities"]
+          : ["Limited third-party review volume on newer SKUs"],
+    sections: form
+      ? [
+          {
+            id: "business-identity",
+            title: "Business Identity",
+            status: "valid",
+            checkedOn: partner.createdOn,
+            fields: [
+              { label: "EIN", submittedValue: form.businessIdentity.ein, status: "valid", source: "IRS Business Registry", detail: "Tax ID format valid and active" },
+              { label: "DUNS", submittedValue: form.businessIdentity.duns, status: "valid", source: "D&B Database", detail: "DUNS record matches legal business name" },
+            ],
+          },
+        ]
+      : [],
+    marketplaces: [
+      { name: "Amazon", skus: partner.skus, rating: 4.1, status: "valid", source: "Amazon Catalog API", detail: "Active seller account with consistent ratings" },
+      { name: "Walmart", skus: Math.round(partner.skus * 0.6), rating: 3.9, status: "partial", source: "Walmart Marketplace API", detail: "Catalog present with moderate review volume" },
+    ],
+    businessInfo: {
+      partnerType: form.businessIdentity.businessType,
+      website: form.businessIdentity.website,
+      address: `${form.businessAddress.line1}, ${form.businessAddress.city}, ${form.businessAddress.state} ${form.businessAddress.zip}`,
+      founded: "2010",
+    },
+    socialPlatforms: form.linkedProfiles.map((profile, index) => ({
+      platform: profile.platform,
+      posts: 120 + index * 45,
+      followers: 2400 + index * 1800,
+    })),
+    legalRisks: [
+      { label: "Legal Issues", status: "valid", detail: "No evidence of active lawsuits or regulatory actions found." },
+      { label: "Negative Press/PR", status: "valid", detail: "No negative news coverage identified in the last 24 months." },
+      { label: "Customer Feedback", status: "valid", detail: "Customer service rankings are stable across marketplaces." },
+    ],
+    rating: 3.8 + (partner.confidenceScore % 10) * 0.05,
+  };
+}
+
+const RECOMMENDATION_TASK_HINT: Record<LeadFormAnalysis["recommendation"], string> = {
+  accept: "Beacon recommends accepting this lead and moving the partner into onboarding.",
+  reject: "Beacon recommends rejecting this lead based on validation and risk signals.",
+  future_interest: "Beacon recommends marking this partner as future interest for later review.",
+};
+
+const LEAD_DECISION_ACTION: Record<
+  LeadFormAnalysis["recommendation"],
+  { label: string; decision: "accept" | "reject" | "future_interest" }
+> = {
+  accept: { label: "Accept Lead →", decision: "accept" },
+  reject: { label: "Reject Lead →", decision: "reject" },
+  future_interest: { label: "Mark Future Interest →", decision: "future_interest" },
+};
+
 export function getLeadFormTasksFromAnalysis(analysis: LeadFormAnalysis) {
+  const decisionAction = LEAD_DECISION_ACTION[analysis.recommendation];
   return [
     {
       id: `insight-${analysis.partnerId}`,
       title: analysis.recommendationTitle,
-      description: `${analysis.summary} Checked on ${analysis.checkedOn}.`,
+      description: `${RECOMMENDATION_TASK_HINT[analysis.recommendation]} ${analysis.summary} Checked on ${analysis.checkedOn}.`,
       actionLabel: "View Analysis →",
       actionType: "open_analysis" as const,
+      secondaryActionLabel: decisionAction.label,
+      leadDecision: decisionAction.decision,
       partnerId: analysis.partnerId,
       score: analysis.confidenceScore,
     },

@@ -39,7 +39,7 @@ export function DrawerPanel({
       <button
         type="button"
         className={cn(
-          "fixed inset-0 z-[var(--z-drawer)] transition-opacity duration-300 ease-out",
+          "fixed inset-0 z-[var(--z-drawer)] h-dvh min-h-screen w-full transition-opacity duration-300 ease-out",
           visible ? "opacity-100" : "opacity-0",
         )}
         style={{ backgroundColor: "var(--color-drawer-overlay)" }}
@@ -48,7 +48,7 @@ export function DrawerPanel({
       />
       <aside
         className={cn(
-          "fixed inset-y-0 right-0 z-[calc(var(--z-drawer)+1)] flex flex-col bg-[var(--color-card)] shadow-[var(--shadow-drawer)] transition-transform duration-300 ease-out",
+          "fixed top-0 right-0 bottom-0 z-[calc(var(--z-drawer)+1)] flex h-dvh min-h-screen flex-col bg-[var(--color-card)] shadow-[var(--shadow-drawer)] transition-transform duration-300 ease-out",
           widthClassName,
           visible ? "translate-x-0" : "translate-x-full",
           className,

@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { StatusTag } from "@/components/ui/status-tag";
 import { cn } from "@/lib/utils";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import {
@@ -131,12 +132,12 @@ export function DocumentationReview({
 
           <div className="min-w-0 flex-1 p-6">
             <div className="mb-4 flex items-center gap-2">
-              <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[var(--text-label-size)] font-medium text-amber-700">
+              <StatusTag className="bg-amber-100 text-amber-700">
                 Review
-              </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-success-light)] px-2.5 py-0.5 text-[var(--text-label-size)] font-medium text-[var(--color-success)]">
+              </StatusTag>
+              <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] text-[var(--color-success)]">
                 <Check className="h-3 w-3" /> Auto Validated
-              </span>
+              </StatusTag>
             </div>
 
             {activeSubSection === "brands" &&
@@ -266,16 +267,15 @@ export function DocumentationReview({
                               </span>
                             </td>
                             <td className="px-4 py-3">
-                              <span
-                                className={cn(
-                                  "rounded-full px-2 py-0.5 text-[var(--text-label-size)] font-semibold",
+                              <StatusTag
+                                className={
                                   brand.validationStatus === "valid"
                                     ? "bg-[var(--color-success-light)] text-[var(--color-success)]"
-                                    : "bg-[var(--color-error-light)] text-[var(--color-error)]",
-                                )}
+                                    : "bg-[var(--color-error-light)] text-[var(--color-error)]"
+                                }
                               >
                                 {statusLabel(brand.validationStatus)}
-                              </span>
+                              </StatusTag>
                             </td>
                             <td className="px-4 py-3">
                               <div className="flex gap-1">

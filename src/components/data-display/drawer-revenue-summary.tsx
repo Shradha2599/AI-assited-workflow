@@ -50,7 +50,7 @@ export function DrawerRevenueSummary({
             {revenuePlannedPercent}%
           </span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-[var(--color-muted)]">
+        <div className="h-2 overflow-hidden rounded-full bg-[var(--color-progress-track)]">
           <div
             className="h-full rounded-full bg-[var(--color-primary)] transition-all"
             style={{ width: `${revenuePlannedPercent}%` }}

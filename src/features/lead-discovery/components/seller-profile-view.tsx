@@ -167,7 +167,7 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
                 </Button>
               )}
               <Button variant="outline" size="sm" className="gap-1.5" onClick={openAcquisitionMail}>
-                <SvgIcon name="mail" size={14} /> Send Email
+                <SvgIcon name="mail" size={14} variant="primary" /> Send Email
               </Button>
               <Button
                 variant="ghost"
@@ -182,7 +182,7 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
         </div>
       </RegisterPageHeader>
 
-      <div className="mb-[var(--space-4)] grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="mb-[var(--space-4)] flex flex-wrap gap-[var(--space-6)]">
         {[
           { label: "Avg. Annual GMV", value: formatCurrency(seller.gmv) },
           { label: "Categories", value: categoriesLabel },

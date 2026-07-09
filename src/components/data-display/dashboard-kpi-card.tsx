@@ -74,7 +74,7 @@ export function KpiMetric({
         {showBadge && (
           <span
             className={cn(
-              "inline-flex shrink-0 items-center gap-0.5 rounded-[var(--radius-sm)] px-1.5 py-0.5 text-[var(--text-caption-size)] font-semibold",
+              "inline-flex shrink-0 items-center gap-0.5 rounded-[var(--radius-sm)] px-1.5 py-0.5 text-[var(--text-caption-size)] font-normal",
               badgeCls,
             )}
           >

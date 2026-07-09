@@ -9,6 +9,7 @@ import {
   type OutreachMailType,
   type OutreachPartnerContext,
 } from "@/lib/mock-data/outreach-mail";
+import { useDiscoveryStore } from "@/features/lead-discovery/store/discovery-store";
 import { useToastStore } from "@/stores/toast-store";
 
 interface OpenDrawerOptions {
@@ -26,6 +27,8 @@ interface OutreachStore {
   multiPartner: boolean;
   partners: OutreachPartnerContext[];
   selectedPartnerId: string | null;
+  /** Seller id when outreach is opened from lead discovery */
+  activeSellerId: string | null;
   draft: EmailDraft | null;
   isGenerating: boolean;
 
@@ -43,6 +46,7 @@ export const useOutreachStore = create<OutreachStore>((set, get) => ({
   multiPartner: false,
   partners: [],
   selectedPartnerId: null,
+  activeSellerId: null,
   draft: null,
   isGenerating: false,
 
@@ -72,6 +76,7 @@ export const useOutreachStore = create<OutreachStore>((set, get) => ({
       multiPartner,
       partners,
       selectedPartnerId,
+      activeSellerId: opts.sellerId ?? null,
       draft: null,
       isGenerating: false,
     });
@@ -83,6 +88,7 @@ export const useOutreachStore = create<OutreachStore>((set, get) => ({
       draft: null,
       isGenerating: false,
       selectedPartnerId: null,
+      activeSellerId: null,
       partners: [],
     }),
 
@@ -111,7 +117,10 @@ export const useOutreachStore = create<OutreachStore>((set, get) => ({
     })),
 
   sendMail: () => {
-    const { draft } = get();
+    const { draft, mailType, activeSellerId } = get();
+    if (mailType === "acquisition_outreach" && activeSellerId) {
+      useDiscoveryStore.getState().shortlistSeller(activeSellerId);
+    }
     get().closeDrawer();
     useToastStore.getState().showToast({
       title: "Mail sent",

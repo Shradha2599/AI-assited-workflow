@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { StatusTag } from "@/components/ui/status-tag";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { PipelineStageDrawer } from "./pipeline-stage-drawer";
@@ -287,12 +288,12 @@ export function PipelineHeatmap({
               {(() => {
                 const h = cellHealth(hover.value);
                 return (
-                  <span
-                    className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                  <StatusTag
+                    className="text-[10px]"
                     style={{ backgroundColor: h.bg, color: BADGE_TEXT }}
                   >
                     {h.label}
-                  </span>
+                  </StatusTag>
                 );
               })()}
             </div>

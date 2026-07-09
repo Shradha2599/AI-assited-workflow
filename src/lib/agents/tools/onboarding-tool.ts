@@ -1,6 +1,10 @@
 import { tool } from "ai";
 import { z } from "zod";
-import { getOnboardingBySellerID, onboardingPartners, getBlockedOnboardingTasks } from "@/lib/mock-data/onboarding";
+import {
+  getAllOnboardingProfiles,
+  getBlockedOnboardingTasks,
+  getOnboardingBySellerID,
+} from "@/lib/mock-data/onboarding";
 
 export const onboardingTool = tool({
   description:
@@ -14,7 +18,6 @@ export const onboardingTool = tool({
       case "partner_status": {
         if (!sellerId) return { error: "sellerId is required for partner_status" };
         const partner = getOnboardingBySellerID(sellerId);
-        if (!partner) return { error: `No onboarding record for seller: ${sellerId}` };
 
         return {
           sellerName: partner.sellerName,
@@ -37,7 +40,6 @@ export const onboardingTool = tool({
         const blocked = getBlockedOnboardingTasks();
         if (sellerId) {
           const partner = getOnboardingBySellerID(sellerId);
-          if (!partner) return { error: `No onboarding record for seller: ${sellerId}` };
           const partnerBlocked = partner.sections
             .flatMap((s) => s.tasks)
             .filter((t) => t.issue || t.status === "blocked");
@@ -63,10 +65,11 @@ export const onboardingTool = tool({
         };
       }
 
-      case "pipeline_overview":
+      case "pipeline_overview": {
+        const profiles = getAllOnboardingProfiles();
         return {
-          totalInOnboarding: onboardingPartners.length,
-          partners: onboardingPartners.map((p) => ({
+          totalInOnboarding: profiles.length,
+          partners: profiles.map((p) => ({
             name: p.sellerName,
             progress: p.overallProgress,
             targetLaunchDate: p.targetLaunchDate,
@@ -75,11 +78,11 @@ export const onboardingTool = tool({
             hasBlockers: p.sections.some((s) => s.tasks.some((t) => t.issue || t.status === "blocked")),
           })),
         };
+      }
 
       case "next_steps": {
         if (!sellerId) return { error: "sellerId is required for next_steps" };
         const partner = getOnboardingBySellerID(sellerId);
-        if (!partner) return { error: `No onboarding record for seller: ${sellerId}` };
 
         const pendingTasks = partner.sections.flatMap((s) =>
           s.tasks

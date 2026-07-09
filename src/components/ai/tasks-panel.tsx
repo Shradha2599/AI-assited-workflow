@@ -10,10 +10,12 @@ import { useGapDrawerStore } from "@/features/assortment-gap/store/gap-drawer-st
 import { Button } from "@/components/ui/button";
 
 import { SvgIcon } from "@/components/ui/svg-icon";
+import { StatusTag } from "@/components/ui/status-tag";
 import { useOnboardingReviewStore } from "@/features/partner-onboarding/store/onboarding-review-store";
 import { useOutreachStore } from "@/features/outreach/store/outreach-store";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { usePartnerReviewStore } from "@/features/partner-onboarding/store/partner-review-store";
+import { getPotentialPartnerById } from "@/lib/mock-data/potential-partners";
 import { statusLabel } from "@/lib/mock-data/lead-form-analysis";
 import { cn } from "@/lib/utils";
 import type { BeaconPage } from "@/lib/agents/system-prompt";
@@ -24,7 +26,9 @@ export interface RecommendedTask {
   description: string;
   actionLabel: string;
   actionHref?: string;
-  actionType?: "open_analysis" | "open_onboarding_comment" | "approve_onboarding" | "navigate_review" | "open_outreach" | "open_finalize_drawer";
+  actionType?: "open_analysis" | "open_onboarding_comment" | "approve_onboarding" | "navigate_review" | "open_outreach" | "open_finalize_drawer" | "lead_decision";
+  secondaryActionLabel?: string;
+  leadDecision?: "accept" | "reject" | "future_interest";
   partnerId?: string;
   score?: number;
   sellerId?: string;
@@ -124,24 +128,14 @@ function OnboardingTaskCard({
             <h3 className="text-[var(--text-body-size)] font-medium leading-snug">{task.title}</h3>
             <div className="flex shrink-0 items-center gap-2">
               {task.validationStatus && (
-                <span
-                  className={cn(
-                    "rounded-full px-2 py-0.5 text-[var(--text-label-size)] font-semibold",
-                    validationBadgeClass(task.validationStatus),
-                  )}
-                >
+                <StatusTag className={validationBadgeClass(task.validationStatus)}>
                   {statusLabel(task.validationStatus)}
-                </span>
+                </StatusTag>
               )}
               {task.score != null && (
-                <span
-                  className={cn(
-                    "rounded-full px-2 py-0.5 text-[var(--text-label-size)] font-semibold text-white",
-                    scoreBadgeColor(task.score),
-                  )}
-                >
+                <StatusTag className={cn("text-white", scoreBadgeColor(task.score))}>
                   {task.score.toFixed(1)}/10
-                </span>
+                </StatusTag>
               )}
               {task.sectionId && (
                 <Link
@@ -194,9 +188,11 @@ function OnboardingTaskCard({
 function StandardTaskCard({
   task,
   onAction,
+  onSecondaryAction,
 }: {
   task: RecommendedTask;
   onAction: (task: RecommendedTask) => void;
+  onSecondaryAction?: (task: RecommendedTask) => void;
 }) {
   return (
     <article className="rounded-[var(--radius-lg)] bg-[var(--color-task-card)] p-[var(--space-4)]">
@@ -209,14 +205,9 @@ function StandardTaskCard({
             </h3>
             <div className="flex shrink-0 items-center gap-2">
               {task.score != null && (
-                <span
-                  className={cn(
-                    "rounded-full px-2 py-0.5 text-[var(--text-label-size)] font-semibold text-white",
-                    scoreBadgeColor(task.score),
-                  )}
-                >
+                <StatusTag className={cn("text-white", scoreBadgeColor(task.score))}>
                   {task.score.toFixed(1)}/10
-                </span>
+                </StatusTag>
               )}
               <button type="button" className="text-[var(--color-muted-foreground)]" aria-label="More options">
                 <SvgIcon name="menuAction" size={16} />
@@ -234,15 +225,26 @@ function StandardTaskCard({
               </Link>
             </Button>
           ) : (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="mt-2 h-auto px-0 py-0"
-              onClick={() => onAction(task)}
-            >
-              {task.actionLabel}
-              <ArrowRight className="h-3 w-3" />
-            </Button>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-auto px-0 py-0"
+                onClick={() => onAction(task)}
+              >
+                {task.actionLabel}
+                <ArrowRight className="h-3 w-3" />
+              </Button>
+              {task.secondaryActionLabel && task.leadDecision && onSecondaryAction && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onSecondaryAction(task)}
+                >
+                  {task.secondaryActionLabel}
+                </Button>
+              )}
+            </div>
           )}
         </div>
       </div>
@@ -461,6 +463,7 @@ export function TasksPanel({
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const openAnalysis = usePartnerReviewStore((s) => s.openAnalysis);
+  const setPartnerDecision = usePartnerReviewStore((s) => s.setPartnerDecision);
   const openComments = useOnboardingReviewStore((s) => s.openComments);
   const approveItem = useOnboardingReviewStore((s) => s.approveItem);
   const isApproved = useOnboardingReviewStore((s) => s.isApproved);
@@ -506,6 +509,16 @@ export function TasksPanel({
     }
     if (task.actionType === "open_finalize_drawer") {
       openFinalizeDrawer();
+    }
+  }
+
+  function handleTaskSecondaryAction(task: RecommendedTask) {
+    if (task.actionType === "lead_decision" || task.leadDecision) {
+      if (!task.partnerId || !task.leadDecision) return;
+      const partner = getPotentialPartnerById(task.partnerId);
+      if (partner) {
+        setPartnerDecision(partner.id, partner.legalBusinessName, task.leadDecision);
+      }
     }
   }
 
@@ -625,7 +638,12 @@ export function TasksPanel({
                       approved={task.reviewTaskId ? isApproved(task.reviewTaskId) : false}
                     />
                   ) : (
-                    <StandardTaskCard key={task.id} task={task} onAction={handleTaskAction} />
+                    <StandardTaskCard
+                      key={task.id}
+                      task={task}
+                      onAction={handleTaskAction}
+                      onSecondaryAction={handleTaskSecondaryAction}
+                    />
                   ),
                 )
               )}

@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { StatusTag } from "@/components/ui/status-tag";
 import { cn } from "@/lib/utils";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import {
@@ -152,7 +153,8 @@ export function ProfileInformationReview({
 
   if (!profileSection || !sectionMeta) return null;
 
-  const isBrandProfile = activeEval?.taskId === "t-101" || activeEval?.taskId === "t-001";
+  const brandProfileTaskId = profileSection.tasks.find((t) => t.title === "Brand profile")?.id;
+  const isBrandProfile = activeEval?.taskId === brandProfileTaskId;
 
   return (
     <div className="space-y-[var(--space-4)]">
@@ -201,13 +203,13 @@ export function ProfileInformationReview({
             {isBrandProfile && activeEval ? (
               <>
                 <div className="mb-4 flex items-center gap-2">
-                  <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-[var(--text-label-size)] font-medium text-purple-700">
+                  <StatusTag className="bg-purple-100 text-purple-700">
                     Read Only
-                  </span>
+                  </StatusTag>
                   {activeEval.autoValidated && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-success-light)] px-2.5 py-0.5 text-[var(--text-label-size)] font-medium text-[var(--color-success)]">
+                    <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] text-[var(--color-success)]">
                       <Check className="h-3 w-3" /> Auto Validated
-                    </span>
+                    </StatusTag>
                   )}
                 </div>
 
@@ -289,9 +291,9 @@ export function ProfileInformationReview({
                         <FileImage className="h-4 w-4 text-red-600" />
                         <span className="text-[var(--text-caption-size)]">Cover.png (640×360)</span>
                         {activeEval.validationStatus === "invalid" && (
-                          <span className="rounded-full bg-[var(--color-error-light)] px-2 py-0.5 text-[var(--text-label-size)] font-semibold text-[var(--color-error)]">
+                          <StatusTag className="bg-[var(--color-error-light)] text-[var(--color-error)]">
                             {statusLabel("invalid")}
-                          </span>
+                          </StatusTag>
                         )}
                       </div>
                     </div>

@@ -240,7 +240,7 @@ export function RevenueGoalPanel({
                   {displayPercent}%
                 </span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-[var(--color-muted)]">
+              <div className="h-2 overflow-hidden rounded-full bg-[var(--color-progress-track)]">
                 <div
                   className="h-full rounded-full bg-[var(--color-primary)] transition-all duration-500"
                   style={{ width: `${displayPercent}%` }}

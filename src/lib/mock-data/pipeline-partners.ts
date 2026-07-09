@@ -8,7 +8,13 @@
  *  - Beacon system prompt (accurate partner counts)
  */
 
-export type TaskStatus = "completed" | "in_progress" | "in_review" | "locked" | "error";
+export type TaskStatus =
+  | "validated"
+  | "completed"
+  | "in_progress"
+  | "in_review"
+  | "locked"
+  | "error";
 
 export type PartnerStage =
   | "Established"
@@ -396,6 +402,13 @@ export function cellCount(stage: PartnerStage, colLabel: string): number {
 /** All partners currently in Onboarding stage */
 export function getOnboardingPartners(): PipelinePartner[] {
   return ALL_PARTNERS.filter((p) => p.stage === "Onboarding");
+}
+
+/** Partners shown on the Partner Onboarding page (matches pipeline funnel rows) */
+export function getPartnerOnboardingPagePartners(): PipelinePartner[] {
+  return ALL_PARTNERS.filter(
+    (p) => p.stage === "Onboarding" || p.stage === "New Lead" || p.stage === "Contacted",
+  );
 }
 
 /** Summary counts per stage (for Beacon system prompt) */

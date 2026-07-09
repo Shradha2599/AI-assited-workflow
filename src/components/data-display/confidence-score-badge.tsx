@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
+import { StatusTag } from "@/components/ui/status-tag";
 import {
   CONFIDENCE_BADGE_TEXT,
   getConfidenceBadgeStyle,
-  getConfidenceProfileBadgeClass,
 } from "@/lib/utils/confidence-badge";
 
 interface ConfidenceScoreBadgeProps {
@@ -17,30 +17,25 @@ export function ConfidenceScoreBadge({
   variant = "table",
   className,
 }: ConfidenceScoreBadgeProps) {
+  const { bg } = getConfidenceBadgeStyle(score);
+
   if (variant === "profile") {
     return (
-      <span
-        className={cn(
-          "inline-flex items-center rounded-full px-3 py-1 text-[var(--text-caption-size)] font-semibold tabular-nums",
-          getConfidenceProfileBadgeClass(score),
-          className,
-        )}
+      <StatusTag
+        className={cn("rounded px-2 tabular-nums", className)}
+        style={{ backgroundColor: bg, color: CONFIDENCE_BADGE_TEXT }}
       >
         {score.toFixed(1)}/10
-      </span>
+      </StatusTag>
     );
   }
 
-  const { bg } = getConfidenceBadgeStyle(score);
   return (
-    <span
-      className={cn(
-        "inline-flex min-w-[36px] items-center justify-center rounded px-2 py-0.5 text-[var(--text-caption-size)] font-semibold tabular-nums",
-        className,
-      )}
+    <StatusTag
+      className={cn("min-w-[36px] justify-center rounded tabular-nums", className)}
       style={{ backgroundColor: bg, color: CONFIDENCE_BADGE_TEXT }}
     >
       {score.toFixed(1)}
-    </span>
+    </StatusTag>
   );
 }

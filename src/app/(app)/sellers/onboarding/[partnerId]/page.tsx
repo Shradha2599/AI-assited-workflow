@@ -1,9 +1,8 @@
 import { notFound } from "next/navigation";
 
-import { LeadFormView } from "@/features/partner-onboarding/components/lead-form-view";
-import { OnboardingChecklistView } from "@/features/partner-onboarding/components/onboarding-checklist-view";
+import { PartnerProfileShell } from "@/features/partner-onboarding/components/partner-profile-shell";
 import { getLeadFormByPartnerId } from "@/lib/mock-data/lead-forms";
-import { getOnboardingBySellerID } from "@/lib/mock-data/onboarding";
+import { getOnboardingForPartner } from "@/lib/mock-data/onboarding";
 import {
   getPotentialPartnerById,
   showsLeadForm,
@@ -22,21 +21,20 @@ export default async function PartnerProfilePage({ params }: PartnerProfilePageP
     notFound();
   }
 
-  if (showsOnboardingChecklist(partner.status)) {
-    const onboarding = getOnboardingBySellerID(partner.sellerId);
-    if (!onboarding) {
-      notFound();
-    }
-    return <OnboardingChecklistView partner={partner} onboarding={onboarding} />;
+  const form = getLeadFormByPartnerId(partner.id);
+  const onboarding = showsOnboardingChecklist(partner.status)
+    ? getOnboardingForPartner(partner)
+    : undefined;
+
+  if (showsLeadForm(partner.status) && !form) {
+    notFound();
   }
 
-  if (showsLeadForm(partner.status)) {
-    const form = getLeadFormByPartnerId(partner.id);
-    if (!form) {
-      notFound();
-    }
-    return <LeadFormView partner={partner} form={form} />;
-  }
-
-  notFound();
+  return (
+    <PartnerProfileShell
+      partner={partner}
+      form={form ?? undefined}
+      onboarding={onboarding ?? undefined}
+    />
+  );
 }
