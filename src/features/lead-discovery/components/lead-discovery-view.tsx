@@ -115,12 +115,20 @@ export function LeadDiscoveryView() {
       });
       if (!res.ok) throw new Error("Discovery failed");
       const { rankedSellers } = (await res.json()) as {
-        rankedSellers: { sellerId: string; relevanceReason: string }[];
+        rankedSellers: {
+          sellerId: string;
+          relevanceReason: string;
+          planMatch?: string[];
+        }[];
       };
       const ids = rankedSellers.map((s) => s.sellerId);
       const reasons: Record<string, string> = {};
-      for (const s of rankedSellers) reasons[s.sellerId] = s.relevanceReason;
-      setDiscovered(ids, reasons);
+      const planMatches: Record<string, string[]> = {};
+      for (const s of rankedSellers) {
+        reasons[s.sellerId] = s.relevanceReason;
+        if (s.planMatch?.length) planMatches[s.sellerId] = s.planMatch;
+      }
+      setDiscovered(ids, reasons, planMatches);
       setActiveTab("discovered");
       setShowFilters(false);
     } catch {

@@ -34,11 +34,17 @@ interface DiscoveryStore {
   discoveredIds: string[];
   shortlistedIds: string[];
   relevanceReasons: Record<string, string>;
+  /** Item types from the assortment plan that each seller can supply (from discovery agent) */
+  planMatches: Record<string, string[]>;
   verifications: Record<string, VerificationResult>;
   isDiscovering: boolean;
   verifyingId: string | null;
   activeFilters: DiscoveryFilters;
-  setDiscovered: (ids: string[], reasons: Record<string, string>) => void;
+  setDiscovered: (
+    ids: string[],
+    reasons: Record<string, string>,
+    planMatches?: Record<string, string[]>,
+  ) => void;
   shortlistSeller: (id: string) => void;
   removeFromShortlist: (id: string) => void;
   setVerification: (id: string, result: VerificationResult) => void;
@@ -62,12 +68,13 @@ export const useDiscoveryStore = create<DiscoveryStore>()(
       discoveredIds: [],
       shortlistedIds: [],
       relevanceReasons: {},
+      planMatches: {},
       verifications: {},
       isDiscovering: false,
       verifyingId: null,
       activeFilters: DEFAULT_FILTERS,
-      setDiscovered: (ids, reasons) =>
-        set({ discoveredIds: ids, relevanceReasons: reasons }),
+      setDiscovered: (ids, reasons, planMatches = {}) =>
+        set({ discoveredIds: ids, relevanceReasons: reasons, planMatches }),
       shortlistSeller: (id) =>
         set((state) => ({
           shortlistedIds: state.shortlistedIds.includes(id)

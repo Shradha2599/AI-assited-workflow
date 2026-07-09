@@ -22,8 +22,8 @@ import { SvgIcon } from "@/components/ui/svg-icon";
 import { useOutreachMail } from "@/features/outreach/hooks/use-outreach-mail";
 import { cn } from "@/lib/utils";
 import type { Seller } from "@/lib/mock-data/sellers";
-import { getSellerMatchingItemTypes } from "@/lib/mock-data/seller-matching-items";
 import { getSellerProfileDetails } from "@/lib/mock-data/seller-profile-details";
+import { useSellerMatchingPlanItems } from "../hooks/use-seller-matching-plan-items";
 import {
   useDiscoveryStore,
   type VerificationResult,
@@ -90,7 +90,7 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
     });
 
   const details = getSellerProfileDetails(seller);
-  const matchingItems = getSellerMatchingItemTypes(seller);
+  const matchingItems = useSellerMatchingPlanItems(seller);
   const cached = verifications[seller.id];
   const isShortlisted = shortlistedIds.includes(seller.id);
 
@@ -148,11 +148,11 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
             </ol>
           </nav>
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-blue-600 text-lg font-bold text-white">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
                 {initials}
               </div>
-              <h1 className="text-[var(--text-headline-xl-size)] font-bold leading-[var(--text-headline-xl-line-height)]">
+              <h1 className="text-[21px] font-bold leading-tight">
                 {seller.legalBusinessName}
               </h1>
             </div>
@@ -182,56 +182,52 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
         </div>
       </RegisterPageHeader>
 
-      <Card className="overflow-hidden">
-        <div className="px-6 py-5">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {[
-              { label: "Avg. Annual GMV", value: formatCurrency(seller.gmv) },
-              { label: "Categories", value: categoriesLabel },
-              { label: "SKUs", value: seller.skus.toLocaleString() },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
-                  {stat.label}
-                </p>
-                <p className="mt-0.5 text-[var(--text-body-size)] font-semibold">{stat.value}</p>
-              </div>
-            ))}
-            <div>
-              <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
-                Confidence Score
-              </p>
-              <div className="mt-1">
-                <ConfidenceScoreBadge score={seller.confidenceScore} variant="profile" />
-              </div>
-            </div>
+      <div className="mb-[var(--space-4)] grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {[
+          { label: "Avg. Annual GMV", value: formatCurrency(seller.gmv) },
+          { label: "Categories", value: categoriesLabel },
+          { label: "SKUs", value: seller.skus.toLocaleString() },
+        ].map((stat) => (
+          <div key={stat.label}>
+            <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
+              {stat.label}
+            </p>
+            <p className="mt-0.5 text-[var(--text-body-size)] font-semibold">{stat.value}</p>
           </div>
-
-          <div className="mt-5 flex rounded-[var(--radius-md)] border border-[var(--color-border)] p-0.5">
-            {(
-              [
-                { id: "overview" as const, label: "Overview" },
-                { id: "contacts" as const, label: "Contacts" },
-                { id: "products" as const, label: "Products & Categories" },
-              ] as const
-            ).map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  "rounded-[var(--radius-sm)] px-4 py-1.5 text-[var(--text-caption-size)] font-medium transition-colors",
-                  activeTab === tab.id
-                    ? "bg-[var(--color-foreground)] text-[var(--color-background)]"
-                    : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
-                )}
-              >
-                {tab.label}
-              </button>
-            ))}
+        ))}
+        <div>
+          <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
+            Confidence Score
+          </p>
+          <div className="mt-1">
+            <ConfidenceScoreBadge score={seller.confidenceScore} variant="profile" />
           </div>
         </div>
-      </Card>
+      </div>
+
+      <div className="mb-[var(--space-4)] flex w-fit rounded-[var(--radius-md)] border border-[var(--color-border)] p-0.5">
+        {(
+          [
+            { id: "overview" as const, label: "Overview" },
+            { id: "contacts" as const, label: "Contacts" },
+            { id: "products" as const, label: "Products & Categories" },
+          ] as const
+        ).map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "rounded-[var(--radius-sm)] px-4 py-1.5 text-[var(--text-caption-size)] font-medium transition-colors",
+              activeTab === tab.id
+                ? "bg-[var(--color-foreground)] text-[var(--color-background)]"
+                : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
       {activeTab === "overview" && (
         <div className="grid gap-[var(--space-4)] lg:grid-cols-3">

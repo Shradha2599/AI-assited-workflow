@@ -32,15 +32,9 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
-const TASK_STATUS_STYLES: Record<string, { label: string; cls: string }> = {
-  completed:  { label: "Completed",   cls: "bg-green-100 text-green-700" },
-  in_progress:{ label: "In Progress", cls: "bg-blue-100 text-blue-700" },
-  in_review:  { label: "In Review",   cls: "bg-amber-100 text-amber-700" },
-  locked:     { label: "Locked",      cls: "bg-gray-100 text-gray-400" },
-  error:      { label: "Needs Redo",  cls: "bg-red-100 text-red-700" },
-};
+const PIPELINE_CARD_BG = "#fafbfc";
 
-// ── GMV + health ──────────────────────────────────────────────────────────────
+// ── Avatar ────────────────────────────────────────────────────────────────────
 
 const AVG_GMV_PER_SELLER: Record<string, number> = {
   Established: 3_400_000,
@@ -151,19 +145,6 @@ function OnboardingBody({ partner }: { partner: PipelinePartner }) {
           style={{ width: `${progress}%` }}
         />
       </div>
-      <div className="space-y-1 pt-1">
-        {tasks.map((task) => {
-          const s = TASK_STATUS_STYLES[task.status] ?? TASK_STATUS_STYLES.locked;
-          return (
-            <div key={task.id} className="flex items-center justify-between gap-2">
-              <span className="truncate text-[10px] text-[var(--color-foreground)]">{task.name}</span>
-              <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-semibold ${s.cls}`}>
-                {s.label}
-              </span>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 }
@@ -188,7 +169,10 @@ function EstablishedBody({ partner }: { partner: PipelinePartner }) {
 
 function PartnerCard({ partner, stage }: { partner: PipelinePartner; stage: PartnerStage }) {
   return (
-    <div className="flex gap-3 rounded-[var(--radius-lg)] bg-[var(--color-task-card)] px-[var(--space-4)] py-[var(--space-4)]">
+    <div
+      className="flex gap-3 rounded-[var(--radius-lg)] px-[var(--space-4)] py-[var(--space-4)]"
+      style={{ backgroundColor: PIPELINE_CARD_BG }}
+    >
       <Avatar name={partner.name} />
       <div className="min-w-0 flex-1">
         {/* Row 1: name · GMV + link */}
@@ -271,7 +255,10 @@ export function PipelineStageDrawer({
       <div className="p-[var(--space-4)]">
         {/* Summary cards */}
         <div className="mb-5 grid grid-cols-2 gap-3">
-          <div className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
+          <div
+            className="rounded-[var(--radius-md)] border border-[var(--color-border)] px-4 py-3"
+            style={{ backgroundColor: PIPELINE_CARD_BG }}
+          >
             <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
               Potential GMV
             </p>
@@ -279,7 +266,10 @@ export function PipelineStageDrawer({
               {gmv}
             </p>
           </div>
-          <div className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
+          <div
+            className="rounded-[var(--radius-md)] border border-[var(--color-border)] px-4 py-3"
+            style={{ backgroundColor: PIPELINE_CARD_BG }}
+          >
             <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
               Pipeline Health
             </p>
