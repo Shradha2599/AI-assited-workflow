@@ -10,6 +10,11 @@ import { StatusTag } from "@/components/ui/status-tag";
 import { cn } from "@/lib/utils";
 import type { OnboardingPartner, OnboardingSection, OnboardingTask } from "@/lib/mock-data/onboarding";
 import {
+  getProfileSubTaskIconSrc,
+  ONBOARDING_ICON_GRAY_FILTER,
+  shouldGrayProfileSubTaskIcon,
+} from "@/features/partner-onboarding/utils/profile-task-icons";
+import {
   countOnboardingSectionProgress,
   getOnboardingSectionProgressPercent,
   getOnboardingSectionStatusIconSrc,
@@ -53,17 +58,8 @@ function countSectionProgress(sections: OnboardingSection[]) {
   return countOnboardingSectionProgress(sections);
 }
 
-function getSubTaskIconSrc(
-  task: OnboardingTask,
-  sectionId: string,
-  locked: boolean,
-): string {
-  if (locked) return "/icons/lock-fill.svg";
-  if (task.status === "complete") return "/icons/progress-check.svg";
-  if (task.status === "in_progress") return "/icons/time-clock.svg";
-  if (task.status === "blocked" || task.issue) return "/icons/warning.svg";
-  if (sectionId === "assortment") return "/icons/clipboard.svg";
-  return "/icons/progress-complete.svg";
+function getSubTaskIconSrc(task: OnboardingTask): string {
+  return getProfileSubTaskIconSrc(task);
 }
 
 function isSectionReviewable(section: OnboardingSection): boolean {
@@ -148,18 +144,25 @@ function SectionRow({
             {section.completedSteps}/{section.totalSteps} steps
           </StatusTag>
           <div className="flex flex-wrap justify-end gap-1.5">
-            {section.tasks.map((task) => (
+            {section.tasks.map((task) => {
+              const lockedTask = locked;
+              const iconSrc = lockedTask
+                ? "/icons/lock-fill.svg"
+                : section.id === "assortment" && task.status === "pending"
+                  ? "/icons/clipboard.svg"
+                  : getSubTaskIconSrc(task);
+              return (
               <ChecklistIcon
                 key={task.id}
-                src={getSubTaskIconSrc(task, section.id, locked)}
+                src={iconSrc}
                 size={16}
                 gray={
                   !locked &&
-                  task.status === "pending" &&
+                  shouldGrayProfileSubTaskIcon(task) &&
                   section.id !== "assortment"
                 }
               />
-            ))}
+            );})}
           </div>
         </div>
       </div>

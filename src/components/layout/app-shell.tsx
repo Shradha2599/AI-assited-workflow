@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
-import { usePathname } from "next/navigation";
+import { Suspense, useMemo } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 
 import { Sidebar } from "@/components/layout/sidebar";
 import { SidebarProvider, useSidebar } from "@/components/layout/sidebar-context";
@@ -28,11 +28,9 @@ import {
   getLeadFormTasksFromAnalysis,
 } from "@/lib/mock-data/lead-form-analysis";
 import {
-  getFieldInsightsForPanel,
-  getOnboardingInsightsForPanel,
-  getOnboardingTasksForPanel,
-  getProfileTaskEvaluations,
-} from "@/lib/mock-data/onboarding-evaluation";
+  getOnboardingReviewPanelItems,
+} from "@/lib/mock-data/onboarding-review-panel";
+import { getOnboardingTasksForPanel } from "@/lib/mock-data/onboarding-evaluation";
 import { getSellerById } from "@/lib/mock-data/sellers";
 import {
   getPotentialPartnerById,
@@ -40,6 +38,7 @@ import {
   showsOnboardingChecklist,
 } from "@/lib/mock-data/potential-partners";
 import { usePartnerReviewStore } from "@/features/partner-onboarding/store/partner-review-store";
+import { useOnboardingReviewStore } from "@/features/partner-onboarding/store/onboarding-review-store";
 
 function isPartnerProfilePath(pathname: string): boolean {
   return /^\/sellers\/onboarding\/[^/]+$/.test(pathname);
@@ -58,34 +57,36 @@ function extractPartnerId(pathname: string): string | undefined {
   return match?.[1];
 }
 
-function getOnboardingPanelData(partnerId: string, pathname: string) {
+function getOnboardingReviewPanelTasks(
+  partnerId: string,
+  pathname: string,
+  searchParams: URLSearchParams,
+  activeTaskId: string | null,
+): { tasks: RecommendedTask[]; insights: RecommendedTask[] } {
   const partner = getPotentialPartnerById(partnerId);
-  if (!partner || !showsOnboardingChecklist(partner.status)) return null;
-
-  const tasks = getOnboardingTasksForPanel(partner.sellerId).map((t) => ({
-    ...t,
-    partnerId,
-  }));
-
-  let insights = getOnboardingInsightsForPanel(partner.sellerId).map((t) => ({
-    ...t,
-    partnerId,
-  }));
-
-  if (pathname.includes("/review/profile")) {
-    const brandTask =
-      getProfileTaskEvaluations(partner.sellerId).find((e) => e.validationStatus === "invalid") ??
-      getProfileTaskEvaluations(partner.sellerId)[0];
-    if (brandTask) {
-      const fieldInsights = getFieldInsightsForPanel(partner.sellerId, brandTask.taskId).map((f) => ({
-        ...f,
-        partnerId,
-      }));
-      insights = [...fieldInsights, ...insights];
-    }
+  if (!partner || !showsOnboardingChecklist(partner.status)) {
+    return { tasks: [], insights: [] };
   }
 
-  return { tasks, insights, showInsightsTab: true };
+  if (pathname.includes("/review/profile")) {
+    const taskId = searchParams.get("task") ?? activeTaskId ?? undefined;
+    const panel = getOnboardingReviewPanelItems(partner.sellerId, "profile", { taskId });
+    return {
+      tasks: panel.tasks.map((t) => ({ ...t, partnerId })),
+      insights: panel.insights.map((t) => ({ ...t, partnerId })),
+    };
+  }
+
+  if (pathname.includes("/review/documentation")) {
+    const docTab = searchParams.get("tab") === "brands" ? "brands" : "general";
+    const panel = getOnboardingReviewPanelItems(partner.sellerId, "documentation", { docTab });
+    return {
+      tasks: panel.tasks.map((t) => ({ ...t, partnerId })),
+      insights: panel.insights.map((t) => ({ ...t, partnerId })),
+    };
+  }
+
+  return { tasks: [], insights: [] };
 }
 
 function getTasksForPath(
@@ -95,8 +96,7 @@ function getTasksForPath(
   const partnerId = extractPartnerId(pathname);
 
   if (isOnboardingReviewPath(pathname) && partnerId) {
-    const onboardingPanel = getOnboardingPanelData(partnerId, pathname);
-    if (onboardingPanel) return onboardingPanel.tasks;
+    return [];
   }
 
   if (isPartnerProfilePath(pathname)) {
@@ -158,22 +158,12 @@ function getTasksForPath(
   return defaultRecommendedTasks;
 }
 
-function getInsightsForPath(pathname: string): RecommendedTask[] {
-  const partnerId = extractPartnerId(pathname);
-  if (!partnerId || !isOnboardingReviewPath(pathname)) return [];
-  const onboardingPanel = getOnboardingPanelData(partnerId, pathname);
-  return onboardingPanel?.insights ?? [];
+function getInsightsForPath(): RecommendedTask[] {
+  return [];
 }
 
-function shouldShowInsightsTab(
-  pathname: string,
-  statusOverrides: Record<string, import("@/lib/mock-data/potential-partners").PartnerPipelineStatus>,
-): boolean {
-  const partnerId = extractPartnerId(pathname);
-  if (!partnerId) return false;
-  const partner = getPotentialPartnerById(partnerId);
-  const effectiveStatus = partner ? (statusOverrides[partnerId] ?? partner.status) : undefined;
-  return Boolean(partner && effectiveStatus && showsOnboardingChecklist(effectiveStatus));
+function shouldShowInsightsTab(): boolean {
+  return false;
 }
 
 function getPageForPath(pathname: string): BeaconPage {
@@ -278,14 +268,33 @@ function usePlanTasks(isOnPlanPage: boolean): RecommendedTask[] | null {
 
 function AppShellContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { showSubnav } = useSidebar();
   const statusOverrides = usePartnerReviewStore((s) => s.statusOverrides);
+  const activeTaskId = useOnboardingReviewStore((s) => s.activeTaskId);
   const isOnPlanPage = pathname.startsWith("/assortment/plan") || pathname.startsWith("/assortment/finalize");
   const dynamicPlanTasks = usePlanTasks(isOnPlanPage);
   const staticTasks = getTasksForPath(pathname, statusOverrides);
-  const tasks = dynamicPlanTasks ?? staticTasks;
-  const insights = getInsightsForPath(pathname);
-  const showInsightsTab = shouldShowInsightsTab(pathname, statusOverrides);
+  const partnerId = extractPartnerId(pathname);
+
+  const reviewPanel = useMemo(() => {
+    if (!partnerId || !isOnboardingReviewPath(pathname)) {
+      return { tasks: [] as RecommendedTask[], insights: [] as RecommendedTask[] };
+    }
+    return getOnboardingReviewPanelTasks(
+      partnerId,
+      pathname,
+      searchParams,
+      activeTaskId,
+    );
+  }, [partnerId, pathname, searchParams, activeTaskId]);
+
+  const tasks =
+    reviewPanel.tasks.length > 0 || reviewPanel.insights.length > 0
+      ? reviewPanel.tasks
+      : dynamicPlanTasks ?? staticTasks;
+  const insights = reviewPanel.insights;
+  const showInsightsTab = shouldShowInsightsTab();
   const page = getPageForPath(pathname);
 
   const mainOffset = showSubnav
@@ -333,7 +342,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <PageHeaderProvider>
-        <AppShellContent>{children}</AppShellContent>
+        <Suspense fallback={null}>
+          <AppShellContent>{children}</AppShellContent>
+        </Suspense>
       </PageHeaderProvider>
     </SidebarProvider>
   );

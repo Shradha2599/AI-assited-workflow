@@ -139,6 +139,146 @@ function brandProfileEvaluation(
   };
 }
 
+function validBrandProfileEvaluation(
+  sellerId: string,
+  taskId: string,
+  displayName: string,
+  website: string,
+  description: string,
+): OnboardingTaskEvaluation {
+  return {
+    taskId,
+    sellerId,
+    sectionId: "profile",
+    title: "Banner/ Cover Image",
+    reviewable: true,
+    autoValidated: true,
+    validationStatus: "valid",
+    summary: "Brand assets meet marketplace display guidelines.",
+    source: "Image quality analysis",
+    checkedOn: CHECKED,
+    fields: [
+      {
+        id: "banner",
+        label: "Banner/ Cover Image",
+        submittedValue: "Cover.png (1920×1080)",
+        status: "valid",
+        source: "Image quality analysis",
+        detail: "Resolution and aspect ratio meet guidelines",
+        checkedOn: CHECKED,
+      },
+      {
+        id: "display-name",
+        label: "Brand display name",
+        submittedValue: displayName,
+        status: "valid",
+        source: website,
+        detail: "Matches official website and social handles",
+        checkedOn: CHECKED,
+      },
+      {
+        id: "description",
+        label: "Brand description",
+        submittedValue: description,
+        status: "valid",
+        source: website,
+        detail: "Matches official website and social handles",
+        checkedOn: CHECKED,
+      },
+      {
+        id: "website",
+        label: "Website URL",
+        submittedValue: website,
+        status: "valid",
+        source: "WHOIS + SSL Labs",
+        detail: "Domain is active and SSL secured",
+        checkedOn: CHECKED,
+      },
+      {
+        id: "sourcing",
+        label: "Product sourcing information",
+        submittedValue: "Certified suppliers, non-GMO materials",
+        status: "valid",
+        source: "AI Keyword + Policy check",
+        detail: "Mentions certified suppliers and non-GMO",
+        checkedOn: CHECKED,
+      },
+    ],
+  };
+}
+
+function addressProofEvaluation(
+  sellerId: string,
+  taskId: string,
+  address: string,
+): OnboardingTaskEvaluation {
+  return {
+    taskId,
+    sellerId,
+    sectionId: "profile",
+    title: "Address Proof",
+    reviewable: true,
+    autoValidated: true,
+    validationStatus: "valid",
+    summary: "Business address matches the address in application.",
+    source: "D&B + Application",
+    checkedOn: CHECKED,
+    fields: [
+      {
+        id: "address",
+        label: "Business address",
+        submittedValue: address,
+        status: "valid",
+        source: "D&B + Application",
+        detail: "Address matches registered business location",
+        checkedOn: CHECKED,
+      },
+    ],
+  };
+}
+
+function completeDocumentationEvaluation(
+  sellerId: string,
+  brandNames: string[],
+): { general: DocumentUpload[]; brands: BrandDocumentRow[] } {
+  return {
+    general: [
+      {
+        id: "address-proof",
+        label: "Address proof",
+        instruction: "Upload a valid proof of business address.",
+        fileName: "Address proof.pdf",
+        fileSize: "1.3 MB",
+        validationStatus: "valid",
+        summary: "Business address matches the address in application.",
+        source: "D&B + Application",
+        checkedOn: CHECKED,
+      },
+      {
+        id: "duns-cert",
+        label: "DUNS certificate",
+        instruction: "Upload a DUNS registration certificate.",
+        fileName: "DUNS certificate.pdf",
+        fileSize: "1.1 MB",
+        validationStatus: "valid",
+        summary: "DUNS number is active and matches with the business.",
+        source: "D&B",
+        checkedOn: CHECKED,
+      },
+    ],
+    brands: brandNames.map((name, index) => ({
+      id: `brand-${index + 1}`,
+      name,
+      brandRole: index % 2 === 0 ? "Original manufacturer" : "Reseller",
+      documentName: `${name.replace(/\s+/g, "")}.pdf`,
+      validationStatus: "valid" as const,
+      summary: "Authorization Letter is valid and matches the brand owner information.",
+      source: `${name.replace(/\s+/g, "")}.pdf + Application`,
+      checkedOn: CHECKED,
+    })),
+  };
+}
+
 const profileEvaluations: Record<string, OnboardingTaskEvaluation[]> = {
   "seller-012": [
     brandProfileEvaluation(
@@ -252,6 +392,48 @@ const profileEvaluations: Record<string, OnboardingTaskEvaluation[]> = {
       "SunSet Decor",
       "www.sunsetdecor.com",
       "Contemporary lighting and decor for modern spaces",
+    ),
+  ],
+  "p-l-o6": [
+    validBrandProfileEvaluation(
+      "p-l-o6",
+      "t-p-l-o6-01",
+      "Zenith Lights",
+      "www.zenithlights.com",
+      "Premium lighting solutions for residential and commercial spaces",
+    ),
+    addressProofEvaluation(
+      "p-l-o6",
+      "t-p-l-o6-03",
+      "1200 Market St, San Francisco, CA 94102",
+    ),
+  ],
+  "p-k-o4": [
+    validBrandProfileEvaluation(
+      "p-k-o4",
+      "t-p-k-o4-01",
+      "Casa de Cocina",
+      "www.casadecocina.com",
+      "Authentic kitchenware and dining essentials from around the world",
+    ),
+    addressProofEvaluation(
+      "p-k-o4",
+      "t-p-k-o4-03",
+      "845 N Michigan Ave, Chicago, IL 60611",
+    ),
+  ],
+  "p-f-o6": [
+    validBrandProfileEvaluation(
+      "p-f-o6",
+      "t-p-f-o6-01",
+      "TimberLine Brands",
+      "www.timberlinebrands.com",
+      "Sustainable furniture and home goods crafted from responsibly sourced wood",
+    ),
+    addressProofEvaluation(
+      "p-f-o6",
+      "t-p-f-o6-03",
+      "500 Boylston St, Boston, MA 02116",
     ),
   ],
 };
@@ -431,6 +613,24 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
       },
     ],
   },
+  "p-l-o6": completeDocumentationEvaluation("p-l-o6", [
+    "Zenith Home",
+    "Zenith Pro",
+    "Zenith Outdoor",
+  ]),
+  "p-k-o4": completeDocumentationEvaluation("p-k-o4", [
+    "Casa Cookware",
+    "Casa Table",
+    "Casa Serve",
+    "Casa Pantry",
+  ]),
+  "p-f-o6": completeDocumentationEvaluation("p-f-o6", [
+    "TimberLine Living",
+    "TimberLine Office",
+    "TimberLine Outdoor",
+    "TimberLine Kids",
+    "TimberLine Sleep",
+  ]),
 };
 
 export const sectionEvaluations: Record<string, OnboardingSectionEvaluation> = {
@@ -489,6 +689,48 @@ export const sectionEvaluations: Record<string, OnboardingSectionEvaluation> = {
     title: "Profile information",
     subtitle: "Provide your business related information",
     progress: 43,
+  },
+  "p-l-o6-profile": {
+    sectionId: "profile",
+    sellerId: "p-l-o6",
+    title: "Profile information",
+    subtitle: "Provide your business related information",
+    progress: 100,
+  },
+  "p-l-o6-documentation": {
+    sectionId: "documentation",
+    sellerId: "p-l-o6",
+    title: "Documentation",
+    subtitle: "Provide your business related information",
+    progress: 100,
+  },
+  "p-k-o4-profile": {
+    sectionId: "profile",
+    sellerId: "p-k-o4",
+    title: "Profile information",
+    subtitle: "Provide your business related information",
+    progress: 100,
+  },
+  "p-k-o4-documentation": {
+    sectionId: "documentation",
+    sellerId: "p-k-o4",
+    title: "Documentation",
+    subtitle: "Provide your business related information",
+    progress: 100,
+  },
+  "p-f-o6-profile": {
+    sectionId: "profile",
+    sellerId: "p-f-o6",
+    title: "Profile information",
+    subtitle: "Provide your business related information",
+    progress: 100,
+  },
+  "p-f-o6-documentation": {
+    sectionId: "documentation",
+    sellerId: "p-f-o6",
+    title: "Documentation",
+    subtitle: "Provide your business related information",
+    progress: 100,
   },
 };
 

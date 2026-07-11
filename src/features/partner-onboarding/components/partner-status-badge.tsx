@@ -1,7 +1,13 @@
 import Image from "next/image";
 import { Check } from "lucide-react";
 
-import type { OnboardingTask, TaskStatus } from "@/lib/mock-data/pipeline-partners";
+import type { OnboardingTask } from "@/lib/mock-data/onboarding";
+import {
+  getProfileSubTaskIconSrc,
+  ONBOARDING_ICON_GRAY_FILTER,
+  shouldGrayProfileSubTaskIcon,
+} from "@/features/partner-onboarding/utils/profile-task-icons";
+import type { OnboardingTask as PipelineOnboardingTask, TaskStatus } from "@/lib/mock-data/pipeline-partners";
 import type { OnboardingSection } from "@/lib/mock-data/onboarding";
 import {
   getOnboardingSectionProgressPercent,
@@ -90,7 +96,7 @@ type ProgressVisual =
   | { kind: "validated" };
 
 function resolveTaskVisual(
-  task: OnboardingTask,
+  task: PipelineOnboardingTask,
   index: number,
   total: number,
 ): ProgressVisual {
@@ -129,6 +135,30 @@ function ValidatedTaskIcon() {
   );
 }
 
+export function OnboardingProfileTaskProgressSteps({ tasks }: { tasks: OnboardingTask[] }) {
+  return (
+    <div className="flex items-center gap-1">
+      {tasks.map((task) => {
+        const src = getProfileSubTaskIconSrc(task);
+        const gray = shouldGrayProfileSubTaskIcon(task);
+        return (
+          <Image
+            key={task.id}
+            src={src}
+            alt=""
+            width={24}
+            height={24}
+            className="shrink-0"
+            style={gray ? { filter: ONBOARDING_ICON_GRAY_FILTER } : undefined}
+            title={task.title}
+            aria-hidden
+          />
+        );
+      })}
+    </div>
+  );
+}
+
 export function OnboardingChecklistProgressSteps({ sections }: { sections: OnboardingSection[] }) {
   return (
     <div className="flex items-center gap-1">
@@ -155,7 +185,7 @@ export function OnboardingChecklistProgressSteps({ sections }: { sections: Onboa
   );
 }
 
-export function OnboardingProgressSteps({ tasks }: { tasks: OnboardingTask[] }) {
+export function OnboardingProgressSteps({ tasks }: { tasks: PipelineOnboardingTask[] }) {
   return (
     <div className="flex items-center gap-1">
       {tasks.map((task, index) => {

@@ -32,7 +32,7 @@ import {
 import { getOnboardingForPartner } from "@/lib/mock-data/onboarding";
 import {
   ALL_PARTNER_STATUSES,
-  OnboardingChecklistProgressSteps,
+  OnboardingProfileTaskProgressSteps,
   PartnerStatusBadge,
 } from "./partner-status-badge";
 
@@ -325,8 +325,12 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
                       </td>
                       <td className="py-2.5">
                         {showsOnboardingChecklist(partner.status) ? (
-                          <OnboardingChecklistProgressSteps
-                            sections={getOnboardingForPartner(partner).sections}
+                          <OnboardingProfileTaskProgressSteps
+                            tasks={
+                              getOnboardingForPartner(partner).sections.find(
+                                (s) => s.id === "profile",
+                              )?.tasks ?? []
+                            }
                           />
                         ) : (
                           <span className="text-[var(--color-muted-foreground)]">—</span>

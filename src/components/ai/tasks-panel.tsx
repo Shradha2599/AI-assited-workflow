@@ -565,8 +565,12 @@ export function TasksPanel({
     if (type === "bad") setBadModalMessageId(id);
   }
 
-  const isOnboardingPanel = showInsightsTab || tasks.some((t) => t.validationStatus);
   const insightItems = insights.length > 0 ? insights : [];
+
+  const isOnboardingPanel =
+    showInsightsTab ||
+    tasks.some((t) => t.validationStatus) ||
+    insightItems.some((t) => t.validationStatus);
 
   return (
     <aside
@@ -648,6 +652,24 @@ export function TasksPanel({
                 )
               )}
             </div>
+
+            {!showInsightsTab && insightItems.length > 0 && (
+              <div className="mt-[var(--space-6)]">
+                <h3 className="mb-[var(--space-3)] text-[var(--text-body-size)] font-bold text-[var(--color-foreground)]">
+                  Validation Insights
+                </h3>
+                <div className="space-y-[var(--space-3)]">
+                  {insightItems.map((task) => (
+                    <OnboardingTaskCard
+                      key={task.id}
+                      task={task}
+                      onAction={handleTaskAction}
+                      approved={task.reviewTaskId ? isApproved(task.reviewTaskId) : false}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </>
         ) : activeTab === "insights" ? (
           <>

@@ -419,6 +419,31 @@ function applyTaskUpdates(
   };
 }
 
+/** Profile (7) + documentation (2) steps marked complete */
+const COMPLETE_PROFILE_AND_DOCUMENTATION_UPDATES: Record<string, Partial<OnboardingTask>> = {
+  "01": { status: "complete", autoValidated: true },
+  "02": { status: "complete", autoValidated: true },
+  "03": { status: "complete", autoValidated: true },
+  "04": { status: "complete", autoValidated: false },
+  "05": { status: "complete", autoValidated: false },
+  "06": { status: "complete", autoValidated: false },
+  "07": { status: "complete", autoValidated: true },
+  "09": { status: "complete", autoValidated: true },
+  "10": { status: "complete", autoValidated: false },
+};
+
+function completeProfileAndDocumentationPartner(
+  sellerId: string,
+  sellerName: string,
+  meta?: Partial<Pick<OnboardingPartner, "startedAt" | "targetLaunchDate">>,
+): OnboardingPartner {
+  return applyTaskUpdates(
+    buildFreshOnboardingForPartner(sellerId, sellerName),
+    COMPLETE_PROFILE_AND_DOCUMENTATION_UPDATES,
+    meta,
+  );
+}
+
 /** Demo partners with partial checklist progress for profile & documentation review flows */
 const partialOnboardingProfiles: Record<string, OnboardingPartner> = {
   // Pinnacle Goods — profile nearly complete (banner issue) + W9 uploaded
@@ -471,6 +496,24 @@ const partialOnboardingProfiles: Record<string, OnboardingPartner> = {
       "04": { status: "complete", autoValidated: false },
     },
     { startedAt: "2026-06-01", targetLaunchDate: "2026-09-01" },
+  ),
+  // Zenith Lights — profile & documentation complete
+  "p-l-o6": completeProfileAndDocumentationPartner(
+    "p-l-o6",
+    "Zenith Lights",
+    { startedAt: "2026-03-10", targetLaunchDate: "2026-06-15" },
+  ),
+  // Casa de Cocina — profile & documentation complete
+  "p-k-o4": completeProfileAndDocumentationPartner(
+    "p-k-o4",
+    "Casa de Cocina",
+    { startedAt: "2026-02-20", targetLaunchDate: "2026-06-01" },
+  ),
+  // TimberLine Brands — profile & documentation complete
+  "p-f-o6": completeProfileAndDocumentationPartner(
+    "p-f-o6",
+    "TimberLine Brands",
+    { startedAt: "2026-01-15", targetLaunchDate: "2026-05-30" },
   ),
 };
 

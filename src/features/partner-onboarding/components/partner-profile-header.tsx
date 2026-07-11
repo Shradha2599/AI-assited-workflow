@@ -36,12 +36,21 @@ interface PartnerProfileHeaderProps {
   /** When set, replaces Confidence Score with Launch date (onboarding profile). */
   launchDate?: string;
   outreachMailType?: "acquisition_outreach" | "onboarding_kickoff";
+  /** Extra breadcrumb segment after partner name (e.g. Profile Information). */
+  breadcrumbExtra?: string;
+  /** Hide GMV / categories / SKUs metadata row. */
+  hideMetadata?: boolean;
+  /** When set, partner name in breadcrumb links here instead of plain text. */
+  partnerNameHref?: string;
 }
 
 export function PartnerProfileHeader({
   partner,
   launchDate,
   outreachMailType = "acquisition_outreach",
+  breadcrumbExtra,
+  hideMetadata = false,
+  partnerNameHref,
 }: PartnerProfileHeaderProps) {
   const initials = getInitials(partner.legalBusinessName);
   const openOutreach = useOutreachMail();
@@ -64,10 +73,22 @@ export function PartnerProfileHeader({
             </li>
             <li>/</li>
             <li>
-              <span className="font-medium text-[var(--color-foreground)]">
-                {partner.legalBusinessName}
-              </span>
+              {partnerNameHref ? (
+                <Link href={partnerNameHref} className="hover:text-[var(--color-foreground)]">
+                  {partner.legalBusinessName}
+                </Link>
+              ) : (
+                <span className="font-medium text-[var(--color-foreground)]">
+                  {partner.legalBusinessName}
+                </span>
+              )}
             </li>
+            {breadcrumbExtra && (
+              <>
+                <li>/</li>
+                <li className="font-medium text-[var(--color-foreground)]">{breadcrumbExtra}</li>
+              </>
+            )}
           </ol>
         </nav>
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -110,6 +131,7 @@ export function PartnerProfileHeader({
           </div>
         </div>
 
+        {!hideMetadata && (
         <div className="mt-[var(--space-4)] flex flex-wrap gap-[var(--space-6)]">
           {[
             { label: "Avg. Annual GMV", value: formatCurrency(partner.gmv) },
@@ -143,6 +165,7 @@ export function PartnerProfileHeader({
             </div>
           )}
         </div>
+        )}
       </div>
     </RegisterPageHeader>
   );
