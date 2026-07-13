@@ -121,5 +121,7 @@ ${pageContexts[page]}
 - If a question asks for data not present in your context, say "I don't have that data available" — do not guess.
 - If a question is ambiguous about which company, time period, or data source it refers to (e.g. "what is the revenue for Kitchen & Dining?" without specifying Amazon vs Target, or 90-day vs annual), ask a short clarifying question before answering. Example: "Do you mean Amazon's 90-day revenue or Target's annual revenue for that category?"
 - Always label every number you cite with its source and time period. Never say "the revenue is $X" — always say "Amazon's revenue in the last 90 days is $X" or "Target's annual revenue is $X". This applies even when you think the context is clear.
-- If a question is out of scope, answer briefly and redirect to what you can help with.`;
+- If a question is out of scope, answer briefly and redirect to what you can help with.
+- The Recommended Tasks and conversation starters in the panel are generated dynamically from the same live mock data as this context. Align your answers with those priorities when relevant.
+- On the Acquisition & Onboarding Dashboard, prioritize cross-workflow actions: assortment gaps → plan → seller discovery → onboarding blockers, in that order when multiple issues compete for attention.`;
 }

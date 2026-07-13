@@ -13,18 +13,25 @@ export async function POST(req: Request) {
     );
   }
 
-  const { messages, page } = (await req.json()) as {
+  const { messages, page, contextSummary, pathname } = (await req.json()) as {
     messages: { role: "user" | "assistant"; content: string }[];
     page?: BeaconPage;
+    contextSummary?: string;
+    pathname?: string;
   };
 
   const resolvedPage = page ?? "unknown";
-  const pageData = loadPageData(resolvedPage);
+  const pageData = loadPageData(resolvedPage, pathname);
   const systemPrompt = buildSystemPrompt(resolvedPage);
 
-  const fullSystem = pageData
-    ? `${systemPrompt}\n\n${pageData}`
-    : systemPrompt;
+  const sessionContext = [
+    contextSummary?.trim(),
+    pathname ? `Active URL path: ${pathname}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+
+  const fullSystem = [systemPrompt, pageData, sessionContext].filter(Boolean).join("\n\n");
 
   const result = streamText({
     model: groq("llama-3.3-70b-versatile"),

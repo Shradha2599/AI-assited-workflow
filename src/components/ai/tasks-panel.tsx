@@ -42,58 +42,17 @@ export interface RecommendedTask {
   reviewTaskId?: string;
 }
 
-// Page-aware starter prompts — focused on the dashboard → calendar flow
-const STARTER_PROMPTS_BY_PAGE: Record<string, string[]> = {
-  dashboard: [
-    "Which categories have the biggest assortment gap vs competitors?",
-    "What should I prioritize to hit our revenue goal this quarter?",
-    "Which sellers in our pipeline are closest to going live?",
-    "What's our biggest missed revenue opportunity right now?",
-  ],
-  "assortment-gap": [
-    "Which Lighting items should I add to close the 38% lag?",
-    "Compare our Serveware coverage vs Amazon and Walmart.",
-    "What are the top viral products we're missing in Kitchen & Dining?",
-    "Which categories should I tackle first for Q1 launch?",
-  ],
-  "assortment-plan": [
-    "Help me plan Lighting launches for Q1 (Nov–Dec).",
-    "Which items should be live before Thanksgiving?",
-    "Optimize my calendar for maximum revenue impact.",
-    "What should I schedule for Back to School season in Q4?",
-  ],
-  "lead-discovery": [
-    "Find top Lighting sellers with confidence score above 85.",
-    "Who are the best Serveware sellers to shortlist now?",
-    "Which sellers reduce our operational risk the most?",
-    "Show me sellers with the highest GMV potential for Kitchen.",
-  ],
-  "partner-onboarding": [
-    "Which partners have blockers holding up activation?",
-    "Draft a document reminder for all pending partners.",
-    "Who is closest to completing onboarding this week?",
-    "What are the most common onboarding blockers across partners?",
-  ],
-  "seller-profile": [
-    "Give me a risk assessment for this seller.",
-    "How does this seller compare to our shortlist criteria?",
-    "Draft an acquisition outreach email for this seller.",
-    "Which categories does this seller cover best?",
-  ],
-  unknown: [
-    "Which product types are driving growth for competitors?",
-    "Which viral products have high search volume but low Target coverage?",
-    "Show categories with weak onboarding pipeline coverage.",
-    "Who are the top confidence sellers for Lighting?",
-  ],
-};
-
 interface TasksPanelProps {
   tasks: RecommendedTask[];
   insights?: RecommendedTask[];
   showInsightsTab?: boolean;
   defaultTab?: "tasks" | "beacon" | "insights";
   page?: BeaconPage;
+  /** Context-aware conversation starters — derived from current page data */
+  starterPrompts?: string[];
+  /** Extra context appended to Beacon system prompt */
+  contextSummary?: string;
+  pathname?: string;
 }
 
 function scoreBadgeColor(score: number): string {
@@ -449,6 +408,9 @@ export function TasksPanel({
   showInsightsTab = false,
   defaultTab = "tasks",
   page,
+  starterPrompts = [],
+  contextSummary = "",
+  pathname = "",
 }: TasksPanelProps) {
   const openGapDrawer = useGapDrawerStore((s) => s.openDrawer);
 
@@ -472,8 +434,8 @@ export function TasksPanel({
 
   const { messages, append, setMessages, reload, isLoading, error } = useChat({
     api: "/api/beacon",
-    body: { page },
-    id: `beacon-${page ?? "global"}`,
+    body: { page, contextSummary, pathname },
+    id: `beacon-${page ?? "global"}-${pathname}`,
   });
 
   useEffect(() => {
@@ -700,7 +662,10 @@ export function TasksPanel({
                 <p className="text-[var(--text-label-size)] font-medium uppercase tracking-wide text-[var(--color-muted-foreground)]">
                   Try asking
                 </p>
-                {(STARTER_PROMPTS_BY_PAGE[page ?? "unknown"] ?? STARTER_PROMPTS_BY_PAGE["unknown"]).map((prompt) => (
+                {(starterPrompts.length > 0
+                  ? starterPrompts
+                  : ["What are the highest-priority actions on this page right now?"]
+                ).map((prompt) => (
                   <button
                     key={prompt}
                     type="button"

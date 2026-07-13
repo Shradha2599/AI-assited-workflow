@@ -39,12 +39,7 @@ export function PageHeaderSlot() {
   const { pageHeader, hasPageHeader } = usePageHeaderContext();
 
   return (
-    <div
-      className={cn(
-        "col-span-2",
-        hasPageHeader && "px-[var(--space-4)] py-[var(--space-4)]",
-      )}
-    >
+    <div className={cn(hasPageHeader && "px-[var(--space-4)] py-[var(--space-4)]")}>
       {pageHeader}
     </div>
   );
