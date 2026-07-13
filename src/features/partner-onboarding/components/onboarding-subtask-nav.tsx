@@ -28,12 +28,15 @@ interface OnboardingSubtaskNavProps {
   activeId: string;
   /** Profile uses success icons; documentation uses review icons for approve/reject flow. */
   navVariant?: "profile" | "documentation";
+  /** TM-approved profile task ids (from onboarding review store). */
+  approvedIds?: string[];
 }
 
 export function OnboardingSubtaskNav({
   items,
   activeId,
   navVariant = "profile",
+  approvedIds = [],
 }: OnboardingSubtaskNavProps) {
   return (
     <nav
@@ -48,10 +51,10 @@ export function OnboardingSubtaskNav({
         const isDocumentation = navVariant === "documentation";
         const iconSrc = isDocumentation
           ? getDocumentationSubTaskNavIconSrc(item.task)
-          : getProfileSubTaskNavIconSrc(item.task);
+          : getProfileSubTaskNavIconSrc(item.task, approvedIds);
         const gray = isDocumentation
           ? shouldGrayDocumentationSubTaskNavIcon(item.task)
-          : shouldGrayProfileSubTaskNavIcon(item.task);
+          : shouldGrayProfileSubTaskNavIcon(item.task, approvedIds);
 
         return (
           <Link
@@ -97,7 +100,7 @@ export function OnboardingSubtaskNav({
 
 export const PROFILE_SUBTASK_HINTS: Record<string, string> = {
   "Brand profile": "Provide your brand details and assets.",
-  "Brand display name": "Set the display name shoppers will see.",
+  "Guest services and reverse logistics": "Provide guest service and reverse logistics contacts.",
   "Business identity and address": "Provide business identity related information and address.",
   "Marketplace users": "Add marketplace user accounts.",
   "Fulfilment details": "Configure fulfilment preferences.",

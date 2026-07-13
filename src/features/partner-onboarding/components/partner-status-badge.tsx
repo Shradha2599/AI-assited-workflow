@@ -20,9 +20,6 @@ import { StatusTag } from "@/components/ui/status-tag";
 const GREY_FILTER =
   "brightness(0) saturate(100%) invert(55%) sepia(8%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(88%)";
 
-const WARNING_FILTER =
-  "brightness(0) saturate(100%) invert(58%) sepia(86%) saturate(458%) hue-rotate(359deg) brightness(99%) contrast(92%)";
-
 const STATUS_CONFIG: Record<
   PartnerPipelineStatus,
   { bg: string; text: string; icon: string; iconFilter?: string }
@@ -118,7 +115,7 @@ function resolveTaskVisual(
     case "locked":
       return { kind: "image", src: "/icons/lock-fill.svg", filter: GREY_FILTER };
     case "error":
-      return { kind: "image", src: "/icons/warning.svg", filter: WARNING_FILTER };
+      return { kind: "image", src: "/icons/warning-fill.svg" };
     default:
       return { kind: "image", src: "/icons/progress.svg", filter: GREY_FILTER };
   }
@@ -135,12 +132,18 @@ function ValidatedTaskIcon() {
   );
 }
 
-export function OnboardingProfileTaskProgressSteps({ tasks }: { tasks: OnboardingTask[] }) {
+export function OnboardingProfileTaskProgressSteps({
+  tasks,
+  approvedIds = [],
+}: {
+  tasks: OnboardingTask[];
+  approvedIds?: string[];
+}) {
   return (
     <div className="flex items-center gap-1">
       {tasks.map((task) => {
-        const src = getProfileSubTaskIconSrc(task);
-        const gray = shouldGrayProfileSubTaskIcon(task);
+        const src = getProfileSubTaskIconSrc(task, approvedIds);
+        const gray = shouldGrayProfileSubTaskIcon(task, approvedIds);
         return (
           <Image
             key={task.id}

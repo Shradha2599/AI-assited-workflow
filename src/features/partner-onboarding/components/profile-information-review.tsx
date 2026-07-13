@@ -1,15 +1,18 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useMemo } from "react";
-import { Check, X } from "lucide-react";
+import { Check } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { StatusTag } from "@/components/ui/status-tag";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
-import { getOnboardingSectionProgressPercent } from "@/lib/mock-data/onboarding";
 import { getProfileTaskEvaluations } from "@/lib/mock-data/onboarding-evaluation";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
+import {
+  getProfileSectionProgressPercent,
+  isProfileTaskSubmitted,
+  profileTaskApproveId,
+} from "@/features/partner-onboarding/utils/profile-task-progress";
 import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
@@ -17,170 +20,20 @@ import {
   OnboardingSubtaskNav,
   PROFILE_SUBTASK_HINTS,
 } from "./onboarding-subtask-nav";
+import {
+  AutoValidatedBadge,
+  FileAttachment,
+  ReadOnlyBadge,
+  UnderlinedField,
+  ValidationAlert,
+} from "./profile-review-shared";
+import { ProfileSubTaskContentView } from "./profile-subtask-views";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
 interface ProfileInformationReviewProps {
   partner: PotentialPartner;
   onboarding: OnboardingPartner;
   activeTaskId: string;
-}
-
-function ValidationAlert({
-  taskId,
-  title,
-  message,
-  onAddComment,
-  onRejectRecommendation,
-  variant = "default",
-}: {
-  taskId: string;
-  title: string;
-  message: string;
-  onAddComment: () => void;
-  onRejectRecommendation: () => void;
-  variant?: "default" | "banner";
-}) {
-  const dismissed = useOnboardingReviewStore((s) => s.dismissedAlerts.includes(taskId));
-  const dismissAlert = useOnboardingReviewStore((s) => s.dismissAlert);
-
-  if (dismissed) return null;
-
-  if (variant === "banner") {
-    return (
-      <div className="mb-6 flex items-center gap-3 border-l-4 border-[#2758B9] bg-[#E8F1FC] py-3 pl-4 pr-3">
-        <Image
-          src="/icons/info-fill.svg"
-          alt=""
-          width={20}
-          height={20}
-          className="shrink-0"
-          aria-hidden
-        />
-        <div className="min-w-0 flex-1">
-          <p className="text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">
-            {title}
-          </p>
-          <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-            {message}
-          </p>
-        </div>
-        <Button variant="outline" size="sm" className="shrink-0 bg-white" onClick={onAddComment}>
-          Add Comment
-        </Button>
-        <button
-          type="button"
-          onClick={() => dismissAlert(taskId)}
-          className="shrink-0 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
-          aria-label="Dismiss alert"
-        >
-          <X className="h-4 w-4" />
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="mb-5 flex items-start gap-3 rounded-[var(--radius-md)] border border-blue-200 bg-blue-50 px-4 py-3">
-      <Image
-        src="/icons/info-fill.svg"
-        alt=""
-        width={20}
-        height={20}
-        className="mt-0.5 shrink-0"
-        aria-hidden
-      />
-      <div className="min-w-0 flex-1">
-        <p className="text-[var(--text-caption-size)] font-semibold text-blue-900">{title}</p>
-        <p className="text-[var(--text-caption-size)] text-blue-800">{message}</p>
-        <div className="mt-2">
-          <Button variant="ghost" size="sm" className="h-auto px-0 py-0" onClick={onAddComment}>
-            Add Comment
-          </Button>
-          <span className="mx-1 text-[var(--color-border)]">·</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-auto px-0 py-0 text-[var(--color-error)] hover:bg-[var(--color-error-light)] hover:text-[var(--color-error)]"
-            onClick={onRejectRecommendation}
-          >
-            Reject recommendation
-          </Button>
-        </div>
-      </div>
-      <button
-        type="button"
-        onClick={() => dismissAlert(taskId)}
-        className="text-blue-400 hover:text-blue-600"
-        aria-label="Dismiss alert"
-      >
-        <X className="h-4 w-4" />
-      </button>
-    </div>
-  );
-}
-
-function ReadOnlyBadge() {
-  return (
-    <StatusTag className="inline-flex items-center gap-1.5 bg-purple-100 font-normal text-purple-700">
-      <Image src="/icons/visibility.svg" alt="" width={14} height={14} aria-hidden />
-      Read Only
-    </StatusTag>
-  );
-}
-
-function UnderlinedField({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border-b border-[var(--color-border)] py-4">
-      <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">{label}</p>
-      <p className="mt-1 text-[var(--text-body-size)] font-medium leading-relaxed text-[var(--color-foreground)]">
-        {value}
-      </p>
-    </div>
-  );
-}
-
-function FileAttachment({
-  label,
-  hint,
-  name,
-  size,
-}: {
-  label: string;
-  hint?: string;
-  name: string;
-  size: string;
-}) {
-  return (
-    <div>
-      <p className="text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">
-        {label}
-        <span className="text-[var(--color-error)]">*</span>
-      </p>
-      {hint && (
-        <p className="mt-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-          {hint}
-        </p>
-      )}
-      <div className="mt-3 flex max-w-[280px] items-center gap-3 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white px-4 py-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[#f5f5f5]">
-          <Image src="/icons/file-image.svg" alt="" width={24} height={24} aria-hidden />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">
-            {name}
-          </p>
-          <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">{size}</p>
-        </div>
-        <button
-          type="button"
-          className="shrink-0 rounded-[var(--radius-sm)] p-1.5 text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
-          aria-label={`Download ${name}`}
-        >
-          <Image src="/icons/download.svg" alt="" width={16} height={16} aria-hidden />
-        </button>
-      </div>
-    </div>
-  );
 }
 
 function getFieldValue(
@@ -193,14 +46,16 @@ function getFieldValue(
 
 function BrandProfileContent({
   partner,
-  activeEval,
   fields,
+  taskId,
+  agentRecommendation,
   onAddComment,
   onRejectRecommendation,
 }: {
   partner: PotentialPartner;
-  activeEval: NonNullable<ReturnType<typeof getProfileTaskEvaluations>[number]>;
-  fields: NonNullable<ReturnType<typeof getProfileTaskEvaluations>[number]>["fields"];
+  fields: { id: string; submittedValue: string }[];
+  taskId: string;
+  agentRecommendation?: { title: string; message: string };
   onAddComment: () => void;
   onRejectRecommendation: () => void;
 }) {
@@ -212,11 +67,11 @@ function BrandProfileContent({
 
   return (
     <>
-      {activeEval.agentRecommendation && (
+      {agentRecommendation && (
         <ValidationAlert
-          taskId={activeEval.taskId}
-          title={activeEval.agentRecommendation.title}
-          message={activeEval.agentRecommendation.message}
+          taskId={taskId}
+          title={agentRecommendation.title}
+          message={agentRecommendation.message}
           onAddComment={onAddComment}
           onRejectRecommendation={onRejectRecommendation}
           variant="banner"
@@ -279,17 +134,21 @@ export function ProfileInformationReview({
   const setContext = useOnboardingReviewStore((s) => s.setContext);
   const openComments = useOnboardingReviewStore((s) => s.openComments);
   const openFeedback = useOnboardingReviewStore((s) => s.openFeedback);
+  const approveItem = useOnboardingReviewStore((s) => s.approveItem);
+  const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
 
   const profileSection = onboarding.sections.find((s) => s.id === "profile");
-  const profileProgress = profileSection ? getOnboardingSectionProgressPercent(profileSection) : 0;
+  const profileProgress = profileSection
+    ? getProfileSectionProgressPercent(profileSection, approvedIds)
+    : 0;
   const evaluations = getProfileTaskEvaluations(partner.sellerId);
-  const activeEval = evaluations.find((e) => e.taskId === activeTaskId) ?? evaluations[0];
+  const activeEval = evaluations.find((e) => e.taskId === activeTaskId);
   const activeTask =
     profileSection?.tasks.find((t) => t.id === activeTaskId) ?? profileSection?.tasks[0];
 
   useEffect(() => {
-    setContext(partner.id, "profile", activeEval?.taskId ?? activeTaskId);
-  }, [partner.id, activeEval?.taskId, activeTaskId, setContext]);
+    setContext(partner.id, "profile", activeTaskId);
+  }, [partner.id, activeTaskId, setContext]);
 
   const navItems = useMemo(() => {
     if (!profileSection) return [];
@@ -305,8 +164,26 @@ export function ProfileInformationReview({
   if (!profileSection || !activeTask) return null;
 
   const brandProfileTaskId = profileSection.tasks.find((t) => t.title === "Brand profile")?.id;
-  const isBrandProfile = activeTask.id === brandProfileTaskId && activeEval;
+  const isBrandProfile = activeTask.id === brandProfileTaskId;
   const fields = activeEval?.fields ?? [];
+
+  const handleAddComment = () => {
+    openComments(activeEval?.taskId ?? activeTaskId);
+  };
+
+  const handleRejectRecommendation = () => {
+    if (activeEval?.agentRecommendation) {
+      openFeedback({
+        taskId: activeEval.taskId,
+        title: activeEval.agentRecommendation.title,
+        agentMessage: activeEval.agentRecommendation.message,
+      });
+    }
+  };
+
+  const taskApproveId = profileTaskApproveId(activeTaskId);
+  const tmApproved = approvedIds.includes(taskApproveId);
+  const taskSubmitted = isProfileTaskSubmitted(activeTask);
 
   return (
     <>
@@ -321,7 +198,8 @@ export function ProfileInformationReview({
         sidebar={
           <OnboardingSubtaskNav
             items={navItems}
-            activeId={activeEval?.taskId ?? activeTaskId}
+            activeId={activeTaskId}
+            approvedIds={approvedIds}
           />
         }
       >
@@ -329,63 +207,56 @@ export function ProfileInformationReview({
           <h3 className="text-[20px] font-semibold text-[var(--color-foreground)]">
             {activeTask.title}
           </h3>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <ReadOnlyBadge />
-            {(activeEval?.autoValidated ?? activeTask.autoValidated) && (
+            {(activeEval?.autoValidated ?? activeTask.autoValidated) && !tmApproved && (
+              <AutoValidatedBadge />
+            )}
+            {tmApproved && (
               <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
-                <Check className="h-3 w-3" /> Auto Validated
+                <Check className="h-3 w-3" /> Approved
               </StatusTag>
+            )}
+            {taskSubmitted && !tmApproved && (
+              <>
+                <Button size="sm" variant="outline" onClick={() => approveItem(taskApproveId)}>
+                  Approve
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-2 text-[var(--color-primary)] hover:bg-transparent"
+                  onClick={() => openComments(activeTaskId)}
+                >
+                  Reject
+                </Button>
+              </>
             )}
           </div>
         </div>
 
+        {activeEval?.agentRecommendation && !isBrandProfile && (
+          <ValidationAlert
+            taskId={activeEval.taskId}
+            title={activeEval.agentRecommendation.title}
+            message={activeEval.agentRecommendation.message}
+            onAddComment={handleAddComment}
+            onRejectRecommendation={handleRejectRecommendation}
+            variant="banner"
+          />
+        )}
+
         {isBrandProfile ? (
           <BrandProfileContent
             partner={partner}
-            activeEval={activeEval}
             fields={fields}
-            onAddComment={() => openComments(activeEval.taskId)}
-            onRejectRecommendation={() =>
-              openFeedback({
-                taskId: activeEval.taskId,
-                title: activeEval.agentRecommendation!.title,
-                agentMessage: activeEval.agentRecommendation!.message,
-              })
-            }
+            taskId={activeTaskId}
+            agentRecommendation={activeEval?.agentRecommendation}
+            onAddComment={handleAddComment}
+            onRejectRecommendation={handleRejectRecommendation}
           />
-        ) : activeEval ? (
-          <div>
-            {activeEval.agentRecommendation && (
-              <ValidationAlert
-                taskId={activeEval.taskId}
-                title={activeEval.agentRecommendation.title}
-                message={activeEval.agentRecommendation.message}
-                onAddComment={() => openComments(activeEval.taskId)}
-                onRejectRecommendation={() =>
-                  openFeedback({
-                    taskId: activeEval.taskId,
-                    title: activeEval.agentRecommendation!.title,
-                    agentMessage: activeEval.agentRecommendation!.message,
-                  })
-                }
-              />
-            )}
-            {fields.length > 0 ? (
-              fields.map((field) => (
-                <UnderlinedField key={field.id} label={field.label} value={field.submittedValue} />
-              ))
-            ) : (
-              <UnderlinedField label={activeEval.title} value={activeEval.summary} />
-            )}
-          </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Check className="mb-2 h-8 w-8 text-[var(--color-success)]" />
-            <p className="text-[var(--text-body-size)] font-semibold">Section submitted</p>
-            <p className="mt-1 max-w-sm text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-              This step is complete. Validation insights appear in the Tasks panel.
-            </p>
-          </div>
+          <ProfileSubTaskContentView partner={partner} taskTitle={activeTask.title} />
         )}
       </OnboardingSectionReviewLayout>
 

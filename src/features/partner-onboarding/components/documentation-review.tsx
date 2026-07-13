@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo } from "react";
 import { Check, ChevronLeft, ChevronRight, X } from "lucide-react";
 
+import { InfoBanner } from "@/components/data-display/info-banner";
 import { Button } from "@/components/ui/button";
 import { StatusTag } from "@/components/ui/status-tag";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
@@ -64,35 +65,17 @@ function BrandDocumentsAlert({
   if (dismissed) return null;
 
   return (
-    <div className="mb-6 flex items-center gap-3 border-l-4 border-[#2758B9] bg-[#E8F1FC] py-3 pl-4 pr-3">
-      <Image
-        src="/icons/info-fill.svg"
-        alt=""
-        width={20}
-        height={20}
-        className="shrink-0"
-        aria-hidden
-      />
-      <div className="min-w-0 flex-1">
-        <p className="text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">
-          {title}
-        </p>
-        <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-          {message}
-        </p>
-      </div>
-      <Button variant="outline" size="sm" className="shrink-0 bg-white" onClick={onReject}>
-        Reject
-      </Button>
-      <button
-        type="button"
-        onClick={() => dismissAlert(alertId)}
-        className="shrink-0 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
-        aria-label="Dismiss alert"
-      >
-        <X className="h-4 w-4" />
-      </button>
-    </div>
+    <InfoBanner
+      className="mb-6"
+      title={title}
+      message={message}
+      onDismiss={() => dismissAlert(alertId)}
+      actions={
+        <Button variant="outline" size="sm" className="shrink-0 bg-white" onClick={onReject}>
+          Reject
+        </Button>
+      }
+    />
   );
 }
 

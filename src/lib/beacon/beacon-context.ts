@@ -436,6 +436,22 @@ function getOnboardingReviewPanelTasks(
     };
   }
 
+  if (pathname.includes("/review/integrations")) {
+    return {
+      tasks: [
+        {
+          id: "integrations-review",
+          title: "Review channel partner integration",
+          description: "Approve or reject the seller's Ascenda integration selection.",
+          actionLabel: "Review integration →",
+          actionHref: pathname,
+          partnerId,
+        },
+      ],
+      insights: [],
+    };
+  }
+
   return { tasks: [], insights: [] };
 }
 
@@ -585,6 +601,15 @@ function buildConversationStarters(
           ? `Confirm the evidence behind "${validInsights[0].title}" before I approve.`
           : "Which profile fields still need manual review?",
         "Is this partner ready to move to documentation review?",
+      ];
+    }
+
+    if (input.pathname.includes("/review/integrations")) {
+      return [
+        `Is Ascenda the right channel partner for ${partner?.legalBusinessName}'s fulfilment model?`,
+        "What should I verify before approving this integration setup?",
+        "Does this partner's integration cover order management and returns end-to-end?",
+        `Draft a rejection comment if ${partner?.legalBusinessName} needs a different integrator.`,
       ];
     }
 

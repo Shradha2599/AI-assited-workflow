@@ -90,7 +90,7 @@ export const onboardingPartners: OnboardingPartner[] = [
         completedSteps: 6,
         tasks: [
           { id: "t-001", sellerId: "seller-004", section: "profile", title: "Brand profile", status: "in_progress", issue: "Invalid Banner/Cover Image", issueSource: "Image quality analysis: low resolution, does not meet guidelines", autoValidated: true },
-          { id: "t-002", sellerId: "seller-004", section: "profile", title: "Brand display name", status: "complete", autoValidated: true },
+          { id: "t-002", sellerId: "seller-004", section: "profile", title: "Guest services and reverse logistics", status: "complete", autoValidated: true },
           { id: "t-003", sellerId: "seller-004", section: "profile", title: "Business identity and address", status: "complete", autoValidated: true },
           { id: "t-004", sellerId: "seller-004", section: "profile", title: "Marketplace users", status: "complete", autoValidated: false },
           { id: "t-005", sellerId: "seller-004", section: "profile", title: "Fulfilment details", status: "complete", autoValidated: false },
@@ -162,7 +162,7 @@ export const onboardingPartners: OnboardingPartner[] = [
         completedSteps: 6,
         tasks: [
           { id: "t-101", sellerId: "seller-012", section: "profile", title: "Brand profile", status: "in_progress", issue: "Invalid Banner/Cover Image", issueSource: "Image quality analysis: low resolution", autoValidated: true },
-          { id: "t-102", sellerId: "seller-012", section: "profile", title: "Brand display name", status: "complete", autoValidated: true },
+          { id: "t-102", sellerId: "seller-012", section: "profile", title: "Guest services and reverse logistics", status: "complete", autoValidated: true },
           { id: "t-103", sellerId: "seller-012", section: "profile", title: "Business identity and address", status: "complete", autoValidated: true },
           { id: "t-104", sellerId: "seller-012", section: "profile", title: "Marketplace users", status: "complete", autoValidated: false },
           { id: "t-105", sellerId: "seller-012", section: "profile", title: "Fulfilment details", status: "complete", autoValidated: false },
@@ -234,7 +234,7 @@ export const onboardingPartners: OnboardingPartner[] = [
         completedSteps: 0,
         tasks: [
           { id: "t-201", sellerId: "seller-017", section: "profile", title: "Brand profile", status: "pending", autoValidated: false },
-          { id: "t-202", sellerId: "seller-017", section: "profile", title: "Brand display name", status: "pending", autoValidated: false },
+          { id: "t-202", sellerId: "seller-017", section: "profile", title: "Guest services and reverse logistics", status: "pending", autoValidated: false },
           { id: "t-203", sellerId: "seller-017", section: "profile", title: "Business identity and address", status: "pending", autoValidated: false },
           { id: "t-204", sellerId: "seller-017", section: "profile", title: "Marketplace users", status: "pending", autoValidated: false },
           { id: "t-205", sellerId: "seller-017", section: "profile", title: "Fulfilment details", status: "pending", autoValidated: false },
@@ -330,7 +330,7 @@ function buildFreshOnboardingForPartner(
       completedSteps: 0,
       tasks: [
         task("profile", "01", "Brand profile"),
-        task("profile", "02", "Brand display name"),
+        task("profile", "02", "Guest services and reverse logistics"),
         task("profile", "03", "Business identity and address"),
         task("profile", "04", "Marketplace users"),
         task("profile", "05", "Fulfilment details"),
@@ -419,7 +419,7 @@ function applyTaskUpdates(
   };
 }
 
-/** Profile (7) + documentation (2) steps marked complete */
+/** Profile (7) + documentation (2) + integrations (1) steps marked complete */
 const COMPLETE_PROFILE_AND_DOCUMENTATION_UPDATES: Record<string, Partial<OnboardingTask>> = {
   "01": { status: "complete", autoValidated: true },
   "02": { status: "complete", autoValidated: true },
@@ -430,6 +430,7 @@ const COMPLETE_PROFILE_AND_DOCUMENTATION_UPDATES: Record<string, Partial<Onboard
   "07": { status: "complete", autoValidated: true },
   "09": { status: "complete", autoValidated: true },
   "10": { status: "complete", autoValidated: false },
+  "11": { status: "complete", autoValidated: false },
 };
 
 function completeProfileAndDocumentationPartner(
@@ -463,6 +464,7 @@ const partialOnboardingProfiles: Record<string, OnboardingPartner> = {
       "06": { status: "complete", autoValidated: false },
       "07": { status: "complete", autoValidated: true },
       "09": { status: "complete", autoValidated: true },
+      "11": { status: "complete", autoValidated: false },
     },
     { startedAt: "2026-04-01", targetLaunchDate: "2026-07-01" },
   ),
@@ -478,6 +480,7 @@ const partialOnboardingProfiles: Record<string, OnboardingPartner> = {
       "06": { status: "complete", autoValidated: false },
       "07": { status: "complete", autoValidated: true },
       "09": { status: "complete", autoValidated: true },
+      "11": { status: "complete", autoValidated: false },
     },
     { startedAt: "2026-05-15", targetLaunchDate: "2026-08-15" },
   ),

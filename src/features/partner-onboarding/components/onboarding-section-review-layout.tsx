@@ -22,7 +22,7 @@ interface OnboardingSectionReviewLayoutProps {
   sectionSubtitle: string;
   progress: number;
   headerIconSrc?: string;
-  sidebar: React.ReactNode;
+  sidebar?: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -48,7 +48,7 @@ export function OnboardingSectionReviewLayout({
         partnerNameHref={`/sellers/onboarding/${partner.id}`}
       />
 
-      <Card className="overflow-hidden border-[var(--color-border)] shadow-[var(--shadow-low)]">
+      <Card className="overflow-hidden rounded-[var(--radius-xl)] border-[var(--color-border)] shadow-[var(--shadow-low)]">
         <div
           className={cn(REVIEW_CONTENT_PX, "py-8 text-white")}
           style={{

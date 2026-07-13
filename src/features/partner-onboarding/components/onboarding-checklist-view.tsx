@@ -21,6 +21,10 @@ import {
   isOnboardingSectionLocked,
   LOCKED_ONBOARDING_SECTION_IDS,
 } from "@/lib/mock-data/onboarding";
+import {
+  countProfileSectionCompletedSteps,
+  getProfileSectionProgressPercent,
+} from "@/features/partner-onboarding/utils/profile-task-progress";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
 import { PartnerProfileHeader } from "./partner-profile-header";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
@@ -58,8 +62,8 @@ function countSectionProgress(sections: OnboardingSection[]) {
   return countOnboardingSectionProgress(sections);
 }
 
-function getSubTaskIconSrc(task: OnboardingTask): string {
-  return getProfileSubTaskIconSrc(task);
+function getSubTaskIconSrc(task: OnboardingTask, approvedIds?: string[]): string {
+  return getProfileSubTaskIconSrc(task, approvedIds);
 }
 
 function isSectionReviewable(section: OnboardingSection): boolean {
@@ -95,14 +99,23 @@ function SectionRow({
   section,
   sections,
   partnerId,
+  approvedIds = [],
 }: {
   section: OnboardingSection;
   sections: OnboardingSection[];
   partnerId: string;
+  approvedIds?: string[];
 }) {
   const locked = isSectionLocked(section, sections);
   const reviewable = isSectionReviewable(section);
-  const progress = sectionProgressPercent(section);
+  const progress =
+    section.id === "profile"
+      ? getProfileSectionProgressPercent(section, approvedIds)
+      : sectionProgressPercent(section);
+  const profileCompletedSteps =
+    section.id === "profile"
+      ? countProfileSectionCompletedSteps(section, approvedIds)
+      : section.completedSteps;
   const sectionIcon = SECTION_ICON_SRC[section.id] ?? "/icons/marketplace.svg";
   const statusIcon = getOnboardingSectionStatusIconSrc(section, sections);
 
@@ -141,7 +154,7 @@ function SectionRow({
         <div className="flex shrink-0 flex-col items-end gap-2">
           <StatusTag className="inline-flex items-center gap-1.5 border border-[var(--color-border)] bg-[var(--color-card)] tabular-nums text-[var(--color-muted-foreground)]">
             <ChecklistIcon src="/icons/list-partial.svg" size={16} />
-            {section.completedSteps}/{section.totalSteps} steps
+            {profileCompletedSteps}/{section.totalSteps} steps
           </StatusTag>
           <div className="flex flex-wrap justify-end gap-1.5">
             {section.tasks.map((task) => {
@@ -150,7 +163,7 @@ function SectionRow({
                 ? "/icons/lock-fill.svg"
                 : section.id === "assortment" && task.status === "pending"
                   ? "/icons/clipboard.svg"
-                  : getSubTaskIconSrc(task);
+                  : getSubTaskIconSrc(task, section.id === "profile" ? approvedIds : undefined);
               return (
               <ChecklistIcon
                 key={task.id}
@@ -158,7 +171,10 @@ function SectionRow({
                 size={16}
                 gray={
                   !locked &&
-                  shouldGrayProfileSubTaskIcon(task) &&
+                  shouldGrayProfileSubTaskIcon(
+                    task,
+                    section.id === "profile" ? approvedIds : undefined,
+                  ) &&
                   section.id !== "assortment"
                 }
               />
@@ -169,7 +185,7 @@ function SectionRow({
     </div>
   );
 
-  if (reviewable && !locked && (section.id === "profile" || section.id === "documentation")) {
+  if (reviewable && !locked && (section.id === "profile" || section.id === "documentation" || section.id === "integrations")) {
     return (
       <Link
         href={`/sellers/onboarding/${partnerId}/review/${section.id}`}
@@ -187,6 +203,7 @@ function SectionRow({
 
 export function OnboardingChecklistView({ partner, onboarding }: OnboardingChecklistViewProps) {
   const setContext = useOnboardingReviewStore((s) => s.setContext);
+  const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
   const { total: totalSections, remaining: remainingSections } = countSectionProgress(
     onboarding.sections,
   );
@@ -238,6 +255,7 @@ export function OnboardingChecklistView({ partner, onboarding }: OnboardingCheck
               section={section}
               sections={onboarding.sections}
               partnerId={partner.id}
+              approvedIds={approvedIds}
             />
           ))}
         </Card>

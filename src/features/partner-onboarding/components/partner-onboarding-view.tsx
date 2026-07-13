@@ -35,6 +35,7 @@ import {
   OnboardingProfileTaskProgressSteps,
   PartnerStatusBadge,
 } from "./partner-status-badge";
+import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
 interface PipelineData {
   columns: string[];
@@ -90,6 +91,7 @@ function downloadPartnersReport(partners: PotentialPartner[]) {
 }
 
 export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) {
+  const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<PartnerPipelineStatus | "All">("All");
@@ -326,6 +328,7 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
                       <td className="py-2.5">
                         {showsOnboardingChecklist(partner.status) ? (
                           <OnboardingProfileTaskProgressSteps
+                            approvedIds={approvedIds}
                             tasks={
                               getOnboardingForPartner(partner).sections.find(
                                 (s) => s.id === "profile",

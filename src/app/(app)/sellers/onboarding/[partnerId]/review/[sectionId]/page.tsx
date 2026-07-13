@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { DocumentationReview } from "@/features/partner-onboarding/components/documentation-review";
+import { IntegrationsReview } from "@/features/partner-onboarding/components/integrations-review";
 import { ProfileInformationReview } from "@/features/partner-onboarding/components/profile-information-review";
 import { getOnboardingForPartner } from "@/lib/mock-data/onboarding";
 import { getPotentialPartnerById, showsOnboardingChecklist } from "@/lib/mock-data/potential-partners";
@@ -47,6 +48,10 @@ export default async function SectionReviewPage({ params, searchParams }: Sectio
         activeSubSection={tab === "brands" ? "brands" : "general"}
       />
     );
+  }
+
+  if (sectionId === "integrations") {
+    return <IntegrationsReview partner={partner} onboarding={onboarding} />;
   }
 
   notFound();
