@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, Copy, ExternalLink, Loader2, Pencil, Plus, RotateCcw, Sparkles, ThumbsDown, ThumbsUp, X } from "lucide-react";
+import { ArrowRight, Check, Copy, ExternalLink, Loader2, Pencil, Plus, RotateCcw, ThumbsDown, ThumbsUp, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -81,7 +81,7 @@ function OnboardingTaskCard({
   return (
     <article className="rounded-[var(--radius-lg)] bg-[var(--color-task-card)] p-[var(--space-4)]">
       <div className="flex items-start gap-3">
-        <SvgIcon name="aiSparkle" size={16} className="shrink-0" />
+        <SvgIcon name="aiSparkle" size={16} variant="primary" className="shrink-0" />
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <h3 className="text-[var(--text-body-size)] font-medium leading-snug">{task.title}</h3>
@@ -117,11 +117,8 @@ function OnboardingTaskCard({
             </p>
           )}
           {task.actionHref ? (
-            <Button variant="ghost" size="sm" className="mt-2 h-auto px-0 py-0" asChild>
-              <Link href={task.actionHref}>
-                {task.actionLabel}
-                <ArrowRight className="h-3 w-3" />
-              </Link>
+            <Button variant="ghost" size="sm" className="mt-2 h-auto px-0 py-0 text-[var(--color-primary)]" asChild>
+              <Link href={task.actionHref}>{task.actionLabel}</Link>
             </Button>
           ) : approved && task.actionType === "approve_onboarding" ? (
             <span className="mt-2 inline-flex items-center gap-1 text-[var(--text-caption-size)] font-medium text-[var(--color-success)]">
@@ -131,11 +128,10 @@ function OnboardingTaskCard({
             <Button
               variant="ghost"
               size="sm"
-              className="mt-2 h-auto px-0 py-0"
+              className="mt-2 h-auto px-0 py-0 text-[var(--color-primary)]"
               onClick={() => onAction(task)}
             >
               {task.actionLabel}
-              <ArrowRight className="h-3 w-3" />
             </Button>
           )}
         </div>
@@ -156,7 +152,7 @@ function StandardTaskCard({
   return (
     <article className="rounded-[var(--radius-lg)] bg-[var(--color-task-card)] p-[var(--space-4)]">
       <div className="flex items-start gap-3">
-        <SvgIcon name="aiSparkle" size={16} className="shrink-0" />
+        <SvgIcon name="aiSparkle" size={16} variant="primary" className="shrink-0" />
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <h3 className="text-[var(--text-body-size)] font-medium leading-snug text-[var(--color-foreground)]">
@@ -177,22 +173,18 @@ function StandardTaskCard({
             {task.description}
           </p>
           {task.actionHref ? (
-            <Button variant="ghost" size="sm" className="mt-2 h-auto px-0 py-0" asChild>
-              <Link href={task.actionHref}>
-                {task.actionLabel}
-                <ArrowRight className="h-3 w-3" />
-              </Link>
+            <Button variant="ghost" size="sm" className="mt-2 h-auto px-0 py-0 text-[var(--color-primary)]" asChild>
+              <Link href={task.actionHref}>{task.actionLabel}</Link>
             </Button>
           ) : (
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-auto px-0 py-0"
+                className="h-auto px-0 py-0 text-[var(--color-primary)]"
                 onClick={() => onAction(task)}
               >
                 {task.actionLabel}
-                <ArrowRight className="h-3 w-3" />
               </Button>
               {task.secondaryActionLabel && task.leadDecision && onSecondaryAction && (
                 <Button
@@ -670,9 +662,9 @@ export function TasksPanel({
                     key={prompt}
                     type="button"
                     onClick={() => handleSubmit(prompt)}
-                    className="group flex cursor-pointer items-start gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-[var(--space-3)] py-[var(--space-2)] text-left transition-colors hover:border-[var(--color-primary)] hover:bg-[var(--color-ai-insight)]"
+                    className="group flex cursor-pointer items-start gap-2.5 rounded-[var(--radius-md)] border border-[var(--color-primary)] bg-white px-[var(--space-3)] py-[var(--space-2)] text-left transition-colors hover:bg-[var(--color-ai-insight)]"
                   >
-                    <Sparkles className="mt-0.5 h-3 w-3 shrink-0 text-[var(--color-muted-foreground)] transition-colors group-hover:text-[var(--color-primary)]" />
+                    <SvgIcon name="aiSparkle" size={14} variant="primary" className="mt-0.5 shrink-0" />
                     <span className="text-[var(--text-caption-size)] text-[var(--color-foreground)]">{prompt}</span>
                   </button>
                 ))}
@@ -745,7 +737,7 @@ export function TasksPanel({
                         <>
                           <div className="flex items-center gap-1.5">
                             <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-ai-insight-border)]">
-                              <Sparkles className="h-2.5 w-2.5 text-[var(--color-primary)]" />
+                              <SvgIcon name="aiSparkle" size={12} variant="primary" />
                             </div>
                             <span className="text-[10px] font-medium text-[var(--color-primary)]">Beacon</span>
                           </div>
@@ -804,7 +796,7 @@ export function TasksPanel({
                   <div className="flex flex-col items-start gap-1">
                     <div className="flex items-center gap-1.5">
                       <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-ai-insight-border)]">
-                        <Sparkles className="h-2.5 w-2.5 text-[var(--color-primary)]" />
+                        <SvgIcon name="aiSparkle" size={12} variant="primary" />
                       </div>
                       <span className="text-[10px] font-medium text-[var(--color-primary)]">Beacon</span>
                     </div>
@@ -835,7 +827,7 @@ export function TasksPanel({
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Input goes here"
+              placeholder="Write here"
               rows={1}
               className="h-7 min-h-7 flex-1 resize-none rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-[var(--space-3)] py-0 text-[var(--text-caption-size)] leading-7 placeholder:text-[var(--color-muted-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
               aria-label="Message Beacon"

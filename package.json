@@ -9,6 +9,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "enrich": "node scripts/enrich-mock-data.js",
+    "generate:leads": "node scripts/generate-leads.js",
     "postinstall": "xattr -dr com.apple.quarantine node_modules 2>/dev/null || true"
   },
   "dependencies": {

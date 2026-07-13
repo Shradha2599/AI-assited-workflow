@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { LEAD_POOL_VERSION } from "@/lib/mock-data/lead-pool-meta";
 
 export interface VerificationSource {
   status: "verified" | "partial" | "unverified";
@@ -31,6 +32,7 @@ export interface DiscoveryFilters {
 }
 
 interface DiscoveryStore {
+  leadPoolVersion: number;
   discoveredIds: string[];
   shortlistedIds: string[];
   relevanceReasons: Record<string, string>;
@@ -51,6 +53,8 @@ interface DiscoveryStore {
   setIsDiscovering: (v: boolean) => void;
   setVerifyingId: (id: string | null) => void;
   setFilter: (filters: Partial<DiscoveryFilters>) => void;
+  clearDiscoveryResults: () => void;
+  syncLeadPoolVersion: () => void;
 }
 
 const DEFAULT_FILTERS: DiscoveryFilters = {
@@ -64,7 +68,8 @@ const DEFAULT_FILTERS: DiscoveryFilters = {
 
 export const useDiscoveryStore = create<DiscoveryStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
+      leadPoolVersion: LEAD_POOL_VERSION,
       discoveredIds: [],
       shortlistedIds: [],
       relevanceReasons: {},
@@ -95,6 +100,23 @@ export const useDiscoveryStore = create<DiscoveryStore>()(
         set((state) => ({
           activeFilters: { ...state.activeFilters, ...filters },
         })),
+      clearDiscoveryResults: () =>
+        set({
+          discoveredIds: [],
+          relevanceReasons: {},
+          planMatches: {},
+        }),
+      syncLeadPoolVersion: () => {
+        if (get().leadPoolVersion === LEAD_POOL_VERSION) return;
+        set({
+          leadPoolVersion: LEAD_POOL_VERSION,
+          discoveredIds: [],
+          shortlistedIds: [],
+          relevanceReasons: {},
+          planMatches: {},
+          verifications: {},
+        });
+      },
     }),
     { name: "lead-discovery", skipHydration: true },
   ),

@@ -77,9 +77,26 @@ function pipelinePartnerToPotential(partner: PipelinePartner, index: number): Po
   };
 }
 
+/** Demo status variety for the Partner Onboarding table */
+const PARTNER_STATUS_OVERRIDES: Record<string, PartnerPipelineStatus> = {
+  "p-l-n5": "Rejected",
+  "p-l-n6": "Future Interest",
+  "p-l-c2": "Approved",
+  "p-f-n3": "Rejected",
+  "p-f-n4": "Future Interest",
+  "p-f-c1": "Approved",
+  "p-k-n2": "Rejected",
+  "p-k-n4": "Future Interest",
+  "p-k-c2": "Approved",
+};
+
 /** All potential partners derived from the pipeline single source of truth */
 export const potentialPartners: PotentialPartner[] =
-  getPartnerOnboardingPagePartners().map(pipelinePartnerToPotential);
+  getPartnerOnboardingPagePartners().map((partner, index) => {
+    const mapped = pipelinePartnerToPotential(partner, index);
+    const override = PARTNER_STATUS_OVERRIDES[partner.id];
+    return override ? { ...mapped, status: override } : mapped;
+  });
 
 export interface OnboardingKpi {
   label: string;
@@ -105,6 +122,7 @@ const LEAD_FORM_STATUSES: PartnerPipelineStatus[] = [
 ];
 
 const CHECKLIST_STATUSES: PartnerPipelineStatus[] = ["Onboarding"];
+const PROGRESS_STATUSES: PartnerPipelineStatus[] = ["Onboarding", "Approved"];
 
 export function showsLeadForm(status: PartnerPipelineStatus): boolean {
   return LEAD_FORM_STATUSES.includes(status);
@@ -112,6 +130,10 @@ export function showsLeadForm(status: PartnerPipelineStatus): boolean {
 
 export function showsOnboardingChecklist(status: PartnerPipelineStatus): boolean {
   return CHECKLIST_STATUSES.includes(status);
+}
+
+export function showsPartnerProgress(status: PartnerPipelineStatus): boolean {
+  return PROGRESS_STATUSES.includes(status);
 }
 
 export function getPartnerProfilePath(partnerId: string): string {

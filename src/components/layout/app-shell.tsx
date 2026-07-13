@@ -47,41 +47,47 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
     <div className="h-screen overflow-hidden bg-[var(--color-background)]">
       <Sidebar />
       <div
-        className="grid h-screen overflow-hidden"
-        style={{
-          marginLeft: mainOffset,
-          gridTemplateColumns: "minmax(0, 1fr) var(--tasks-panel-width)",
-          gridTemplateRows: "var(--topbar-height) auto minmax(0, 1fr)",
-        }}
+        className="flex h-screen flex-col overflow-hidden"
+        style={{ marginLeft: mainOffset }}
       >
-        <div className="col-span-2 row-start-1">
-          <Topbar />
-        </div>
+        <Topbar />
 
-        <div className="col-start-1 row-start-2 min-w-0">
+        {/* Scroll: full-width page header, then main + sticky beacon below */}
+        <div className="min-h-0 flex-1 overflow-y-auto">
           <PageHeaderSlot />
-        </div>
 
-        <main
-          id="main-content"
-          className="col-start-1 row-start-3 min-h-0 min-w-0 overflow-x-hidden overflow-y-auto p-[var(--space-4)]"
-        >
-          {children}
-        </main>
+          <div
+            className="grid min-h-0"
+            style={{
+              gridTemplateColumns: "minmax(0, 1fr) var(--tasks-panel-width)",
+            }}
+          >
+            <main
+              id="main-content"
+              className="min-w-0 overflow-x-hidden p-[var(--space-4)]"
+            >
+              {children}
+            </main>
 
-        <div
-          className="col-start-2 row-span-2 row-start-2 flex min-h-0 flex-col overflow-hidden p-[var(--space-4)] pl-0 pt-[var(--space-4)]"
-          style={{ height: "calc(100vh - var(--topbar-height))" }}
-        >
-          <TasksPanel
-            tasks={beaconContext.tasks}
-            insights={beaconContext.insights}
-            showInsightsTab={showInsightsTab}
-            page={beaconContext.page}
-            starterPrompts={beaconContext.starters}
-            contextSummary={beaconContext.contextSummary}
-            pathname={pathname}
-          />
+            <div className="min-h-0 py-[var(--space-6)] pr-[var(--space-4)]">
+              <div
+                className="sticky top-[var(--space-6)] flex flex-col"
+                style={{
+                  height: "calc(100vh - var(--topbar-height) - 48px)",
+                }}
+              >
+                <TasksPanel
+                  tasks={beaconContext.tasks}
+                  insights={beaconContext.insights}
+                  showInsightsTab={showInsightsTab}
+                  page={beaconContext.page}
+                  starterPrompts={beaconContext.starters}
+                  contextSummary={beaconContext.contextSummary}
+                  pathname={pathname}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <OutreachEmailDrawer />

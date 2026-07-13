@@ -366,6 +366,12 @@ export function getGapItemsByCategory(category: string): GapItem[] {
   const key = Object.keys(CATALOG).find((k) => k.toLowerCase() === lower);
   if (key) return CATALOG[key];
 
-  // Return empty so the caller can decide on a fallback
+  // Partial / truncated label match (e.g. "Party Supp..." → "Party Supplies")
+  const trimmed = lower.replace(/\.\.\.$/, "").trim();
+  const prefixKey = Object.keys(CATALOG).find(
+    (k) => k.toLowerCase().startsWith(trimmed) || trimmed.startsWith(k.toLowerCase().slice(0, 8)),
+  );
+  if (prefixKey) return CATALOG[prefixKey];
+
   return [];
 }

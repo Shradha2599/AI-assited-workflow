@@ -10,7 +10,6 @@ import {
 import type { OnboardingTask as PipelineOnboardingTask, TaskStatus } from "@/lib/mock-data/pipeline-partners";
 import type { OnboardingSection } from "@/lib/mock-data/onboarding";
 import {
-  getOnboardingSectionProgressPercent,
   getOnboardingSectionStatusIconSrc,
   isOnboardingSectionLocked,
 } from "@/lib/mock-data/onboarding";
@@ -149,8 +148,8 @@ export function OnboardingProfileTaskProgressSteps({
             key={task.id}
             src={src}
             alt=""
-            width={24}
-            height={24}
+            width={16}
+            height={16}
             className="shrink-0"
             style={gray ? { filter: ONBOARDING_ICON_GRAY_FILTER } : undefined}
             title={task.title}
@@ -167,8 +166,8 @@ export function OnboardingChecklistProgressSteps({ sections }: { sections: Onboa
     <div className="flex items-center gap-1">
       {sections.map((section) => {
         const locked = isOnboardingSectionLocked(section, sections);
-        const progress = getOnboardingSectionProgressPercent(section);
         const src = getOnboardingSectionStatusIconSrc(section, sections);
+        const isPending = !locked && src === "/icons/progress.svg";
 
         return (
           <Image
@@ -178,7 +177,7 @@ export function OnboardingChecklistProgressSteps({ sections }: { sections: Onboa
             width={16}
             height={16}
             className="shrink-0"
-            style={!locked && progress === 0 ? { filter: GREY_FILTER } : undefined}
+            style={isPending ? { filter: GREY_FILTER } : undefined}
             title={section.title}
             aria-hidden
           />

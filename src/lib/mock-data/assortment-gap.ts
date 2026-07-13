@@ -6,6 +6,10 @@ import type { MissingProduct } from "@/components/data-display/missing-products-
 import type { TreemapItem } from "@/components/data-display/category-treemap";
 import type { TreemapHierarchyRoot } from "@/lib/mock-data/treemap-hierarchy";
 import { loadTreemapHierarchy } from "@/lib/mock-data/treemap-hierarchy.server";
+import {
+  computeOverallOpportunity,
+  enrichTreemapWithComputedRevenue,
+} from "@/lib/mock-data/treemap-revenue";
 
 interface AssortmentGapAnalysisMock {
   lastUpdatedAt: string;
@@ -57,28 +61,9 @@ function formatLastUpdated(iso: string): string {
   });
 }
 
-/** Parse a revenue string like "$22.8M" → number in millions */
-function parseRevenueMillion(revenue?: string): number {
-  if (!revenue) return 0;
-  const n = parseFloat(revenue.replace(/[^0-9.]/g, ""));
-  if (revenue.toUpperCase().includes("B")) return n * 1000;
-  if (revenue.toUpperCase().includes("K")) return n / 1000;
-  return isNaN(n) ? 0 : n;
-}
-
-/** Compute total revenue opportunity by summing the revenue field of all top-level treemap nodes */
-function computeTotalOpportunity(root: TreemapHierarchyRoot): string {
-  const totalM = root.children.reduce(
-    (sum, node) => sum + parseRevenueMillion(node.revenue),
-    0,
-  );
-  if (totalM >= 1000) return `$${(totalM / 1000).toFixed(1)}B`;
-  return `$${totalM.toFixed(1)}M`;
-}
-
 export async function getAssortmentGapAnalysis(): Promise<AssortmentGapAnalysisData> {
   const mock = loadAnalysisMock();
-  const treemapRoot = loadTreemapHierarchy();
+  const treemapRoot = enrichTreemapWithComputedRevenue(loadTreemapHierarchy());
 
   const topLevel = treemapRoot.children.map((node) => ({
     id: node.id,
@@ -96,7 +81,7 @@ export async function getAssortmentGapAnalysis(): Promise<AssortmentGapAnalysisD
   return {
     lastUpdatedAt: mock.lastUpdatedAt,
     lastUpdatedLabel: formatLastUpdated(mock.lastUpdatedAt),
-    revenueOpportunity: computeTotalOpportunity(treemapRoot),
+    revenueOpportunity: computeOverallOpportunity(treemapRoot),
     selectedCategoryCount: mock.selectedCategoryCount,
     competitors: mock.competitors,
     treemapRoot,

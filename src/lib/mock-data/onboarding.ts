@@ -58,7 +58,10 @@ export function getOnboardingSectionStatusIconSrc(
   if (section.completedSteps >= section.totalSteps && section.totalSteps > 0) {
     return "/icons/progress-check.svg";
   }
-  return "/icons/time-clock.svg";
+  if (section.tasks.some((t) => t.status === "in_progress" || t.status === "blocked")) {
+    return "/icons/time-clock.svg";
+  }
+  return "/icons/progress.svg";
 }
 
 export function computeOnboardingOverallProgress(sections: OnboardingSection[]): number {
@@ -445,8 +448,26 @@ function completeProfileAndDocumentationPartner(
   );
 }
 
+/** Approved but not yet started onboarding — section 2 in review, last two sections locked */
+function buildApprovedPreOnboardingProfile(
+  sellerId: string,
+  sellerName: string,
+): OnboardingPartner {
+  return applyTaskUpdates(
+    buildFreshOnboardingForPartner(sellerId, sellerName),
+    {
+      "08": { status: "in_progress", autoValidated: false },
+    },
+    { startedAt: "2026-07-01", targetLaunchDate: "2026-09-01" },
+  );
+}
+
 /** Demo partners with partial checklist progress for profile & documentation review flows */
 const partialOnboardingProfiles: Record<string, OnboardingPartner> = {
+  // Approved partners — checklist not started; assortment (2nd section) in review
+  "p-l-c2": buildApprovedPreOnboardingProfile("p-l-c2", "FluxLight Co."),
+  "p-f-c1": buildApprovedPreOnboardingProfile("p-f-c1", "MapleCraft Co."),
+  "p-k-c2": buildApprovedPreOnboardingProfile("p-k-c2", "TableCraft Brands"),
   // Pinnacle Goods — profile nearly complete (banner issue) + W9 uploaded
   "p-k-o2": applyTaskUpdates(
     buildFreshOnboardingForPartner("p-k-o2", "Pinnacle Goods"),

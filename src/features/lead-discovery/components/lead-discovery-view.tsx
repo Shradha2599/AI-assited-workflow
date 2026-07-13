@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ChevronDown,
   Filter,
@@ -22,7 +22,7 @@ import { ConfidenceScoreBadge } from "@/components/data-display/confidence-score
 import { useOutreachMail } from "@/features/outreach/hooks/use-outreach-mail";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/layout/page-header";
-import { sellers, type Seller } from "@/lib/mock-data/sellers";
+import { sellers, TOTAL_LEAD_COUNT, type Seller } from "@/lib/mock-data/sellers";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { useDiscoveryStore } from "../store/discovery-store";
 import {
@@ -80,6 +80,8 @@ export function LeadDiscoveryView() {
   const removeFromShortlist = useDiscoveryStore((s) => s.removeFromShortlist);
   const setIsDiscovering = useDiscoveryStore((s) => s.setIsDiscovering);
   const setFilter = useDiscoveryStore((s) => s.setFilter);
+  const clearDiscoveryResults = useDiscoveryStore((s) => s.clearDiscoveryResults);
+  const syncLeadPoolVersion = useDiscoveryStore((s) => s.syncLeadPoolVersion);
   const openOutreach = useOutreachMail();
 
   const [activeTab, setActiveTab] = useState<Tab>("discovered");
@@ -91,6 +93,30 @@ export function LeadDiscoveryView() {
   const [filterDraft, setFilterDraft] = useState<FilterDraft>(() =>
     emptyFilterDraft(activeFilters),
   );
+
+  useEffect(() => {
+    syncLeadPoolVersion();
+  }, [syncLeadPoolVersion]);
+
+  useEffect(() => {
+    if (discoveredIds.length === 0) return;
+    const validIds = discoveredIds.filter((id) => sellers.some((s) => s.id === id));
+    if (validIds.length !== discoveredIds.length) {
+      if (validIds.length === 0) {
+        clearDiscoveryResults();
+      } else {
+        const reasons = useDiscoveryStore.getState().relevanceReasons;
+        const planMatches = useDiscoveryStore.getState().planMatches;
+        const nextReasons = Object.fromEntries(
+          validIds.map((id) => [id, reasons[id] ?? ""]),
+        );
+        const nextPlanMatches = Object.fromEntries(
+          validIds.flatMap((id) => (planMatches[id] ? [[id, planMatches[id]]] : [])),
+        );
+        setDiscovered(validIds, nextReasons, nextPlanMatches);
+      }
+    }
+  }, [clearDiscoveryResults, discoveredIds, setDiscovered]);
 
   function openDiscoverDrawer() {
     setFilterDraft(emptyFilterDraft(activeFilters));
@@ -250,6 +276,7 @@ export function LeadDiscoveryView() {
 
   const isShortlistedEmpty = activeTab === "shortlisted" && shortlistedIds.length === 0;
   const hasDiscoveredResults = discoveredIds.length > 0;
+  const showingAiSubset = hasDiscoveredResults && activeTab === "discovered";
   const hasShortlistedResults = shortlistedIds.length > 0;
   const showTable =
     (activeTab === "discovered" && hasDiscoveredResults) ||
@@ -389,10 +416,24 @@ export function LeadDiscoveryView() {
           <div className="flex items-center justify-between border-b border-[var(--color-border)] py-3">
             <p className="text-[var(--text-body-size)] font-semibold">
               {activeTab === "discovered"
-                ? `Leads Discovered: ${totalCount.toLocaleString()}`
+                ? showingAiSubset
+                  ? `Leads Discovered: ${totalCount.toLocaleString()} of ${TOTAL_LEAD_COUNT.toLocaleString()} (AI-ranked)`
+                  : `Leads Discovered: ${totalCount.toLocaleString()}`
                 : `Shortlisted Leads ${totalCount.toLocaleString()}`}
             </p>
             <div className="flex items-center gap-2">
+              {showingAiSubset && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearDiscoveryResults();
+                    setPage(1);
+                  }}
+                  className="rounded-[var(--radius-md)] border border-[var(--color-border)] px-3 py-1.5 text-[var(--text-caption-size)] font-medium text-[var(--color-primary)] hover:bg-[var(--color-muted)]"
+                >
+                  View all {TOTAL_LEAD_COUNT.toLocaleString()} leads
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => {
