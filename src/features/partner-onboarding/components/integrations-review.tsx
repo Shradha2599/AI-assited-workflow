@@ -1,41 +1,21 @@
 "use client";
 
 import { useEffect } from "react";
-import { Check } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { StatusTag } from "@/components/ui/status-tag";
-import { SvgIcon } from "@/components/ui/svg-icon";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
-import { getOnboardingSectionProgressPercent } from "@/lib/mock-data/onboarding";
 import { getIntegrationsContent } from "@/lib/mock-data/integrations-content";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
 import { cn } from "@/lib/utils";
 import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
-import { ReadOnlyBadge, SectionDivider, UnderlinedField } from "./profile-review-shared";
+import { CompleteBadge, ReadOnlyBadge, SectionDivider, UnderlinedField } from "./profile-review-shared";
+import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
 interface IntegrationsReviewProps {
   partner: PotentialPartner;
   onboarding: OnboardingPartner;
-}
-
-function ReviewBadge() {
-  return (
-    <StatusTag className="inline-flex items-center gap-1.5 bg-amber-100 font-normal text-amber-900">
-      Review
-    </StatusTag>
-  );
-}
-
-function ApprovedBadge() {
-  return (
-    <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
-      <Check className="h-3 w-3" /> Approved
-    </StatusTag>
-  );
 }
 
 function IntegrationTypeReadOnly({ selected }: { selected: "channel-partner" | "direct-integrator" }) {
@@ -124,16 +104,10 @@ function ChannelPartnerCard({
 
 export function IntegrationsReview({ partner, onboarding }: IntegrationsReviewProps) {
   const setContext = useOnboardingReviewStore((s) => s.setContext);
-  const openComments = useOnboardingReviewStore((s) => s.openComments);
-  const approveItem = useOnboardingReviewStore((s) => s.approveItem);
-  const isApproved = useOnboardingReviewStore((s) => s.isApproved);
 
   const integrationsSection = onboarding.sections.find((s) => s.id === "integrations");
   const integrationsTask = integrationsSection?.tasks[0];
-  const progress = integrationsSection ? getOnboardingSectionProgressPercent(integrationsSection) : 0;
   const content = getIntegrationsContent(partner.sellerId);
-  const approveId = `integrations-${partner.id}`;
-  const approved = isApproved(approveId);
 
   useEffect(() => {
     if (integrationsTask) {
@@ -152,22 +126,15 @@ export function IntegrationsReview({ partner, onboarding }: IntegrationsReviewPr
         onboarding={onboarding}
         breadcrumbExtra="Integrations"
         sectionTitle="Integrations"
-        sectionSubtitle="Integrate your systems to the marketplace for order management, inventory, and fulfilment operations."
-        progress={progress}
+        sectionSubtitle={getOnboardingSectionSubtitle("integrations")}
+        progress={100}
         headerIconSrc="/icons/join-inner.svg"
       >
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h3 className="text-[20px] font-semibold text-[var(--color-foreground)]">Integrations</h3>
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-primary)] text-[var(--color-primary)]"
-              aria-label="Help"
-            >
-              <SvgIcon name="help" size={18} variant="primary" alt="" />
-            </button>
             <ReadOnlyBadge />
-            {approved ? <ApprovedBadge /> : <ReviewBadge />}
+            <CompleteBadge />
           </div>
         </div>
 
@@ -186,26 +153,6 @@ export function IntegrationsReview({ partner, onboarding }: IntegrationsReviewPr
             />
           </>
         )}
-
-        <div className="mt-8 flex items-center gap-3 border-t border-[var(--color-border)] pt-8">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => approveItem(approveId)}
-            disabled={approved}
-          >
-            {approved ? "Approved" : "Approve"}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-auto px-0 text-[var(--color-primary)] hover:bg-transparent"
-            onClick={() => openComments(integrationsTask.id)}
-            disabled={approved}
-          >
-            Reject
-          </Button>
-        </div>
       </OnboardingSectionReviewLayout>
 
       <OnboardingCommentsDrawer partner={partner} />

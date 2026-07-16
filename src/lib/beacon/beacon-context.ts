@@ -452,6 +452,22 @@ function getOnboardingReviewPanelTasks(
     };
   }
 
+  if (pathname.includes("/review/assortment")) {
+    return {
+      tasks: [
+        {
+          id: "assortment-review",
+          title: "Review assortment curation",
+          description: "Validate submitted SKUs, Target recommendations, and assortment analysis before approval.",
+          actionLabel: "Review assortment →",
+          actionHref: pathname,
+          partnerId,
+        },
+      ],
+      insights: [],
+    };
+  }
+
   return { tasks: [], insights: [] };
 }
 
@@ -610,6 +626,15 @@ function buildConversationStarters(
         "What should I verify before approving this integration setup?",
         "Does this partner's integration cover order management and returns end-to-end?",
         `Draft a rejection comment if ${partner?.legalBusinessName} needs a different integrator.`,
+      ];
+    }
+
+    if (input.pathname.includes("/review/assortment")) {
+      return [
+        `How many SKUs did ${partner?.legalBusinessName} submit vs Target's recommendation?`,
+        "Are there barcode or WERCS issues I should flag before approving?",
+        "Which item types have the weakest coverage in this assortment?",
+        `Summarize protected brand exposure for ${partner?.legalBusinessName}.`,
       ];
     }
 

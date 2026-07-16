@@ -16,8 +16,10 @@ import {
 } from "@/features/partner-onboarding/utils/profile-task-icons";
 import {
   countOnboardingSectionProgress,
+  getAssortmentTaskIconSrc,
   getOnboardingSectionProgressPercent,
   getOnboardingSectionStatusIconSrc,
+  isAssortmentSectionInReview,
   isOnboardingSectionLocked,
   LOCKED_ONBOARDING_SECTION_IDS,
 } from "@/lib/mock-data/onboarding";
@@ -68,7 +70,17 @@ function getSubTaskIconSrc(task: OnboardingTask, approvedIds?: string[]): string
 
 function isSectionReviewable(section: OnboardingSection): boolean {
   if (LOCKED_SECTION_IDS.has(section.id)) return false;
+  if (section.id === "assortment") return true;
   return section.completedSteps > 0 || section.tasks.some((t) => t.status !== "pending");
+}
+
+const TM_REVIEW_SECTIONS = new Set(["profile", "documentation", "integrations", "assortment"]);
+
+function isSectionLinkable(section: OnboardingSection, sections: OnboardingSection[]): boolean {
+  if (!TM_REVIEW_SECTIONS.has(section.id)) return false;
+  if (isSectionLocked(section, sections)) return false;
+  if (section.id === "assortment") return true;
+  return isSectionReviewable(section);
 }
 
 function ChecklistIcon({
@@ -108,6 +120,7 @@ function SectionRow({
 }) {
   const locked = isSectionLocked(section, sections);
   const reviewable = isSectionReviewable(section);
+  const linkable = isSectionLinkable(section, sections);
   const progress =
     section.id === "profile"
       ? getProfileSectionProgressPercent(section, approvedIds)
@@ -125,9 +138,10 @@ function SectionRow({
         "flex items-start px-5 py-5",
         locked && "opacity-70",
         reviewable && !locked && "hover:bg-[var(--color-muted)]/40",
+        linkable && "cursor-pointer",
       )}
     >
-      <ChecklistIcon src={statusIcon} size={24} gray={!locked && progress === 0} />
+      <ChecklistIcon src={statusIcon} size={24} gray={!locked && progress === 0 && !isAssortmentSectionInReview(section)} />
       <ChecklistIcon src={sectionIcon} size={40} className="ml-3" />
       <div className="ml-4 flex min-w-0 flex-1 items-start justify-between gap-4">
         <div className="min-w-0">
@@ -161,8 +175,8 @@ function SectionRow({
               const lockedTask = locked;
               const iconSrc = lockedTask
                 ? "/icons/lock-fill.svg"
-                : section.id === "assortment" && task.status === "pending"
-                  ? "/icons/clipboard.svg"
+                : section.id === "assortment"
+                  ? getAssortmentTaskIconSrc(task)
                   : getSubTaskIconSrc(task, section.id === "profile" ? approvedIds : undefined);
               return (
               <ChecklistIcon
@@ -171,11 +185,11 @@ function SectionRow({
                 size={16}
                 gray={
                   !locked &&
+                  section.id !== "assortment" &&
                   shouldGrayProfileSubTaskIcon(
                     task,
                     section.id === "profile" ? approvedIds : undefined,
-                  ) &&
-                  section.id !== "assortment"
+                  )
                 }
               />
             );})}
@@ -185,20 +199,15 @@ function SectionRow({
     </div>
   );
 
-  if (reviewable && !locked && (section.id === "profile" || section.id === "documentation" || section.id === "integrations")) {
+  if (linkable) {
     return (
-      <Link
-        href={`/sellers/onboarding/${partnerId}/review/${section.id}`}
-        className="block border-b border-[var(--color-border)] last:border-0"
-      >
+      <Link href={`/sellers/onboarding/${partnerId}/review/${section.id}`} className="block">
         {content}
       </Link>
     );
   }
 
-  return (
-    <div className="border-b border-[var(--color-border)] last:border-0">{content}</div>
-  );
+  return <div>{content}</div>;
 }
 
 export function OnboardingChecklistView({ partner, onboarding }: OnboardingChecklistViewProps) {
@@ -245,7 +254,7 @@ export function OnboardingChecklistView({ partner, onboarding }: OnboardingCheck
       </section>
 
       <section>
-        <h2 className="mb-2 text-[20px] font-semibold text-[var(--color-foreground)]">
+        <h2 className="mb-4 text-[20px] font-semibold text-[var(--color-foreground)]">
           Onboarding checklist
         </h2>
         <Card className="overflow-hidden border-[var(--color-border)] shadow-[var(--shadow-low)]">

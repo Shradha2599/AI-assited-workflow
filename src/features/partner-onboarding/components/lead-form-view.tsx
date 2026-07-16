@@ -10,6 +10,7 @@ import { getLeadFormAnalysis } from "@/lib/mock-data/lead-form-analysis";
 import type { LeadFormData } from "@/lib/mock-data/lead-forms";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
 import { EvaluationAnalysisDrawer } from "./evaluation-analysis-drawer";
+import { FileAttachmentRow } from "./profile-review-shared";
 import { useLeadDecision } from "../hooks/use-lead-decision";
 
 interface LeadFormViewProps {
@@ -110,35 +111,15 @@ function FormSection({
 }
 
 function FileAttachment({
-  iconSrc,
   name,
   size,
   onDownload,
 }: {
-  iconSrc: string;
   name: string;
   size: string;
   onDownload: () => void;
 }) {
-  return (
-    <div className="flex max-w-[240px] items-center gap-3 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-card)] px-4 py-3">
-      <Image src={iconSrc} alt="" width={24} height={24} className="shrink-0" aria-hidden />
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">
-          {name}
-        </p>
-        <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">{size}</p>
-      </div>
-      <button
-        type="button"
-        onClick={onDownload}
-        className="shrink-0 rounded-[var(--radius-sm)] p-1.5 text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
-        aria-label={`Download ${name}`}
-      >
-        <Image src="/icons/download.svg" alt="" width={16} height={16} aria-hidden />
-      </button>
-    </div>
-  );
+  return <FileAttachmentRow name={name} size={size} onDownload={onDownload} />;
 }
 
 function LinkedProfileCard({ platform, url }: { platform: string; url: string }) {
@@ -294,7 +275,6 @@ export function LeadFormView({ partner, form }: LeadFormViewProps) {
           </p>
           <div className="mt-2">
             <FileAttachment
-              iconSrc="/icons/excel.svg"
               name={form.assortmentFile.name}
               size={form.assortmentFile.size}
               onDownload={() => downloadAssortmentFile(form.assortmentFile.name)}
@@ -317,7 +297,6 @@ export function LeadFormView({ partner, form }: LeadFormViewProps) {
           </p>
           <div className="mt-4">
             <FileAttachment
-              iconSrc="/icons/file-doc.svg"
               name={form.w9File.name}
               size={form.w9File.size}
               onDownload={() => downloadW9File(form.w9File.name)}

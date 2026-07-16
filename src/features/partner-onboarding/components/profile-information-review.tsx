@@ -22,11 +22,13 @@ import {
 } from "./onboarding-subtask-nav";
 import {
   AutoValidatedBadge,
+  CompleteBadge,
   FileAttachment,
   ReadOnlyBadge,
   UnderlinedField,
   ValidationAlert,
 } from "./profile-review-shared";
+import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
 import { ProfileSubTaskContentView } from "./profile-subtask-views";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
@@ -192,7 +194,7 @@ export function ProfileInformationReview({
         onboarding={onboarding}
         breadcrumbExtra="Profile Information"
         sectionTitle="Profile information"
-        sectionSubtitle="Provide your business related information."
+        sectionSubtitle={getOnboardingSectionSubtitle("profile")}
         progress={profileProgress}
         headerIconSrc="/icons/marketplace.svg"
         sidebar={
@@ -209,42 +211,37 @@ export function ProfileInformationReview({
           </h3>
           <div className="flex flex-wrap items-center gap-2">
             <ReadOnlyBadge />
-            {(activeEval?.autoValidated ?? activeTask.autoValidated) && !tmApproved && (
-              <AutoValidatedBadge />
-            )}
-            {tmApproved && (
-              <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
-                <Check className="h-3 w-3" /> Approved
-              </StatusTag>
-            )}
-            {taskSubmitted && !tmApproved && (
+            {isBrandProfile ? (
               <>
-                <Button size="sm" variant="outline" onClick={() => approveItem(taskApproveId)}>
-                  Approve
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 px-2 text-[var(--color-primary)] hover:bg-transparent"
-                  onClick={() => openComments(activeTaskId)}
-                >
-                  Reject
-                </Button>
+                {(activeEval?.autoValidated ?? activeTask.autoValidated) && !tmApproved && (
+                  <AutoValidatedBadge />
+                )}
+                {tmApproved && (
+                  <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+                    <Check className="h-3 w-3" /> Approved
+                  </StatusTag>
+                )}
+                {taskSubmitted && !tmApproved && (
+                  <>
+                    <Button size="sm" variant="outline" onClick={() => approveItem(taskApproveId)}>
+                      Approve
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-2 text-[var(--color-primary)] hover:bg-transparent"
+                      onClick={() => openComments(activeTaskId)}
+                    >
+                      Reject
+                    </Button>
+                  </>
+                )}
               </>
+            ) : (
+              <CompleteBadge />
             )}
           </div>
         </div>
-
-        {activeEval?.agentRecommendation && !isBrandProfile && (
-          <ValidationAlert
-            taskId={activeEval.taskId}
-            title={activeEval.agentRecommendation.title}
-            message={activeEval.agentRecommendation.message}
-            onAddComment={handleAddComment}
-            onRejectRecommendation={handleRejectRecommendation}
-            variant="banner"
-          />
-        )}
 
         {isBrandProfile ? (
           <BrandProfileContent

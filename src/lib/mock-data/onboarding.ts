@@ -35,6 +35,18 @@ export interface OnboardingSection {
 
 export const LOCKED_ONBOARDING_SECTION_IDS = new Set(["item-listing", "stripe"]);
 
+export const ASSORTMENT_REVIEW_ICON_SRC = "/icons/clipboard.svg";
+
+export function isAssortmentSectionInReview(section: OnboardingSection): boolean {
+  if (section.id !== "assortment") return false;
+  return section.tasks.some((task) => task.status === "in_progress");
+}
+
+export function getAssortmentTaskIconSrc(task: OnboardingTask): string {
+  if (task.status === "complete") return "/icons/progress-check-success.svg";
+  return ASSORTMENT_REVIEW_ICON_SRC;
+}
+
 export function isOnboardingSectionLocked(
   section: OnboardingSection,
   sections: OnboardingSection[],
@@ -55,6 +67,9 @@ export function getOnboardingSectionStatusIconSrc(
 ): string {
   const locked = isOnboardingSectionLocked(section, sections);
   if (locked) return "/icons/lock-fill.svg";
+  if (isAssortmentSectionInReview(section)) {
+    return ASSORTMENT_REVIEW_ICON_SRC;
+  }
   if (section.completedSteps >= section.totalSteps && section.totalSteps > 0) {
     return "/icons/progress-check.svg";
   }
@@ -321,7 +336,7 @@ function buildFreshOnboardingForPartner(
     sellerId,
     section,
     title,
-    status: "pending",
+    status: section === "assortment" ? "in_progress" : "pending",
     autoValidated,
   });
 
@@ -343,7 +358,7 @@ function buildFreshOnboardingForPartner(
     },
     {
       id: "assortment",
-      title: "Assortment Curation",
+      title: "Assortment curation",
       totalSteps: 1,
       completedSteps: 0,
       tasks: [task("assortment", "08", "Upload assortment file (SKUs)")],
@@ -486,6 +501,7 @@ const partialOnboardingProfiles: Record<string, OnboardingPartner> = {
       "07": { status: "complete", autoValidated: true },
       "09": { status: "complete", autoValidated: true },
       "11": { status: "complete", autoValidated: false },
+      "08": { status: "in_progress", autoValidated: false },
     },
     { startedAt: "2026-04-01", targetLaunchDate: "2026-07-01" },
   ),

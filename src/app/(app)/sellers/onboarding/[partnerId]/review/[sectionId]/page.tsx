@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { AssortmentCurationReview } from "@/features/partner-onboarding/components/assortment-curation-review";
 import { DocumentationReview } from "@/features/partner-onboarding/components/documentation-review";
 import { IntegrationsReview } from "@/features/partner-onboarding/components/integrations-review";
 import { ProfileInformationReview } from "@/features/partner-onboarding/components/profile-information-review";
@@ -52,6 +53,19 @@ export default async function SectionReviewPage({ params, searchParams }: Sectio
 
   if (sectionId === "integrations") {
     return <IntegrationsReview partner={partner} onboarding={onboarding} />;
+  }
+
+  if (sectionId === "assortment") {
+    const tabParam = tab ?? "submitted";
+    const activeTab =
+      tabParam === "recommended" || tabParam === "analysis" ? tabParam : "submitted";
+    return (
+      <AssortmentCurationReview
+        partner={partner}
+        onboarding={onboarding}
+        activeTab={activeTab}
+      />
+    );
   }
 
   notFound();

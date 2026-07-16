@@ -1,6 +1,7 @@
 import type { OnboardingTask } from "@/lib/mock-data/onboarding";
 import {
   getProfileTaskProgressIconSrc,
+  isProfileTmReviewTask,
   resolveProfileTaskProgressState,
   shouldGrayProfileTaskProgressIcon,
 } from "./profile-task-progress";
@@ -13,6 +14,9 @@ export function getProfileSubTaskIconSrc(
   task: OnboardingTask,
   approvedIds: string[] = [],
 ): string {
+  if (!isProfileTmReviewTask(task)) {
+    return "/icons/progress-check-success.svg";
+  }
   return getProfileTaskProgressIconSrc(task, approvedIds);
 }
 
@@ -21,6 +25,9 @@ export function getProfileSubTaskNavIconSrc(
   task: OnboardingTask,
   approvedIds: string[] = [],
 ): string {
+  if (!isProfileTmReviewTask(task)) {
+    return "/icons/progress-check-success.svg";
+  }
   return getProfileTaskProgressIconSrc(task, approvedIds);
 }
 
@@ -36,6 +43,7 @@ export function shouldGrayProfileSubTaskIcon(
   task: OnboardingTask,
   approvedIds: string[] = [],
 ): boolean {
+  if (!isProfileTmReviewTask(task)) return false;
   return shouldGrayProfileTaskProgressIcon(task, approvedIds);
 }
 
@@ -43,6 +51,7 @@ export function shouldGrayProfileSubTaskNavIcon(
   task: OnboardingTask,
   approvedIds: string[] = [],
 ): boolean {
+  if (!isProfileTmReviewTask(task)) return false;
   return shouldGrayProfileTaskProgressIcon(task, approvedIds);
 }
 

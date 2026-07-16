@@ -18,6 +18,8 @@ import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
 import { OnboardingSubtaskNav } from "./onboarding-subtask-nav";
+import { FileAttachmentRow } from "./profile-review-shared";
+import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
 interface DocumentationReviewProps {
@@ -79,21 +81,13 @@ function BrandDocumentsAlert({
   );
 }
 
-function TableDocumentChip({ name }: { name: string }) {
+function TableDocumentChip({ name, size }: { name: string; size?: string }) {
   return (
-    <div className="inline-flex max-w-full items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white px-3 py-2">
-      <Image src="/icons/file-doc.svg" alt="" width={16} height={16} className="shrink-0" aria-hidden />
-      <span className="truncate text-[var(--text-caption-size)] font-medium text-[var(--color-foreground)]">
-        {name}
-      </span>
-      <button
-        type="button"
-        className="shrink-0 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
-        aria-label={`Download ${name}`}
-      >
-        <Image src="/icons/download.svg" alt="" width={16} height={16} aria-hidden />
-      </button>
-    </div>
+    <FileAttachmentRow
+      name={name}
+      size={size ?? ""}
+      className="max-w-full"
+    />
   );
 }
 
@@ -124,10 +118,7 @@ function GeneralDocumentFile({
         {instruction}
       </p>
       <div className="mt-3">
-        <TableDocumentChip name={fileName} />
-        <p className="mt-1 text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
-          {fileSize}
-        </p>
+        <TableDocumentChip name={fileName} size={fileSize} />
       </div>
       <div className="mt-3 flex items-center gap-3">
         <Button
@@ -328,7 +319,7 @@ export function DocumentationReview({
         onboarding={onboarding}
         breadcrumbExtra="Documentation"
         sectionTitle="Documentation"
-        sectionSubtitle="Provide your business related information."
+        sectionSubtitle={getOnboardingSectionSubtitle("documentation")}
         progress={docProgress}
         headerIconSrc="/icons/files.svg"
         sidebar={

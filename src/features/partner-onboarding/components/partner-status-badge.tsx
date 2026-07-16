@@ -10,7 +10,9 @@ import {
 import type { OnboardingTask as PipelineOnboardingTask, TaskStatus } from "@/lib/mock-data/pipeline-partners";
 import type { OnboardingSection } from "@/lib/mock-data/onboarding";
 import {
+  ASSORTMENT_REVIEW_ICON_SRC,
   getOnboardingSectionStatusIconSrc,
+  isAssortmentSectionInReview,
   isOnboardingSectionLocked,
 } from "@/lib/mock-data/onboarding";
 import type { PartnerPipelineStatus } from "@/lib/mock-data/potential-partners";
@@ -167,7 +169,10 @@ export function OnboardingChecklistProgressSteps({ sections }: { sections: Onboa
       {sections.map((section) => {
         const locked = isOnboardingSectionLocked(section, sections);
         const src = getOnboardingSectionStatusIconSrc(section, sections);
-        const isPending = !locked && src === "/icons/progress.svg";
+        const isPending =
+          !locked && src === "/icons/progress.svg" && !isAssortmentSectionInReview(section);
+        const isAssortmentReview =
+          !locked && isAssortmentSectionInReview(section) && src === ASSORTMENT_REVIEW_ICON_SRC;
 
         return (
           <Image
@@ -178,7 +183,9 @@ export function OnboardingChecklistProgressSteps({ sections }: { sections: Onboa
             height={16}
             className="shrink-0"
             style={isPending ? { filter: GREY_FILTER } : undefined}
-            title={section.title}
+            title={
+              isAssortmentReview ? `${section.title} — in review` : section.title
+            }
             aria-hidden
           />
         );

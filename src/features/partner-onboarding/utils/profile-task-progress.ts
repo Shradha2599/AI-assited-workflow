@@ -1,5 +1,11 @@
 import type { OnboardingSection, OnboardingTask } from "@/lib/mock-data/onboarding";
 
+export const PROFILE_TM_REVIEW_TASK_TITLE = "Brand profile";
+
+export function isProfileTmReviewTask(task: OnboardingTask): boolean {
+  return task.title === PROFILE_TM_REVIEW_TASK_TITLE;
+}
+
 export function profileTaskApproveId(taskId: string): string {
   return `profile-${taskId}`;
 }
@@ -57,6 +63,7 @@ export function countProfileSectionCompletedSteps(
   approvedIds: string[] = [],
 ): number {
   return section.tasks.filter((task) => {
+    if (!isProfileTmReviewTask(task)) return true;
     const state = resolveProfileTaskProgressState(task, approvedIds);
     return state === "tm_approved" || state === "seller_complete";
   }).length;

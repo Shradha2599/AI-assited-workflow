@@ -90,6 +90,14 @@ export function AutoValidatedBadge() {
   );
 }
 
+export function CompleteBadge() {
+  return (
+    <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+      <Check className="h-3 w-3" /> Complete
+    </StatusTag>
+  );
+}
+
 export function UnderlinedField({ label, value }: { label: string; value: string }) {
   return (
     <div className="border-b border-[var(--color-border)] py-4">
@@ -109,6 +117,47 @@ export function SectionHeading({ children }: { children: React.ReactNode }) {
 
 export function SectionDivider() {
   return <div className="my-8 border-t border-[var(--color-border)]" aria-hidden />;
+}
+
+export function FileAttachmentRow({
+  name,
+  size,
+  onDownload,
+  className,
+}: {
+  name: string;
+  size: string;
+  onDownload?: () => void;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex max-w-[320px] items-center gap-3 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[#f5f5f5] px-4 py-3",
+        className,
+      )}
+    >
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[#e8f0fe]">
+        <Image src="/icons/file-doc.svg" alt="" width={24} height={24} aria-hidden />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">
+          {name}
+        </p>
+        {size ? (
+          <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">{size}</p>
+        ) : null}
+      </div>
+      <button
+        type="button"
+        onClick={onDownload}
+        className="shrink-0 rounded-[var(--radius-sm)] p-1.5 text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
+        aria-label={`Download ${name}`}
+      >
+        <Image src="/icons/download.svg" alt="" width={16} height={16} aria-hidden />
+      </button>
+    </div>
+  );
 }
 
 export function FileAttachment({
@@ -131,31 +180,27 @@ export function FileAttachment({
       {hint && (
         <p className="mt-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">{hint}</p>
       )}
-      <div className="mt-3 flex max-w-[280px] items-center gap-3 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white px-4 py-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[#f5f5f5]">
-          <Image src="/icons/file-image.svg" alt="" width={24} height={24} aria-hidden />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">{name}</p>
-          <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">{size}</p>
-        </div>
-        <button
-          type="button"
-          className="shrink-0 rounded-[var(--radius-sm)] p-1.5 text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
-          aria-label={`Download ${name}`}
-        >
-          <Image src="/icons/download.svg" alt="" width={16} height={16} aria-hidden />
-        </button>
+      <div className="mt-3">
+        <FileAttachmentRow name={name} size={size} />
       </div>
     </div>
   );
 }
 
-export function TablePagination({ showing, total }: { showing: number; total: number }) {
+export function TablePagination({
+  showing,
+  total,
+  pageSize = 10,
+}: {
+  showing: number;
+  total: number;
+  pageSize?: number;
+}) {
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
   return (
     <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
       <span>
-        Showing 1–{showing} of {total} items
+        Showing 1–{showing} of {total.toLocaleString()} items
       </span>
       <div className="flex items-center gap-2">
         <PaginationBtn disabled aria-label="First page">
@@ -164,7 +209,7 @@ export function TablePagination({ showing, total }: { showing: number; total: nu
         <PaginationBtn disabled aria-label="Previous page">
           ‹
         </PaginationBtn>
-        <span className="px-1 tabular-nums">Page 1 of 1</span>
+        <span className="px-1 tabular-nums">Page 1 of {totalPages}</span>
         <PaginationBtn disabled aria-label="Next page">
           ›
         </PaginationBtn>
