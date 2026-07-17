@@ -50,10 +50,10 @@ export function OnboardingSubtaskNav({
         const isActive = item.id === activeId;
         const isDocumentation = navVariant === "documentation";
         const iconSrc = isDocumentation
-          ? getDocumentationSubTaskNavIconSrc(item.task)
+          ? getDocumentationSubTaskNavIconSrc(item.task, approvedIds)
           : getProfileSubTaskNavIconSrc(item.task, approvedIds);
         const gray = isDocumentation
-          ? shouldGrayDocumentationSubTaskNavIcon(item.task)
+          ? shouldGrayDocumentationSubTaskNavIcon(item.task, approvedIds)
           : shouldGrayProfileSubTaskNavIcon(item.task, approvedIds);
 
         return (

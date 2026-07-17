@@ -1,9 +1,14 @@
 import { LOCKED_ONBOARDING_SECTION_IDS } from "./types";
 import {
   countProfileSectionCompletedSteps,
-  getProfileSectionProgressPercent,
+  isProfileTaskTmApproved,
   PROFILE_TM_REVIEW_TASK_TITLE,
 } from "@/features/partner-onboarding/utils/profile-task-progress";
+import {
+  countDocumentationSectionCompletedSteps,
+  documentationTaskNeedsReview,
+  isDocumentationTaskTmApproved,
+} from "@/features/partner-onboarding/utils/documentation-task-progress";
 import type {
   OnboardingSection,
   OnboardingSectionId,
@@ -12,40 +17,16 @@ import type {
   SellerOnboardingState,
 } from "./types";
 
-export function getOnboardingSectionProgressPercent(section: OnboardingSection): number {
-  if (!section.totalSteps) return 0;
-  return Math.round((section.completedSteps / section.totalSteps) * 100);
-}
-
-export function computeOnboardingOverallProgress(sections: OnboardingSection[]): number {
-  const totalSteps = sections.reduce((sum, section) => sum + section.totalSteps, 0);
-  if (totalSteps === 0) return 0;
-  const completedSteps = sections.reduce((sum, section) => sum + section.completedSteps, 0);
-  return Math.round((completedSteps / totalSteps) * 100);
-}
-
-export function countOnboardingSectionProgress(sections: OnboardingSection[]) {
-  const total = sections.length;
-  const remaining = sections.filter((section) => section.completedSteps < section.totalSteps).length;
-  return { total, remaining };
-}
-
-export function isOnboardingSectionLocked(
-  section: OnboardingSection,
-  sections: OnboardingSection[],
-): boolean {
-  if (!LOCKED_ONBOARDING_SECTION_IDS.has(section.id)) return false;
-  const prerequisites = sections.filter((s) => !LOCKED_ONBOARDING_SECTION_IDS.has(s.id));
-  return !prerequisites.every((s) => s.completedSteps >= s.totalSteps);
-}
-
-/** Profile uses TM-approval overlay; other sections count `complete` tasks only. */
+/** Effective completed subtask count — Brand profile requires TM approval. */
 export function countSectionCompletedSteps(
   section: OnboardingSection,
   approvedIds: string[] = [],
 ): number {
   if (section.id === "profile") {
     return countProfileSectionCompletedSteps(section, approvedIds);
+  }
+  if (section.id === "documentation") {
+    return countDocumentationSectionCompletedSteps(section, approvedIds);
   }
   return section.tasks.filter((task) => task.status === "complete").length;
 }
@@ -54,10 +35,50 @@ export function getSectionProgressPercent(
   section: OnboardingSection,
   approvedIds: string[] = [],
 ): number {
-  if (section.id === "profile") {
-    return getProfileSectionProgressPercent(section, approvedIds);
-  }
-  return getOnboardingSectionProgressPercent(section);
+  if (!section.totalSteps) return 0;
+  const completed = countSectionCompletedSteps(section, approvedIds);
+  return Math.round((completed / section.totalSteps) * 100);
+}
+
+/** @deprecated Use getSectionProgressPercent(section, approvedIds) */
+export function getOnboardingSectionProgressPercent(section: OnboardingSection): number {
+  return getSectionProgressPercent(section, []);
+}
+
+export function computeOnboardingOverallProgress(
+  sections: OnboardingSection[],
+  approvedIds: string[] = [],
+): number {
+  const totalSteps = sections.reduce((sum, section) => sum + section.totalSteps, 0);
+  if (totalSteps === 0) return 0;
+  const completedSteps = sections.reduce(
+    (sum, section) => sum + countSectionCompletedSteps(section, approvedIds),
+    0,
+  );
+  return Math.round((completedSteps / totalSteps) * 100);
+}
+
+export function countOnboardingSectionProgress(
+  sections: OnboardingSection[],
+  approvedIds: string[] = [],
+) {
+  const total = sections.length;
+  const remaining = sections.filter(
+    (section) => countSectionCompletedSteps(section, approvedIds) < section.totalSteps,
+  ).length;
+  return { total, remaining };
+}
+
+export function isOnboardingSectionLocked(
+  section: OnboardingSection,
+  sections: OnboardingSection[],
+  approvedIds: string[] = [],
+): boolean {
+  if (!LOCKED_ONBOARDING_SECTION_IDS.has(section.id)) return false;
+  const prerequisites = sections.filter((s) => !LOCKED_ONBOARDING_SECTION_IDS.has(s.id));
+  return !prerequisites.every(
+    (s) => countSectionCompletedSteps(s, approvedIds) >= s.totalSteps,
+  );
 }
 
 export function syncSectionCompletedSteps(sections: OnboardingSection[]): OnboardingSection[] {
@@ -70,17 +91,19 @@ export function syncSectionCompletedSteps(sections: OnboardingSection[]): Onboar
 export function deriveSectionStatus(
   section: OnboardingSection,
   sections: OnboardingSection[],
+  approvedIds: string[] = [],
 ): OnboardingSectionState["status"] {
-  if (isOnboardingSectionLocked(section, sections)) return "locked";
+  if (isOnboardingSectionLocked(section, sections, approvedIds)) return "locked";
   if (section.id === "assortment") {
     const task = section.tasks[0];
     if (task?.status === "complete") return "complete";
     if (task?.status === "in_progress") return "under_review";
     return "pending";
   }
-  if (section.completedSteps >= section.totalSteps && section.totalSteps > 0) return "complete";
+  const completed = countSectionCompletedSteps(section, approvedIds);
+  if (completed >= section.totalSteps && section.totalSteps > 0) return "complete";
   if (section.tasks.some((t) => t.status === "in_progress" || t.status === "blocked")) {
-    return section.id === "documentation" || section.id === "profile" ? "in_progress" : "in_progress";
+    return "in_progress";
   }
   return "pending";
 }
@@ -96,7 +119,7 @@ export function toSectionStates(
     return {
       id: section.id as OnboardingSectionId,
       title: section.title,
-      status: deriveSectionStatus(withCounts, sections),
+      status: deriveSectionStatus(withCounts, sections, approvedIds),
       manualReview: ["profile", "assortment", "documentation"].includes(section.id),
       totalSteps: section.totalSteps,
       completedSteps,
@@ -127,6 +150,7 @@ export function buildSellerOnboardingState(
   sellerName: string,
   sections: OnboardingSection[],
   meta: Pick<SellerOnboardingState, "startedAt" | "targetLaunchDate" | "assignedTo">,
+  approvedIds: string[] = [],
 ): SellerOnboardingState {
   const synced = syncSectionCompletedSteps(sections);
   return {
@@ -135,19 +159,26 @@ export function buildSellerOnboardingState(
     assignedTo: meta.assignedTo,
     startedAt: meta.startedAt,
     targetLaunchDate: meta.targetLaunchDate,
-    overallProgress: computeOnboardingOverallProgress(synced),
-    sections: toSectionStates(synced),
+    overallProgress: computeOnboardingOverallProgress(synced, approvedIds),
+    sections: toSectionStates(synced, approvedIds),
   };
 }
 
-export function taskNeedsReview(task: OnboardingTask, sectionId: string): boolean {
+export function taskNeedsReview(
+  task: OnboardingTask,
+  sectionId: string,
+  approvedIds: string[] = [],
+): boolean {
   if (sectionId === "integrations" || sectionId === "item-listing" || sectionId === "stripe") {
     return false;
   }
   if (sectionId === "assortment") return task.status === "in_progress";
   if (task.title === PROFILE_TM_REVIEW_TASK_TITLE) {
-    return task.status === "in_progress" || Boolean(task.issue);
+    if (isProfileTaskTmApproved(task.id, approvedIds)) return false;
+    return task.status === "in_progress" || task.status === "complete" || Boolean(task.issue);
   }
-  if (sectionId === "documentation") return task.status === "in_progress";
+  if (sectionId === "documentation") {
+    return documentationTaskNeedsReview(task, approvedIds);
+  }
   return false;
 }

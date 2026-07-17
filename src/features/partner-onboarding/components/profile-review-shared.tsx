@@ -140,11 +140,13 @@ export function SectionDivider() {
 export function FileAttachmentRow({
   name,
   size,
+  onView,
   onDownload,
   className,
 }: {
   name: string;
   size: string;
+  onView?: () => void;
   onDownload?: () => void;
   className?: string;
 }) {
@@ -166,14 +168,24 @@ export function FileAttachmentRow({
           <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">{size}</p>
         ) : null}
       </div>
-      <button
-        type="button"
-        onClick={onDownload}
-        className="shrink-0 rounded-[var(--radius-sm)] p-1.5 text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
-        aria-label={`Download ${name}`}
-      >
-        <Image src="/icons/download.svg" alt="" width={16} height={16} aria-hidden />
-      </button>
+      <div className="flex shrink-0 items-center gap-0.5">
+        <button
+          type="button"
+          onClick={onView}
+          className="rounded-[var(--radius-sm)] p-1.5 text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
+          aria-label={`View ${name}`}
+        >
+          <Image src="/icons/visibility.svg" alt="" width={16} height={16} aria-hidden />
+        </button>
+        <button
+          type="button"
+          onClick={onDownload}
+          className="rounded-[var(--radius-sm)] p-1.5 text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
+          aria-label={`Download ${name}`}
+        >
+          <Image src="/icons/download.svg" alt="" width={16} height={16} aria-hidden />
+        </button>
+      </div>
     </div>
   );
 }

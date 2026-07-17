@@ -1,5 +1,6 @@
 import type { ValidationStatus } from "@/lib/mock-data/lead-form-analysis";
 import { getOnboardingBySellerID } from "@/lib/mock-data/onboarding";
+import type { OnboardingTask } from "@/lib/onboarding/types";
 import { taskNeedsReview } from "@/lib/onboarding";
 
 export interface OnboardingFieldValidation {
@@ -55,6 +56,7 @@ export interface DocumentUpload {
   summary: string;
   source: string;
   checkedOn: string;
+  agentRecommendation?: AgentRecommendation;
 }
 
 export interface OnboardingSectionEvaluation {
@@ -537,6 +539,11 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         summary: "W9 form is complete and matches the legal business name.",
         source: "IRS W9 validation",
         checkedOn: CHECKED,
+        agentRecommendation: {
+          title: "W9 form submitted",
+          message: "Tax document uploaded — W9 fields match business identity. Approve or request corrected document.",
+          suggestedComment: "W9 fields match business identity. Approve or request corrected document.",
+        },
       },
     ],
     brands: [],
@@ -549,10 +556,15 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         instruction: "Upload a valid proof of business address.",
         fileName: "Address proof.pdf",
         fileSize: "1.3 MB",
-        validationStatus: "valid",
-        summary: "Business address matches the address in application.",
+        validationStatus: "partial",
+        summary: "Business address submitted — verify against application.",
         source: "D&B + Application",
         checkedOn: CHECKED,
+        agentRecommendation: {
+          title: "Address proof submitted for review",
+          message: "Business address matches submitted application data. Confirm before approving.",
+          suggestedComment: "Please verify the uploaded address proof matches the registered business address.",
+        },
       },
       {
         id: "duns-cert",
@@ -560,10 +572,15 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         instruction: "Upload a DUNS registration certificate.",
         fileName: "DUNS certificate.pdf",
         fileSize: "1.1 MB",
-        validationStatus: "valid",
-        summary: "DUNS number is active and matches with the business.",
+        validationStatus: "partial",
+        summary: "DUNS certificate submitted — verify registration status.",
         source: "D&B",
         checkedOn: CHECKED,
+        agentRecommendation: {
+          title: "DUNS certificate submitted for review",
+          message: "DUNS document uploaded. Confirm the number is active and matches the business.",
+          suggestedComment: "Please verify DUNS registration before approving.",
+        },
       },
     ],
     brands: [
@@ -615,24 +632,6 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
       },
     ],
   },
-  "p-l-o6": completeDocumentationEvaluation("p-l-o6", [
-    "Zenith Home",
-    "Zenith Pro",
-    "Zenith Outdoor",
-  ]),
-  "p-k-o4": completeDocumentationEvaluation("p-k-o4", [
-    "Casa Cookware",
-    "Casa Table",
-    "Casa Serve",
-    "Casa Pantry",
-  ]),
-  "p-f-o6": completeDocumentationEvaluation("p-f-o6", [
-    "TimberLine Living",
-    "TimberLine Office",
-    "TimberLine Outdoor",
-    "TimberLine Kids",
-    "TimberLine Sleep",
-  ]),
 };
 
 export const sectionEvaluations: Record<string, OnboardingSectionEvaluation> = {
@@ -704,7 +703,7 @@ export const sectionEvaluations: Record<string, OnboardingSectionEvaluation> = {
     sellerId: "p-l-o6",
     title: "Documentation",
     subtitle: "Provide your business related information",
-    progress: 100,
+    progress: 0,
   },
   "p-k-o4-profile": {
     sectionId: "profile",
@@ -718,7 +717,7 @@ export const sectionEvaluations: Record<string, OnboardingSectionEvaluation> = {
     sellerId: "p-k-o4",
     title: "Documentation",
     subtitle: "Provide your business related information",
-    progress: 100,
+    progress: 0,
   },
   "p-f-o6-profile": {
     sectionId: "profile",
@@ -732,7 +731,7 @@ export const sectionEvaluations: Record<string, OnboardingSectionEvaluation> = {
     sellerId: "p-f-o6",
     title: "Documentation",
     subtitle: "Provide your business related information",
-    progress: 100,
+    progress: 0,
   },
 };
 
@@ -762,8 +761,73 @@ export function getProfileTaskEvaluations(sellerId: string): OnboardingTaskEvalu
     }));
 }
 
+function buildDocumentationEvaluationFromOnboarding(sellerId: string) {
+  const onboarding = getOnboardingBySellerID(sellerId);
+  const docSection = onboarding.sections.find((s) => s.id === "documentation");
+  if (!docSection) return undefined;
+
+  const w9Task = docSection.tasks.find((t) => t.title.toLowerCase().includes("w9"));
+  const contractTask = docSection.tasks.find((t) => t.title.toLowerCase().includes("contract"));
+
+  const hasSubmitted =
+    w9Task?.status === "complete" ||
+    w9Task?.status === "in_progress" ||
+    contractTask?.status === "complete" ||
+    contractTask?.status === "in_progress";
+
+  if (!hasSubmitted) return undefined;
+
+  const toValidationStatus = (task: OnboardingTask): ValidationStatus => {
+    if (task.issue) return "invalid";
+    if (task.agentRecommendation?.title.toLowerCase().includes("invalid")) return "invalid";
+    if (task.autoValidated && !task.issue) return "valid";
+    return "partial";
+  };
+
+  const recommendationFor = (task: OnboardingTask, label: string) =>
+    task.agentRecommendation ?? {
+      title: `${label} submitted for review`,
+      message: task.issueSource ?? task.issue ?? `${label} is ready for TM review.`,
+      suggestedComment: `Please review the uploaded ${label.toLowerCase()}.`,
+    };
+
+  const general = [];
+  if (w9Task && w9Task.status !== "pending") {
+    general.push({
+      id: "w9",
+      label: "W9 form",
+      instruction: "Upload a completed W9 tax form.",
+      fileName: `${onboarding.sellerName} W9.pdf`,
+      fileSize: "0.9 MB",
+      validationStatus: toValidationStatus(w9Task),
+      summary: recommendationFor(w9Task, "W9 form").message,
+      source: "Onboarding checklist",
+      checkedOn: CHECKED,
+      agentRecommendation: recommendationFor(w9Task, "W9 form"),
+    });
+  }
+  if (contractTask && contractTask.status !== "pending") {
+    general.push({
+      id: "contract",
+      label: "Contract",
+      instruction: "Upload a signed partner contract.",
+      fileName: `${onboarding.sellerName} Contract.pdf`,
+      fileSize: "1.1 MB",
+      validationStatus: toValidationStatus(contractTask),
+      summary: recommendationFor(contractTask, "Contract").message,
+      source: "Onboarding checklist",
+      checkedOn: CHECKED,
+      agentRecommendation: recommendationFor(contractTask, "Contract"),
+    });
+  }
+
+  if (general.length === 0) return undefined;
+
+  return { general, brands: [] as BrandDocumentRow[] };
+}
+
 export function getDocumentationEvaluation(sellerId: string) {
-  return documentationEvaluations[sellerId];
+  return documentationEvaluations[sellerId] ?? buildDocumentationEvaluationFromOnboarding(sellerId);
 }
 
 export function getSectionEvaluation(sellerId: string, sectionId: string): OnboardingSectionEvaluation | undefined {

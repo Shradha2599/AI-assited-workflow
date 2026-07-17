@@ -8,8 +8,8 @@ import { StatusTag } from "@/components/ui/status-tag";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import { getProfileTaskEvaluations } from "@/lib/mock-data/onboarding-evaluation";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
+import { getSectionProgressPercent } from "@/lib/mock-data/onboarding";
 import {
-  getProfileSectionProgressPercent,
   isProfileTaskSubmitted,
   profileTaskApproveId,
 } from "@/features/partner-onboarding/utils/profile-task-progress";
@@ -144,7 +144,7 @@ export function ProfileInformationReview({
 
   const profileSection = onboarding.sections.find((s) => s.id === "profile");
   const profileProgress = profileSection
-    ? getProfileSectionProgressPercent(profileSection, approvedIds)
+    ? getSectionProgressPercent(profileSection, approvedIds)
     : 0;
   const evaluations = getProfileTaskEvaluations(partner.sellerId);
   const activeEval = evaluations.find((e) => e.taskId === activeTaskId);

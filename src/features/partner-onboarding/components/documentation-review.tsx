@@ -2,24 +2,29 @@
 
 import Image from "next/image";
 import { useEffect, useMemo } from "react";
-import { Check, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 
-import { InfoBanner } from "@/components/data-display/info-banner";
 import { Button } from "@/components/ui/button";
 import { StatusTag } from "@/components/ui/status-tag";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
-import { getOnboardingSectionProgressPercent } from "@/lib/mock-data/onboarding";
+import { getSectionProgressPercent } from "@/lib/mock-data/onboarding";
 import {
   getDocumentationEvaluation,
   type BrandDocumentRow,
+  type DocumentUpload,
 } from "@/lib/mock-data/onboarding-evaluation";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
+import type { ValidationStatus } from "@/lib/mock-data/lead-form-analysis";
 import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
 import { OnboardingSubtaskNav } from "./onboarding-subtask-nav";
-import { FileAttachmentRow } from "./profile-review-shared";
+import { FileAttachmentRow, ValidationAlert } from "./profile-review-shared";
 import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
+import {
+  isDocumentationTaskSubmitted,
+  isDocumentationTaskTmApproved,
+} from "../utils/documentation-task-progress";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
 interface DocumentationReviewProps {
@@ -42,53 +47,18 @@ function ReviewBadge() {
   );
 }
 
-function AutoValidatedBadge() {
-  return (
-    <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
-      <Check className="h-3 w-3" /> Auto Validated
-    </StatusTag>
-  );
-}
-
-function BrandDocumentsAlert({
-  alertId,
-  title,
-  message,
-  onReject,
-}: {
-  alertId: string;
-  title: string;
-  message: string;
-  onReject: () => void;
-}) {
-  const dismissed = useOnboardingReviewStore((s) => s.dismissedAlerts.includes(alertId));
-  const dismissAlert = useOnboardingReviewStore((s) => s.dismissAlert);
-
-  if (dismissed) return null;
-
-  return (
-    <InfoBanner
-      className="mb-6"
-      title={title}
-      message={message}
-      onDismiss={() => dismissAlert(alertId)}
-      actions={
-        <Button variant="outline" size="sm" className="shrink-0 bg-white" onClick={onReject}>
-          Reject
-        </Button>
-      }
-    />
-  );
-}
-
-function TableDocumentChip({ name, size }: { name: string; size?: string }) {
-  return (
-    <FileAttachmentRow
-      name={name}
-      size={size ?? ""}
-      className="max-w-full"
-    />
-  );
+function docSecondaryCta(
+  validationStatus: ValidationStatus,
+  onApprove: () => void,
+  onReject: () => void,
+): { label: string; onClick: () => void } {
+  if (validationStatus === "valid") {
+    return { label: "Approve", onClick: onApprove };
+  }
+  if (validationStatus === "invalid") {
+    return { label: "Reject", onClick: onReject };
+  }
+  return { label: "Review details", onClick: onReject };
 }
 
 function GeneralDocumentFile({
@@ -99,6 +69,7 @@ function GeneralDocumentFile({
   approveId,
   approved,
   onApprove,
+  onReject,
 }: {
   label: string;
   instruction: string;
@@ -107,6 +78,7 @@ function GeneralDocumentFile({
   approveId: string;
   approved: boolean;
   onApprove: (id: string) => void;
+  onReject: () => void;
 }) {
   return (
     <div>
@@ -117,24 +89,117 @@ function GeneralDocumentFile({
       <p className="mt-0.5 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
         {instruction}
       </p>
+
       <div className="mt-3">
-        <TableDocumentChip name={fileName} size={fileSize} />
+        <FileAttachmentRow name={fileName} size={fileSize} />
       </div>
-      <div className="mt-3 flex items-center gap-3">
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => onApprove(approveId)}
-          disabled={approved}
-        >
-          {approved ? "Approved" : "Approve"}
-        </Button>
-        <Button variant="ghost" size="sm" className="h-auto px-0 text-[var(--color-primary)]">
-          Reject
-        </Button>
-      </div>
+
+      {!approved && (
+        <div className="mt-3 flex items-center gap-3">
+          <Button size="sm" variant="outline" onClick={() => onApprove(approveId)}>
+            Approve
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-auto px-0 text-[var(--color-primary)] hover:bg-transparent"
+            onClick={onReject}
+          >
+            Reject
+          </Button>
+        </div>
+      )}
+
+      {approved && (
+        <div className="mt-3">
+          <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+            <Check className="h-3 w-3" /> Approved
+          </StatusTag>
+        </div>
+      )}
     </div>
   );
+}
+
+function DocumentRecommendationBanner({
+  doc,
+  approveId,
+  approved,
+  onApprove,
+  onReject,
+  onAddComment,
+}: {
+  doc: DocumentUpload;
+  approveId: string;
+  approved: boolean;
+  onApprove: () => void;
+  onReject: () => void;
+  onAddComment: () => void;
+}) {
+  if (approved || !doc.agentRecommendation) return null;
+
+  return (
+    <ValidationAlert
+      taskId={approveId}
+      title={doc.agentRecommendation.title}
+      message={doc.agentRecommendation.message}
+      onAddComment={onAddComment}
+      onRejectRecommendation={onReject}
+      secondaryCta={docSecondaryCta(doc.validationStatus, onApprove, onReject)}
+      variant="banner"
+    />
+  );
+}
+
+function BrandDocumentsAlert({
+  alertId,
+  title,
+  message,
+  validationStatus,
+  onApprove,
+  onReject,
+  onAddComment,
+}: {
+  alertId: string;
+  title: string;
+  message: string;
+  validationStatus: ValidationStatus;
+  onApprove: () => void;
+  onReject: () => void;
+  onAddComment: () => void;
+}) {
+  return (
+    <ValidationAlert
+      taskId={alertId}
+      title={title}
+      message={message}
+      onAddComment={onAddComment}
+      onRejectRecommendation={onReject}
+      secondaryCta={docSecondaryCta(validationStatus, onApprove, onReject)}
+      variant="banner"
+    />
+  );
+}
+
+function TableDocumentChip({ name, size }: { name: string; size?: string }) {
+  return <FileAttachmentRow name={name} size={size ?? ""} className="max-w-full" />;
+}
+
+function docsForActiveTab(
+  docs: NonNullable<ReturnType<typeof getDocumentationEvaluation>>,
+  activeSubSection: "general" | "brands",
+) {
+  const usesW9ContractFlow = docs.general.some(
+    (doc) => doc.id === "w9" || doc.id === "contract",
+  );
+  if (usesW9ContractFlow) {
+    if (activeSubSection === "general") {
+      return docs.general.filter((doc) => doc.id === "w9");
+    }
+    return docs.general.filter((doc) => doc.id === "contract");
+  }
+  if (activeSubSection === "general") return docs.general;
+  return [];
 }
 
 function BrandDocumentsTable({
@@ -267,9 +332,10 @@ export function DocumentationReview({
   const openFeedback = useOnboardingReviewStore((s) => s.openFeedback);
   const approveItem = useOnboardingReviewStore((s) => s.approveItem);
   const isApproved = useOnboardingReviewStore((s) => s.isApproved);
+  const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
 
   const docSection = onboarding.sections.find((s) => s.id === "documentation");
-  const docProgress = docSection ? getOnboardingSectionProgressPercent(docSection) : 0;
+  const docProgress = docSection ? getSectionProgressPercent(docSection, approvedIds) : 0;
   const docs = getDocumentationEvaluation(partner.sellerId);
 
   useEffect(() => {
@@ -278,6 +344,13 @@ export function DocumentationReview({
 
   const generalTask = docSection?.tasks[0];
   const brandsTask = docSection?.tasks[1];
+  const activeTask = activeSubSection === "general" ? generalTask : brandsTask;
+  const tmApproved = activeTask ? isDocumentationTaskTmApproved(activeTask, approvedIds) : false;
+  const taskSubmitted = activeTask ? isDocumentationTaskSubmitted(activeTask) : false;
+  const tabDocs = useMemo(
+    () => (docs ? docsForActiveTab(docs, activeSubSection) : []),
+    [docs, activeSubSection],
+  );
 
   const navItems = useMemo(() => {
     if (!generalTask || !brandsTask) return [];
@@ -311,6 +384,12 @@ export function DocumentationReview({
 
   const brandWithAlert = docs.brands.find((b) => b.agentRecommendation);
   const brandAlertId = brandWithAlert ? `brand-alert-${brandWithAlert.id}` : "";
+  const usesAddressProofFlow = docs.general.some(
+    (doc) => doc.id === "address-proof" || doc.id === "duns-cert",
+  );
+  const recommendationDoc = tabDocs.find(
+    (doc) => doc.agentRecommendation && !isApproved(`doc-${doc.id}`),
+  );
 
   return (
     <>
@@ -327,6 +406,7 @@ export function DocumentationReview({
             items={navItems}
             activeId={activeSubSection}
             navVariant="documentation"
+            approvedIds={approvedIds}
           />
         }
       >
@@ -335,16 +415,23 @@ export function DocumentationReview({
             {activeSubSection === "general" ? "General documents" : "Brand documents"}
           </h3>
           <div className="flex items-center gap-2">
-            <ReviewBadge />
-            <AutoValidatedBadge />
+            {tmApproved ? (
+              <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+                <Check className="h-3 w-3" /> Approved
+              </StatusTag>
+            ) : taskSubmitted ? (
+              <ReviewBadge />
+            ) : null}
           </div>
         </div>
 
-        {activeSubSection === "brands" && brandWithAlert?.agentRecommendation && (
+        {activeSubSection === "brands" && brandWithAlert?.agentRecommendation && docs.brands.length > 0 && (
           <BrandDocumentsAlert
             alertId={brandAlertId}
             title={brandWithAlert.agentRecommendation.title}
             message={brandWithAlert.agentRecommendation.message}
+            validationStatus={brandWithAlert.validationStatus}
+            onApprove={() => approveItem(`brand-${brandWithAlert.id}`)}
             onReject={() =>
               openFeedback({
                 taskId: `brand-${brandWithAlert.id}`,
@@ -352,12 +439,34 @@ export function DocumentationReview({
                 agentMessage: brandWithAlert.agentRecommendation!.message,
               })
             }
+            onAddComment={() => openComments(`brand-${brandWithAlert.id}`)}
           />
         )}
 
-        {activeSubSection === "general" ? (
+        {!usesAddressProofFlow && recommendationDoc && (
+          <DocumentRecommendationBanner
+            doc={recommendationDoc}
+            approveId={`doc-${recommendationDoc.id}`}
+            approved={isApproved(`doc-${recommendationDoc.id}`)}
+            onApprove={() => approveItem(`doc-${recommendationDoc.id}`)}
+            onReject={() => {
+              if (recommendationDoc.agentRecommendation) {
+                openFeedback({
+                  taskId: `doc-${recommendationDoc.id}`,
+                  title: recommendationDoc.agentRecommendation.title,
+                  agentMessage: recommendationDoc.agentRecommendation.message,
+                });
+              } else {
+                openComments(`doc-${recommendationDoc.id}`);
+              }
+            }}
+            onAddComment={() => openComments(`doc-${recommendationDoc.id}`)}
+          />
+        )}
+
+        {tabDocs.length > 0 ? (
           <div className="space-y-8">
-            {docs.general.map((doc) => {
+            {tabDocs.map((doc) => {
               const approveId = `doc-${doc.id}`;
               return (
                 <GeneralDocumentFile
@@ -369,11 +478,22 @@ export function DocumentationReview({
                   approveId={approveId}
                   approved={isApproved(approveId)}
                   onApprove={approveItem}
+                  onReject={() => {
+                    if (doc.agentRecommendation) {
+                      openFeedback({
+                        taskId: approveId,
+                        title: doc.agentRecommendation.title,
+                        agentMessage: doc.agentRecommendation.message,
+                      });
+                    } else {
+                      openComments(approveId);
+                    }
+                  }}
                 />
               );
             })}
           </div>
-        ) : (
+        ) : docs.brands.length > 0 ? (
           <BrandDocumentsTable
             brands={docs.brands}
             onApprove={approveItem}
@@ -390,7 +510,7 @@ export function DocumentationReview({
             }}
             isApproved={isApproved}
           />
-        )}
+        ) : null}
       </OnboardingSectionReviewLayout>
 
       <OnboardingCommentsDrawer partner={partner} />

@@ -1,5 +1,6 @@
-import { isOnboardingSectionLocked } from "@/lib/onboarding/progress";
+import { isOnboardingSectionLocked, countSectionCompletedSteps } from "@/lib/onboarding/progress";
 import type { OnboardingSection, OnboardingTask } from "@/lib/onboarding/types";
+import { ONBOARDING_TASK_COMPLETE_ICON } from "@/features/partner-onboarding/utils/onboarding-task-icons";
 
 export type {
   OnboardingTask,
@@ -39,21 +40,23 @@ export function isAssortmentSectionInReview(section: OnboardingSection): boolean
 }
 
 export function getAssortmentTaskIconSrc(task: OnboardingTask): string {
-  if (task.status === "complete") return "/icons/progress-check-success.svg";
+  if (task.status === "complete") return ONBOARDING_TASK_COMPLETE_ICON;
   return ASSORTMENT_REVIEW_ICON_SRC;
 }
 
 export function getOnboardingSectionStatusIconSrc(
   section: OnboardingSection,
   sections: OnboardingSection[],
+  approvedIds: string[] = [],
 ): string {
-  const locked = isOnboardingSectionLocked(section, sections);
+  const locked = isOnboardingSectionLocked(section, sections, approvedIds);
   if (locked) return "/icons/lock-fill.svg";
   if (isAssortmentSectionInReview(section)) {
     return ASSORTMENT_REVIEW_ICON_SRC;
   }
-  if (section.completedSteps >= section.totalSteps && section.totalSteps > 0) {
-    return "/icons/progress-check.svg";
+  const completed = countSectionCompletedSteps(section, approvedIds);
+  if (completed >= section.totalSteps && section.totalSteps > 0) {
+    return ONBOARDING_TASK_COMPLETE_ICON;
   }
   if (section.tasks.some((t) => t.status === "in_progress" || t.status === "blocked")) {
     return "/icons/time-clock.svg";

@@ -1,4 +1,5 @@
 import type { OnboardingSection, OnboardingTask } from "@/lib/mock-data/onboarding";
+import { ONBOARDING_TASK_COMPLETE_ICON } from "./onboarding-task-icons";
 
 export const PROFILE_TM_REVIEW_TASK_TITLE = "Brand profile";
 
@@ -26,7 +27,8 @@ export function resolveProfileTaskProgressState(
   approvedIds: string[] = [],
 ): ProfileTaskProgressState {
   if (isProfileTaskTmApproved(task.id, approvedIds)) return "tm_approved";
-  if (task.status === "complete") return "seller_complete";
+  // Brand profile submitted but awaiting TM sign-off — not treated as complete for progress.
+  if (task.status === "complete") return "in_review";
   if (task.issue || task.status === "blocked") return "issue";
   if (task.status === "in_progress") return "in_review";
   return "pending";
@@ -38,9 +40,7 @@ export function getProfileTaskProgressIconSrc(
 ): string {
   switch (resolveProfileTaskProgressState(task, approvedIds)) {
     case "tm_approved":
-      return "/icons/progress-check-success.svg";
-    case "seller_complete":
-      return "/icons/progress-check.svg";
+      return ONBOARDING_TASK_COMPLETE_ICON;
     case "issue":
       return "/icons/warning-fill.svg";
     case "in_review":
@@ -66,8 +66,7 @@ export function countProfileSectionCompletedSteps(
     if (!isProfileTmReviewTask(task)) {
       return task.status === "complete";
     }
-    const state = resolveProfileTaskProgressState(task, approvedIds);
-    return state === "tm_approved" || state === "seller_complete";
+    return isProfileTaskTmApproved(task.id, approvedIds);
   }).length;
 }
 

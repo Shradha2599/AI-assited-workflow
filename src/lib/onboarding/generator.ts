@@ -117,14 +117,12 @@ function taskStatusForTier(
 
   if (suffix === "09") {
     if (tier < 6) return "pending";
-    if (tier === 6) return "in_progress";
-    return "complete";
+    return "in_progress";
   }
 
   if (suffix === "10") {
     if (tier < 7) return "pending";
-    if (tier === 7) return "in_progress";
-    return "complete";
+    return "in_progress";
   }
 
   if (suffix === "11") {

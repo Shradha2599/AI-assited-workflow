@@ -61,7 +61,7 @@ const CURATED_PATCHES: Record<
       "06": { status: "complete", autoValidated: false },
       "07": { status: "complete", autoValidated: true },
       "08": { status: "in_progress", autoValidated: false },
-      "09": { status: "complete", autoValidated: true },
+      "09": { status: "in_progress", autoValidated: true },
       "10": { status: "in_progress", autoValidated: false },
       "11": { status: "complete", autoValidated: false },
     },
@@ -76,7 +76,7 @@ const CURATED_PATCHES: Record<
       "05": { status: "complete", autoValidated: false },
       "06": { status: "complete", autoValidated: false },
       "07": { status: "complete", autoValidated: true },
-      "09": { status: "complete", autoValidated: true },
+      "09": { status: "in_progress", autoValidated: true },
       "10": { status: "in_progress", autoValidated: false },
       "11": { status: "complete", autoValidated: false },
     },
@@ -102,8 +102,8 @@ function completeProfileDocIntegrationPatches(): Record<string, Partial<Onboardi
     "05": { status: "complete", autoValidated: false },
     "06": { status: "complete", autoValidated: false },
     "07": { status: "complete", autoValidated: true },
-    "09": { status: "complete", autoValidated: true },
-    "10": { status: "complete", autoValidated: false },
+    "09": { status: "in_progress", autoValidated: true },
+    "10": { status: "in_progress", autoValidated: false },
     "11": { status: "complete", autoValidated: false },
   };
 }

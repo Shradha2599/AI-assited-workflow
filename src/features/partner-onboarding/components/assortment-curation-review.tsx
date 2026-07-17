@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { StatusTag } from "@/components/ui/status-tag";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
-import { getOnboardingSectionProgressPercent } from "@/lib/mock-data/onboarding";
+import { getSectionProgressPercent } from "@/lib/mock-data/onboarding";
 import {
   getAssortmentCurationContent,
   type AssortmentSkuRow,
@@ -143,13 +143,16 @@ export function AssortmentCurationReview({
   const openComments = useOnboardingReviewStore((s) => s.openComments);
   const approveItem = useOnboardingReviewStore((s) => s.approveItem);
   const isApproved = useOnboardingReviewStore((s) => s.isApproved);
+  const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
   const initForPartner = useAssortmentCurationStore((s) => s.initForPartner);
   const storeContent = useAssortmentCurationStore((s) => s.content);
   const activeVersionId = useAssortmentCurationStore((s) => s.activeVersionId);
 
   const assortmentSection = onboarding.sections.find((s) => s.id === "assortment");
   const assortmentTask = assortmentSection?.tasks[0];
-  const progress = assortmentSection ? getOnboardingSectionProgressPercent(assortmentSection) : 0;
+  const progress = assortmentSection
+    ? getSectionProgressPercent(assortmentSection, approvedIds)
+    : 0;
   const content = storeContent ?? getAssortmentCurationContent(partner.id);
   const activeVersion = content.versions.find((v) => v.id === activeVersionId) ?? content.versions[0];
   const recommendedCount = activeVersion?.recommendedCount ?? content.submittedCount;

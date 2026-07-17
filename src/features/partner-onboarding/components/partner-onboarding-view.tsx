@@ -34,6 +34,7 @@ import {
   OnboardingPartnerProgressSteps,
   PartnerStatusBadge,
 } from "./partner-status-badge";
+import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
 interface PipelineData {
   columns: string[];
@@ -89,6 +90,7 @@ function downloadPartnersReport(partners: PotentialPartner[]) {
 }
 
 export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) {
+  const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<PartnerPipelineStatus | "All">("All");
@@ -324,7 +326,10 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
                       </td>
                       <td className="py-2.5">
                         {showsPartnerProgress(partner.status) ? (
-                          <OnboardingPartnerProgressSteps partner={partner} />
+                          <OnboardingPartnerProgressSteps
+                            partner={partner}
+                            approvedIds={approvedIds}
+                          />
                         ) : (
                           <span className="text-[var(--color-muted-foreground)]">—</span>
                         )}

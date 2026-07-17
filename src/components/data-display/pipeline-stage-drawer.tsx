@@ -15,7 +15,7 @@ import {
   type PipelinePartner,
   type PartnerStage,
 } from "@/lib/mock-data/pipeline-partners";
-import { getOnboardingBySellerID } from "@/lib/mock-data/onboarding";
+import { getOnboardingBySellerID, computeOnboardingOverallProgress } from "@/lib/mock-data/onboarding";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -128,7 +128,8 @@ function NewLeadBody({ partner }: { partner: PipelinePartner }) {
 }
 
 function OnboardingBody({ partner }: { partner: PipelinePartner }) {
-  const progress = getOnboardingBySellerID(partner.id).overallProgress;
+  const onboarding = getOnboardingBySellerID(partner.id);
+  const progress = computeOnboardingOverallProgress(onboarding.sections);
   return (
     <div className="mt-3 space-y-2">
       <div className="flex items-center justify-between">

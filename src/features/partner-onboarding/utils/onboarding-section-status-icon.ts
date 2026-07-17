@@ -1,11 +1,13 @@
 import type { OnboardingSection } from "@/lib/mock-data/onboarding";
 import {
-  getOnboardingSectionProgressPercent,
+  countSectionCompletedSteps,
+  getSectionProgressPercent,
+  isOnboardingSectionLocked,
+} from "@/lib/onboarding/progress";
+import {
   getOnboardingSectionStatusIconSrc,
   isAssortmentSectionInReview,
-  isOnboardingSectionLocked,
 } from "@/lib/mock-data/onboarding";
-import { getProfileSectionProgressPercent } from "@/features/partner-onboarding/utils/profile-task-progress";
 
 export interface OnboardingSectionStatusIconState {
   src: string;
@@ -19,13 +21,26 @@ export function resolveOnboardingSectionStatusIcon(
   sections: OnboardingSection[],
   approvedIds: string[] = [],
 ): OnboardingSectionStatusIconState {
-  const locked = isOnboardingSectionLocked(section, sections);
-  const src = getOnboardingSectionStatusIconSrc(section, sections);
-  const progress =
-    section.id === "profile"
-      ? getProfileSectionProgressPercent(section, approvedIds)
-      : getOnboardingSectionProgressPercent(section);
+  const locked = isOnboardingSectionLocked(section, sections, approvedIds);
+  const src = getOnboardingSectionStatusIconSrc(section, sections, approvedIds);
+  const progress = getSectionProgressPercent(section, approvedIds);
   const gray = !locked && progress === 0 && !isAssortmentSectionInReview(section);
 
   return { src, gray, title: section.title };
+}
+
+/** Effective completed steps for a section (respects TM approval on Brand profile). */
+export function resolveSectionCompletedSteps(
+  section: OnboardingSection,
+  approvedIds: string[] = [],
+): number {
+  return countSectionCompletedSteps(section, approvedIds);
+}
+
+/** Effective progress percent for a section. */
+export function resolveSectionProgressPercent(
+  section: OnboardingSection,
+  approvedIds: string[] = [],
+): number {
+  return getSectionProgressPercent(section, approvedIds);
 }

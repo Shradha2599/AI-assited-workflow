@@ -15,16 +15,16 @@ import {
 } from "@/features/partner-onboarding/utils/onboarding-subtask-icons";
 import {
   countOnboardingSectionProgress,
+  computeOnboardingOverallProgress,
   getAssortmentTaskIconSrc,
-  getOnboardingSectionProgressPercent,
   isOnboardingSectionLocked,
   LOCKED_ONBOARDING_SECTION_IDS,
 } from "@/lib/mock-data/onboarding";
 import {
-  countProfileSectionCompletedSteps,
-  getProfileSectionProgressPercent,
-} from "@/features/partner-onboarding/utils/profile-task-progress";
-import { resolveOnboardingSectionStatusIcon } from "@/features/partner-onboarding/utils/onboarding-section-status-icon";
+  resolveOnboardingSectionStatusIcon,
+  resolveSectionCompletedSteps,
+  resolveSectionProgressPercent,
+} from "@/features/partner-onboarding/utils/onboarding-section-status-icon";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
 import { PartnerProfileHeader } from "./partner-profile-header";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
@@ -50,16 +50,16 @@ const LOCKED_SECTION_IDS = LOCKED_ONBOARDING_SECTION_IDS;
 const GRAY_ICON_FILTER =
   "brightness(0) saturate(100%) invert(55%) sepia(8%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(88%)";
 
-function isSectionLocked(section: OnboardingSection, sections: OnboardingSection[]): boolean {
-  return isOnboardingSectionLocked(section, sections);
+function isSectionLocked(
+  section: OnboardingSection,
+  sections: OnboardingSection[],
+  approvedIds: string[],
+): boolean {
+  return isOnboardingSectionLocked(section, sections, approvedIds);
 }
 
-function sectionProgressPercent(section: OnboardingSection): number {
-  return getOnboardingSectionProgressPercent(section);
-}
-
-function countSectionProgress(sections: OnboardingSection[]) {
-  return countOnboardingSectionProgress(sections);
+function countSectionProgress(sections: OnboardingSection[], approvedIds: string[]) {
+  return countOnboardingSectionProgress(sections, approvedIds);
 }
 
 function getSubTaskIconSrc(
@@ -78,9 +78,13 @@ function isSectionReviewable(section: OnboardingSection): boolean {
 
 const TM_REVIEW_SECTIONS = new Set(["profile", "documentation", "integrations", "assortment"]);
 
-function isSectionLinkable(section: OnboardingSection, sections: OnboardingSection[]): boolean {
+function isSectionLinkable(
+  section: OnboardingSection,
+  sections: OnboardingSection[],
+  approvedIds: string[],
+): boolean {
   if (!TM_REVIEW_SECTIONS.has(section.id)) return false;
-  if (isSectionLocked(section, sections)) return false;
+  if (isSectionLocked(section, sections, approvedIds)) return false;
   if (section.id === "assortment") return true;
   return isSectionReviewable(section);
 }
@@ -120,17 +124,11 @@ function SectionRow({
   partnerId: string;
   approvedIds?: string[];
 }) {
-  const locked = isSectionLocked(section, sections);
+  const locked = isSectionLocked(section, sections, approvedIds);
   const reviewable = isSectionReviewable(section);
-  const linkable = isSectionLinkable(section, sections);
-  const progress =
-    section.id === "profile"
-      ? getProfileSectionProgressPercent(section, approvedIds)
-      : sectionProgressPercent(section);
-  const profileCompletedSteps =
-    section.id === "profile"
-      ? countProfileSectionCompletedSteps(section, approvedIds)
-      : section.completedSteps;
+  const linkable = isSectionLinkable(section, sections, approvedIds);
+  const progress = resolveSectionProgressPercent(section, approvedIds);
+  const profileCompletedSteps = resolveSectionCompletedSteps(section, approvedIds);
   const sectionIcon = SECTION_ICON_SRC[section.id] ?? "/icons/marketplace.svg";
   const statusIcon = resolveOnboardingSectionStatusIcon(section, sections, approvedIds);
 
@@ -186,11 +184,7 @@ function SectionRow({
                 ? "/icons/lock-fill.svg"
                 : section.id === "assortment"
                   ? getAssortmentTaskIconSrc(task)
-                  : getSubTaskIconSrc(
-                      section.id,
-                      task,
-                      section.id === "profile" ? approvedIds : undefined,
-                    );
+                  : getSubTaskIconSrc(section.id, task, approvedIds);
               return (
               <ChecklistIcon
                 key={task.id}
@@ -199,11 +193,7 @@ function SectionRow({
                 gray={
                   !locked &&
                   section.id !== "assortment" &&
-                  shouldGrayChecklistSubTaskIcon(
-                    section.id,
-                    task,
-                    section.id === "profile" ? approvedIds : undefined,
-                  )
+                  shouldGrayChecklistSubTaskIcon(section.id, task, approvedIds)
                 }
               />
             );})}
@@ -229,7 +219,9 @@ export function OnboardingChecklistView({ partner, onboarding }: OnboardingCheck
   const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
   const { total: totalSections, remaining: remainingSections } = countSectionProgress(
     onboarding.sections,
+    approvedIds,
   );
+  const overallProgress = computeOnboardingOverallProgress(onboarding.sections, approvedIds);
 
   useEffect(() => {
     setContext(partner.id);
@@ -251,11 +243,11 @@ export function OnboardingChecklistView({ partner, onboarding }: OnboardingCheck
           <div className="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-[var(--color-progress-track)]">
             <div
               className="h-full rounded-full bg-[var(--color-primary)] transition-all"
-              style={{ width: `${onboarding.overallProgress}%` }}
+              style={{ width: `${overallProgress}%` }}
             />
           </div>
           <p className="shrink-0 text-[var(--text-body-size)] font-semibold tabular-nums text-[var(--color-foreground)]">
-            {onboarding.overallProgress}%
+            {overallProgress}%
           </p>
         </div>
         <div className="mt-2 flex items-center gap-1.5 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
