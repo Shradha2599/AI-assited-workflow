@@ -9,14 +9,10 @@ import {
 } from "@/features/partner-onboarding/utils/profile-task-icons";
 import type { OnboardingTask as PipelineOnboardingTask, TaskStatus } from "@/lib/mock-data/pipeline-partners";
 import type { OnboardingSection } from "@/lib/mock-data/onboarding";
-import {
-  ASSORTMENT_REVIEW_ICON_SRC,
-  getOnboardingSectionStatusIconSrc,
-  isAssortmentSectionInReview,
-  isOnboardingSectionLocked,
-} from "@/lib/mock-data/onboarding";
+import { getOnboardingForPartner } from "@/lib/mock-data/onboarding";
 import type { PartnerPipelineStatus } from "@/lib/mock-data/potential-partners";
 import { StatusTag } from "@/components/ui/status-tag";
+import { resolveOnboardingSectionStatusIcon } from "../utils/onboarding-section-status-icon";
 
 const GREY_FILTER =
   "brightness(0) saturate(100%) invert(55%) sepia(8%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(88%)";
@@ -163,16 +159,21 @@ export function OnboardingProfileTaskProgressSteps({
   );
 }
 
-export function OnboardingChecklistProgressSteps({ sections }: { sections: OnboardingSection[] }) {
+export function OnboardingChecklistProgressSteps({
+  sections,
+  approvedIds = [],
+}: {
+  sections: OnboardingSection[];
+  approvedIds?: string[];
+}) {
   return (
     <div className="flex items-center gap-1">
       {sections.map((section) => {
-        const locked = isOnboardingSectionLocked(section, sections);
-        const src = getOnboardingSectionStatusIconSrc(section, sections);
-        const isPending =
-          !locked && src === "/icons/progress.svg" && !isAssortmentSectionInReview(section);
-        const isAssortmentReview =
-          !locked && isAssortmentSectionInReview(section) && src === ASSORTMENT_REVIEW_ICON_SRC;
+        const { src, gray, title } = resolveOnboardingSectionStatusIcon(
+          section,
+          sections,
+          approvedIds,
+        );
 
         return (
           <Image
@@ -182,16 +183,26 @@ export function OnboardingChecklistProgressSteps({ sections }: { sections: Onboa
             width={16}
             height={16}
             className="shrink-0"
-            style={isPending ? { filter: GREY_FILTER } : undefined}
-            title={
-              isAssortmentReview ? `${section.title} — in review` : section.title
-            }
+            style={gray ? { filter: GREY_FILTER } : undefined}
+            title={title}
             aria-hidden
           />
         );
       })}
     </div>
   );
+}
+
+/** Table progress column — same 6 section status icons as the profile checklist. */
+export function OnboardingPartnerProgressSteps({
+  partner,
+  approvedIds = [],
+}: {
+  partner: { id: string; sellerId: string; legalBusinessName: string };
+  approvedIds?: string[];
+}) {
+  const sections = getOnboardingForPartner(partner).sections;
+  return <OnboardingChecklistProgressSteps sections={sections} approvedIds={approvedIds} />;
 }
 
 export function OnboardingProgressSteps({ tasks }: { tasks: PipelineOnboardingTask[] }) {

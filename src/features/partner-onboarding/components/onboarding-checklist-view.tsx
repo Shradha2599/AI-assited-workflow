@@ -10,16 +10,13 @@ import { StatusTag } from "@/components/ui/status-tag";
 import { cn } from "@/lib/utils";
 import type { OnboardingPartner, OnboardingSection, OnboardingTask } from "@/lib/mock-data/onboarding";
 import {
-  getProfileSubTaskIconSrc,
-  ONBOARDING_ICON_GRAY_FILTER,
-  shouldGrayProfileSubTaskIcon,
-} from "@/features/partner-onboarding/utils/profile-task-icons";
+  getChecklistSubTaskIconSrc,
+  shouldGrayChecklistSubTaskIcon,
+} from "@/features/partner-onboarding/utils/onboarding-subtask-icons";
 import {
   countOnboardingSectionProgress,
   getAssortmentTaskIconSrc,
   getOnboardingSectionProgressPercent,
-  getOnboardingSectionStatusIconSrc,
-  isAssortmentSectionInReview,
   isOnboardingSectionLocked,
   LOCKED_ONBOARDING_SECTION_IDS,
 } from "@/lib/mock-data/onboarding";
@@ -27,6 +24,7 @@ import {
   countProfileSectionCompletedSteps,
   getProfileSectionProgressPercent,
 } from "@/features/partner-onboarding/utils/profile-task-progress";
+import { resolveOnboardingSectionStatusIcon } from "@/features/partner-onboarding/utils/onboarding-section-status-icon";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
 import { PartnerProfileHeader } from "./partner-profile-header";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
@@ -64,8 +62,12 @@ function countSectionProgress(sections: OnboardingSection[]) {
   return countOnboardingSectionProgress(sections);
 }
 
-function getSubTaskIconSrc(task: OnboardingTask, approvedIds?: string[]): string {
-  return getProfileSubTaskIconSrc(task, approvedIds);
+function getSubTaskIconSrc(
+  sectionId: string,
+  task: OnboardingTask,
+  approvedIds?: string[],
+): string {
+  return getChecklistSubTaskIconSrc(sectionId, task, approvedIds);
 }
 
 function isSectionReviewable(section: OnboardingSection): boolean {
@@ -130,7 +132,7 @@ function SectionRow({
       ? countProfileSectionCompletedSteps(section, approvedIds)
       : section.completedSteps;
   const sectionIcon = SECTION_ICON_SRC[section.id] ?? "/icons/marketplace.svg";
-  const statusIcon = getOnboardingSectionStatusIconSrc(section, sections);
+  const statusIcon = resolveOnboardingSectionStatusIcon(section, sections, approvedIds);
 
   const content = (
     <div
@@ -141,27 +143,34 @@ function SectionRow({
         linkable && "cursor-pointer",
       )}
     >
-      <ChecklistIcon src={statusIcon} size={24} gray={!locked && progress === 0 && !isAssortmentSectionInReview(section)} />
-      <ChecklistIcon src={sectionIcon} size={40} className="ml-3" />
-      <div className="ml-4 flex min-w-0 flex-1 items-start justify-between gap-4">
-        <div className="min-w-0">
-          <h3 className="text-[18px] font-semibold leading-snug text-[var(--color-foreground)]">
-            {section.title}
-          </h3>
-          <div className="mt-2 flex items-center gap-1">
-            <div className="h-1.5 w-[200px] shrink-0 overflow-hidden rounded-full bg-[var(--color-progress-track)]">
-              <div
-                className={cn(
-                  "h-full rounded-full transition-all",
-                  !locked && progress === 100 && "bg-[var(--color-success)]",
-                  !locked && progress > 0 && progress < 100 && "bg-[var(--color-primary)]",
-                )}
-                style={{ width: locked || progress === 0 ? "0%" : `${progress}%` }}
-              />
+      <ChecklistIcon
+        src={statusIcon.src}
+        size={24}
+        gray={statusIcon.gray}
+        className="self-center"
+      />
+      <div className="ml-3 flex min-w-0 flex-1 items-start justify-between gap-4">
+        <div className="flex min-w-0 items-center gap-4">
+          <ChecklistIcon src={sectionIcon} size={40} />
+          <div className="min-w-0">
+            <h3 className="text-[18px] font-semibold leading-snug text-[var(--color-foreground)]">
+              {section.title}
+            </h3>
+            <div className="mt-2 flex items-center gap-1">
+              <div className="h-1.5 w-[200px] shrink-0 overflow-hidden rounded-full bg-[var(--color-progress-track)]">
+                <div
+                  className={cn(
+                    "h-full rounded-full transition-all",
+                    !locked && progress === 100 && "bg-[var(--color-success)]",
+                    !locked && progress > 0 && progress < 100 && "bg-[var(--color-primary)]",
+                  )}
+                  style={{ width: locked || progress === 0 ? "0%" : `${progress}%` }}
+                />
+              </div>
+              <span className="shrink-0 text-[var(--text-caption-size)] font-semibold tabular-nums text-[var(--color-foreground)]">
+                {progress}%
+              </span>
             </div>
-            <span className="shrink-0 text-[var(--text-caption-size)] font-semibold tabular-nums text-[var(--color-foreground)]">
-              {progress}%
-            </span>
           </div>
         </div>
 
@@ -177,7 +186,11 @@ function SectionRow({
                 ? "/icons/lock-fill.svg"
                 : section.id === "assortment"
                   ? getAssortmentTaskIconSrc(task)
-                  : getSubTaskIconSrc(task, section.id === "profile" ? approvedIds : undefined);
+                  : getSubTaskIconSrc(
+                      section.id,
+                      task,
+                      section.id === "profile" ? approvedIds : undefined,
+                    );
               return (
               <ChecklistIcon
                 key={task.id}
@@ -186,7 +199,8 @@ function SectionRow({
                 gray={
                   !locked &&
                   section.id !== "assortment" &&
-                  shouldGrayProfileSubTaskIcon(
+                  shouldGrayChecklistSubTaskIcon(
+                    section.id,
                     task,
                     section.id === "profile" ? approvedIds : undefined,
                   )

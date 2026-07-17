@@ -9,13 +9,16 @@ import {
 export const ONBOARDING_ICON_GRAY_FILTER =
   "brightness(0) saturate(100%) invert(55%) sepia(8%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(88%)";
 
-/** Checklist table row icons (legacy checklist page). */
+/** Checklist table row icons (profile section sub-tasks). */
 export function getProfileSubTaskIconSrc(
   task: OnboardingTask,
   approvedIds: string[] = [],
 ): string {
   if (!isProfileTmReviewTask(task)) {
-    return "/icons/progress-check-success.svg";
+    if (task.status === "complete") return "/icons/progress-check-success.svg";
+    if (task.status === "in_progress") return "/icons/time-clock.svg";
+    if (task.status === "blocked") return "/icons/warning-fill.svg";
+    return "/icons/progress.svg";
   }
   return getProfileTaskProgressIconSrc(task, approvedIds);
 }
@@ -43,7 +46,9 @@ export function shouldGrayProfileSubTaskIcon(
   task: OnboardingTask,
   approvedIds: string[] = [],
 ): boolean {
-  if (!isProfileTmReviewTask(task)) return false;
+  if (!isProfileTmReviewTask(task)) {
+    return task.status === "pending" || task.status === "in_progress";
+  }
   return shouldGrayProfileTaskProgressIcon(task, approvedIds);
 }
 

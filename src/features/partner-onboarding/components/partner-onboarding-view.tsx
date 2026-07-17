@@ -29,10 +29,9 @@ import {
   type PotentialPartner,
   type PartnerPipelineStatus,
 } from "@/lib/mock-data/potential-partners";
-import { getOnboardingForPartner } from "@/lib/mock-data/onboarding";
 import {
   ALL_PARTNER_STATUSES,
-  OnboardingChecklistProgressSteps,
+  OnboardingPartnerProgressSteps,
   PartnerStatusBadge,
 } from "./partner-status-badge";
 
@@ -325,9 +324,7 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
                       </td>
                       <td className="py-2.5">
                         {showsPartnerProgress(partner.status) ? (
-                          <OnboardingChecklistProgressSteps
-                            sections={getOnboardingForPartner(partner).sections}
-                          />
+                          <OnboardingPartnerProgressSteps partner={partner} />
                         ) : (
                           <span className="text-[var(--color-muted-foreground)]">—</span>
                         )}

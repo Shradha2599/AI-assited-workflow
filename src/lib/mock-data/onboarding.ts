@@ -336,7 +336,7 @@ function buildFreshOnboardingForPartner(
     sellerId,
     section,
     title,
-    status: section === "assortment" ? "in_progress" : "pending",
+    status: "pending",
     autoValidated,
   });
 
@@ -437,6 +437,110 @@ function applyTaskUpdates(
   };
 }
 
+/** Flat task order across all onboarding sections (14 tasks). */
+const ONBOARDING_TASK_SUFFIXES = [
+  "01",
+  "02",
+  "03",
+  "04",
+  "05",
+  "06",
+  "07",
+  "08",
+  "09",
+  "10",
+  "11",
+  "12",
+  "13",
+  "14",
+] as const;
+
+const TASK_AUTO_VALIDATED: Record<string, boolean> = {
+  "01": true,
+  "02": true,
+  "03": true,
+  "07": true,
+  "09": true,
+};
+
+/** Completed task count before the active step — varied per onboarding partner index. */
+const ONBOARDING_PROGRESS_BY_INDEX = [
+  0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 4, 7, 10, 6, 8, 9, 11, 5, 3, 2, 7, 9, 10, 12, 4, 6, 8, 11, 13, 5, 7, 9, 10, 3, 6, 8, 12, 4, 11, 0,
+];
+
+const ONBOARDING_START_DATES = [
+  "2026-01-10",
+  "2026-02-05",
+  "2026-03-10",
+  "2026-04-01",
+  "2026-05-15",
+  "2026-06-01",
+];
+
+const ONBOARDING_LAUNCH_DATES = [
+  "2026-05-30",
+  "2026-06-01",
+  "2026-06-15",
+  "2026-07-01",
+  "2026-08-15",
+  "2026-09-01",
+];
+
+function defaultProgressForPartner(sellerId: string): number {
+  const idx = getOnboardingPartners().findIndex((p) => p.id === sellerId);
+  if (idx < 0) return 0;
+  return ONBOARDING_PROGRESS_BY_INDEX[idx % ONBOARDING_PROGRESS_BY_INDEX.length];
+}
+
+function buildOnboardingAtProgress(
+  sellerId: string,
+  sellerName: string,
+  completedCount: number,
+  meta?: Partial<Pick<OnboardingPartner, "startedAt" | "targetLaunchDate">>,
+): OnboardingPartner {
+  const updates: Record<string, Partial<OnboardingTask>> = {};
+  const capped = Math.min(Math.max(completedCount, 0), ONBOARDING_TASK_SUFFIXES.length);
+
+  for (let i = 0; i < capped; i++) {
+    const suffix = ONBOARDING_TASK_SUFFIXES[i];
+    updates[suffix] = {
+      status: "complete",
+      autoValidated: TASK_AUTO_VALIDATED[suffix] ?? false,
+    };
+  }
+
+  if (capped < ONBOARDING_TASK_SUFFIXES.length) {
+    const active = ONBOARDING_TASK_SUFFIXES[capped];
+    if (active === "01") {
+      updates[active] = {
+        status: "in_progress",
+        issue: "Invalid Banner/Cover Image",
+        issueSource: "Image quality analysis: low resolution, does not meet guidelines",
+        autoValidated: true,
+      };
+    } else if (active === "08") {
+      updates[active] = { status: "in_progress", autoValidated: false };
+    } else {
+      updates[active] = {
+        status: "in_progress",
+        autoValidated: TASK_AUTO_VALIDATED[active] ?? false,
+      };
+    }
+  }
+
+  const partnerIndex = getOnboardingPartners().findIndex((p) => p.id === sellerId);
+  const dateIdx = partnerIndex >= 0 ? partnerIndex % ONBOARDING_START_DATES.length : 0;
+
+  return applyTaskUpdates(
+    buildFreshOnboardingForPartner(sellerId, sellerName),
+    updates,
+    meta ?? {
+      startedAt: ONBOARDING_START_DATES[dateIdx],
+      targetLaunchDate: ONBOARDING_LAUNCH_DATES[dateIdx],
+    },
+  );
+}
+
 /** Profile (7) + documentation (2) + integrations (1) steps marked complete */
 const COMPLETE_PROFILE_AND_DOCUMENTATION_UPDATES: Record<string, Partial<OnboardingTask>> = {
   "01": { status: "complete", autoValidated: true },
@@ -500,6 +604,7 @@ const partialOnboardingProfiles: Record<string, OnboardingPartner> = {
       "06": { status: "complete", autoValidated: false },
       "07": { status: "complete", autoValidated: true },
       "09": { status: "complete", autoValidated: true },
+      "10": { status: "in_progress", autoValidated: false },
       "11": { status: "complete", autoValidated: false },
       "08": { status: "in_progress", autoValidated: false },
     },
@@ -517,6 +622,7 @@ const partialOnboardingProfiles: Record<string, OnboardingPartner> = {
       "06": { status: "complete", autoValidated: false },
       "07": { status: "complete", autoValidated: true },
       "09": { status: "complete", autoValidated: true },
+      "10": { status: "in_progress", autoValidated: false },
       "11": { status: "complete", autoValidated: false },
     },
     { startedAt: "2026-05-15", targetLaunchDate: "2026-08-15" },
@@ -558,7 +664,10 @@ const partialOnboardingProfiles: Record<string, OnboardingPartner> = {
 };
 
 function resolveOnboardingProfile(sellerId: string, sellerName: string): OnboardingPartner {
-  return partialOnboardingProfiles[sellerId] ?? buildFreshOnboardingForPartner(sellerId, sellerName);
+  if (partialOnboardingProfiles[sellerId]) {
+    return partialOnboardingProfiles[sellerId];
+  }
+  return buildOnboardingAtProgress(sellerId, sellerName, defaultProgressForPartner(sellerId));
 }
 
 export function getOnboardingBySellerID(sellerId: string): OnboardingPartner {

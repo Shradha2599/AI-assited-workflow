@@ -63,7 +63,9 @@ export function countProfileSectionCompletedSteps(
   approvedIds: string[] = [],
 ): number {
   return section.tasks.filter((task) => {
-    if (!isProfileTmReviewTask(task)) return true;
+    if (!isProfileTmReviewTask(task)) {
+      return task.status === "complete";
+    }
     const state = resolveProfileTaskProgressState(task, approvedIds);
     return state === "tm_approved" || state === "seller_complete";
   }).length;
