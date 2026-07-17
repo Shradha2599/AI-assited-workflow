@@ -185,7 +185,11 @@ function PartnerCard({ partner, stage }: { partner: PipelinePartner; stage: Part
             </span>
           </p>
           <Link
-            href={stage === "Onboarding" ? "/sellers/onboarding" : "/sellers/discovery"}
+            href={
+              stage === "Onboarding"
+                ? `/sellers/onboarding/${partner.id}`
+                : "/sellers/discovery"
+            }
             className="shrink-0 text-[var(--color-muted-foreground)] hover:text-[var(--color-primary)]"
             aria-label={`Open ${partner.name}`}
           >

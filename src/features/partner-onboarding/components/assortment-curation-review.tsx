@@ -20,7 +20,7 @@ import { AssortmentRecommendedTab } from "./assortment-recommended-tab";
 import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
-import { ReadOnlyBadge, TablePagination } from "./profile-review-shared";
+import { ReadOnlyBadge, TablePagination, ValidationAlert } from "./profile-review-shared";
 import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
 import { useAssortmentCurationStore } from "../store/assortment-curation-store";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
@@ -196,6 +196,25 @@ export function AssortmentCurationReview({
             {approved ? <ApprovedBadge /> : <ReviewBadge />}
           </div>
         </div>
+
+        {assortmentTask.status === "in_progress" && assortmentTask.agentRecommendation && !approved && (
+          <ValidationAlert
+            taskId={assortmentTask.id}
+            title={assortmentTask.agentRecommendation.title}
+            message={assortmentTask.agentRecommendation.message}
+            onAddComment={() => openComments(assortmentTask.id)}
+            onRejectRecommendation={() => openComments(assortmentTask.id)}
+            secondaryCta={
+              assortmentTask.suggestedCta
+                ? {
+                    label: assortmentTask.suggestedCta.label,
+                    onClick: () => openComments(assortmentTask.id),
+                  }
+                : undefined
+            }
+            variant="banner"
+          />
+        )}
 
         <div className="mb-6 flex items-center gap-2">
           <div className="flex min-w-0 flex-1 flex-nowrap overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-card)] p-0.5">

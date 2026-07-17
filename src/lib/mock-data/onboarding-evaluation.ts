@@ -1,4 +1,6 @@
 import type { ValidationStatus } from "@/lib/mock-data/lead-form-analysis";
+import { getOnboardingBySellerID } from "@/lib/mock-data/onboarding";
+import { taskNeedsReview } from "@/lib/onboarding";
 
 export interface OnboardingFieldValidation {
   id: string;
@@ -735,7 +737,29 @@ export const sectionEvaluations: Record<string, OnboardingSectionEvaluation> = {
 };
 
 export function getProfileTaskEvaluations(sellerId: string): OnboardingTaskEvaluation[] {
-  return profileEvaluations[sellerId] ?? [];
+  const hardcoded = profileEvaluations[sellerId];
+  if (hardcoded?.length) return hardcoded;
+
+  const onboarding = getOnboardingBySellerID(sellerId);
+  const profileSection = onboarding.sections.find((s) => s.id === "profile");
+  if (!profileSection) return [];
+
+  return profileSection.tasks
+    .filter((task) => task.title === "Brand profile" && taskNeedsReview(task, "profile"))
+    .map((task) => ({
+      taskId: task.id,
+      sellerId,
+      sectionId: "profile",
+      title: "Banner/ Cover Image",
+      reviewable: true,
+      autoValidated: task.autoValidated,
+      validationStatus: (task.issue ? "invalid" : "partial") as ValidationStatus,
+      summary: task.issueSource ?? task.issue ?? "Ready for TM review.",
+      source: task.issueSource ?? "Profile submission",
+      checkedOn: CHECKED,
+      agentRecommendation: task.agentRecommendation,
+      fields: [],
+    }));
 }
 
 export function getDocumentationEvaluation(sellerId: string) {
@@ -785,7 +809,32 @@ export function getReviewableEvaluations(sellerId: string): OnboardingTaskEvalua
     }
   }
 
-  return [...profile, ...docTasks];
+  const fromState: OnboardingTaskEvaluation[] = [];
+  const onboarding = getOnboardingBySellerID(sellerId);
+  const existingIds = new Set([...profile, ...docTasks].map((e) => e.taskId));
+
+  for (const section of onboarding.sections) {
+    for (const task of section.tasks) {
+      if (!taskNeedsReview(task, section.id)) continue;
+      if (existingIds.has(task.id)) continue;
+      fromState.push({
+        taskId: task.id,
+        sellerId,
+        sectionId: section.id,
+        title: task.title,
+        reviewable: true,
+        autoValidated: task.autoValidated,
+        validationStatus: (task.issue ? "invalid" : "partial") as ValidationStatus,
+        summary: task.agentRecommendation?.message ?? task.issueSource ?? "Awaiting TM review.",
+        source: task.issueSource ?? "Onboarding checklist",
+        checkedOn: CHECKED,
+        agentRecommendation: task.agentRecommendation,
+        fields: [],
+      });
+    }
+  }
+
+  return [...profile, ...docTasks, ...fromState];
 }
 
 export function getOnboardingTasksForPanel(sellerId: string) {

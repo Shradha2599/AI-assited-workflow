@@ -51,6 +51,7 @@ function BrandProfileContent({
   fields,
   taskId,
   agentRecommendation,
+  secondaryCta,
   onAddComment,
   onRejectRecommendation,
 }: {
@@ -58,6 +59,7 @@ function BrandProfileContent({
   fields: { id: string; submittedValue: string }[];
   taskId: string;
   agentRecommendation?: { title: string; message: string };
+  secondaryCta?: { label: string; onClick: () => void };
   onAddComment: () => void;
   onRejectRecommendation: () => void;
 }) {
@@ -76,6 +78,7 @@ function BrandProfileContent({
           message={agentRecommendation.message}
           onAddComment={onAddComment}
           onRejectRecommendation={onRejectRecommendation}
+          secondaryCta={secondaryCta}
           variant="banner"
         />
       )}
@@ -174,14 +177,29 @@ export function ProfileInformationReview({
   };
 
   const handleRejectRecommendation = () => {
-    if (activeEval?.agentRecommendation) {
+    const rec = activeEval?.agentRecommendation ?? activeTask.agentRecommendation;
+    if (rec) {
       openFeedback({
-        taskId: activeEval.taskId,
-        title: activeEval.agentRecommendation.title,
-        agentMessage: activeEval.agentRecommendation.message,
+        taskId: activeEval?.taskId ?? activeTaskId,
+        title: rec.title,
+        agentMessage: rec.message,
       });
     }
   };
+
+  const agentRec = activeEval?.agentRecommendation ?? activeTask.agentRecommendation;
+  const secondaryCta = activeTask.suggestedCta
+    ? {
+        label: activeTask.suggestedCta.label,
+        onClick: () => {
+          if (activeTask.suggestedCta?.action === "approve") {
+            approveItem(profileTaskApproveId(activeTaskId));
+          } else {
+            handleAddComment();
+          }
+        },
+      }
+    : undefined;
 
   const taskApproveId = profileTaskApproveId(activeTaskId);
   const tmApproved = approvedIds.includes(taskApproveId);
@@ -248,7 +266,8 @@ export function ProfileInformationReview({
             partner={partner}
             fields={fields}
             taskId={activeTaskId}
-            agentRecommendation={activeEval?.agentRecommendation}
+            agentRecommendation={agentRec}
+            secondaryCta={secondaryCta}
             onAddComment={handleAddComment}
             onRejectRecommendation={handleRejectRecommendation}
           />

@@ -15,6 +15,7 @@ export function ValidationAlert({
   message,
   onAddComment,
   onRejectRecommendation,
+  secondaryCta,
   variant = "default",
 }: {
   taskId: string;
@@ -22,6 +23,8 @@ export function ValidationAlert({
   message: string;
   onAddComment: () => void;
   onRejectRecommendation: () => void;
+  /** Contextual secondary action from AI recommendation (e.g. Review task, Approve). */
+  secondaryCta?: { label: string; onClick: () => void };
   variant?: "default" | "banner";
 }) {
   const dismissed = useOnboardingReviewStore((s) => s.dismissedAlerts.includes(taskId));
@@ -37,9 +40,16 @@ export function ValidationAlert({
         message={message}
         onDismiss={() => dismissAlert(taskId)}
         actions={
-          <Button variant="outline" size="sm" className="shrink-0 bg-white" onClick={onAddComment}>
-            Add Comment
-          </Button>
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
+            {secondaryCta && (
+              <Button variant="outline" size="sm" className="bg-white" onClick={secondaryCta.onClick}>
+                {secondaryCta.label}
+              </Button>
+            )}
+            <Button variant="outline" size="sm" className="shrink-0 bg-white" onClick={onAddComment}>
+              Add Comment
+            </Button>
+          </div>
         }
       />
     );
@@ -52,7 +62,15 @@ export function ValidationAlert({
       message={
         <>
           {message}
-          <div className="mt-2">
+          <div className="mt-2 flex flex-wrap items-center gap-1">
+            {secondaryCta && (
+              <>
+                <Button variant="outline" size="sm" className="h-auto bg-white" onClick={secondaryCta.onClick}>
+                  {secondaryCta.label}
+                </Button>
+                <span className="text-[var(--color-border)]">·</span>
+              </>
+            )}
             <Button variant="ghost" size="sm" className="h-auto px-0 py-0" onClick={onAddComment}>
               Add Comment
             </Button>

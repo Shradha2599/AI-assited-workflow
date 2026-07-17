@@ -122,7 +122,7 @@ const LEAD_FORM_STATUSES: PartnerPipelineStatus[] = [
 ];
 
 const CHECKLIST_STATUSES: PartnerPipelineStatus[] = ["Onboarding"];
-const PROGRESS_STATUSES: PartnerPipelineStatus[] = ["Onboarding", "Approved"];
+const PROGRESS_STATUSES: PartnerPipelineStatus[] = ["Onboarding"];
 
 export function showsLeadForm(status: PartnerPipelineStatus): boolean {
   return LEAD_FORM_STATUSES.includes(status);
