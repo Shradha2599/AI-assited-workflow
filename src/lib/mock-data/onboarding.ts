@@ -1,6 +1,9 @@
 import { isOnboardingSectionLocked, countSectionCompletedSteps } from "@/lib/onboarding/progress";
 import type { OnboardingSection, OnboardingTask } from "@/lib/onboarding/types";
-import { ONBOARDING_TASK_COMPLETE_ICON } from "@/features/partner-onboarding/utils/onboarding-task-icons";
+import {
+  getSectionStatusIconSrc,
+  getSubtaskStatusIconSrc,
+} from "@/features/partner-onboarding/utils/onboarding-status-icons";
 
 export type {
   OnboardingTask,
@@ -21,6 +24,7 @@ export {
   getAllOnboardingProfiles,
   getBlockedOnboardingTasks,
   computeOnboardingOverallProgress,
+  countOnboardingSubtaskProgress,
   countOnboardingSectionProgress,
   getOnboardingSectionProgressPercent,
   getSectionProgressPercent,
@@ -31,6 +35,7 @@ export {
   LOCKED_ONBOARDING_SECTION_IDS,
 } from "@/lib/onboarding";
 
+/** @deprecated Use ONBOARDING_STATUS_ICON.in_review */
 export const ASSORTMENT_REVIEW_ICON_SRC = "/icons/clipboard.svg";
 
 /** Assortment stays under review after form submission — not auto-complete. */
@@ -39,9 +44,11 @@ export function isAssortmentSectionInReview(section: OnboardingSection): boolean
   return section.tasks.some((task) => task.status === "in_progress");
 }
 
-export function getAssortmentTaskIconSrc(task: OnboardingTask): string {
-  if (task.status === "complete") return ONBOARDING_TASK_COMPLETE_ICON;
-  return ASSORTMENT_REVIEW_ICON_SRC;
+export function getAssortmentTaskIconSrc(
+  task: OnboardingTask,
+  approvedIds: string[] = [],
+): string {
+  return getSubtaskStatusIconSrc(task, "assortment", approvedIds, false, "sm");
 }
 
 export function getOnboardingSectionStatusIconSrc(
@@ -49,17 +56,5 @@ export function getOnboardingSectionStatusIconSrc(
   sections: OnboardingSection[],
   approvedIds: string[] = [],
 ): string {
-  const locked = isOnboardingSectionLocked(section, sections, approvedIds);
-  if (locked) return "/icons/lock-fill.svg";
-  if (isAssortmentSectionInReview(section)) {
-    return ASSORTMENT_REVIEW_ICON_SRC;
-  }
-  const completed = countSectionCompletedSteps(section, approvedIds);
-  if (completed >= section.totalSteps && section.totalSteps > 0) {
-    return ONBOARDING_TASK_COMPLETE_ICON;
-  }
-  if (section.tasks.some((t) => t.status === "in_progress" || t.status === "blocked")) {
-    return "/icons/time-clock.svg";
-  }
-  return "/icons/progress.svg";
+  return getSectionStatusIconSrc(section, sections, approvedIds);
 }

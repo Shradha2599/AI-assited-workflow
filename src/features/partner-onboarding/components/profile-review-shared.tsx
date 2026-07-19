@@ -15,7 +15,6 @@ export function ValidationAlert({
   message,
   onAddComment,
   onRejectRecommendation,
-  secondaryCta,
   variant = "default",
 }: {
   taskId: string;
@@ -23,8 +22,6 @@ export function ValidationAlert({
   message: string;
   onAddComment: () => void;
   onRejectRecommendation: () => void;
-  /** Contextual secondary action from AI recommendation (e.g. Review task, Approve). */
-  secondaryCta?: { label: string; onClick: () => void };
   variant?: "default" | "banner";
 }) {
   const dismissed = useOnboardingReviewStore((s) => s.dismissedAlerts.includes(taskId));
@@ -32,25 +29,36 @@ export function ValidationAlert({
 
   if (dismissed) return null;
 
+  const commentActions = (
+    <div className="mt-3 flex flex-wrap items-center gap-2">
+      <Button variant="outline" size="sm" className="bg-white" onClick={onAddComment}>
+        Add Comment
+      </Button>
+      {variant === "default" && (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-auto px-0 text-[var(--color-error)] hover:bg-[var(--color-error-light)] hover:text-[var(--color-error)]"
+          onClick={onRejectRecommendation}
+        >
+          Reject recommendation
+        </Button>
+      )}
+    </div>
+  );
+
   if (variant === "banner") {
     return (
       <InfoBanner
         className="mb-6"
         title={title}
-        message={message}
-        onDismiss={() => dismissAlert(taskId)}
-        actions={
-          <div className="flex shrink-0 flex-wrap items-center gap-2">
-            {secondaryCta && (
-              <Button variant="outline" size="sm" className="bg-white" onClick={secondaryCta.onClick}>
-                {secondaryCta.label}
-              </Button>
-            )}
-            <Button variant="outline" size="sm" className="shrink-0 bg-white" onClick={onAddComment}>
-              Add Comment
-            </Button>
-          </div>
+        message={
+          <>
+            {message}
+            {commentActions}
+          </>
         }
+        onDismiss={() => dismissAlert(taskId)}
       />
     );
   }
@@ -62,32 +70,36 @@ export function ValidationAlert({
       message={
         <>
           {message}
-          <div className="mt-2 flex flex-wrap items-center gap-1">
-            {secondaryCta && (
-              <>
-                <Button variant="outline" size="sm" className="h-auto bg-white" onClick={secondaryCta.onClick}>
-                  {secondaryCta.label}
-                </Button>
-                <span className="text-[var(--color-border)]">·</span>
-              </>
-            )}
-            <Button variant="ghost" size="sm" className="h-auto px-0 py-0" onClick={onAddComment}>
-              Add Comment
-            </Button>
-            <span className="mx-1 text-[var(--color-border)]">·</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-auto px-0 py-0 text-[var(--color-error)] hover:bg-[var(--color-error-light)] hover:text-[var(--color-error)]"
-              onClick={onRejectRecommendation}
-            >
-              Reject recommendation
-            </Button>
-          </div>
+          {commentActions}
         </>
       }
       onDismiss={() => dismissAlert(taskId)}
     />
+  );
+}
+
+export function ReviewActionBar({
+  primary,
+  secondary,
+}: {
+  primary?: { label: string; onClick: () => void; disabled?: boolean };
+  secondary?: { label: string; onClick: () => void; disabled?: boolean };
+}) {
+  if (!primary && !secondary) return null;
+
+  return (
+    <div className="mt-8 flex items-center gap-3 border-t border-[var(--color-border)] pt-8">
+      {primary && (
+        <Button size="sm" onClick={primary.onClick} disabled={primary.disabled}>
+          {primary.label}
+        </Button>
+      )}
+      {secondary && (
+        <Button size="sm" variant="outline" onClick={secondary.onClick} disabled={secondary.disabled}>
+          {secondary.label}
+        </Button>
+      )}
+    </div>
   );
 }
 
@@ -96,14 +108,6 @@ export function ReadOnlyBadge() {
     <StatusTag className="inline-flex items-center gap-1.5 bg-purple-100 font-normal text-purple-700">
       <Image src="/icons/visibility.svg" alt="" width={14} height={14} aria-hidden />
       Read Only
-    </StatusTag>
-  );
-}
-
-export function AutoValidatedBadge() {
-  return (
-    <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
-      <Check className="h-3 w-3" /> Auto Validated
     </StatusTag>
   );
 }
@@ -118,9 +122,9 @@ export function CompleteBadge() {
 
 export function UnderlinedField({ label, value }: { label: string; value: string }) {
   return (
-    <div className="border-b border-[var(--color-border)] py-4">
+    <div className="border-b border-[#333333] pt-4">
       <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">{label}</p>
-      <p className="mt-1 text-[var(--text-body-size)] font-medium leading-relaxed text-[var(--color-foreground)]">
+      <p className="mt-1 pb-[var(--space-2)] text-[var(--text-body-size)] font-medium leading-normal text-[var(--color-foreground)]">
         {value}
       </p>
     </div>

@@ -3,7 +3,6 @@
 import { useEffect, useMemo } from "react";
 import { Check } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { StatusTag } from "@/components/ui/status-tag";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import { getProfileTaskEvaluations } from "@/lib/mock-data/onboarding-evaluation";
@@ -21,10 +20,11 @@ import {
   PROFILE_SUBTASK_HINTS,
 } from "./onboarding-subtask-nav";
 import {
-  AutoValidatedBadge,
   CompleteBadge,
   FileAttachment,
   ReadOnlyBadge,
+  ReviewActionBar,
+  SectionDivider,
   UnderlinedField,
   ValidationAlert,
 } from "./profile-review-shared";
@@ -46,12 +46,21 @@ function getFieldValue(
   return fields.find((f) => f.id === id)?.submittedValue ?? fallback;
 }
 
+const LOGO_FILE_SIZE = "1.2 MB";
+const COVER_FILE_SIZE = "1.4 MB";
+
+function parseAssetFileName(value: string): string {
+  return value.replace(/\s*\([^)]*\)\s*$/, "").trim() || value;
+}
+
 function BrandProfileContent({
   partner,
   fields,
   taskId,
   agentRecommendation,
-  secondaryCta,
+  showReviewActions,
+  onApprove,
+  onReject,
   onAddComment,
   onRejectRecommendation,
 }: {
@@ -59,15 +68,13 @@ function BrandProfileContent({
   fields: { id: string; submittedValue: string }[];
   taskId: string;
   agentRecommendation?: { title: string; message: string };
-  secondaryCta?: { label: string; onClick: () => void };
+  showReviewActions: boolean;
+  onApprove: () => void;
+  onReject: () => void;
   onAddComment: () => void;
   onRejectRecommendation: () => void;
 }) {
-  const bannerValue = getFieldValue(fields, "banner", "Cover.png");
-  const bannerName = bannerValue.includes("(") ? bannerValue.split(" (")[0] : bannerValue;
-  const bannerSize = bannerValue.includes("(")
-    ? bannerValue.match(/\(([^)]+)\)/)?.[1] ?? "640×360"
-    : "640×360";
+  const bannerName = parseAssetFileName(getFieldValue(fields, "banner", "Cover.png"));
 
   return (
     <>
@@ -78,7 +85,6 @@ function BrandProfileContent({
           message={agentRecommendation.message}
           onAddComment={onAddComment}
           onRejectRecommendation={onRejectRecommendation}
-          secondaryCta={secondaryCta}
           variant="banner"
         />
       )}
@@ -113,20 +119,28 @@ function BrandProfileContent({
         />
       </section>
 
-      <section className="mt-8 border-t border-[var(--color-border)] pt-8">
+      <SectionDivider />
+
+      <section>
         <h4 className="text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]">
           Brand assets
         </h4>
         <div className="mt-4 space-y-6">
-          <FileAttachment label="Logo" hint="Please provide logo" name="Logo.png" size="1.2 MB" />
+          <FileAttachment label="Logo" name="Logo.png" size={LOGO_FILE_SIZE} />
           <FileAttachment
             label="Banner/ Cover Image"
-            hint="Please provide cover image"
             name={bannerName}
-            size={bannerSize}
+            size={COVER_FILE_SIZE}
           />
         </div>
       </section>
+
+      {showReviewActions && (
+        <ReviewActionBar
+          primary={{ label: "Approve", onClick: onApprove }}
+          secondary={{ label: "Reject", onClick: onReject }}
+        />
+      )}
     </>
   );
 }
@@ -187,23 +201,12 @@ export function ProfileInformationReview({
     }
   };
 
-  const agentRec = activeEval?.agentRecommendation ?? activeTask.agentRecommendation;
-  const secondaryCta = activeTask.suggestedCta
-    ? {
-        label: activeTask.suggestedCta.label,
-        onClick: () => {
-          if (activeTask.suggestedCta?.action === "approve") {
-            approveItem(profileTaskApproveId(activeTaskId));
-          } else {
-            handleAddComment();
-          }
-        },
-      }
-    : undefined;
-
   const taskApproveId = profileTaskApproveId(activeTaskId);
   const tmApproved = approvedIds.includes(taskApproveId);
   const taskSubmitted = isProfileTaskSubmitted(activeTask);
+
+  const agentRec = activeEval?.agentRecommendation ?? activeTask.agentRecommendation;
+  const showReviewActions = isBrandProfile && taskSubmitted && !tmApproved;
 
   return (
     <>
@@ -230,31 +233,11 @@ export function ProfileInformationReview({
           <div className="flex flex-wrap items-center gap-2">
             <ReadOnlyBadge />
             {isBrandProfile ? (
-              <>
-                {(activeEval?.autoValidated ?? activeTask.autoValidated) && !tmApproved && (
-                  <AutoValidatedBadge />
-                )}
-                {tmApproved && (
-                  <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
-                    <Check className="h-3 w-3" /> Approved
-                  </StatusTag>
-                )}
-                {taskSubmitted && !tmApproved && (
-                  <>
-                    <Button size="sm" variant="outline" onClick={() => approveItem(taskApproveId)}>
-                      Approve
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-2 text-[var(--color-primary)] hover:bg-transparent"
-                      onClick={() => openComments(activeTaskId)}
-                    >
-                      Reject
-                    </Button>
-                  </>
-                )}
-              </>
+              tmApproved ? (
+                <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+                  <Check className="h-3 w-3" /> Approved
+                </StatusTag>
+              ) : null
             ) : (
               <CompleteBadge />
             )}
@@ -267,7 +250,9 @@ export function ProfileInformationReview({
             fields={fields}
             taskId={activeTaskId}
             agentRecommendation={agentRec}
-            secondaryCta={secondaryCta}
+            showReviewActions={showReviewActions}
+            onApprove={() => approveItem(taskApproveId)}
+            onReject={() => openComments(activeTaskId)}
             onAddComment={handleAddComment}
             onRejectRecommendation={handleRejectRecommendation}
           />

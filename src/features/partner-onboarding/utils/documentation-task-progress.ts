@@ -1,7 +1,8 @@
 import type { OnboardingSection, OnboardingTask } from "@/lib/mock-data/onboarding";
 import {
-  ONBOARDING_TASK_COMPLETE_ICON,
-} from "./onboarding-task-icons";
+  getSubtaskStatusIconSrc,
+  shouldGraySubtaskStatusIcon,
+} from "./onboarding-status-icons";
 
 /** Matches approve ids used in documentation-review (`doc-w9`, `doc-contract`). */
 export function documentationDocApproveId(docKey: string): string {
@@ -19,10 +20,33 @@ export function documentationTaskApproveId(task: OnboardingTask): string {
   return documentationDocApproveId(documentationTaskDocKey(task));
 }
 
+export function documentationSubtaskApproveId(
+  partnerId: string,
+  subSection: "general" | "brands",
+): string {
+  return `doc-subtask-${subSection}-${partnerId}`;
+}
+
+export function isDocumentationSubtaskTmApproved(
+  partnerId: string,
+  subSection: "general" | "brands",
+  approvedIds: string[] = [],
+): boolean {
+  return approvedIds.includes(documentationSubtaskApproveId(partnerId, subSection));
+}
+
 export function isDocumentationTaskTmApproved(
   task: OnboardingTask,
   approvedIds: string[] = [],
+  partnerId?: string,
 ): boolean {
+  const pid = partnerId ?? task.sellerId;
+  if (task.id.endsWith("-09")) {
+    return isDocumentationSubtaskTmApproved(pid, "general", approvedIds);
+  }
+  if (task.id.endsWith("-10")) {
+    return isDocumentationSubtaskTmApproved(pid, "brands", approvedIds);
+  }
   return approvedIds.includes(documentationTaskApproveId(task));
 }
 
@@ -40,23 +64,17 @@ export function countDocumentationSectionCompletedSteps(
 export function getDocumentationTaskProgressIconSrc(
   task: OnboardingTask,
   approvedIds: string[] = [],
+  sectionLocked = false,
 ): string {
-  if (isDocumentationTaskTmApproved(task, approvedIds)) {
-    return ONBOARDING_TASK_COMPLETE_ICON;
-  }
-  if (isDocumentationTaskSubmitted(task)) {
-    return "/icons/review-document.svg";
-  }
-  if (task.status === "blocked") return "/icons/warning-fill.svg";
-  return "/icons/progress.svg";
+  return getSubtaskStatusIconSrc(task, "documentation", approvedIds, sectionLocked, "lg");
 }
 
 export function shouldGrayDocumentationTaskProgressIcon(
   task: OnboardingTask,
   approvedIds: string[] = [],
+  sectionLocked = false,
 ): boolean {
-  if (isDocumentationTaskTmApproved(task, approvedIds)) return false;
-  return !isDocumentationTaskSubmitted(task);
+  return shouldGraySubtaskStatusIcon(task, "documentation", approvedIds, sectionLocked);
 }
 
 export function documentationTaskNeedsReview(

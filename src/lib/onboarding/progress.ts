@@ -3,7 +3,7 @@ import {
   countProfileSectionCompletedSteps,
   isProfileTaskTmApproved,
   PROFILE_TM_REVIEW_TASK_TITLE,
-} from "@/features/partner-onboarding/utils/profile-task-progress";
+} from "@/features/partner-onboarding/utils/profile-task-progress-core";
 import {
   countDocumentationSectionCompletedSteps,
   documentationTaskNeedsReview,
@@ -49,24 +49,34 @@ export function computeOnboardingOverallProgress(
   sections: OnboardingSection[],
   approvedIds: string[] = [],
 ): number {
-  const totalSteps = sections.reduce((sum, section) => sum + section.totalSteps, 0);
-  if (totalSteps === 0) return 0;
-  const completedSteps = sections.reduce(
+  const { total, completed } = countOnboardingSubtaskProgress(sections, approvedIds);
+  if (total === 0) return 0;
+  return Math.round((completed / total) * 100);
+}
+
+/** Progress across all 14 onboarding sub-tasks (not sections). */
+export function countOnboardingSubtaskProgress(
+  sections: OnboardingSection[],
+  approvedIds: string[] = [],
+) {
+  const total = sections.reduce((sum, section) => sum + section.totalSteps, 0);
+  const completed = sections.reduce(
     (sum, section) => sum + countSectionCompletedSteps(section, approvedIds),
     0,
   );
-  return Math.round((completedSteps / totalSteps) * 100);
+  return {
+    total,
+    completed,
+    remaining: Math.max(0, total - completed),
+  };
 }
 
+/** @deprecated Use countOnboardingSubtaskProgress — kept for import compatibility. */
 export function countOnboardingSectionProgress(
   sections: OnboardingSection[],
   approvedIds: string[] = [],
 ) {
-  const total = sections.length;
-  const remaining = sections.filter(
-    (section) => countSectionCompletedSteps(section, approvedIds) < section.totalSteps,
-  ).length;
-  return { total, remaining };
+  return countOnboardingSubtaskProgress(sections, approvedIds);
 }
 
 export function isOnboardingSectionLocked(

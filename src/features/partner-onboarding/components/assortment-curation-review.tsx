@@ -20,7 +20,7 @@ import { AssortmentRecommendedTab } from "./assortment-recommended-tab";
 import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
-import { ReadOnlyBadge, TablePagination, ValidationAlert } from "./profile-review-shared";
+import { ReadOnlyBadge, ReviewActionBar, TablePagination, ValidationAlert } from "./profile-review-shared";
 import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
 import { useAssortmentCurationStore } from "../store/assortment-curation-store";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
@@ -207,14 +207,6 @@ export function AssortmentCurationReview({
             message={assortmentTask.agentRecommendation.message}
             onAddComment={() => openComments(assortmentTask.id)}
             onRejectRecommendation={() => openComments(assortmentTask.id)}
-            secondaryCta={
-              assortmentTask.suggestedCta
-                ? {
-                    label: assortmentTask.suggestedCta.label,
-                    onClick: () => openComments(assortmentTask.id),
-                  }
-                : undefined
-            }
             variant="banner"
           />
         )}
@@ -273,25 +265,18 @@ export function AssortmentCurationReview({
 
         {activeTab === "analysis" && <AssortmentAnalysisTab content={content} />}
 
-        <div className="mt-8 flex items-center gap-3 border-t border-[var(--color-border)] pt-8">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => approveItem(approveId)}
-            disabled={approved}
-          >
-            {approved ? "Approved" : "Approve"}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-auto px-0 text-[var(--color-primary)] hover:bg-transparent"
-            onClick={() => openComments(assortmentTask.id)}
-            disabled={approved}
-          >
-            Reject
-          </Button>
-        </div>
+        <ReviewActionBar
+          primary={{
+            label: approved ? "Approved" : "Approve",
+            onClick: () => approveItem(approveId),
+            disabled: approved,
+          }}
+          secondary={{
+            label: "Reject",
+            onClick: () => openComments(assortmentTask.id),
+            disabled: approved,
+          }}
+        />
       </OnboardingSectionReviewLayout>
 
       <OnboardingCommentsDrawer partner={partner} />

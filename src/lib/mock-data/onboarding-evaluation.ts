@@ -39,6 +39,7 @@ export interface BrandDocumentRow {
   name: string;
   brandRole: string;
   documentName: string;
+  documentFileSize?: string;
   validationStatus: ValidationStatus;
   summary: string;
   source: string;
@@ -68,6 +69,66 @@ export interface OnboardingSectionEvaluation {
 }
 
 const CHECKED = "May 6, 2026";
+const LOGO_FILE_SIZE = "1.2 MB";
+const COVER_FILE_SIZE = "1.4 MB";
+
+function buildBrandProfileFields(
+  displayName: string,
+  website: string,
+  description: string,
+  sourcing: string,
+  bannerInvalid: boolean,
+): OnboardingFieldValidation[] {
+  return [
+    {
+      id: "banner",
+      label: "Banner/ Cover Image",
+      submittedValue: "Cover.png",
+      status: bannerInvalid ? "invalid" : "valid",
+      source: "Image quality analysis",
+      detail: bannerInvalid
+        ? `${COVER_FILE_SIZE} — Resolution below 1200×675 minimum; compression artifacts detected`
+        : `${COVER_FILE_SIZE} — Resolution and aspect ratio meet guidelines`,
+      checkedOn: CHECKED,
+    },
+    {
+      id: "display-name",
+      label: "Brand display name",
+      submittedValue: displayName,
+      status: "valid",
+      source: website,
+      detail: "Matches official website and social handles",
+      checkedOn: CHECKED,
+    },
+    {
+      id: "description",
+      label: "Brand description",
+      submittedValue: description,
+      status: "valid",
+      source: website,
+      detail: "Aligns with brand positioning on website and product catalog",
+      checkedOn: CHECKED,
+    },
+    {
+      id: "website",
+      label: "Website URL",
+      submittedValue: website,
+      status: "valid",
+      source: "WHOIS + SSL Labs",
+      detail: "Domain is active and SSL secured",
+      checkedOn: CHECKED,
+    },
+    {
+      id: "sourcing",
+      label: "Product sourcing information",
+      submittedValue: sourcing,
+      status: "valid",
+      source: "AI Keyword + Policy check",
+      detail: "Consistent with stated brand and category claims",
+      checkedOn: CHECKED,
+    },
+  ];
+}
 
 function brandProfileEvaluation(
   sellerId: string,
@@ -76,70 +137,25 @@ function brandProfileEvaluation(
   website: string,
   description: string,
 ): OnboardingTaskEvaluation {
+  const sourcing = "Certified suppliers, non-GMO materials";
   return {
     taskId,
     sellerId,
     sectionId: "profile",
-    title: "Banner/ Cover Image",
+    title: "Brand profile",
     reviewable: true,
-    autoValidated: true,
+    autoValidated: false,
     validationStatus: "invalid",
-    summary: "Low resolution, does not meet guidelines.",
-    source: "Image quality analysis",
+    summary: "Cover image does not meet marketplace display guidelines.",
+    source: "Brand profile analysis",
     checkedOn: CHECKED,
     agentRecommendation: {
-      title: "Invalid Banner/ Cover Image",
-      message: "Low resolution, does not meet guidelines.",
+      title: "Banner / Cover Image — review required",
+      message: `Cover image for ${displayName} is below marketplace resolution guidelines. Brand display name, description, website URL, and sourcing details align with submitted brand assets. Add a comment so the seller can upload a corrected cover image.`,
       suggestedComment:
-        "The uploaded cover image does not align with marketplace display guidelines. Please replace it with a higher-quality asset.",
+        "Please replace the cover image with a higher-resolution asset (minimum 1200×675) that matches your brand guidelines.",
     },
-    fields: [
-      {
-        id: "banner",
-        label: "Banner/ Cover Image",
-        submittedValue: "Cover.png (640×360)",
-        status: "invalid",
-        source: "Image quality analysis",
-        detail: "Resolution below 1200×675 minimum; compression artifacts detected",
-        checkedOn: CHECKED,
-      },
-      {
-        id: "display-name",
-        label: "Brand display name",
-        submittedValue: displayName,
-        status: "valid",
-        source: website,
-        detail: "Matches official website and social handles",
-        checkedOn: CHECKED,
-      },
-      {
-        id: "description",
-        label: "Brand description",
-        submittedValue: description,
-        status: "valid",
-        source: website,
-        detail: "Matches official website and social handles",
-        checkedOn: CHECKED,
-      },
-      {
-        id: "website",
-        label: "Website URL",
-        submittedValue: website,
-        status: "valid",
-        source: "WHOIS + SSL Labs",
-        detail: "Domain is active and SSL secured",
-        checkedOn: CHECKED,
-      },
-      {
-        id: "sourcing",
-        label: "Product sourcing information",
-        submittedValue: "Certified suppliers, non-GMO materials",
-        status: "valid",
-        source: "AI Keyword + Policy check",
-        detail: "Mentions certified suppliers and non-GMO",
-        checkedOn: CHECKED,
-      },
-    ],
+    fields: buildBrandProfileFields(displayName, website, description, sourcing, true),
   };
 }
 
@@ -150,64 +166,25 @@ function validBrandProfileEvaluation(
   website: string,
   description: string,
 ): OnboardingTaskEvaluation {
+  const sourcing = "Certified suppliers, non-GMO materials";
   return {
     taskId,
     sellerId,
     sectionId: "profile",
-    title: "Banner/ Cover Image",
+    title: "Brand profile",
     reviewable: true,
-    autoValidated: true,
+    autoValidated: false,
     validationStatus: "valid",
-    summary: "Brand assets meet marketplace display guidelines.",
-    source: "Image quality analysis",
+    summary: "Brand profile fields align with submitted assets.",
+    source: "Brand profile analysis",
     checkedOn: CHECKED,
-    fields: [
-      {
-        id: "banner",
-        label: "Banner/ Cover Image",
-        submittedValue: "Cover.png (1920×1080)",
-        status: "valid",
-        source: "Image quality analysis",
-        detail: "Resolution and aspect ratio meet guidelines",
-        checkedOn: CHECKED,
-      },
-      {
-        id: "display-name",
-        label: "Brand display name",
-        submittedValue: displayName,
-        status: "valid",
-        source: website,
-        detail: "Matches official website and social handles",
-        checkedOn: CHECKED,
-      },
-      {
-        id: "description",
-        label: "Brand description",
-        submittedValue: description,
-        status: "valid",
-        source: website,
-        detail: "Matches official website and social handles",
-        checkedOn: CHECKED,
-      },
-      {
-        id: "website",
-        label: "Website URL",
-        submittedValue: website,
-        status: "valid",
-        source: "WHOIS + SSL Labs",
-        detail: "Domain is active and SSL secured",
-        checkedOn: CHECKED,
-      },
-      {
-        id: "sourcing",
-        label: "Product sourcing information",
-        submittedValue: "Certified suppliers, non-GMO materials",
-        status: "valid",
-        source: "AI Keyword + Policy check",
-        detail: "Mentions certified suppliers and non-GMO",
-        checkedOn: CHECKED,
-      },
-    ],
+    agentRecommendation: {
+      title: "Brand profile ready for review",
+      message: `Display name, description, website, logo, and cover image for ${displayName} align with submitted brand assets. Approve if everything looks correct, or add a comment for the seller to update any brand field.`,
+      suggestedComment:
+        "Please review your brand display name, description, and cover image to ensure they match current marketplace guidelines.",
+    },
+    fields: buildBrandProfileFields(displayName, website, description, sourcing, false),
   };
 }
 
@@ -275,6 +252,7 @@ function completeDocumentationEvaluation(
       name,
       brandRole: index % 2 === 0 ? "Original manufacturer" : "Reseller",
       documentName: `${name.replace(/\s+/g, "")}.pdf`,
+      documentFileSize: "0.8 MB",
       validationStatus: "valid" as const,
       summary: "Authorization Letter is valid and matches the brand owner information.",
       source: `${name.replace(/\s+/g, "")}.pdf + Application`,
@@ -474,6 +452,7 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         name: "Brand 1",
         brandRole: "Original manufacturer",
         documentName: "Brand 1.pdf",
+        documentFileSize: "0.8 MB",
         validationStatus: "valid",
         summary: "Authorization Letter is valid and matches the brand owner information.",
         source: "Brand 1.pdf + Application",
@@ -484,6 +463,7 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         name: "Brand 2",
         brandRole: "Original manufacturer",
         documentName: "Brand 2.pdf",
+        documentFileSize: "0.7 MB",
         validationStatus: "valid",
         summary: "Authorization Letter is valid and matches the brand owner information.",
         source: "Brand 2.pdf + Application",
@@ -494,13 +474,15 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         name: "Brand 3",
         brandRole: "Original manufacturer",
         documentName: "Brand 3.pdf",
+        documentFileSize: "0.9 MB",
         validationStatus: "invalid",
         summary: "Authorization period for Brand 3 is missing.",
         source: "Brand 3.pdf + Application",
         checkedOn: CHECKED,
         agentRecommendation: {
           title: "Brand 3 Information Missing",
-          message: "The authorization period is missing for Brand 3.",
+          message:
+            "The authorization period is missing for Brand 3. Add a comment so the seller can update the authorization letter.",
           suggestedComment:
             "Please update Brand 3 authorization letter to include a valid authorization period.",
         },
@@ -510,6 +492,7 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         name: "Brand 4",
         brandRole: "Reseller",
         documentName: "Brand 4.pdf",
+        documentFileSize: "0.6 MB",
         validationStatus: "valid",
         summary: "Authorization Letter is valid and matches the brand owner information.",
         source: "Brand 4.pdf + Application",
@@ -520,6 +503,7 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         name: "Brand 5",
         brandRole: "Reseller",
         documentName: "Brand 5.pdf",
+        documentFileSize: "0.7 MB",
         validationStatus: "valid",
         summary: "Authorization Letter is valid and matches the brand owner information.",
         source: "Brand 5.pdf + Application",
@@ -589,6 +573,7 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         name: "Oasis Living",
         brandRole: "Original manufacturer",
         documentName: "Oasis Living.pdf",
+        documentFileSize: "0.8 MB",
         validationStatus: "valid",
         summary: "Authorization Letter is valid and matches the brand owner information.",
         source: "Oasis Living.pdf + Application",
@@ -599,6 +584,7 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         name: "Oasis Outdoor",
         brandRole: "Original manufacturer",
         documentName: "Oasis Outdoor.pdf",
+        documentFileSize: "0.7 MB",
         validationStatus: "valid",
         summary: "Authorization Letter is valid and matches the brand owner information.",
         source: "Oasis Outdoor.pdf + Application",
@@ -609,13 +595,15 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         name: "Oasis Home",
         brandRole: "Original manufacturer",
         documentName: "Oasis Home.pdf",
+        documentFileSize: "0.9 MB",
         validationStatus: "invalid",
         summary: "Authorization period for Oasis Home is missing.",
         source: "Oasis Home.pdf + Application",
         checkedOn: CHECKED,
         agentRecommendation: {
           title: "Oasis Home Information Missing",
-          message: "The authorization period is missing for Oasis Home.",
+          message:
+            "The authorization period is missing for Oasis Home. Add a comment so the seller can update the authorization letter.",
           suggestedComment:
             "Please update Oasis Home authorization letter to include a valid authorization period.",
         },
@@ -625,9 +613,100 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         name: "Oasis Rugs",
         brandRole: "Reseller",
         documentName: "Oasis Rugs.pdf",
+        documentFileSize: "0.6 MB",
         validationStatus: "valid",
         summary: "Authorization Letter is valid and matches the brand owner information.",
         source: "Oasis Rugs.pdf + Application",
+        checkedOn: CHECKED,
+      },
+    ],
+  },
+  "p-l-o6": {
+    general: [
+      {
+        id: "address-proof",
+        label: "Address proof",
+        instruction: "Upload a valid proof of business address.",
+        fileName: "Address proof.pdf",
+        fileSize: "1.3 MB",
+        validationStatus: "valid",
+        summary: "Business address matches the address in application.",
+        source: "D&B + Application",
+        checkedOn: CHECKED,
+      },
+      {
+        id: "duns-cert",
+        label: "DUNS certificate",
+        instruction: "Upload a DUNS registration certificate.",
+        fileName: "DUNS certificate.pdf",
+        fileSize: "1.1 MB",
+        validationStatus: "valid",
+        summary: "DUNS number is active and matches with the business.",
+        source: "D&B",
+        checkedOn: CHECKED,
+      },
+    ],
+    brands: [
+      {
+        id: "brand-1",
+        name: "Brand 1",
+        brandRole: "Original manufacturer",
+        documentName: "Brand 1.pdf",
+        documentFileSize: "0.8 MB",
+        validationStatus: "valid",
+        summary: "Authorization Letter is valid and matches the brand owner information.",
+        source: "Brand 1.pdf + Application",
+        checkedOn: CHECKED,
+      },
+      {
+        id: "brand-2",
+        name: "Brand 2",
+        brandRole: "Original manufacturer",
+        documentName: "Brand 2.pdf",
+        documentFileSize: "0.7 MB",
+        validationStatus: "valid",
+        summary: "Authorization Letter is valid and matches the brand owner information.",
+        source: "Brand 2.pdf + Application",
+        checkedOn: CHECKED,
+      },
+      {
+        id: "brand-3",
+        name: "Brand 3",
+        brandRole: "Original manufacturer",
+        documentName: "Brand 3.pdf",
+        documentFileSize: "0.9 MB",
+        validationStatus: "invalid",
+        summary: "Authorization period for Brand 3 is missing.",
+        source: "Brand 3.pdf + Application",
+        checkedOn: CHECKED,
+        agentRecommendation: {
+          title: "Brand 3 Information Missing",
+          message:
+            "The authorization period is missing for Brand 3. Add a comment so the seller can update the authorization letter.",
+          suggestedComment:
+            "Please update Brand 3 authorization letter to include a valid authorization period.",
+        },
+      },
+      {
+        id: "brand-4",
+        name: "Brand 4",
+        brandRole: "Reseller",
+        documentName: "Brand 4.pdf",
+        documentFileSize: "0.6 MB",
+        validationStatus: "valid",
+        summary: "Authorization Letter is valid and matches the brand owner information.",
+        source: "Brand 4.pdf + Application",
+        checkedOn: CHECKED,
+      },
+      {
+        id: "brand-5",
+        name: "Brand 5",
+        brandRole: "Reseller",
+        documentName: "Brand 5.pdf",
+        documentFileSize: "0.7 MB",
+        validationStatus: "valid",
+        summary: "Authorization Letter is valid and matches the brand owner information.",
+        source: "Brand 5.pdf + Application",
         checkedOn: CHECKED,
       },
     ],
@@ -745,20 +824,38 @@ export function getProfileTaskEvaluations(sellerId: string): OnboardingTaskEvalu
 
   return profileSection.tasks
     .filter((task) => task.title === "Brand profile" && taskNeedsReview(task, "profile"))
-    .map((task) => ({
-      taskId: task.id,
-      sellerId,
-      sectionId: "profile",
-      title: "Banner/ Cover Image",
-      reviewable: true,
-      autoValidated: task.autoValidated,
-      validationStatus: (task.issue ? "invalid" : "partial") as ValidationStatus,
-      summary: task.issueSource ?? task.issue ?? "Ready for TM review.",
-      source: task.issueSource ?? "Profile submission",
-      checkedOn: CHECKED,
-      agentRecommendation: task.agentRecommendation,
-      fields: [],
-    }));
+    .map((task) => {
+      const displayName = onboarding.sellerName;
+      const website = `www.${displayName.toLowerCase().replace(/\s+/g, "")}.com`;
+      const description = `${displayName} — brand profile submitted for review.`;
+      const bannerInvalid = Boolean(task.issue);
+      return {
+        taskId: task.id,
+        sellerId,
+        sectionId: "profile",
+        title: "Brand profile",
+        reviewable: true,
+        autoValidated: false,
+        validationStatus: (bannerInvalid ? "invalid" : "partial") as ValidationStatus,
+        summary: task.issueSource ?? task.issue ?? "Brand profile ready for TM review.",
+        source: "Brand profile analysis",
+        checkedOn: CHECKED,
+        agentRecommendation: task.agentRecommendation ?? {
+          title: bannerInvalid ? "Banner / Cover Image — review required" : "Brand profile ready for review",
+          message: bannerInvalid
+            ? `Cover image for ${displayName} may not meet marketplace guidelines. Other brand fields were checked against submitted assets. Add a comment so the seller can rectify the issue.`
+            : `Brand details for ${displayName} were checked against submitted assets. Approve or add a comment for the seller to update any field.`,
+          suggestedComment: task.issueSource ?? "Please review your brand profile fields and update any details that need correction.",
+        },
+        fields: buildBrandProfileFields(
+          displayName,
+          website,
+          description,
+          "Certified suppliers, non-GMO materials",
+          bannerInvalid,
+        ),
+      };
+    });
 }
 
 function buildDocumentationEvaluationFromOnboarding(sellerId: string) {
@@ -847,7 +944,7 @@ export function getReviewableEvaluations(sellerId: string): OnboardingTaskEvalua
         sectionId: "documentation",
         title: doc.label,
         reviewable: true,
-        autoValidated: true,
+        autoValidated: false,
         validationStatus: doc.validationStatus,
         summary: doc.summary,
         source: doc.source,
@@ -862,7 +959,7 @@ export function getReviewableEvaluations(sellerId: string): OnboardingTaskEvalua
         sectionId: "documentation",
         title: brand.name,
         reviewable: true,
-        autoValidated: true,
+        autoValidated: false,
         validationStatus: brand.validationStatus,
         summary: brand.summary,
         source: brand.source,

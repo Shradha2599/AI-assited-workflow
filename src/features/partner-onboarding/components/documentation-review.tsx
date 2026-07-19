@@ -14,16 +14,18 @@ import {
   type DocumentUpload,
 } from "@/lib/mock-data/onboarding-evaluation";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
-import type { ValidationStatus } from "@/lib/mock-data/lead-form-analysis";
 import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
 import { OnboardingSubtaskNav } from "./onboarding-subtask-nav";
-import { FileAttachmentRow, ValidationAlert } from "./profile-review-shared";
+import { FileAttachmentRow, ReviewActionBar, ValidationAlert } from "./profile-review-shared";
+import {
+  documentationSubtaskApproveId,
+  isDocumentationSubtaskTmApproved,
+} from "../utils/documentation-task-progress";
 import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
 import {
   isDocumentationTaskSubmitted,
-  isDocumentationTaskTmApproved,
 } from "../utils/documentation-task-progress";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
@@ -45,20 +47,6 @@ function ReviewBadge() {
       Review
     </StatusTag>
   );
-}
-
-function docSecondaryCta(
-  validationStatus: ValidationStatus,
-  onApprove: () => void,
-  onReject: () => void,
-): { label: string; onClick: () => void } {
-  if (validationStatus === "valid") {
-    return { label: "Approve", onClick: onApprove };
-  }
-  if (validationStatus === "invalid") {
-    return { label: "Reject", onClick: onReject };
-  }
-  return { label: "Review details", onClick: onReject };
 }
 
 function GeneralDocumentFile({
@@ -96,15 +84,10 @@ function GeneralDocumentFile({
 
       {!approved && (
         <div className="mt-3 flex items-center gap-3">
-          <Button size="sm" variant="outline" onClick={() => onApprove(approveId)}>
+          <Button size="sm" onClick={() => onApprove(approveId)}>
             Approve
           </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-auto px-0 text-[var(--color-primary)] hover:bg-transparent"
-            onClick={onReject}
-          >
+          <Button size="sm" variant="outline" onClick={onReject}>
             Reject
           </Button>
         </div>
@@ -125,14 +108,12 @@ function DocumentRecommendationBanner({
   doc,
   approveId,
   approved,
-  onApprove,
   onReject,
   onAddComment,
 }: {
   doc: DocumentUpload;
   approveId: string;
   approved: boolean;
-  onApprove: () => void;
   onReject: () => void;
   onAddComment: () => void;
 }) {
@@ -145,7 +126,6 @@ function DocumentRecommendationBanner({
       message={doc.agentRecommendation.message}
       onAddComment={onAddComment}
       onRejectRecommendation={onReject}
-      secondaryCta={docSecondaryCta(doc.validationStatus, onApprove, onReject)}
       variant="banner"
     />
   );
@@ -155,16 +135,12 @@ function BrandDocumentsAlert({
   alertId,
   title,
   message,
-  validationStatus,
-  onApprove,
   onReject,
   onAddComment,
 }: {
   alertId: string;
   title: string;
   message: string;
-  validationStatus: ValidationStatus;
-  onApprove: () => void;
   onReject: () => void;
   onAddComment: () => void;
 }) {
@@ -175,7 +151,6 @@ function BrandDocumentsAlert({
       message={message}
       onAddComment={onAddComment}
       onRejectRecommendation={onReject}
-      secondaryCta={docSecondaryCta(validationStatus, onApprove, onReject)}
       variant="banner"
     />
   );
@@ -242,34 +217,33 @@ function BrandDocumentsTable({
 
               return (
                 <tr key={brand.id} className="border-b border-[var(--color-border)] last:border-0">
-                  <td className="py-4 pr-6 font-medium text-[var(--color-foreground)]">
+                  <td className="py-4 pr-6 align-top font-medium text-[var(--color-foreground)]">
                     {brand.name}
                   </td>
-                  <td className="py-4 pr-6 text-[var(--color-muted-foreground)]">
+                  <td className="py-4 pr-6 align-top text-[var(--color-muted-foreground)]">
                     {brand.brandRole}
                   </td>
-                  <td className="py-4 pr-6">
-                    <TableDocumentChip name={brand.documentName} />
+                  <td className="py-4 pr-6 align-top">
+                    <TableDocumentChip
+                      name={brand.documentName}
+                      size={brand.documentFileSize ?? "0.8 MB"}
+                    />
                   </td>
-                  <td className="py-4">
-                    <div className="flex items-center gap-3">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => onApprove(approveId)}
-                        disabled={approved}
-                      >
-                        {approved ? "Approved" : "Approve"}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-auto px-0 text-[var(--color-primary)] hover:bg-transparent"
-                        onClick={() => onRejectBrand(brand)}
-                      >
-                        Reject
-                      </Button>
-                    </div>
+                  <td className="py-4 align-top">
+                    {!approved ? (
+                      <div className="flex items-center gap-3">
+                        <Button size="sm" onClick={() => onApprove(approveId)}>
+                          Approve
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => onRejectBrand(brand)}>
+                          Reject
+                        </Button>
+                      </div>
+                    ) : (
+                      <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+                        <Check className="h-3 w-3" /> Approved
+                      </StatusTag>
+                    )}
                   </td>
                 </tr>
               );
@@ -322,6 +296,35 @@ function BrandDocumentsTable({
   );
 }
 
+function tryCompleteDocumentationSubtask(
+  itemApproveId: string,
+  approvedIds: string[],
+  approveItem: (id: string) => void,
+  partnerId: string,
+  activeSubSection: "general" | "brands",
+  docs: NonNullable<ReturnType<typeof getDocumentationEvaluation>>,
+  tabDocs: DocumentUpload[],
+  usesW9ContractFlow: boolean,
+) {
+  approveItem(itemApproveId);
+  const nextApproved = approvedIds.includes(itemApproveId)
+    ? approvedIds
+    : [...approvedIds, itemApproveId];
+  const subtaskApproveId = documentationSubtaskApproveId(partnerId, activeSubSection);
+  if (nextApproved.includes(subtaskApproveId)) return;
+
+  const allItemsApproved =
+    activeSubSection === "general"
+      ? tabDocs.every((doc) => nextApproved.includes(`doc-${doc.id}`))
+      : usesW9ContractFlow
+        ? tabDocs.every((doc) => nextApproved.includes(`doc-${doc.id}`))
+        : docs.brands.every((brand) => nextApproved.includes(`brand-${brand.id}`));
+
+  if (allItemsApproved) {
+    approveItem(subtaskApproveId);
+  }
+}
+
 export function DocumentationReview({
   partner,
   onboarding,
@@ -345,7 +348,6 @@ export function DocumentationReview({
   const generalTask = docSection?.tasks[0];
   const brandsTask = docSection?.tasks[1];
   const activeTask = activeSubSection === "general" ? generalTask : brandsTask;
-  const tmApproved = activeTask ? isDocumentationTaskTmApproved(activeTask, approvedIds) : false;
   const taskSubmitted = activeTask ? isDocumentationTaskSubmitted(activeTask) : false;
   const tabDocs = useMemo(
     () => (docs ? docsForActiveTab(docs, activeSubSection) : []),
@@ -384,12 +386,41 @@ export function DocumentationReview({
 
   const brandWithAlert = docs.brands.find((b) => b.agentRecommendation);
   const brandAlertId = brandWithAlert ? `brand-alert-${brandWithAlert.id}` : "";
-  const usesAddressProofFlow = docs.general.some(
-    (doc) => doc.id === "address-proof" || doc.id === "duns-cert",
-  );
   const recommendationDoc = tabDocs.find(
     (doc) => doc.agentRecommendation && !isApproved(`doc-${doc.id}`),
   );
+  const usesW9ContractFlow = docs.general.some(
+    (doc) => doc.id === "w9" || doc.id === "contract",
+  );
+  const subtaskApproveId = documentationSubtaskApproveId(partner.id, activeSubSection);
+  const subtaskTmApproved = isDocumentationSubtaskTmApproved(partner.id, activeSubSection, approvedIds);
+  const allSubtaskItemsApproved =
+    activeSubSection === "general"
+      ? tabDocs.every((doc) => isApproved(`doc-${doc.id}`))
+      : usesW9ContractFlow
+        ? tabDocs.every((doc) => isApproved(`doc-${doc.id}`))
+        : docs.brands.every((brand) => isApproved(`brand-${brand.id}`));
+  const subtaskItemCount =
+    activeSubSection === "general"
+      ? tabDocs.length
+      : usesW9ContractFlow
+        ? tabDocs.length
+        : docs.brands.length;
+  const showSubtaskReviewActions =
+    subtaskItemCount > 0 && taskSubmitted && !subtaskTmApproved && allSubtaskItemsApproved;
+
+  const approveDocumentationItem = (itemApproveId: string) => {
+    tryCompleteDocumentationSubtask(
+      itemApproveId,
+      approvedIds,
+      approveItem,
+      partner.id,
+      activeSubSection,
+      docs,
+      tabDocs,
+      usesW9ContractFlow,
+    );
+  };
 
   return (
     <>
@@ -407,6 +438,7 @@ export function DocumentationReview({
             activeId={activeSubSection}
             navVariant="documentation"
             approvedIds={approvedIds}
+            partnerId={partner.id}
           />
         }
       >
@@ -415,7 +447,7 @@ export function DocumentationReview({
             {activeSubSection === "general" ? "General documents" : "Brand documents"}
           </h3>
           <div className="flex items-center gap-2">
-            {tmApproved ? (
+            {subtaskTmApproved ? (
               <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
                 <Check className="h-3 w-3" /> Approved
               </StatusTag>
@@ -430,8 +462,6 @@ export function DocumentationReview({
             alertId={brandAlertId}
             title={brandWithAlert.agentRecommendation.title}
             message={brandWithAlert.agentRecommendation.message}
-            validationStatus={brandWithAlert.validationStatus}
-            onApprove={() => approveItem(`brand-${brandWithAlert.id}`)}
             onReject={() =>
               openFeedback({
                 taskId: `brand-${brandWithAlert.id}`,
@@ -443,12 +473,11 @@ export function DocumentationReview({
           />
         )}
 
-        {!usesAddressProofFlow && recommendationDoc && (
+        {recommendationDoc && (
           <DocumentRecommendationBanner
             doc={recommendationDoc}
             approveId={`doc-${recommendationDoc.id}`}
             approved={isApproved(`doc-${recommendationDoc.id}`)}
-            onApprove={() => approveItem(`doc-${recommendationDoc.id}`)}
             onReject={() => {
               if (recommendationDoc.agentRecommendation) {
                 openFeedback({
@@ -477,7 +506,7 @@ export function DocumentationReview({
                   fileSize={doc.fileSize}
                   approveId={approveId}
                   approved={isApproved(approveId)}
-                  onApprove={approveItem}
+                  onApprove={approveDocumentationItem}
                   onReject={() => {
                     if (doc.agentRecommendation) {
                       openFeedback({
@@ -496,7 +525,7 @@ export function DocumentationReview({
         ) : docs.brands.length > 0 ? (
           <BrandDocumentsTable
             brands={docs.brands}
-            onApprove={approveItem}
+            onApprove={approveDocumentationItem}
             onRejectBrand={(brand) => {
               if (brand.agentRecommendation) {
                 openFeedback({
@@ -511,6 +540,16 @@ export function DocumentationReview({
             isApproved={isApproved}
           />
         ) : null}
+
+        {showSubtaskReviewActions && (
+          <ReviewActionBar
+            primary={{ label: "Approve", onClick: () => approveItem(subtaskApproveId) }}
+            secondary={{
+              label: "Reject",
+              onClick: () => openComments(activeTask?.id ?? subtaskApproveId),
+            }}
+          />
+        )}
       </OnboardingSectionReviewLayout>
 
       <OnboardingCommentsDrawer partner={partner} />

@@ -30,6 +30,8 @@ interface OnboardingSubtaskNavProps {
   navVariant?: "profile" | "documentation";
   /** TM-approved profile task ids (from onboarding review store). */
   approvedIds?: string[];
+  /** Required for documentation nav to resolve sub-task TM approval. */
+  partnerId?: string;
 }
 
 export function OnboardingSubtaskNav({
@@ -37,6 +39,7 @@ export function OnboardingSubtaskNav({
   activeId,
   navVariant = "profile",
   approvedIds = [],
+  partnerId,
 }: OnboardingSubtaskNavProps) {
   return (
     <nav
@@ -50,7 +53,7 @@ export function OnboardingSubtaskNav({
         const isActive = item.id === activeId;
         const isDocumentation = navVariant === "documentation";
         const iconSrc = isDocumentation
-          ? getDocumentationSubTaskNavIconSrc(item.task, approvedIds)
+          ? getDocumentationSubTaskNavIconSrc(item.task, approvedIds, false, partnerId)
           : getProfileSubTaskNavIconSrc(item.task, approvedIds);
         const gray = isDocumentation
           ? shouldGrayDocumentationSubTaskNavIcon(item.task, approvedIds)

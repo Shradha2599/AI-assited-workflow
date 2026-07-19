@@ -14,6 +14,7 @@ import type { SellerOnboardingState } from "./types";
 
 export {
   computeOnboardingOverallProgress,
+  countOnboardingSubtaskProgress,
   countOnboardingSectionProgress,
   getOnboardingSectionProgressPercent,
   getSectionProgressPercent,

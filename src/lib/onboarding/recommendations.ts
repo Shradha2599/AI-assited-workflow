@@ -1,6 +1,6 @@
 import type { AgentRecommendation } from "@/lib/mock-data/onboarding-evaluation";
 import type { OnboardingTask } from "./types";
-import { PROFILE_TM_REVIEW_TASK_TITLE } from "@/features/partner-onboarding/utils/profile-task-progress";
+import { PROFILE_TM_REVIEW_TASK_TITLE } from "@/features/partner-onboarding/utils/profile-task-progress-core";
 import { hashPartnerId, seededInt } from "./seed";
 import type { AiSuggestedAction, AiSuggestedCta, OnboardingSectionId } from "./types";
 import { taskNeedsReview } from "./progress";
@@ -10,19 +10,22 @@ const RECOMMENDATION_TEMPLATES: Record<
   { title: string; message: string; comment: string; cta: AiSuggestedAction; ctaLabel: string }
 > = {
   "profile-brand": {
-    title: "Invalid Banner / Cover Image",
-    message: "Low resolution — does not meet marketplace display guidelines.",
+    title: "Banner / Cover Image — review required",
+    message:
+      "Cover image resolution is below marketplace guidelines. Brand display name, description, website, and sourcing were checked against submitted assets. Add a comment so the seller can upload a corrected cover image.",
     comment:
-      "Please replace the cover image with a higher-resolution asset (minimum 1200×675) before approval.",
+      "Please replace the cover image with a higher-resolution asset (minimum 1200×675) aligned with your brand guidelines.",
     cta: "request_edits",
-    ctaLabel: "Request edits",
+    ctaLabel: "Add Comment",
   },
   "profile-brand-clean": {
     title: "Brand profile ready for review",
-    message: "All brand fields are submitted. Review display name, description, and imagery.",
-    comment: "Brand profile looks good overall — please confirm banner and logo before approving.",
+    message:
+      "Brand display name, description, website, logo, and cover image align with submitted assets. Approve if everything looks correct, or add a comment for the seller to update any brand field.",
+    comment:
+      "Please review your brand display name, description, and imagery to ensure they match current marketplace guidelines.",
     cta: "review",
-    ctaLabel: "Review task",
+    ctaLabel: "Add Comment",
   },
   "assortment": {
     title: "Assortment application submitted",
@@ -47,10 +50,11 @@ const RECOMMENDATION_TEMPLATES: Record<
   },
   "documentation-brand": {
     title: "Brand authorization documents",
-    message: "Brand relationship docs submitted — verify distributor authorization.",
+    message:
+      "Brand relationship docs submitted — verify distributor authorization. Add a comment so the seller can rectify any missing details.",
     comment: "Confirm brand authorization letter covers listed SKUs and territories.",
     cta: "review",
-    ctaLabel: "Review task",
+    ctaLabel: "Add Comment",
   },
 };
 

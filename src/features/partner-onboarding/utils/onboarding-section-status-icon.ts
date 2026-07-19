@@ -2,12 +2,12 @@ import type { OnboardingSection } from "@/lib/mock-data/onboarding";
 import {
   countSectionCompletedSteps,
   getSectionProgressPercent,
-  isOnboardingSectionLocked,
 } from "@/lib/onboarding/progress";
+import { getOnboardingSectionStatusIconSrc } from "@/lib/mock-data/onboarding";
 import {
-  getOnboardingSectionStatusIconSrc,
-  isAssortmentSectionInReview,
-} from "@/lib/mock-data/onboarding";
+  resolveSectionStatusVisualState,
+  shouldGraySectionStatusIcon,
+} from "./onboarding-status-icons";
 
 export interface OnboardingSectionStatusIconState {
   src: string;
@@ -21,10 +21,8 @@ export function resolveOnboardingSectionStatusIcon(
   sections: OnboardingSection[],
   approvedIds: string[] = [],
 ): OnboardingSectionStatusIconState {
-  const locked = isOnboardingSectionLocked(section, sections, approvedIds);
   const src = getOnboardingSectionStatusIconSrc(section, sections, approvedIds);
-  const progress = getSectionProgressPercent(section, approvedIds);
-  const gray = !locked && progress === 0 && !isAssortmentSectionInReview(section);
+  const gray = shouldGraySectionStatusIcon(section, sections, approvedIds);
 
   return { src, gray, title: section.title };
 }
@@ -44,3 +42,5 @@ export function resolveSectionProgressPercent(
 ): number {
   return getSectionProgressPercent(section, approvedIds);
 }
+
+export { resolveSectionStatusVisualState };

@@ -71,12 +71,8 @@ function ChannelPartnerCard({
       <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
         About channel partner
       </p>
-      <div className="relative mt-3 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-info-banner-bg)]">
-        <div
-          className="absolute bottom-0 left-0 top-0 w-1 rounded-l-[var(--radius-lg)] bg-[var(--color-primary)]"
-          aria-hidden
-        />
-        <div className="py-[var(--space-5)] pl-[var(--space-5)] pr-[var(--space-4)]">
+      <div className="mt-3 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[#f5f5f5]">
+        <div className="py-[var(--space-5)] px-[var(--space-5)]">
           <p className="text-[var(--text-heading-size)] font-semibold text-[var(--color-foreground)]">
             {name}
           </p>

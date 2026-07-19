@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect } from "react";
-import { Clock } from "lucide-react";
 import Link from "next/link";
 
 import { Card } from "@/components/ui/card";
@@ -14,12 +13,12 @@ import {
   shouldGrayChecklistSubTaskIcon,
 } from "@/features/partner-onboarding/utils/onboarding-subtask-icons";
 import {
-  countOnboardingSectionProgress,
+  countOnboardingSubtaskProgress,
   computeOnboardingOverallProgress,
-  getAssortmentTaskIconSrc,
   isOnboardingSectionLocked,
   LOCKED_ONBOARDING_SECTION_IDS,
 } from "@/lib/mock-data/onboarding";
+import { ONBOARDING_SUBTASK_ICON } from "@/features/partner-onboarding/utils/onboarding-status-icons";
 import {
   resolveOnboardingSectionStatusIcon,
   resolveSectionCompletedSteps,
@@ -58,16 +57,16 @@ function isSectionLocked(
   return isOnboardingSectionLocked(section, sections, approvedIds);
 }
 
-function countSectionProgress(sections: OnboardingSection[], approvedIds: string[]) {
-  return countOnboardingSectionProgress(sections, approvedIds);
-}
-
 function getSubTaskIconSrc(
   sectionId: string,
   task: OnboardingTask,
   approvedIds?: string[],
+  sectionLocked = false,
 ): string {
-  return getChecklistSubTaskIconSrc(sectionId, task, approvedIds);
+  return (
+    getChecklistSubTaskIconSrc(sectionId, task, approvedIds, sectionLocked) ||
+    ONBOARDING_SUBTASK_ICON.pending
+  );
 }
 
 function isSectionReviewable(section: OnboardingSection): boolean {
@@ -162,7 +161,7 @@ function SectionRow({
                     !locked && progress === 100 && "bg-[var(--color-success)]",
                     !locked && progress > 0 && progress < 100 && "bg-[var(--color-primary)]",
                   )}
-                  style={{ width: locked || progress === 0 ? "0%" : `${progress}%` }}
+                  style={{ width: locked ? "0%" : `${progress}%` }}
                 />
               </div>
               <span className="shrink-0 text-[var(--text-caption-size)] font-semibold tabular-nums text-[var(--color-foreground)]">
@@ -179,22 +178,13 @@ function SectionRow({
           </StatusTag>
           <div className="flex flex-wrap justify-end gap-1.5">
             {section.tasks.map((task) => {
-              const lockedTask = locked;
-              const iconSrc = lockedTask
-                ? "/icons/lock-fill.svg"
-                : section.id === "assortment"
-                  ? getAssortmentTaskIconSrc(task)
-                  : getSubTaskIconSrc(section.id, task, approvedIds);
+              const iconSrc = getSubTaskIconSrc(section.id, task, approvedIds, locked);
               return (
               <ChecklistIcon
                 key={task.id}
                 src={iconSrc}
                 size={16}
-                gray={
-                  !locked &&
-                  section.id !== "assortment" &&
-                  shouldGrayChecklistSubTaskIcon(section.id, task, approvedIds)
-                }
+                gray={shouldGrayChecklistSubTaskIcon(section.id, task, approvedIds, locked)}
               />
             );})}
           </div>
@@ -217,7 +207,7 @@ function SectionRow({
 export function OnboardingChecklistView({ partner, onboarding }: OnboardingChecklistViewProps) {
   const setContext = useOnboardingReviewStore((s) => s.setContext);
   const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
-  const { total: totalSections, remaining: remainingSections } = countSectionProgress(
+  const { total: totalSubtasks, remaining: remainingSubtasks } = countOnboardingSubtaskProgress(
     onboarding.sections,
     approvedIds,
   );
@@ -251,10 +241,17 @@ export function OnboardingChecklistView({ partner, onboarding }: OnboardingCheck
           </p>
         </div>
         <div className="mt-2 flex items-center gap-1.5 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-          <Clock className="h-3.5 w-3.5 shrink-0" />
+          <Image
+            src="/icons/time-clock.svg"
+            alt=""
+            width={14}
+            height={14}
+            className="shrink-0"
+            aria-hidden
+          />
           <span className="tabular-nums">
-            {String(remainingSections).padStart(2, "0")}/
-            {String(totalSections).padStart(2, "0")} Tasks Remaining
+            {String(remainingSubtasks).padStart(2, "0")}/
+            {String(totalSubtasks).padStart(2, "0")} Sub-tasks Remaining
           </span>
         </div>
       </section>
