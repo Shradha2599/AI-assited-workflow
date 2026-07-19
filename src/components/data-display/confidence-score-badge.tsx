@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { StatusTag } from "@/components/ui/status-tag";
 import {
-  CONFIDENCE_BADGE_TEXT,
   getConfidenceBadgeStyle,
 } from "@/lib/utils/confidence-badge";
 
@@ -22,8 +21,8 @@ export function ConfidenceScoreBadge({
   if (variant === "profile") {
     return (
       <StatusTag
-        className={cn("rounded px-2 tabular-nums", className)}
-        style={{ backgroundColor: bg, color: CONFIDENCE_BADGE_TEXT }}
+        className={cn("rounded-[4px] px-2 tabular-nums", className)}
+        style={{ backgroundColor: bg }}
       >
         {score.toFixed(1)}/10
       </StatusTag>
@@ -32,8 +31,8 @@ export function ConfidenceScoreBadge({
 
   return (
     <StatusTag
-      className={cn("min-w-[36px] justify-center rounded tabular-nums", className)}
-      style={{ backgroundColor: bg, color: CONFIDENCE_BADGE_TEXT }}
+      className={cn("min-w-[36px] justify-center rounded-[4px] tabular-nums", className)}
+      style={{ backgroundColor: bg }}
     >
       {score.toFixed(1)}
     </StatusTag>

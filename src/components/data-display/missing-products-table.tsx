@@ -5,6 +5,7 @@ import { Check, ChevronDown, LayoutGrid, List, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { GapOpportunityBadge } from "@/components/data-display/gap-opportunity-badge";
 import { ProductThumbnail } from "@/components/ui/product-thumbnail";
 import { cn } from "@/lib/utils";
@@ -112,9 +113,7 @@ export function MissingProductsTable({
                   <td className="py-2.5 pr-4">
                     <div className="flex items-center gap-2">
                       <ProductThumbnail size="sm" src={product.imageUrl} itemId={product.id} alt={product.name} />
-                      <span className="max-w-[120px] truncate text-[var(--text-body-size)]">
-                        {product.name}
-                      </span>
+                      <TruncatedText text={product.name} className="max-w-[120px] text-[var(--text-body-size)]" />
                     </div>
                   </td>
                   <td className="py-2.5 pr-4 text-[var(--text-body-size)]">{product.category}</td>

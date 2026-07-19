@@ -3,6 +3,7 @@
 import { useEffect, useMemo } from "react";
 
 import { LeadFormView } from "@/features/partner-onboarding/components/lead-form-view";
+import { NewPartnerProfileView } from "@/features/partner-onboarding/components/new-partner-profile-view";
 import { OnboardingChecklistView } from "@/features/partner-onboarding/components/onboarding-checklist-view";
 import { PartnerProfileHeader } from "@/features/partner-onboarding/components/partner-profile-header";
 import type { LeadFormData } from "@/lib/mock-data/lead-forms";
@@ -47,6 +48,10 @@ export function PartnerProfileShell({ partner, form, onboarding }: PartnerProfil
   }
 
   if (showsLeadForm(effectiveStatus) && form) {
+    if (effectiveStatus === "New") {
+      return <NewPartnerProfileView partner={displayPartner} form={form} />;
+    }
+
     return (
       <div className="space-y-[var(--space-4)]">
         <PartnerProfileHeader partner={displayPartner} />

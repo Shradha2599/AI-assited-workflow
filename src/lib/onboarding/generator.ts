@@ -300,3 +300,77 @@ export function applyTaskPatches(
 export function buildFreshOnboarding(partnerId: string, partnerName: string): OnboardingPartner {
   return generateOnboardingFromSeed(partnerId, partnerName);
 }
+
+function defaultTargetLaunchDate(fromIsoDate: string): string {
+  const date = new Date(fromIsoDate);
+  date.setMonth(date.getMonth() + 3);
+  return date.toISOString().slice(0, 10);
+}
+
+/** Initial onboarding after lead approval — seller submitted assortment via lead form only. */
+export function buildNewlyApprovedOnboarding(
+  partnerId: string,
+  partnerName: string,
+): OnboardingPartner {
+  const tasks = ONBOARDING_SUBTASK_DEFINITIONS.map((def) => {
+    const status: OnboardingTask["status"] = def.suffix === "08" ? "in_progress" : "pending";
+    const task: OnboardingTask = {
+      id: `t-${partnerId}-${def.suffix}`,
+      sellerId: partnerId,
+      section: def.sectionId,
+      title: def.title,
+      status,
+      autoValidated: def.autoValidated,
+    };
+
+    const rec = generateTaskRecommendation(
+      partnerId,
+      partnerName,
+      def.sectionId as OnboardingSectionId,
+      task,
+    );
+    if (rec) {
+      return {
+        ...task,
+        agentRecommendation: rec.agentRecommendation,
+        suggestedCta: rec.suggestedCta,
+      } as OnboardingTask;
+    }
+    return task;
+  });
+
+  const sections = syncSectionCompletedSteps(groupIntoSections(partnerId, tasks));
+  const startedAt = new Date().toISOString().slice(0, 10);
+  const state = buildSellerOnboardingState(partnerId, partnerName, sections, {
+    assignedTo: "Shaun Doe",
+    startedAt,
+    targetLaunchDate: defaultTargetLaunchDate(startedAt),
+  });
+
+  return {
+    sellerId: state.partnerId,
+    sellerName: state.sellerName,
+    assignedTo: state.assignedTo,
+    overallProgress: state.overallProgress,
+    startedAt: state.startedAt,
+    targetLaunchDate: state.targetLaunchDate,
+    sections: state.sections.map((s) => ({
+      id: s.id,
+      title: s.title,
+      totalSteps: s.totalSteps,
+      completedSteps: s.completedSteps,
+      tasks: s.tasks.map((t) => ({
+        id: t.id,
+        sellerId: t.sellerId,
+        section: t.section,
+        title: t.title,
+        status: t.status,
+        autoValidated: t.autoValidated,
+        issue: t.issue,
+        issueSource: t.issueSource,
+        agentRecommendation: t.agentRecommendation,
+        suggestedCta: t.suggestedCta,
+      })) as OnboardingTask[],
+    })),
+  };
+}

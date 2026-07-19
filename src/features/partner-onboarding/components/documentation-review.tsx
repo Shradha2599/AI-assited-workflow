@@ -5,7 +5,8 @@ import { useEffect, useMemo } from "react";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { StatusTag } from "@/components/ui/status-tag";
+import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
+import { cn } from "@/lib/utils";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import { getSectionProgressPercent } from "@/lib/mock-data/onboarding";
 import {
@@ -42,7 +43,7 @@ const DOC_SUBTASK_HINTS = {
 
 function ReviewBadge() {
   return (
-    <StatusTag className="inline-flex items-center gap-1.5 bg-amber-100 font-normal text-amber-900">
+    <StatusTag className={cn("inline-flex items-center gap-1.5 font-normal", markerToneClass.review)}>
       <Image src="/icons/review-document.svg" alt="" width={14} height={14} aria-hidden />
       Review
     </StatusTag>
@@ -95,7 +96,7 @@ function GeneralDocumentFile({
 
       {approved && (
         <div className="mt-3">
-          <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+          <StatusTag className={cn("inline-flex items-center gap-1 font-normal", markerToneClass.success)}>
             <Check className="h-3 w-3" /> Approved
           </StatusTag>
         </div>
@@ -240,7 +241,7 @@ function BrandDocumentsTable({
                         </Button>
                       </div>
                     ) : (
-                      <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+                      <StatusTag className={cn("inline-flex items-center gap-1 font-normal", markerToneClass.success)}>
                         <Check className="h-3 w-3" /> Approved
                       </StatusTag>
                     )}
@@ -448,7 +449,7 @@ export function DocumentationReview({
           </h3>
           <div className="flex items-center gap-2">
             {subtaskTmApproved ? (
-              <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+              <StatusTag className={cn("inline-flex items-center gap-1 font-normal", markerToneClass.success)}>
                 <Check className="h-3 w-3" /> Approved
               </StatusTag>
             ) : taskSubmitted ? (

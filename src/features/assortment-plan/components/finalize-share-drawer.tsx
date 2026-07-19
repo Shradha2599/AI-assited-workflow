@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { DrawerPanel } from "@/components/ui/drawer-panel";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { getCalendarPdfFilename } from "@/lib/utils/calendar-pdf";
 import { formatRevenueGoalDisplay } from "@/lib/utils/revenue-goal-input";
@@ -193,9 +194,10 @@ export function FinalizeShareDrawer({ open, onClose }: FinalizeShareDrawerProps)
               <p className="text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">
                 New Mail
               </p>
-              <p className="truncate text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
-                shaun.doe@target.com
-              </p>
+              <TruncatedText
+                text="shaun.doe@target.com"
+                className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]"
+              />
             </div>
           </div>
 
@@ -259,9 +261,7 @@ export function FinalizeShareDrawer({ open, onClose }: FinalizeShareDrawerProps)
               )}
             >
               <FileText className="h-4 w-4 shrink-0 text-[var(--color-error)]" aria-hidden />
-              <span className="truncate text-[var(--text-caption-size)] text-[var(--color-foreground)]">
-                {attachmentName}
-              </span>
+              <TruncatedText text={attachmentName} inline className="text-[var(--text-caption-size)] text-[var(--color-foreground)]" />
             </div>
           </div>
         </div>

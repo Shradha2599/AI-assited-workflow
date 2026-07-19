@@ -8,6 +8,7 @@ import { useChat } from "@ai-sdk/react";
 import { useGapDrawerStore } from "@/features/assortment-gap/store/gap-drawer-store";
 
 import { Button } from "@/components/ui/button";
+import { TruncatedText } from "@/components/ui/truncated-text";
 
 import { SvgIcon } from "@/components/ui/svg-icon";
 import { StatusTag } from "@/components/ui/status-tag";
@@ -290,7 +291,10 @@ function SuggestedItemsWidget({
               <Image src={item.img} alt={item.name} width={28} height={28} className="object-contain" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[11px] font-medium text-[var(--color-foreground)]">{item.name}</p>
+              <TruncatedText
+                text={item.name}
+                className="text-[11px] font-medium text-[var(--color-foreground)]"
+              />
               <p className="text-[10px] text-[var(--color-muted-foreground)]">{item.opportunity}</p>
             </div>
             <button

@@ -15,9 +15,10 @@ import {
   Store,
 } from "lucide-react";
 
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { Button } from "@/components/ui/button";
 import { DrawerHeaderShell, DrawerPanel } from "@/components/ui/drawer-panel";
-import { StatusTag } from "@/components/ui/status-tag";
+import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
 import { cn } from "@/lib/utils";
 import type { LeadFormAnalysis, ValidationStatus } from "@/lib/mock-data/lead-form-analysis";
 import { statusLabel } from "@/lib/mock-data/lead-form-analysis";
@@ -66,10 +67,10 @@ function DrawerSectionCard({
 
 function StatusMarker({ status }: { status: ValidationStatus }) {
   const styles: Record<ValidationStatus, string> = {
-    valid: "bg-[var(--color-success-light)] text-[var(--color-success)]",
-    invalid: "bg-[var(--color-error-light)] text-[var(--color-error)]",
-    partial: "bg-[var(--color-warning-light)] text-[var(--color-warning)]",
-    unverified: "bg-[var(--color-muted)] text-[var(--color-muted-foreground)]",
+    valid: markerToneClass.success,
+    invalid: markerToneClass.error,
+    partial: markerToneClass.warning,
+    unverified: markerToneClass.neutral,
   };
   return (
     <StatusTag className={cn(styles[status])}>
@@ -79,12 +80,9 @@ function StatusMarker({ status }: { status: ValidationStatus }) {
 }
 
 function ConfidenceChip({ score }: { score: number }) {
-  const { bg, text } = getConfidenceBadgeStyle(score);
+  const { bg } = getConfidenceBadgeStyle(score);
   return (
-    <StatusTag
-      className="px-2.5 text-[var(--text-caption-size)]"
-      style={{ backgroundColor: bg, color: text }}
-    >
+    <StatusTag className="px-2.5 text-[var(--text-caption-size)]" style={{ backgroundColor: bg }}>
       {score.toFixed(1)}/10
     </StatusTag>
   );
@@ -177,15 +175,15 @@ export function EvaluationAnalysisDrawer({ partner, analysis }: EvaluationAnalys
       header={<DrawerHeaderShell onClose={closeAnalysis} title={partner.legalBusinessName} />}
       footer={
         !isReadOnly ? (
-          <div className="flex flex-wrap justify-end gap-2">
-            <Button variant="outline" size="sm" onClick={reject}>
-              Reject
+          <div className="flex flex-wrap justify-start gap-2">
+            <Button size="sm" onClick={accept}>
+              Approve
             </Button>
             <Button variant="outline" size="sm" onClick={markFutureInterest}>
               Future Interest
             </Button>
-            <Button size="sm" onClick={accept}>
-              Accept
+            <Button variant="outline" size="sm" onClick={reject}>
+              Reject
             </Button>
           </div>
         ) : undefined
@@ -198,9 +196,11 @@ export function EvaluationAnalysisDrawer({ partner, analysis }: EvaluationAnalys
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="truncate text-[var(--text-body-size)] font-normal text-[var(--color-foreground)]">
-                {partner.legalBusinessName}
-              </span>
+              <TruncatedText
+                text={partner.legalBusinessName}
+                inline
+                className="text-[var(--text-body-size)] font-normal text-[var(--color-foreground)]"
+              />
               <ExternalLink className="h-3.5 w-3.5 shrink-0 text-[var(--color-muted-foreground)]" />
             </div>
             <div className="mt-0.5 flex items-center gap-1 text-[var(--text-caption-size)]">
@@ -220,9 +220,10 @@ export function EvaluationAnalysisDrawer({ partner, analysis }: EvaluationAnalys
               <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
                 {stat.label}
               </p>
-              <p className="mt-0.5 truncate text-[var(--text-caption-size)] font-normal text-[var(--color-foreground)]">
-                {stat.value}
-              </p>
+              <TruncatedText
+                text={stat.value}
+                className="mt-0.5 text-[var(--text-caption-size)] font-normal text-[var(--color-foreground)]"
+              />
             </div>
           ))}
         </div>
@@ -278,9 +279,7 @@ export function EvaluationAnalysisDrawer({ partner, analysis }: EvaluationAnalys
             title="Business information"
             icon={<ShoppingBag className="h-3.5 w-3.5 text-[var(--color-muted-foreground)]" />}
             badge={
-              <StatusTag className="bg-[var(--color-success-light)] text-[var(--color-success)]">
-                Valid
-              </StatusTag>
+              <StatusTag className={markerToneClass.success}>Valid</StatusTag>
             }
           >
             <dl>

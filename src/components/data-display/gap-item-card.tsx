@@ -5,6 +5,7 @@ import { ArrowDown, ArrowUp, Plus } from "lucide-react";
 import type { GapItem } from "@/components/data-display/gaps-drawer";
 import { Button } from "@/components/ui/button";
 import { ProductThumbnail } from "@/components/ui/product-thumbnail";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { getLagBadge, LAG_BADGE_TEXT_COLOR } from "@/lib/utils/lag-badge";
 import { cn } from "@/lib/utils";
 
@@ -34,9 +35,10 @@ export function GapItemCard({
       <ProductThumbnail size="md" src={item.imageUrl} itemId={item.id} alt={item.name} />
       <div className="min-w-0 flex-1">
         <div className="flex items-start gap-[var(--space-4)]">
-          <p className="min-w-0 flex-1 truncate text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]">
-            {item.name}
-          </p>
+          <TruncatedText
+            text={item.name}
+            className="min-w-0 flex-1 text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]"
+          />
           <span
             className="inline-flex shrink-0 items-center gap-0.5 rounded-[var(--radius-full)] px-2 py-0.5 text-[var(--text-label-size)] font-medium"
             style={{ backgroundColor: lag.bg, color: LAG_BADGE_TEXT_COLOR }}

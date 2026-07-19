@@ -14,6 +14,7 @@ import {
 import { SvgIcon } from "@/components/ui/svg-icon";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import {
   DashboardKpiStrip,
   type DashboardMetric,
@@ -528,7 +529,10 @@ export function LeadDiscoveryView() {
                       </td>
                       <td className="py-2.5 text-left tabular-nums">{seller.rating}</td>
                       <td className="max-w-[140px] py-2.5 text-left text-[var(--color-muted-foreground)]">
-                        {truncateMarketplaces(seller.marketplaces)}
+                        <TruncatedText
+                          text={truncateMarketplaces(seller.marketplaces)}
+                          tooltipText={seller.marketplaces.join(", ")}
+                        />
                       </td>
                       <td className="py-2.5 text-left">
                         <ConfidenceScoreBadge score={seller.confidenceScore} variant="table" />

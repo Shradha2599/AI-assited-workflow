@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { StatusTag } from "@/components/ui/status-tag";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { PipelineStageDrawer } from "./pipeline-stage-drawer";
@@ -185,7 +186,7 @@ export function PipelineHeatmap({
                 <th className="bg-[var(--color-card)] pb-2 pl-0 pr-3 pt-0 text-left font-medium text-[var(--color-muted-foreground)]" />
                 {columns.map((col) => (
                   <th key={col} className="bg-[var(--color-card)] px-1 pb-2 pt-0 text-center align-top font-medium text-[var(--color-muted-foreground)]">
-                    <span className="block truncate" title={col}>{col}</span>
+                    <TruncatedText text={col} className="text-center" />
                   </th>
                 ))}
               </tr>
@@ -251,9 +252,10 @@ export function PipelineHeatmap({
             {/* Header — min 12px gap between headline and close icon */}
             <div className="flex items-center justify-between gap-3 bg-[var(--color-drawer-header)] px-[var(--space-3)] py-[var(--space-2)]">
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]">
-                  {hover.category}
-                </p>
+                <TruncatedText
+                  text={hover.category}
+                  className="text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]"
+                />
                 <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
                   {hover.stage}
                 </p>

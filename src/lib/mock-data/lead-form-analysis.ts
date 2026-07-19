@@ -493,7 +493,7 @@ function buildDefaultLeadFormAnalysis(partnerId: string): LeadFormAnalysis | und
 
   const recommendationTitle =
     recommendation === "accept"
-      ? `Accept ${partner.legalBusinessName}`
+      ? `Approve ${partner.legalBusinessName}`
       : recommendation === "reject"
         ? `Reject ${partner.legalBusinessName}`
         : `Future Interest — ${partner.legalBusinessName}`;
@@ -564,7 +564,7 @@ const LEAD_DECISION_ACTION: Record<
   LeadFormAnalysis["recommendation"],
   { label: string; decision: "accept" | "reject" | "future_interest" }
 > = {
-  accept: { label: "Accept Lead →", decision: "accept" },
+  accept: { label: "Approve Lead →", decision: "accept" },
   reject: { label: "Reject Lead →", decision: "reject" },
   future_interest: { label: "Mark Future Interest →", decision: "future_interest" },
 };

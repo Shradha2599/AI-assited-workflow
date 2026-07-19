@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import Link from "next/link";
 import { Activity, MessageSquare, MoreHorizontal } from "lucide-react";
 
@@ -7,6 +8,7 @@ import { ConfidenceScoreBadge } from "@/components/data-display/confidence-score
 import { Button } from "@/components/ui/button";
 import { RegisterPageHeader } from "@/components/layout/page-header";
 import { SvgIcon } from "@/components/ui/svg-icon";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { useOutreachMail } from "@/features/outreach/hooks/use-outreach-mail";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
 import { PartnerStatusBadge } from "./partner-status-badge";
@@ -29,6 +31,25 @@ function getInitials(name: string): string {
 function formatLaunchDate(isoDate: string): string {
   const date = new Date(isoDate);
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+function MetadataSeparator() {
+  return <div className="h-8 w-px shrink-0 bg-[var(--color-border)]" aria-hidden />;
+}
+
+function MetadataItem({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex min-w-0 flex-1 flex-col justify-center px-[var(--space-5)] py-[var(--space-3)]">
+      <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">{label}</p>
+      <div className="mt-0.5 min-w-0">{children}</div>
+    </div>
+  );
 }
 
 interface PartnerProfileHeaderProps {
@@ -54,6 +75,45 @@ export function PartnerProfileHeader({
 }: PartnerProfileHeaderProps) {
   const initials = getInitials(partner.legalBusinessName);
   const openOutreach = useOutreachMail();
+
+  const metadataItems = [
+    {
+      label: "Avg. Annual GMV",
+      content: (
+        <p className="text-[var(--text-body-size)] font-semibold">{formatCurrency(partner.gmv)}</p>
+      ),
+    },
+    {
+      label: "Categories",
+      content: (
+        <TruncatedText
+          text={partner.categories.join(", ")}
+          className="text-[var(--text-body-size)] font-semibold"
+        />
+      ),
+    },
+    {
+      label: "SKUs",
+      content: (
+        <p className="text-[var(--text-body-size)] font-semibold tabular-nums">
+          {partner.skus.toLocaleString()}
+        </p>
+      ),
+    },
+    launchDate
+      ? {
+          label: "Launch date",
+          content: (
+            <p className="text-[var(--text-body-size)] font-semibold">
+              {formatLaunchDate(launchDate)}
+            </p>
+          ),
+        }
+      : {
+          label: "Confidence Score",
+          content: <ConfidenceScoreBadge score={partner.confidenceScore} variant="profile" />,
+        },
+  ];
 
   return (
     <RegisterPageHeader>
@@ -132,39 +192,14 @@ export function PartnerProfileHeader({
         </div>
 
         {!hideMetadata && (
-        <div className="mt-[var(--space-4)] flex flex-wrap gap-[var(--space-6)]">
-          {[
-            { label: "Avg. Annual GMV", value: formatCurrency(partner.gmv) },
-            { label: "Categories", value: partner.categories.join(", ") },
-            { label: "SKUs", value: partner.skus.toLocaleString() },
-          ].map((stat) => (
-            <div key={stat.label}>
-              <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
-                {stat.label}
-              </p>
-              <p className="mt-0.5 text-[var(--text-body-size)] font-semibold">{stat.value}</p>
-            </div>
-          ))}
-          {launchDate ? (
-            <div>
-              <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
-                Launch date
-              </p>
-              <p className="mt-0.5 text-[var(--text-body-size)] font-semibold">
-                {formatLaunchDate(launchDate)}
-              </p>
-            </div>
-          ) : (
-            <div>
-              <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
-                Confidence Score
-              </p>
-              <div className="mt-1">
-                <ConfidenceScoreBadge score={partner.confidenceScore} variant="profile" />
-              </div>
-            </div>
-          )}
-        </div>
+          <div className="-mx-[var(--space-4)] mt-[var(--space-4)] flex w-[calc(100%+2*var(--space-4))] items-center">
+            {metadataItems.map((item, index) => (
+              <Fragment key={item.label}>
+                {index > 0 && <MetadataSeparator />}
+                <MetadataItem label={item.label}>{item.content}</MetadataItem>
+              </Fragment>
+            ))}
+          </div>
         )}
       </div>
     </RegisterPageHeader>

@@ -3,11 +3,12 @@
 import { useEffect, useMemo } from "react";
 import { Check } from "lucide-react";
 
-import { StatusTag } from "@/components/ui/status-tag";
+import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import { getProfileTaskEvaluations } from "@/lib/mock-data/onboarding-evaluation";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
 import { getSectionProgressPercent } from "@/lib/mock-data/onboarding";
+import { cn } from "@/lib/utils";
 import {
   isProfileTaskSubmitted,
   profileTaskApproveId,
@@ -234,7 +235,7 @@ export function ProfileInformationReview({
             <ReadOnlyBadge />
             {isBrandProfile ? (
               tmApproved ? (
-                <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+                <StatusTag className={cn("inline-flex items-center gap-1 font-normal", markerToneClass.success)}>
                   <Check className="h-3 w-3" /> Approved
                 </StatusTag>
               ) : null

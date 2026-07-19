@@ -5,7 +5,8 @@ import { Check, ExternalLink } from "lucide-react";
 
 import { InfoBanner } from "@/components/data-display/info-banner";
 import { Button } from "@/components/ui/button";
-import { StatusTag } from "@/components/ui/status-tag";
+import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { cn } from "@/lib/utils";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
@@ -105,7 +106,7 @@ export function ReviewActionBar({
 
 export function ReadOnlyBadge() {
   return (
-    <StatusTag className="inline-flex items-center gap-1.5 bg-purple-100 font-normal text-purple-700">
+    <StatusTag className={cn("inline-flex items-center gap-1.5 font-normal", markerToneClass.readonly)}>
       <Image src="/icons/visibility.svg" alt="" width={14} height={14} aria-hidden />
       Read Only
     </StatusTag>
@@ -114,7 +115,7 @@ export function ReadOnlyBadge() {
 
 export function CompleteBadge() {
   return (
-    <StatusTag className="inline-flex items-center gap-1 bg-[var(--color-success-light)] font-normal text-[var(--color-success)]">
+    <StatusTag className={cn("inline-flex items-center gap-1 font-normal", markerToneClass.success)}>
       <Check className="h-3 w-3" /> Complete
     </StatusTag>
   );
@@ -165,9 +166,10 @@ export function FileAttachmentRow({
         <Image src="/icons/file-doc.svg" alt="" width={24} height={24} aria-hidden />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">
-          {name}
-        </p>
+        <TruncatedText
+          text={name}
+          className="text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]"
+        />
         {size ? (
           <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">{size}</p>
         ) : null}
@@ -225,16 +227,25 @@ export function TablePagination({
   showing,
   total,
   pageSize = 10,
+  itemLabel = "items",
+  className,
 }: {
   showing: number;
   total: number;
   pageSize?: number;
+  itemLabel?: string;
+  className?: string;
 }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   return (
-    <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
+    <div
+      className={cn(
+        "flex flex-wrap items-center justify-between gap-3 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]",
+        className ?? "mt-4",
+      )}
+    >
       <span>
-        Showing 1–{showing} of {total.toLocaleString()} items
+        Showing 1–{showing} of {total.toLocaleString()} {itemLabel}
       </span>
       <div className="flex items-center gap-2">
         <PaginationBtn disabled aria-label="First page">

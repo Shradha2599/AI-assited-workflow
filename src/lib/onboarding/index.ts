@@ -7,6 +7,7 @@ import type { OnboardingPartner, OnboardingTask } from "./types";
 import {
   applyTaskPatches,
   buildFreshOnboarding,
+  buildNewlyApprovedOnboarding,
   generateOnboardingFromSeed,
 } from "./generator";
 import { buildSellerOnboardingState } from "./progress";
@@ -43,6 +44,17 @@ export type {
 } from "./types";
 
 const stateCache = new Map<string, SellerOnboardingState>();
+const newlyApprovedPartnerIds = new Set<string>();
+
+/** Mark partner as freshly approved — onboarding resets to assortment-only review. */
+export function markPartnerNewlyApproved(partnerId: string): void {
+  newlyApprovedPartnerIds.add(partnerId);
+  stateCache.delete(partnerId);
+}
+
+export function isPartnerNewlyApproved(partnerId: string): boolean {
+  return newlyApprovedPartnerIds.has(partnerId);
+}
 
 /** Curated demo profiles — override seeded generation for key review flows. */
 const CURATED_PATCHES: Record<
@@ -124,6 +136,9 @@ function resolvePartnerName(partnerId: string): string {
 }
 
 function resolveOnboardingPartner(partnerId: string, partnerName: string): OnboardingPartner {
+  if (newlyApprovedPartnerIds.has(partnerId)) {
+    return buildNewlyApprovedOnboarding(partnerId, partnerName);
+  }
   const curated = CURATED_PATCHES[partnerId];
   if (curated) {
     const base = buildFreshOnboarding(partnerId, partnerName);
@@ -208,4 +223,5 @@ export function getBlockedOnboardingTasks(): OnboardingTask[] {
 /** Clear cache — useful if mock seed data changes in tests. */
 export function clearOnboardingStateCache(): void {
   stateCache.clear();
+  newlyApprovedPartnerIds.clear();
 }

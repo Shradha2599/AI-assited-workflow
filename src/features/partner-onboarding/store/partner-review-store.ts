@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+import { markPartnerNewlyApproved } from "@/lib/onboarding";
 import type { PartnerPipelineStatus } from "@/lib/mock-data/potential-partners";
 import { useToastStore } from "@/stores/toast-store";
 
@@ -13,7 +14,7 @@ const DECISION_STATUS: Record<LeadDecision, PartnerPipelineStatus> = {
 
 const DECISION_TOAST: Record<LeadDecision, { title: string; description: string }> = {
   accept: {
-    title: "Lead accepted",
+    title: "Lead approved",
     description: "Partner has been approved and moved to onboarding.",
   },
   reject: {
@@ -53,6 +54,9 @@ export const usePartnerReviewStore = create<PartnerReviewStore>((set, get) => ({
 
   setPartnerDecision: (partnerId, partnerName, decision) => {
     const status = DECISION_STATUS[decision];
+    if (decision === "accept") {
+      markPartnerNewlyApproved(partnerId);
+    }
     set((state) => ({
       statusOverrides: { ...state.statusOverrides, [partnerId]: status },
       analysisOpen: false,

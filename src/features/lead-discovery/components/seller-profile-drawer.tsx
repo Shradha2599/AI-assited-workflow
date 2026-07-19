@@ -18,6 +18,7 @@ import {
 import { SvgIcon } from "@/components/ui/svg-icon";
 import { StatusTag } from "@/components/ui/status-tag";
 import { Button } from "@/components/ui/button";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import {
   DrawerHeaderShell,
   DrawerPanel,
@@ -251,9 +252,11 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="truncate text-[var(--text-body-size)] font-semibold">
-                  {seller.legalBusinessName}
-                </span>
+                <TruncatedText
+                  text={seller.legalBusinessName}
+                  inline
+                  className="text-[var(--text-body-size)] font-semibold"
+                />
                 <Link
                   href={getSellerProfilePath(seller.id)}
                   className="shrink-0 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
@@ -281,9 +284,10 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
               <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
                 {stat.label}
               </p>
-              <p className="mt-0.5 truncate text-[var(--text-caption-size)] font-semibold">
-                {stat.value}
-              </p>
+              <TruncatedText
+                text={stat.value}
+                className="mt-0.5 text-[var(--text-caption-size)] font-semibold"
+              />
             </div>
           ))}
         </div>

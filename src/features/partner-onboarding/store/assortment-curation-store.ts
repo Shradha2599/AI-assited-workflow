@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import {
+  buildAnalysisSourceForVersion,
   buildVersionFromSellerBaseline,
   getAssortmentCurationContent,
   type AssortmentCurationContent,
@@ -15,8 +16,9 @@ interface AssortmentCurationStore {
 
   initForPartner: (partnerId: string) => void;
   setActiveVersion: (versionId: string) => void;
-  createVersion: () => AssortmentVersion | null;
+  createVersion: (name: string) => AssortmentVersion | null;
   shareVersion: (versionId: string) => void;
+  removeSkuFromVersion: (versionId: string, partnerSku: string) => void;
   setAnalysisSource: (sourceId: string) => void;
 }
 
@@ -39,15 +41,17 @@ export const useAssortmentCurationStore = create<AssortmentCurationStore>((set, 
 
   setActiveVersion: (versionId) => set({ activeVersionId: versionId }),
 
-  createVersion: () => {
+  createVersion: (name) => {
     const { content } = get();
     if (!content) return null;
 
     const nextNum = content.versions.length + 1;
-    const newVersion = buildVersionFromSellerBaseline(content, nextNum);
+    const newVersion = buildVersionFromSellerBaseline(content, nextNum, name);
+    const newAnalysisSource = buildAnalysisSourceForVersion(content, newVersion);
     const updatedContent: AssortmentCurationContent = {
       ...content,
       versions: [...content.versions, newVersion],
+      analysisSources: [...content.analysisSources, newAnalysisSource],
     };
 
     set({
@@ -71,6 +75,33 @@ export const useAssortmentCurationStore = create<AssortmentCurationStore>((set, 
           }
         : v,
     );
+
+    set({
+      content: { ...content, versions: updatedVersions },
+    });
+  },
+
+  removeSkuFromVersion: (versionId, partnerSku) => {
+    const { content } = get();
+    if (!content) return;
+
+    const updatedVersions = content.versions.map((version) => {
+      if (version.id !== versionId) return version;
+
+      const includedSkuIds = version.includedSkuIds.filter((id) => id !== partnerSku);
+      const aiAddedSkuIds = version.aiAddedSkuIds.filter((id) => id !== partnerSku);
+      const removedSkuIds = version.removedSkuIds.filter((id) => id !== partnerSku);
+      const excludedSkuIds = [...new Set([...(version.excludedSkuIds ?? []), partnerSku])];
+
+      return {
+        ...version,
+        includedSkuIds,
+        aiAddedSkuIds,
+        removedSkuIds,
+        excludedSkuIds,
+        recommendedCount: includedSkuIds.length,
+      };
+    });
 
     set({
       content: { ...content, versions: updatedVersions },

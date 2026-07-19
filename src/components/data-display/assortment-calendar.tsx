@@ -5,6 +5,7 @@ import { Check, ChevronDown, Download, GripVertical, Loader2, MessageSquare, Plu
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { cn } from "@/lib/utils";
 import { downloadCalendarPdf } from "@/lib/utils/calendar-pdf";
 import {
@@ -268,7 +269,7 @@ function VersionPicker() {
                 )}
                 onClick={() => { switchVersion(v.id); setOpen(false); }}
               >
-                <span className="min-w-0 flex-1 truncate">{v.name}</span>
+                <TruncatedText text={v.name} className="min-w-0 flex-1" />
                 <span className="flex shrink-0 items-center gap-1">
                   {v.id === activeId && (
                     <Check className="h-3 w-3 text-[var(--color-primary)]" />
@@ -668,12 +669,12 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
                   <td
                     key={i}
                     className={cn(
-                      "overflow-hidden truncate border border-[var(--color-border)] px-1 py-1.5 text-[var(--text-caption-size)]",
+                      "overflow-hidden border border-[var(--color-border)] px-1 py-1.5 text-[var(--text-caption-size)]",
                       headerEvents,
                       QUARTER_BOUNDARIES.has(i) && "border-r-2 border-r-[var(--color-border)]",
                     )}
                   >
-                    {ev}
+                    <TruncatedText text={ev} />
                   </td>
                 ))}
               </tr>
@@ -782,7 +783,7 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
                               />
 
                               {/* Label */}
-                              <span className="min-w-0 flex-1 truncate px-2 text-center">{item.label}</span>
+                              <TruncatedText text={item.label} className="min-w-0 flex-1 px-2 text-center" />
 
                               {/* Remove button — visible on hover / selected */}
                               <button

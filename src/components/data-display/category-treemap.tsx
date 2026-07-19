@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { ArrowDown, ArrowRight, Info, X } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import type { TreemapGridConfig } from "@/lib/mock-data/treemap-hierarchy";
 import { cn } from "@/lib/utils";
 
@@ -325,9 +326,10 @@ export function TreemapTooltip({
     >
       {/* Header */}
       <div className="flex items-center justify-between gap-2 bg-[var(--color-drawer-header)] px-[var(--space-3)] py-[var(--space-2)]">
-        <p className="min-w-0 truncate text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]">
-          {item.label}
-        </p>
+        <TruncatedText
+          text={item.label}
+          className="min-w-0 text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]"
+        />
         <button
           type="button"
           onClick={onClose}

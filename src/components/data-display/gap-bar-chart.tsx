@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { AmChartCard } from "@/components/data-display/am-chart-card";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { cn } from "@/lib/utils";
 
 export interface GapBar {
@@ -114,13 +115,12 @@ export function GapBarChart({
 
             <div className="mt-1 flex shrink-0 px-0.5">
               {data.map((bar) => (
-                <span
-                  key={bar.label}
-                  className="min-w-0 flex-1 truncate text-center text-[var(--text-label-size)] leading-tight text-[var(--color-muted-foreground)]"
-                  title={bar.label}
-                >
-                  {bar.label}
-                </span>
+                <div key={bar.label} className="min-w-0 flex-1">
+                  <TruncatedText
+                    text={bar.label}
+                    className="text-center text-[var(--text-label-size)] leading-tight text-[var(--color-muted-foreground)]"
+                  />
+                </div>
               ))}
             </div>
           </div>

@@ -1,6 +1,9 @@
+"use client";
+
 import { ArrowDown, ArrowUp, CircleDollarSign, Goal, Store, Target, type LucideIcon } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { cn } from "@/lib/utils";
 
 export interface DashboardMetric {
@@ -34,6 +37,7 @@ export interface KpiMetricProps {
   change?: string;
   changeType?: "positive" | "negative" | "neutral";
   icon?: LucideIcon;
+  iconClassName?: string;
   className?: string;
   showChange?: boolean;
 }
@@ -44,6 +48,7 @@ export function KpiMetric({
   change,
   changeType,
   icon: Icon,
+  iconClassName,
   className,
   showChange = true,
 }: KpiMetricProps) {
@@ -63,8 +68,8 @@ export function KpiMetric({
     <div className={cn("flex min-w-0 flex-1 flex-col px-[var(--space-4)] py-[var(--space-4)] first:pl-[var(--space-5)] last:pr-[var(--space-5)]", className)}>
       {/* Label — single line, truncated */}
       <div className="flex min-w-0 items-center gap-1.5 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-        {Icon && <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden />}
-        <span className="truncate whitespace-nowrap">{label}</span>
+        {Icon && <Icon className={cn("h-3.5 w-3.5 shrink-0", iconClassName)} aria-hidden />}
+        <TruncatedText text={label} inline className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]" />
       </div>
       {/* Value + badge inline */}
       <div className="mt-1 flex items-center gap-2">
@@ -121,6 +126,38 @@ export function DashboardKpiStrip({ metrics, className, showChange = true }: Das
       <div className="flex min-w-0 divide-x divide-[var(--color-border)]">
         {metrics.map((metric) => (
           <KpiMetricCell key={metric.label} metric={metric} showChange={showChange} />
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+export interface KpiMetricStripItem {
+  label: string;
+  value: string;
+  icon?: LucideIcon;
+  iconClassName?: string;
+}
+
+export function KpiMetricStrip({
+  metrics,
+  className,
+}: {
+  metrics: KpiMetricStripItem[];
+  className?: string;
+}) {
+  return (
+    <Card className={cn("min-w-0 overflow-hidden p-0 shadow-[var(--shadow-low)]", className)}>
+      <div className="flex min-w-0 divide-x divide-[var(--color-border)]">
+        {metrics.map((metric) => (
+          <KpiMetric
+            key={metric.label}
+            label={metric.label}
+            value={metric.value}
+            icon={metric.icon}
+            iconClassName={metric.iconClassName}
+            showChange={false}
+          />
         ))}
       </div>
     </Card>

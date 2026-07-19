@@ -1,4 +1,5 @@
 import assortmentCurationJson from "../../../mock/business/assortment_curation.json";
+import { ASSORTMENT_ANALYSIS_DEMO } from "./assortment-analysis-demo";
 
 export type AssortmentSource =
   | "Seller provided"
@@ -87,6 +88,7 @@ export interface AssortmentVersion {
   includedSkuIds: string[];
   aiAddedSkuIds: string[];
   removedSkuIds: string[];
+  excludedSkuIds?: string[];
   recommendedCount: number;
 }
 
@@ -120,7 +122,13 @@ type RawRecord = Omit<AssortmentCurationContent, never>;
 const records = assortmentCurationJson as Record<string, RawRecord>;
 
 export function getAssortmentCurationContent(sellerId: string): AssortmentCurationContent {
-  return records[sellerId] ?? records._default;
+  const raw = records[sellerId] ?? records._default;
+  return {
+    ...raw,
+    analysisSources: raw.analysisSources.map((source) =>
+      source.id === "seller-excel" ? { ...ASSORTMENT_ANALYSIS_DEMO, id: source.id, label: source.label } : source,
+    ),
+  };
 }
 
 export function getVersionSkus(
@@ -151,39 +159,115 @@ export function getVersionSkus(
     });
   }
 
-  const included = version.includedSkuIds
-    .map((id) => skuMap.get(id))
-    .filter((sku): sku is AssortmentSkuRow => Boolean(sku));
+  const excluded = new Set(version.excludedSkuIds ?? []);
+  const versionSkuIds = [...new Set([...version.includedSkuIds, ...version.removedSkuIds])].filter(
+    (id) => !excluded.has(id),
+  );
 
-  const removedRows = version.removedSkuIds
-    .map((id) => skuMap.get(id))
-    .filter((sku): sku is AssortmentSkuRow => Boolean(sku));
+  const recommendationOrder: Record<AssortmentRecommendationAction, number> = {
+    ai_add: 0,
+    ai_remove: 1,
+    keep: 2,
+  };
 
-  return [...included, ...removedRows];
+  return versionSkuIds
+    .map((id) => skuMap.get(id))
+    .filter((sku): sku is AssortmentSkuRow => Boolean(sku))
+    .sort((a, b) => {
+      const aOrder = recommendationOrder[a.recommendationAction ?? "keep"];
+      const bOrder = recommendationOrder[b.recommendationAction ?? "keep"];
+      return aOrder - bOrder || a.partnerSku.localeCompare(b.partnerSku);
+    });
 }
 
 export function getAnalysisForSource(
   content: AssortmentCurationContent,
   sourceId: string,
 ): AssortmentAnalysisSource {
-  return (
-    content.analysisSources.find((s) => s.id === sourceId) ?? content.analysisSources[0]
-  );
+  const direct = content.analysisSources.find((s) => s.id === sourceId);
+  if (direct) return direct;
+
+  const versionMatch = sourceId.match(/^version-(.+)$/);
+  if (versionMatch) {
+    const versionSource = content.analysisSources.find(
+      (s) => s.type === "tm_version" && s.versionId === versionMatch[1],
+    );
+    if (versionSource) return versionSource;
+  }
+
+  return content.analysisSources[0];
+}
+
+export interface AnalysisSourceOption {
+  id: string;
+  label: string;
+}
+
+export function getAnalysisSourceOptions(
+  content: AssortmentCurationContent,
+): AnalysisSourceOption[] {
+  const options: AnalysisSourceOption[] = [];
+  const leadFormSource = content.analysisSources.find((s) => s.type === "seller_submission");
+
+  if (leadFormSource) {
+    options.push({ id: leadFormSource.id, label: "Lead form" });
+  }
+
+  for (const version of content.versions) {
+    const versionSource = content.analysisSources.find(
+      (s) => s.type === "tm_version" && s.versionId === version.id,
+    );
+    options.push({
+      id: versionSource?.id ?? `version-${version.id}`,
+      label: version.name,
+    });
+  }
+
+  return options;
+}
+
+export function buildAnalysisSourceForVersion(
+  content: AssortmentCurationContent,
+  version: AssortmentVersion,
+): AssortmentAnalysisSource {
+  const template =
+    content.analysisSources.find((s) => s.type === "tm_version") ??
+    content.analysisSources.find((s) => s.type === "seller_submission") ??
+    content.analysisSources[0];
+
+  const excluded = new Set(version.excludedSkuIds ?? []);
+  const skuCount = [...new Set([...version.includedSkuIds, ...version.removedSkuIds])].filter(
+    (id) => !excluded.has(id),
+  ).length;
+
+  return {
+    ...template,
+    id: `version-${version.id}`,
+    label: version.label,
+    type: "tm_version",
+    versionId: version.id,
+    analysis: {
+      ...template.analysis,
+      totalSkus: skuCount,
+    },
+  };
 }
 
 export function buildVersionFromSellerBaseline(
   content: AssortmentCurationContent,
   versionNumber: number,
+  name?: string,
 ): AssortmentVersion {
   const keepIds = content.submittedSkus
     .map((s) => s.partnerSku)
     .filter((id) => !content.aiRecommendations.remove.some((r) => r.partnerSku === id));
   const aiAddIds = content.aiRecommendations.add.map((s) => s.partnerSku);
+  const versionName = name?.trim() || `Version ${versionNumber}`;
 
   return {
     id: `v${versionNumber}`,
-    name: `Version ${versionNumber}`,
-    label: `Version ${versionNumber}`,
+    name: versionName,
+    label: versionName,
     createdAt: new Date().toISOString(),
     createdBy: "Shaun Doe",
     status: "draft",

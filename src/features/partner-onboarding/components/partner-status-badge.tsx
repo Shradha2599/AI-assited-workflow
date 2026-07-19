@@ -12,6 +12,7 @@ import type { OnboardingSection } from "@/lib/mock-data/onboarding";
 import { getOnboardingForPartner } from "@/lib/mock-data/onboarding";
 import type { PartnerPipelineStatus } from "@/lib/mock-data/potential-partners";
 import { StatusTag } from "@/components/ui/status-tag";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { resolveOnboardingSectionStatusIcon } from "../utils/onboarding-section-status-icon";
 
 const GREY_FILTER =
@@ -19,38 +20,35 @@ const GREY_FILTER =
 
 const STATUS_CONFIG: Record<
   PartnerPipelineStatus,
-  { bg: string; text: string; icon: string; iconFilter?: string }
+  { bg: string; icon: string; iconFilter?: string }
 > = {
   New: {
     bg: "#F0F0F0",
-    text: "#333333",
     icon: "/icons/ai-gen-simple.svg",
     iconFilter: GREY_FILTER,
   },
   Rejected: {
     bg: "var(--color-error-light)",
-    text: "var(--color-error)",
     icon: "/icons/close.svg",
+    iconFilter: GREY_FILTER,
   },
   "In Review": {
     bg: "var(--color-warning-light)",
-    text: "var(--color-warning)",
     icon: "/icons/tm-in-progress.svg",
+    iconFilter: GREY_FILTER,
   },
   Approved: {
     bg: "var(--color-success-light)",
-    text: "var(--color-success)",
     icon: "/icons/checkmark-approved.svg",
+    iconFilter: GREY_FILTER,
   },
   "Future Interest": {
     bg: "#EFCBDB",
-    text: "#8B3A5A",
     icon: "/icons/arrow-subdirectory.svg",
     iconFilter: GREY_FILTER,
   },
   Onboarding: {
     bg: "#A5BDEC",
-    text: "#1A4480",
     icon: "/icons/progress.svg",
     iconFilter: GREY_FILTER,
   },
@@ -61,14 +59,11 @@ export function PartnerStatusBadge({ status }: { status: PartnerPipelineStatus }
 
   return (
     <StatusTag
-      className="max-w-[140px] gap-1 truncate whitespace-nowrap"
-      style={{ backgroundColor: config.bg, color: config.text }}
-      title={status}
+      className="max-w-[140px] gap-1 whitespace-nowrap text-[var(--color-foreground)]"
+      style={{ backgroundColor: config.bg }}
     >
       {status === "Approved" ? (
-        <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-[#1A7F1A]">
-          <Check className="h-2 w-2 text-white" strokeWidth={3} aria-hidden />
-        </span>
+        <Check className="h-3 w-3 shrink-0" aria-hidden />
       ) : (
         <Image
           src={config.icon}
@@ -80,7 +75,7 @@ export function PartnerStatusBadge({ status }: { status: PartnerPipelineStatus }
           aria-hidden
         />
       )}
-      <span className="truncate">{status}</span>
+      <TruncatedText text={status} inline />
     </StatusTag>
   );
 }

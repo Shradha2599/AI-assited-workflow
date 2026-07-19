@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -155,11 +154,6 @@ function LinkedProfileCard({ platform, url }: { platform: string; url: string })
 export function LeadFormView({ partner, form }: LeadFormViewProps) {
   const analysis = getLeadFormAnalysis(partner.id);
   const { accept, reject, markFutureInterest } = useLeadDecision(partner);
-  const [contractAccepted, setContractAccepted] = useState(form.contractAccepted);
-
-  useEffect(() => {
-    setContractAccepted(form.contractAccepted);
-  }, [form.contractAccepted]);
 
   const isRejected = partner.status === "Rejected";
   const isFutureInterest = partner.status === "Future Interest";
@@ -321,12 +315,13 @@ export function LeadFormView({ partner, form }: LeadFormViewProps) {
         <SectionDivider />
 
         <div className={cn(FORM_HPAD, "py-8")}>
-          <label className="flex cursor-pointer items-start gap-2.5 text-[var(--text-caption-size)] leading-relaxed text-[var(--color-foreground)]">
+          <label className="flex items-start gap-2.5 text-[var(--text-caption-size)] leading-relaxed text-[var(--color-foreground)]">
             <input
               type="checkbox"
-              checked={contractAccepted}
-              onChange={(e) => setContractAccepted(e.target.checked)}
-              className="mt-0.5 h-4 w-4 rounded border-[var(--color-border)] accent-[var(--color-primary)]"
+              checked
+              disabled
+              readOnly
+              className="mt-0.5 h-4 w-4 rounded border-[var(--color-border)] accent-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-100"
             />
             <span>
               By checking this box, I have reviewed and accepted{" "}
@@ -341,15 +336,15 @@ export function LeadFormView({ partner, form }: LeadFormViewProps) {
           </label>
 
           {!isReadOnly && (
-            <div className="mt-6 flex flex-wrap justify-end gap-2">
-              <Button variant="outline" size="sm" onClick={reject}>
-                Reject
+            <div className="mt-6 flex flex-wrap justify-start gap-2">
+              <Button size="sm" onClick={accept}>
+                Approve
               </Button>
               <Button variant="outline" size="sm" onClick={markFutureInterest}>
                 Future Interest
               </Button>
-              <Button size="sm" onClick={accept}>
-                Accept
+              <Button variant="outline" size="sm" onClick={reject}>
+                Reject
               </Button>
             </div>
           )}
