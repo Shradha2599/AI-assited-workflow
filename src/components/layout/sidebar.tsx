@@ -12,7 +12,13 @@ const AO_NAV_ITEMS = [
   {
     label: "Assortment Gap Analysis",
     href: "/assortment/gap",
-    match: (path: string) => path.startsWith("/assortment"),
+    match: (path: string) => path.startsWith("/assortment/gap"),
+  },
+  {
+    label: "Assortment Plan",
+    href: "/assortment/plan",
+    match: (path: string) =>
+      path.startsWith("/assortment/plan") || path.startsWith("/assortment/finalize"),
   },
   {
     label: "Lead Discovery",

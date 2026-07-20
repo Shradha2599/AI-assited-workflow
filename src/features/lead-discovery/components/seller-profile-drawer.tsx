@@ -16,7 +16,9 @@ import {
   XCircle,
 } from "lucide-react";
 import { SvgIcon } from "@/components/ui/svg-icon";
-import { StatusTag, MarkerTag } from "@/components/ui/status-tag";
+import { StatusTag } from "@/components/ui/status-tag";
+import { ItemTypesDrawer } from "@/components/data-display/item-types-drawer";
+import { ItemTypesInlineList } from "@/components/data-display/item-types-inline-list";
 import { Button } from "@/components/ui/button";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import {
@@ -174,6 +176,7 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
   const [verifying, setVerifying] = useState(!cached);
   const [verification, setLocalVerification] = useState<VerificationResult | null>(cached ?? null);
   const [summaryExpanded, setSummaryExpanded] = useState(false);
+  const [itemTypesDrawerOpen, setItemTypesDrawerOpen] = useState(false);
 
   useEffect(() => {
     if (cached) {
@@ -200,6 +203,7 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
   const confidenceScore = verification?.confidenceScore ?? seller.confidenceScore;
 
   return (
+    <>
     <DrawerPanel
       ariaLabel={`Seller profile: ${seller.legalBusinessName}`}
       onClose={onClose}
@@ -345,13 +349,11 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
 
         {matchingItems.length > 0 && (
           <DrawerSectionCard title={`Item Type Match (${matchingItems.length})`}>
-            <div className="flex flex-wrap gap-1.5">
-              {matchingItems.map((item) => (
-                <MarkerTag key={item} tone="neutral" className="px-2.5 py-1 text-[var(--text-caption-size)]">
-                  {item}
-                </MarkerTag>
-              ))}
-            </div>
+            <ItemTypesInlineList
+              items={matchingItems}
+              variant="tag"
+              onShowAll={() => setItemTypesDrawerOpen(true)}
+            />
           </DrawerSectionCard>
         )}
 
@@ -443,5 +445,15 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
         </Link>
       </div>
     </DrawerPanel>
+
+    {itemTypesDrawerOpen && matchingItems.length > 0 && (
+      <ItemTypesDrawer
+        title="Item Type Match"
+        accent={seller.legalBusinessName}
+        items={matchingItems}
+        onClose={() => setItemTypesDrawerOpen(false)}
+      />
+    )}
+    </>
   );
 }

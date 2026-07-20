@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import { SvgIcon } from "@/components/ui/svg-icon";
 import { cn } from "@/lib/utils";
@@ -72,6 +72,11 @@ export function PageHeader(props: PageHeaderProps) {
   const { setPageHeader } = usePageHeaderContext();
   const { title, description, breadcrumbs, actions, className } = props;
 
+  const breadcrumbKey = useMemo(
+    () => breadcrumbs?.map((item) => `${item.label}:${item.href ?? ""}`).join("|") ?? "",
+    [breadcrumbs],
+  );
+
   useEffect(() => {
     setPageHeader(
       <PageHeaderContent
@@ -83,7 +88,7 @@ export function PageHeader(props: PageHeaderProps) {
       />,
     );
     return () => setPageHeader(null);
-  }, [title, description, breadcrumbs, actions, className, setPageHeader]);
+  }, [title, description, breadcrumbKey, actions, className, setPageHeader, breadcrumbs]);
 
   return null;
 }

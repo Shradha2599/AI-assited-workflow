@@ -2,32 +2,14 @@ import { generateObject } from "ai";
 import { createGroq } from "@ai-sdk/groq";
 import { z } from "zod";
 import { sellers, type Seller } from "@/lib/mock-data/sellers";
+import {
+  rankSellersLocally,
+  selectCandidatesForRanking,
+  type RankedSellerResult,
+} from "@/lib/mock-data/discover-leads-ranking";
 import { buildMarketIntelligenceContext, loadMockJson, type ItemType } from "@/lib/agents/mock-loader";
 
 const groq = createGroq({ apiKey: process.env.GROQ_API_KEY });
-
-const LLM_RANK_LIMIT = 60;
-
-function selectCandidatesForRanking(allSellers: Seller[], planItems: string[]): Seller[] {
-  if (allSellers.length <= LLM_RANK_LIMIT) return allSellers;
-
-  let pool = allSellers;
-  if (planItems.length > 0) {
-    const matched = allSellers.filter((s) =>
-      planItems.some((pi) => {
-        const piLower = pi.toLowerCase();
-        return s.categories.some(
-          (c) =>
-            piLower.includes(c.toLowerCase().split(" ")[0]) ||
-            c.toLowerCase().includes(piLower.split(" ")[0]),
-        );
-      }),
-    );
-    if (matched.length >= 20) pool = matched;
-  }
-
-  return [...pool].sort((a, b) => b.confidenceScore - a.confidenceScore).slice(0, LLM_RANK_LIMIT);
-}
 
 const schema = z.object({
   rankedSellers: z.array(
@@ -44,14 +26,33 @@ const schema = z.object({
   summary: z.string().describe("2-sentence summary of the discovery results"),
 });
 
+function mergeModelRanking(
+  candidates: Seller[],
+  modelRows: RankedSellerResult[],
+): RankedSellerResult[] {
+  const candidateIds = new Set(candidates.map((s) => s.id));
+  const rankedById = new Map(
+    modelRows.filter((row) => candidateIds.has(row.sellerId)).map((row) => [row.sellerId, row]),
+  );
+
+  return candidates.map((seller, index) => {
+    const fromModel = rankedById.get(seller.id);
+    if (fromModel) return fromModel;
+    return {
+      sellerId: seller.id,
+      relevanceReason: `Ranked #${index + 1} by confidence and category fit for the current plan.`,
+      planMatch: [] as string[],
+    };
+  });
+}
+
 export async function POST(req: Request) {
-  if (!process.env.GROQ_API_KEY) {
-    return new Response(
-      JSON.stringify({ error: "GROQ_API_KEY environment variable is not set." }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
-    );
-  }
   const { planItems } = (await req.json()) as { planItems: string[] };
+
+  if (!process.env.GROQ_API_KEY) {
+    const { rankedSellers, summary } = rankSellersLocally(planItems);
+    return Response.json({ rankedSellers, summary, source: "mock" });
+  }
 
   const candidates = selectCandidatesForRanking(sellers, planItems);
 
@@ -74,7 +75,6 @@ export async function POST(req: Request) {
       ? `The assortment plan requires these item types:\n${planItems.map((item, i) => `${i + 1}. ${item}`).join("\n")}`
       : "No specific plan items provided. Rank all sellers by overall quality.";
 
-  // Derive categories from plan items for market intelligence lookup
   const itemTypes = loadMockJson<ItemType>("mock/target/item_types.json");
   const matchedItemTypes = planItems.length > 0
     ? itemTypes.filter((it) =>
@@ -106,10 +106,11 @@ export async function POST(req: Request) {
           .join("\n")}`
       : "";
 
-  const { object } = await generateObject({
-    model: groq("llama-3.3-70b-versatile"),
-    schema,
-    prompt: `You are a Discovery Agent for Target Plus Marketplace.
+  try {
+    const { object } = await generateObject({
+      model: groq("llama-3.3-70b-versatile"),
+      schema,
+      prompt: `You are a Discovery Agent for Target Plus Marketplace.
 
 ${planContext}
 
@@ -132,25 +133,14 @@ Every seller must appear exactly once in the output, sorted best-match first.
 Use ONLY seller ids from the provided list — do not invent ids.
 For planMatch, list only item types from the plan that this seller could realistically supply.
 If a seller has no category match to the plan, planMatch can be empty but still include the seller.`,
-    temperature: 0.2,
-  });
+      temperature: 0.2,
+    });
 
-  const candidateIds = new Set(candidates.map((s) => s.id));
-  const rankedById = new Map(
-    object.rankedSellers
-      .filter((row) => candidateIds.has(row.sellerId))
-      .map((row) => [row.sellerId, row]),
-  );
+    const rankedSellers = mergeModelRanking(candidates, object.rankedSellers);
 
-  const rankedSellers = candidates.map((seller, index) => {
-    const fromModel = rankedById.get(seller.id);
-    if (fromModel) return fromModel;
-    return {
-      sellerId: seller.id,
-      relevanceReason: `Ranked #${index + 1} by confidence and category fit for the current plan.`,
-      planMatch: [] as string[],
-    };
-  });
-
-  return Response.json({ ...object, rankedSellers });
+    return Response.json({ ...object, rankedSellers, source: "agent" });
+  } catch {
+    const { rankedSellers, summary } = rankSellersLocally(planItems);
+    return Response.json({ rankedSellers, summary, source: "mock" });
+  }
 }

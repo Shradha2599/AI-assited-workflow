@@ -6,23 +6,16 @@ import {
   Calendar,
   ChevronDown,
   Download,
-  LayoutGrid,
-  List,
   MoreHorizontal,
   Plus,
 } from "lucide-react";
 
-import {
-  DashboardKpiStrip,
-  type DashboardMetric,
-} from "@/components/data-display/dashboard-kpi-card";
 import { PipelineHeatmap } from "@/components/data-display/pipeline-heatmap";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
-  onboardingKpis,
   potentialPartners,
   getPartnerProfilePath,
   showsPartnerProgress,
@@ -91,7 +84,6 @@ function downloadPartnersReport(partners: PotentialPartner[]) {
 
 export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) {
   const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
-  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<PartnerPipelineStatus | "All">("All");
   const [statusMenuOpen, setStatusMenuOpen] = useState(false);
@@ -108,18 +100,6 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
   const paginated = filteredPartners.slice(
     (safePage - 1) * ITEMS_PER_PAGE,
     safePage * ITEMS_PER_PAGE,
-  );
-
-  const kpiMetrics: DashboardMetric[] = useMemo(
-    () =>
-      onboardingKpis.map((kpi) => ({
-        label: kpi.label,
-        value: kpi.value,
-        change: kpi.change,
-        changeType: kpi.trend === "up" ? "positive" : "negative",
-        icon: kpi.icon,
-      })),
-    [],
   );
 
   useEffect(() => {
@@ -141,35 +121,43 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
 
   const statusLabel = statusFilter === "All" ? "Status" : statusFilter;
 
+  const pageBreadcrumbs = useMemo(
+    () => [
+      { label: "Acquisition & Onboarding", href: "/dashboard" },
+      { label: "Partner Onboarding" },
+    ],
+    [],
+  );
+
+  const pageHeaderActions = useMemo(
+    () => (
+      <>
+        <Button size="sm" className="gap-1.5">
+          <Plus className="h-3.5 w-3.5" /> Add Partner
+        </Button>
+        <Button variant="secondary" size="icon" aria-label="Calendar">
+          <Calendar className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
+          aria-label="More options"
+        >
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </>
+    ),
+    [],
+  );
+
   return (
     <>
       <PageHeader
         title="Partner Onboarding"
-        breadcrumbs={[
-          { label: "Acquisition & Onboarding", href: "/dashboard" },
-          { label: "Partner Onboarding" },
-        ]}
-        actions={
-          <>
-            <Button size="sm" className="gap-1.5">
-              <Plus className="h-3.5 w-3.5" /> Add Partner
-            </Button>
-            <Button variant="secondary" size="icon" aria-label="Calendar">
-              <Calendar className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
-              aria-label="More options"
-            >
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </>
-        }
+        breadcrumbs={pageBreadcrumbs}
+        actions={pageHeaderActions}
       />
-
-      <DashboardKpiStrip metrics={kpiMetrics} className="mb-[var(--space-4)]" />
 
       <Card className="mb-[var(--space-4)] overflow-hidden">
         <div className="px-6">
@@ -181,31 +169,6 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
               </span>
             </h2>
             <div className="flex flex-wrap items-center gap-2">
-              <div className="flex rounded-[var(--radius-md)] border border-[var(--color-border)] p-0.5">
-                <button
-                  type="button"
-                  onClick={() => setViewMode("grid")}
-                  className={cn(
-                    "rounded-[var(--radius-sm)] p-1.5",
-                    viewMode === "grid" && "bg-[var(--color-muted)]",
-                  )}
-                  aria-label="Grid view"
-                >
-                  <LayoutGrid className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode("list")}
-                  className={cn(
-                    "rounded-[var(--radius-sm)] p-1.5",
-                    viewMode === "list" && "bg-[var(--color-muted)]",
-                  )}
-                  aria-label="List view"
-                >
-                  <List className="h-3.5 w-3.5" />
-                </button>
-              </div>
-
               <div className="relative" ref={statusMenuRef}>
                 <button
                   type="button"

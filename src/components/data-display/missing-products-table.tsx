@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Check, ChevronDown, LayoutGrid, List, Plus } from "lucide-react";
+import { Check, ChevronDown, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -73,16 +73,6 @@ export function MissingProductsTable({
             · High Gap Opportunity ({resolvedTotal})
           </span>
         </h3>
-        <div className="flex items-center gap-2">
-          <div className="flex rounded-[var(--radius-sm)] border border-[var(--color-border)]">
-            <button type="button" className="px-2 py-1 text-[var(--color-muted-foreground)]" aria-label="List view">
-              <List className="h-3.5 w-3.5" />
-            </button>
-            <button type="button" className="border-l border-[var(--color-border)] px-2 py-1 text-[var(--color-primary)]" aria-label="Grid view">
-              <LayoutGrid className="h-3.5 w-3.5" />
-            </button>
-          </div>
-        </div>
       </CardHeader>
       <CardContent className="p-0">
         <div className="overflow-x-auto px-6">

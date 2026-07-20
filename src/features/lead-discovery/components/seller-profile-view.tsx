@@ -17,7 +17,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConfidenceScoreBadge } from "@/components/data-display/confidence-score-badge";
-import { MarkerTag } from "@/components/ui/status-tag";
+import { ItemTypesDrawer } from "@/components/data-display/item-types-drawer";
+import { ItemTypesInlineList } from "@/components/data-display/item-types-inline-list";
 import { RegisterPageHeader } from "@/components/layout/page-header";
 import { SvgIcon } from "@/components/ui/svg-icon";
 import { useOutreachMail } from "@/features/outreach/hooks/use-outreach-mail";
@@ -98,6 +99,7 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
   const [activeTab, setActiveTab] = useState<ProfileTab>("overview");
   const [verifying, setVerifying] = useState(!cached);
   const [verification, setLocalVerification] = useState<VerificationResult | null>(cached ?? null);
+  const [itemTypesDrawerOpen, setItemTypesDrawerOpen] = useState(false);
 
   useEffect(() => {
     if (cached) {
@@ -124,6 +126,7 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
   const categoriesLabel = seller.categories.join(", ");
 
   return (
+    <>
     <div className="space-y-[var(--space-4)]">
       <RegisterPageHeader>
         <div>
@@ -402,13 +405,11 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-wrap gap-1.5">
-                    {matchingItems.map((item) => (
-                      <MarkerTag key={item} tone="neutral" className="px-2.5 py-1 text-[var(--text-caption-size)]">
-                        {item}
-                      </MarkerTag>
-                    ))}
-                  </div>
+                  <ItemTypesInlineList
+                    items={matchingItems}
+                    variant="tag"
+                    onShowAll={() => setItemTypesDrawerOpen(true)}
+                  />
                 </CardContent>
               </Card>
             )}
@@ -544,21 +545,26 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
                 <p className="mb-2 text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
                   Matching Item Types from Assortment Plan
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {matchingItems.map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-[var(--text-caption-size)]"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
+                <ItemTypesInlineList
+                  items={matchingItems}
+                  variant="plan"
+                  onShowAll={() => setItemTypesDrawerOpen(true)}
+                />
               </div>
             )}
           </CardContent>
         </Card>
       )}
     </div>
+
+    {itemTypesDrawerOpen && matchingItems.length > 0 && (
+      <ItemTypesDrawer
+        title="Item Type Match"
+        accent={seller.legalBusinessName}
+        items={matchingItems}
+        onClose={() => setItemTypesDrawerOpen(false)}
+      />
+    )}
+    </>
   );
 }

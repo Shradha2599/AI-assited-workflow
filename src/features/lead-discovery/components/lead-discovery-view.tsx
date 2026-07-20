@@ -9,7 +9,6 @@ import {
   Search,
   Sparkles,
   Trash2,
-  X,
 } from "lucide-react";
 import { SvgIcon } from "@/components/ui/svg-icon";
 import { Button } from "@/components/ui/button";
@@ -20,10 +19,13 @@ import {
   type DashboardMetric,
 } from "@/components/data-display/dashboard-kpi-card";
 import { ConfidenceScoreBadge } from "@/components/data-display/confidence-score-badge";
+import { ItemTypesDrawer } from "@/components/data-display/item-types-drawer";
+import { ItemTypesInlineList } from "@/components/data-display/item-types-inline-list";
 import { useOutreachMail } from "@/features/outreach/hooks/use-outreach-mail";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/layout/page-header";
 import { sellers, TOTAL_LEAD_COUNT, type Seller } from "@/lib/mock-data/sellers";
+import { toDiscoveryPayload, rankSellersLocally } from "@/lib/mock-data/discover-leads-ranking";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { useDiscoveryStore } from "../store/discovery-store";
 import {
@@ -90,6 +92,7 @@ export function LeadDiscoveryView() {
   const [search, setSearch] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [page, setPage] = useState(1);
+  const [planItemsDrawerOpen, setPlanItemsDrawerOpen] = useState(false);
 
   const [filterDraft, setFilterDraft] = useState<FilterDraft>(() =>
     emptyFilterDraft(activeFilters),
@@ -140,26 +143,29 @@ export function LeadDiscoveryView() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ planItems }),
       });
-      if (!res.ok) throw new Error("Discovery failed");
-      const { rankedSellers } = (await res.json()) as {
-        rankedSellers: {
+      const data = (await res.json()) as {
+        rankedSellers?: {
           sellerId: string;
           relevanceReason: string;
           planMatch?: string[];
         }[];
+        error?: string;
       };
-      const ids = rankedSellers.map((s) => s.sellerId);
-      const reasons: Record<string, string> = {};
-      const planMatches: Record<string, string[]> = {};
-      for (const s of rankedSellers) {
-        reasons[s.sellerId] = s.relevanceReason;
-        if (s.planMatch?.length) planMatches[s.sellerId] = s.planMatch;
+
+      if (!res.ok || !data.rankedSellers?.length) {
+        throw new Error(data.error ?? "Discovery failed");
       }
+
+      const { ids, reasons, planMatches } = toDiscoveryPayload(data.rankedSellers);
       setDiscovered(ids, reasons, planMatches);
       setActiveTab("discovered");
       setShowFilters(false);
     } catch {
-      // silent
+      const { rankedSellers } = rankSellersLocally(planItems);
+      const { ids, reasons, planMatches } = toDiscoveryPayload(rankedSellers);
+      setDiscovered(ids, reasons, planMatches);
+      setActiveTab("discovered");
+      setShowFilters(false);
     } finally {
       setIsDiscovering(false);
     }
@@ -361,17 +367,10 @@ export function LeadDiscoveryView() {
             </button>
           </div>
           {planItems.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
-              {planItems.map((item) => (
-                <span
-                  key={item}
-                  className="flex items-center gap-1.5 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-[var(--text-caption-size)] font-medium"
-                >
-                  {item}
-                  <X className="h-3.5 w-3.5 cursor-pointer text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]" />
-                </span>
-              ))}
-            </div>
+            <ItemTypesInlineList
+              items={planItems}
+              onShowAll={() => setPlanItemsDrawerOpen(true)}
+            />
           ) : (
             <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
               No plan items loaded. Visit Assortment Plan to add item types.
@@ -684,6 +683,14 @@ export function LeadDiscoveryView() {
 
       {selectedSeller && (
         <SellerProfileDrawer seller={selectedSeller} onClose={() => setSelectedSeller(null)} />
+      )}
+
+      {planItemsDrawerOpen && planItems.length > 0 && (
+        <ItemTypesDrawer
+          title="Assortment Plan Items"
+          items={planItems}
+          onClose={() => setPlanItemsDrawerOpen(false)}
+        />
       )}
     </>
   );

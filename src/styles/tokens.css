@@ -46,10 +46,10 @@
   --color-tasks-tab-active: #3c4043;
   --color-tasks-tab-inactive: #ffffff;
 
-  /* Holiday banner */
-  --color-holiday-bg: #e6f4ea;
-  --color-holiday-text: #d93025;
-  --color-holiday-badge: #ceead6;
+  /* Event plan banner (Halloween) */
+  --color-holiday-bg: #fff4e6;
+  --color-holiday-text: #c2410c;
+  --color-holiday-badge: #ffedd5;
 
   /* Treemap lag colors */
   --color-lag-high: #faa69e;

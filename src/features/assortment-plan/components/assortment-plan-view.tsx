@@ -22,7 +22,6 @@ export function AssortmentPlanView() {
         title="Assortment Plan FY 2025-26"
         breadcrumbs={[
           { label: "Acquisition & Onboarding", href: "/dashboard" },
-          { label: "Assortment Gap Analysis", href: "/assortment/gap" },
           { label: "Assortment Plan" },
         ]}
         actions={<PlanPageActions onOpenComments={() => setCommentsOpen(true)} />}
