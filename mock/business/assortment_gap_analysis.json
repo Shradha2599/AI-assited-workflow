@@ -157,10 +157,10 @@
       "name": "Ceramic Table Lamp",
       "category": "Home & Decor",
       "categoryId": "cat_home_decor",
-      "gapOpportunity": "Medium",
+      "gapOpportunity": "High",
       "topCompetitor": "Amazon",
       "estimatedRevenue": "$1.2M",
-      "opportunityScore": 0.7,
+      "opportunityScore": 0.82,
       "imageUrl": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=96&h=96&fit=crop"
     },
     {
@@ -168,10 +168,10 @@
       "name": "Glass Beverage Dispenser",
       "category": "Kitchen & Dining",
       "categoryId": "cat_kitchen_dining",
-      "gapOpportunity": "Medium",
+      "gapOpportunity": "High",
       "topCompetitor": "Amazon",
-      "estimatedRevenue": "$0.9M",
-      "opportunityScore": 0.67,
+      "estimatedRevenue": "$1.4M",
+      "opportunityScore": 0.79,
       "imageUrl": "https://images.unsplash.com/photo-1578911372073-04023f07e135?w=96&h=96&fit=crop"
     },
     {
@@ -179,10 +179,10 @@
       "name": "Storage Basket Set",
       "category": "Household Essentials",
       "categoryId": "cat_household_essentials",
-      "gapOpportunity": "Medium",
+      "gapOpportunity": "High",
       "topCompetitor": "Amazon",
-      "estimatedRevenue": "$9K",
-      "opportunityScore": 0.64,
+      "estimatedRevenue": "$1.1M",
+      "opportunityScore": 0.76,
       "imageUrl": "https://images.unsplash.com/photo-1555041469-a586c61e1947?w=96&h=96&fit=crop"
     },
     {
@@ -192,8 +192,8 @@
       "categoryId": "cat_home_decor",
       "gapOpportunity": "High",
       "topCompetitor": "Amazon",
-      "estimatedRevenue": "$9K",
-      "opportunityScore": 0.61,
+      "estimatedRevenue": "$1.3M",
+      "opportunityScore": 0.74,
       "imageUrl": "https://images.unsplash.com/photo-1618220179425-227479641fd2?w=96&h=96&fit=crop"
     },
     {
@@ -203,8 +203,8 @@
       "categoryId": "cat_home_decor",
       "gapOpportunity": "High",
       "topCompetitor": "Amazon",
-      "estimatedRevenue": "$9K",
-      "opportunityScore": 0.58,
+      "estimatedRevenue": "$1.0M",
+      "opportunityScore": 0.71,
       "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=96&h=96&fit=crop"
     },
     {
@@ -212,10 +212,10 @@
       "name": "Outdoor String Lights",
       "category": "Outdoor Living & Garden",
       "categoryId": "cat_outdoor_living_garden",
-      "gapOpportunity": "Medium",
+      "gapOpportunity": "High",
       "topCompetitor": "Amazon",
-      "estimatedRevenue": "$1.0M",
-      "opportunityScore": 0.68,
+      "estimatedRevenue": "$1.6M",
+      "opportunityScore": 0.78,
       "imageUrl": "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=96&h=96&fit=crop"
     },
     {
@@ -223,10 +223,10 @@
       "name": "Ceramic Serving High Bowls",
       "category": "Kitchen & Dining",
       "categoryId": "cat_kitchen_dining",
-      "gapOpportunity": "Medium",
+      "gapOpportunity": "High",
       "topCompetitor": "Amazon",
-      "estimatedRevenue": "$1.3M",
-      "opportunityScore": 0.72,
+      "estimatedRevenue": "$1.5M",
+      "opportunityScore": 0.77,
       "imageUrl": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=96&h=96&fit=crop"
     },
     {
@@ -234,10 +234,10 @@
       "name": "Halloween Lantern Set",
       "category": "Gift Ideas",
       "categoryId": "cat_gift_ideas",
-      "gapOpportunity": "Medium",
+      "gapOpportunity": "High",
       "topCompetitor": "Amazon",
-      "estimatedRevenue": "$9K",
-      "opportunityScore": 0.66,
+      "estimatedRevenue": "$1.2M",
+      "opportunityScore": 0.73,
       "imageUrl": "https://images.unsplash.com/photo-1509551194663-1ead447b2273?w=96&h=96&fit=crop"
     },
     {
@@ -247,8 +247,8 @@
       "categoryId": "cat_party_supplies",
       "gapOpportunity": "High",
       "topCompetitor": "Amazon",
-      "estimatedRevenue": "$9K",
-      "opportunityScore": 0.56,
+      "estimatedRevenue": "$1.1M",
+      "opportunityScore": 0.7,
       "imageUrl": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=96&h=96&fit=crop"
     },
     {
@@ -256,11 +256,66 @@
       "name": "Pendant Light Fixture",
       "category": "Home & Decor",
       "categoryId": "cat_home_decor",
-      "gapOpportunity": "Medium",
+      "gapOpportunity": "High",
       "topCompetitor": "Amazon",
-      "estimatedRevenue": "$1.1M",
-      "opportunityScore": 0.69,
+      "estimatedRevenue": "$1.8M",
+      "opportunityScore": 0.8,
       "imageUrl": "https://images.unsplash.com/photo-1513506001158-0101e2952467?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-011",
+      "name": "Enameled Cast Iron Dutch Ovens",
+      "category": "Kitchen & Dining",
+      "categoryId": "cat_kitchen_dining",
+      "gapOpportunity": "High",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$2.1M",
+      "opportunityScore": 0.85,
+      "imageUrl": "https://images.unsplash.com/photo-1584990342419-101689137684e?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-012",
+      "name": "Fine China Dinner Sets (12-pc)",
+      "category": "Kitchen & Dining",
+      "categoryId": "cat_kitchen_dining",
+      "gapOpportunity": "High",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$1.9M",
+      "opportunityScore": 0.83,
+      "imageUrl": "https://images.unsplash.com/photo-1603199508936-b5735cab581e?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-013",
+      "name": "Air Fryer Ovens (6-10 Qt)",
+      "category": "Kitchen & Dining",
+      "categoryId": "cat_kitchen_dining",
+      "gapOpportunity": "High",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$2.0M",
+      "opportunityScore": 0.81,
+      "imageUrl": "https://images.unsplash.com/photo-1585515656519-8b2668caa4c0?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-014",
+      "name": "4-Piece Patio Dining Sets",
+      "category": "Outdoor Living & Garden",
+      "categoryId": "cat_outdoor_living_garden",
+      "gapOpportunity": "High",
+      "topCompetitor": "Home Depot",
+      "estimatedRevenue": "$2.2M",
+      "opportunityScore": 0.84,
+      "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=96&h=96&fit=crop"
+    },
+    {
+      "id": "mp-015",
+      "name": "Prelit Flocked Christmas Trees",
+      "category": "Gift Ideas",
+      "categoryId": "cat_gift_ideas",
+      "gapOpportunity": "High",
+      "topCompetitor": "Amazon",
+      "estimatedRevenue": "$2.4M",
+      "opportunityScore": 0.86,
+      "imageUrl": "https://images.unsplash.com/photo-1512389142860-9c449e58a814?w=96&h=96&fit=crop"
     }
   ],
   "beaconRecommendedItems": [

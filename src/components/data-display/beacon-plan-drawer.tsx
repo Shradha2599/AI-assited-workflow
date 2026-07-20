@@ -20,6 +20,7 @@ function parseRevM(r: string): number {
 interface BeaconPlanDrawerProps {
   open: boolean;
   existingPlanItems: string[];
+  beaconCategories?: string[] | null;
   revenueGoal: string;
   revenuePlanned: string;
   revenuePlannedPercent: number;
@@ -31,6 +32,7 @@ interface BeaconPlanDrawerProps {
 export function BeaconPlanDrawer({
   open,
   existingPlanItems,
+  beaconCategories = null,
   revenueGoal,
   revenuePlanned,
   revenuePlannedPercent,
@@ -63,7 +65,11 @@ export function BeaconPlanDrawer({
     fetch("/api/plan-with-beacon", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ revenueGoal, existingPlanItems }),
+      body: JSON.stringify({
+        revenueGoal,
+        existingPlanItems,
+        categories: beaconCategories ?? undefined,
+      }),
       signal: ctrl.signal,
     })
       .then(async (res) => {
@@ -82,10 +88,14 @@ export function BeaconPlanDrawer({
       });
 
     return () => ctrl.abort();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, revenueGoal]);
+  }, [open, revenueGoal, beaconCategories]);
 
   if (!open) return null;
+
+  const categoryScopeLabel =
+    beaconCategories && beaconCategories.length > 0
+      ? beaconCategories.join(", ")
+      : null;
 
   const availableItems = items.filter((item) => !existingPlanItems.includes(item.name));
 
@@ -160,7 +170,17 @@ export function BeaconPlanDrawer({
           {/* Status message */}
           <p className="mt-2 px-[var(--space-4)] text-center text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
             Beacon is analysing the assortment gap for{" "}
-            <span className="font-semibold text-[var(--color-foreground)]">{revenueGoal}</span>…
+            <span className="font-semibold text-[var(--color-foreground)]">{revenueGoal}</span>
+            {categoryScopeLabel ? (
+              <>
+                {" "}
+                across{" "}
+                <span className="font-semibold text-[var(--color-foreground)]">
+                  {categoryScopeLabel}
+                </span>
+              </>
+            ) : null}
+            …
           </p>
         </>
       )}
@@ -180,7 +200,11 @@ export function BeaconPlanDrawer({
               fetch("/api/plan-with-beacon", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ revenueGoal, existingPlanItems }),
+                body: JSON.stringify({
+                  revenueGoal,
+                  existingPlanItems,
+                  categories: beaconCategories ?? undefined,
+                }),
               })
                 .then((r) => r.json() as Promise<GapItem[]>)
                 .then((data) => { setItems(data); setLoading(false); })
@@ -202,6 +226,7 @@ export function BeaconPlanDrawer({
               </p>
               <p className="mt-0.5 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
                 {availableItems.length} item types selected to meet your {revenueGoal} goal
+                {categoryScopeLabel ? ` in ${categoryScopeLabel}` : ""}
               </p>
             </div>
             {availableItems.length > 0 && (
@@ -224,7 +249,9 @@ export function BeaconPlanDrawer({
             ))}
             {availableItems.length === 0 && (
               <li className="py-8 text-center text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-                All recommended item types are already in your plan.
+                {categoryScopeLabel
+                  ? `No item types available for the selected categories (${categoryScopeLabel}).`
+                  : "All recommended item types are already in your plan."}
               </li>
             )}
           </ul>

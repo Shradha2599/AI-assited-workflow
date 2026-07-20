@@ -7,7 +7,6 @@ import {
   Loader2,
   Plus,
   Search,
-  Sparkles,
   Trash2,
 } from "lucide-react";
 import { SvgIcon } from "@/components/ui/svg-icon";
@@ -24,8 +23,9 @@ import { ItemTypesInlineList } from "@/components/data-display/item-types-inline
 import { useOutreachMail } from "@/features/outreach/hooks/use-outreach-mail";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/layout/page-header";
-import { sellers, TOTAL_LEAD_COUNT, type Seller } from "@/lib/mock-data/sellers";
+import { sellers, type Seller } from "@/lib/mock-data/sellers";
 import { toDiscoveryPayload, rankSellersLocally } from "@/lib/mock-data/discover-leads-ranking";
+import { getPlanCategories } from "@/lib/mock-data/plan-item-matching";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { useDiscoveryStore } from "../store/discovery-store";
 import {
@@ -102,6 +102,73 @@ export function LeadDiscoveryView() {
     syncLeadPoolVersion();
   }, [syncLeadPoolVersion]);
 
+  const planItemsKey = planItems.join("\u0001");
+  const planCategories = useMemo(() => getPlanCategories(planItems), [planItemsKey]);
+
+  useEffect(() => {
+    if (planItems.length === 0 || discoveredIds.length === 0) return;
+
+    const stillRelevant = discoveredIds.every((id) => {
+      const seller = sellers.find((s) => s.id === id);
+      if (!seller) return false;
+      if (planCategories.length === 0) return true;
+      return planCategories.some((cat) => seller.categories.includes(cat));
+    });
+
+    if (!stillRelevant) {
+      clearDiscoveryResults();
+    }
+  }, [planItemsKey, planCategories, discoveredIds, clearDiscoveryResults]);
+
+  async function runDiscovery() {
+    setPage(1);
+    setIsDiscovering(true);
+    try {
+      const res = await fetch("/api/discover-leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ planItems }),
+      });
+      const data = (await res.json()) as {
+        rankedSellers?: {
+          sellerId: string;
+          relevanceReason: string;
+          planMatch?: string[];
+        }[];
+        error?: string;
+      };
+
+      if (!res.ok) {
+        throw new Error(data.error ?? "Discovery failed");
+      }
+
+      const rankedSellers =
+        data.rankedSellers?.length ? data.rankedSellers : rankSellersLocally(planItems).rankedSellers;
+
+      if (rankedSellers.length === 0) {
+        setDiscovered([], {}, {});
+        return;
+      }
+
+      const { ids, reasons, planMatches } = toDiscoveryPayload(rankedSellers);
+      setDiscovered(ids, reasons, planMatches);
+      setActiveTab("discovered");
+    } catch {
+      const { rankedSellers } = rankSellersLocally(planItems);
+      const { ids, reasons, planMatches } = toDiscoveryPayload(rankedSellers);
+      setDiscovered(ids, reasons, planMatches);
+      setActiveTab("discovered");
+    } finally {
+      setIsDiscovering(false);
+    }
+  }
+
+  useEffect(() => {
+    if (planItems.length === 0 || discoveredIds.length > 0 || isDiscovering) return;
+    void runDiscovery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [planItemsKey]);
+
   useEffect(() => {
     if (discoveredIds.length === 0) return;
     const validIds = discoveredIds.filter((id) => sellers.some((s) => s.id === id));
@@ -135,40 +202,8 @@ export function LeadDiscoveryView() {
       minConfidence: filterDraft.minConfidence,
       viralOnly: filterDraft.viralOnly,
     });
-    setPage(1);
-    setIsDiscovering(true);
-    try {
-      const res = await fetch("/api/discover-leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ planItems }),
-      });
-      const data = (await res.json()) as {
-        rankedSellers?: {
-          sellerId: string;
-          relevanceReason: string;
-          planMatch?: string[];
-        }[];
-        error?: string;
-      };
-
-      if (!res.ok || !data.rankedSellers?.length) {
-        throw new Error(data.error ?? "Discovery failed");
-      }
-
-      const { ids, reasons, planMatches } = toDiscoveryPayload(data.rankedSellers);
-      setDiscovered(ids, reasons, planMatches);
-      setActiveTab("discovered");
-      setShowFilters(false);
-    } catch {
-      const { rankedSellers } = rankSellersLocally(planItems);
-      const { ids, reasons, planMatches } = toDiscoveryPayload(rankedSellers);
-      setDiscovered(ids, reasons, planMatches);
-      setActiveTab("discovered");
-      setShowFilters(false);
-    } finally {
-      setIsDiscovering(false);
-    }
+    setShowFilters(false);
+    await runDiscovery();
   }
 
   function clearFilters() {
@@ -283,7 +318,6 @@ export function LeadDiscoveryView() {
 
   const isShortlistedEmpty = activeTab === "shortlisted" && shortlistedIds.length === 0;
   const hasDiscoveredResults = discoveredIds.length > 0;
-  const showingAiSubset = hasDiscoveredResults && activeTab === "discovered";
   const hasShortlistedResults = shortlistedIds.length > 0;
   const showTable =
     (activeTab === "discovered" && hasDiscoveredResults) ||
@@ -416,24 +450,10 @@ export function LeadDiscoveryView() {
           <div className="flex items-center justify-between border-b border-[var(--color-border)] py-3">
             <p className="text-[var(--text-body-size)] font-semibold">
               {activeTab === "discovered"
-                ? showingAiSubset
-                  ? `Leads Discovered: ${totalCount.toLocaleString()} of ${TOTAL_LEAD_COUNT.toLocaleString()} (AI-ranked)`
-                  : `Leads Discovered: ${totalCount.toLocaleString()}`
+                ? `Leads Discovered: ${totalCount.toLocaleString()}`
                 : `Shortlisted Leads ${totalCount.toLocaleString()}`}
             </p>
             <div className="flex items-center gap-2">
-              {showingAiSubset && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    clearDiscoveryResults();
-                    setPage(1);
-                  }}
-                  className="rounded-[var(--radius-md)] border border-[var(--color-border)] px-3 py-1.5 text-[var(--text-caption-size)] font-medium text-[var(--color-primary)] hover:bg-[var(--color-muted)]"
-                >
-                  View all {TOTAL_LEAD_COUNT.toLocaleString()} leads
-                </button>
-              )}
               <button
                 type="button"
                 onClick={() => {
@@ -458,9 +478,6 @@ export function LeadDiscoveryView() {
                 type="button"
                 className="flex items-center gap-1.5 rounded-[var(--radius-md)] border border-[var(--color-border)] px-3 py-1.5 text-[var(--text-caption-size)] font-medium hover:bg-[var(--color-muted)]"
               >
-                <span className="text-[var(--color-primary)]">
-                  <Sparkles className="h-3.5 w-3.5" />
-                </span>
                 Categories ({ALL_CATEGORIES.length})
                 <ChevronDown className="h-3.5 w-3.5 text-[var(--color-muted-foreground)]" />
               </button>

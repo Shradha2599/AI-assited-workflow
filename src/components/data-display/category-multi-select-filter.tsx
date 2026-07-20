@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export interface CategoryFilterOption {
@@ -15,12 +16,13 @@ export interface CategoryFilterOption {
 
 interface CategoryMultiSelectFilterProps {
   categories: CategoryFilterOption[];
+  /** Applied selection — drives page filters and trigger label. */
   selectedIds: string[];
-  onChange: (selectedIds: string[]) => void;
+  onApply: (selectedIds: string[]) => void;
   /** All Target taxonomy category ids (21) — used for “All categories”. */
   allTaxonomyIds: string[];
   taxonomyCategoryCount: number;
-  /** Treemap-backed ids — at least one must stay selected; used when unchecking “All”. */
+  /** Treemap-backed ids — used for trigger label context. */
   treemapCategoryIds?: string[];
   treemapTileCount?: number;
   className?: string;
@@ -30,7 +32,7 @@ interface CategoryMultiSelectFilterProps {
 export function CategoryMultiSelectFilter({
   categories,
   selectedIds,
-  onChange,
+  onApply,
   allTaxonomyIds,
   taxonomyCategoryCount,
   treemapCategoryIds = [],
@@ -39,7 +41,12 @@ export function CategoryMultiSelectFilter({
   align = "start",
 }: CategoryMultiSelectFilterProps) {
   const [open, setOpen] = useState(false);
+  const [draftIds, setDraftIds] = useState<string[]>(selectedIds);
   const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (open) setDraftIds(selectedIds);
+  }, [open, selectedIds]);
 
   useEffect(() => {
     if (!open) return;
@@ -62,35 +69,45 @@ export function CategoryMultiSelectFilter({
     };
   }, [open]);
 
-  const allCategoriesSelected =
-    allTaxonomyIds.length > 0 &&
-    allTaxonomyIds.every((id) =>
-      categories.some(
-        (category) => category.taxonomyId === id && selectedIds.includes(category.id),
-      ),
+  function isAllCategoriesSelected(ids: string[]) {
+    return (
+      allTaxonomyIds.length > 0 &&
+      allTaxonomyIds.every((id) =>
+        categories.some(
+          (category) => category.taxonomyId === id && ids.includes(category.id),
+        ),
+      )
     );
+  }
 
-  const helperSelectedCount = allCategoriesSelected
+  const appliedAllSelected = isAllCategoriesSelected(selectedIds);
+
+  const helperSelectedCount = appliedAllSelected
     ? taxonomyCategoryCount
     : selectedIds.length;
 
-  const triggerLabel = allCategoriesSelected
+  const draftAllSelected = isAllCategoriesSelected(draftIds);
+
+  const draftHelperCount = draftAllSelected ? taxonomyCategoryCount : draftIds.length;
+
+  const triggerLabel = appliedAllSelected
     ? "All categories"
-    : `Categories (${treemapTileCount ?? selectedIds.length})`;
+    : selectedIds.length === 0
+      ? "Categories (0)"
+      : `Categories (${treemapTileCount ?? selectedIds.length})`;
 
-  function countSelectedTreemapIds(ids: string[]) {
-    return treemapCategoryIds.filter((id) => ids.includes(id)).length;
-  }
+  const hasPendingChanges =
+    open &&
+    (draftIds.length !== selectedIds.length ||
+      draftIds.some((id) => !selectedIds.includes(id)) ||
+      selectedIds.some((id) => !draftIds.includes(id)));
 
-  function toggleCategory(categoryId: string, hasGapData?: boolean) {
-    if (selectedIds.includes(categoryId)) {
-      const nextIds = selectedIds.filter((id) => id !== categoryId);
-      if (hasGapData && countSelectedTreemapIds(nextIds) === 0) return;
-      if (nextIds.length === 0) return;
-      onChange(nextIds);
+  function toggleCategory(categoryId: string) {
+    if (draftIds.includes(categoryId)) {
+      setDraftIds(draftIds.filter((id) => id !== categoryId));
       return;
     }
-    onChange([...selectedIds, categoryId]);
+    setDraftIds([...draftIds, categoryId]);
   }
 
   function selectAllTaxonomyCategories() {
@@ -99,15 +116,24 @@ export function CategoryMultiSelectFilter({
         (category) => category.taxonomyId && allTaxonomyIds.includes(category.taxonomyId),
       )
       .map((category) => category.id);
-    onChange(ids);
+    setDraftIds(ids);
   }
 
   function toggleAllCategories() {
-    if (allCategoriesSelected) {
-      onChange(treemapCategoryIds.length > 0 ? [...treemapCategoryIds] : []);
+    if (draftAllSelected) {
+      setDraftIds([]);
       return;
     }
     selectAllTaxonomyCategories();
+  }
+
+  function handleClear() {
+    setDraftIds([]);
+  }
+
+  function handleApply() {
+    onApply(draftIds);
+    setOpen(false);
   }
 
   return (
@@ -137,7 +163,7 @@ export function CategoryMultiSelectFilter({
           aria-label="Filter by category"
           className={cn(
             "absolute top-full z-50 mt-1 min-w-[240px] rounded-[var(--radius-md)]",
-            "border border-[var(--color-border)] bg-[var(--color-card)] py-1 shadow-[var(--shadow-medium)]",
+            "border border-[var(--color-border)] bg-[var(--color-card)] shadow-[var(--shadow-medium)]",
             align === "end" ? "right-0" : "left-0",
           )}
         >
@@ -146,7 +172,8 @@ export function CategoryMultiSelectFilter({
               Categories
             </p>
             <p className="text-[10px] text-[var(--color-muted-foreground)]">
-              {helperSelectedCount} of {taxonomyCategoryCount} categories selected
+              {open ? draftHelperCount : helperSelectedCount} of {taxonomyCategoryCount}{" "}
+              categories selected
             </p>
           </div>
           <ul className="max-h-[280px] overflow-y-auto py-1">
@@ -159,7 +186,7 @@ export function CategoryMultiSelectFilter({
               >
                 <input
                   type="checkbox"
-                  checked={allCategoriesSelected}
+                  checked={draftAllSelected}
                   onChange={toggleAllCategories}
                   className="h-3.5 w-3.5 rounded border-[var(--color-border)] accent-[var(--color-primary)]"
                 />
@@ -167,7 +194,7 @@ export function CategoryMultiSelectFilter({
               </label>
             </li>
             {categories.map((category) => {
-              const checked = selectedIds.includes(category.id);
+              const checked = draftIds.includes(category.id);
               return (
                 <li key={category.id}>
                   <label
@@ -179,10 +206,16 @@ export function CategoryMultiSelectFilter({
                     <input
                       type="checkbox"
                       checked={checked}
-                      onChange={() => toggleCategory(category.id, category.hasGapData)}
+                      onChange={() => toggleCategory(category.id)}
                       className="h-3.5 w-3.5 rounded border-[var(--color-border)] accent-[var(--color-primary)]"
                     />
-                    <span className={checked ? "text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)]"}>
+                    <span
+                      className={
+                        checked
+                          ? "text-[var(--color-foreground)]"
+                          : "text-[var(--color-muted-foreground)]"
+                      }
+                    >
                       {category.name}
                     </span>
                   </label>
@@ -190,6 +223,20 @@ export function CategoryMultiSelectFilter({
               );
             })}
           </ul>
+          <div className="flex items-center justify-start gap-2 border-t border-[var(--color-border)] px-3 py-2">
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className={cn("h-7 px-3", hasPendingChanges && "font-semibold")}
+              onClick={handleApply}
+            >
+              Apply
+            </Button>
+            <Button type="button" variant="ghost" size="sm" className="h-7 px-2" onClick={handleClear}>
+              Clear
+            </Button>
+          </div>
         </div>
       )}
     </div>

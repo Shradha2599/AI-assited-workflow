@@ -46,20 +46,27 @@ export function MissingProductsTable({
 }: MissingProductsTableProps) {
   const [page, setPage] = useState(1);
 
-  // Only show High gap opportunity products
-  const highGapProducts = useMemo(
-    () => products.filter((p) => p.gapOpportunity === "High"),
-    [products],
-  );
+  // Only show High gap opportunity products; pad to at least 5 with Medium if needed
+  const displayProducts = useMemo(() => {
+    const high = products.filter((p) => p.gapOpportunity === "High");
+    if (high.length >= 5) return high;
 
-  const resolvedTotal = totalCount != null ? Math.min(totalCount, highGapProducts.length) : highGapProducts.length;
+    const highIds = new Set(high.map((p) => p.id));
+    const medium = products
+      .filter((p) => p.gapOpportunity === "Medium" && !highIds.has(p.id))
+      .sort((a, b) => parseRevM(b.estimatedRevenue) - parseRevM(a.estimatedRevenue));
+
+    return [...high, ...medium].slice(0, Math.max(5, high.length));
+  }, [products]);
+
+  const resolvedTotal = totalCount != null ? Math.min(totalCount, displayProducts.length) : displayProducts.length;
   const totalPages = Math.max(1, Math.ceil(resolvedTotal / ITEMS_PER_PAGE));
   const safePage = Math.min(page, totalPages);
 
   const pageProducts = useMemo(() => {
     const start = (safePage - 1) * ITEMS_PER_PAGE;
-    return highGapProducts.slice(start, start + ITEMS_PER_PAGE);
-  }, [highGapProducts, safePage]);
+    return displayProducts.slice(start, start + ITEMS_PER_PAGE);
+  }, [displayProducts, safePage]);
 
   const rangeStart = resolvedTotal === 0 ? 0 : (safePage - 1) * ITEMS_PER_PAGE + 1;
   const rangeEnd = Math.min(safePage * ITEMS_PER_PAGE, resolvedTotal);

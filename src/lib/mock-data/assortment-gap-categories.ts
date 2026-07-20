@@ -86,3 +86,54 @@ export function resolveSelectedTaxonomyIds(
 
   return taxonomyIds;
 }
+
+/** Beacon plan catalog labels keyed by treemap node id. */
+const BEACON_CATALOG_BY_TREEMAP_ID: Record<string, string> = {
+  kitchen: "Kitchen & Dining",
+  outdoor: "Outdoor Living & Garden",
+  holiday: "Holiday & Festive Decor",
+  lighting: "Lighting",
+  furniture: "Furniture",
+  party: "Party Supplies",
+  rugs: "Rugs",
+};
+
+const BEACON_CATALOG_NAMES = new Set(Object.values(BEACON_CATALOG_BY_TREEMAP_ID));
+
+/**
+ * Maps applied gap filter rows to labels used by plan-with-beacon.
+ * Returns null when all taxonomy categories are selected (no restriction).
+ */
+export function resolveBeaconCatalogCategories(
+  selectedIds: string[],
+  options: GapCategoryFilterOption[],
+  allTaxonomyIds: string[],
+): string[] | null {
+  const allSelected =
+    allTaxonomyIds.length > 0 &&
+    allTaxonomyIds.every((id) =>
+      options.some(
+        (option) => option.taxonomyId === id && selectedIds.includes(option.id),
+      ),
+    );
+
+  if (allSelected) return null;
+  if (selectedIds.length === 0) return [];
+
+  const names = new Set<string>();
+
+  for (const option of options) {
+    if (!selectedIds.includes(option.id)) continue;
+
+    if (option.treemapNodeId && BEACON_CATALOG_BY_TREEMAP_ID[option.treemapNodeId]) {
+      names.add(BEACON_CATALOG_BY_TREEMAP_ID[option.treemapNodeId]);
+      continue;
+    }
+
+    if (BEACON_CATALOG_NAMES.has(option.name)) {
+      names.add(option.name);
+    }
+  }
+
+  return [...names];
+}

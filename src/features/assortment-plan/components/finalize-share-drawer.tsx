@@ -1,16 +1,14 @@
 "use client";
 
-import { ChevronDown, FileText, X } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { DrawerPanel } from "@/components/ui/drawer-panel";
-import { TruncatedText } from "@/components/ui/truncated-text";
+import { MailComposer, MailComposerShimmer } from "@/components/ui/mail-composer";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { getCalendarPdfFilename } from "@/lib/utils/calendar-pdf";
 import { formatRevenueGoalDisplay } from "@/lib/utils/revenue-goal-input";
-import { markerToneClass } from "@/components/ui/status-tag";
-import { cn } from "@/lib/utils";
 import { useToastStore } from "@/stores/toast-store";
 
 interface EmailDraft {
@@ -64,30 +62,13 @@ function DrawerShimmer() {
       </div>
 
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)]">
-        <div className="flex items-center gap-2 border-b border-[var(--color-border)] px-4 py-3">
-          <div className="h-8 w-8 rounded-full bg-[var(--color-muted)]" />
-          <div className="space-y-1.5">
-            <div className="h-3 w-16 rounded bg-[var(--color-muted)]" />
-            <div className="h-3 w-32 rounded bg-[var(--color-muted)]" />
-          </div>
-        </div>
-        <div className="space-y-3 border-b border-[var(--color-border)] px-4 py-3">
-          <div className="h-3 w-3/4 rounded bg-[var(--color-muted)]" />
-          <div className="h-3 w-1/2 rounded bg-[var(--color-muted)]" />
-        </div>
-        <div className="space-y-2 px-4 py-4">
-          {[100, 92, 88, 65, 95, 78, 85, 70, 90, 55, 82, 60].map((w, i) => (
-            <div
-              key={i}
-              className="h-3 rounded bg-[var(--color-muted)]"
-              style={{ width: `${w}%` }}
-            />
-          ))}
-        </div>
-        <div className="border-t border-[var(--color-border)] px-4 py-3">
-          <div className="h-9 w-56 rounded-[var(--radius-md)] bg-[var(--color-muted)]" />
+        <div className="flex-1 space-y-2 px-4 py-3">
+          <div className="h-3 w-20 rounded bg-[var(--color-muted)]" />
+          <div className="h-7 w-16 rounded bg-[var(--color-muted)]" />
         </div>
       </div>
+
+      <MailComposerShimmer withAttachment />
     </div>
   );
 }
@@ -186,86 +167,15 @@ export function FinalizeShareDrawer({ open, onClose }: FinalizeShareDrawerProps)
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-card)]">
-          <div className="flex items-center gap-2 border-b border-[var(--color-border)] px-4 py-3">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#22C55E] text-[11px] font-bold text-white">
-              SD
-            </span>
-            <div className="min-w-0">
-              <p className="text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">
-                New Mail
-              </p>
-              <TruncatedText
-                text="shaun.doe@target.com"
-                className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]"
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 border-b border-[var(--color-border)] px-4 py-2.5">
-            <span className="w-14 shrink-0 text-[var(--text-caption-size)] font-medium text-[var(--color-muted-foreground)]">
-              To
-            </span>
-            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
-              <span className={cn("inline-flex items-center gap-1 px-2 py-0.5 text-[var(--text-caption-size)]", markerToneClass.muted)}>
-                {to}
-                <button
-                  type="button"
-                  onClick={() => setTo("")}
-                  className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
-                  aria-label="Remove recipient"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </span>
-              {!to && (
-                <input
-                  type="email"
-                  value={to}
-                  onChange={(e) => setTo(e.target.value)}
-                  placeholder="Add recipient"
-                  className="min-w-0 flex-1 bg-transparent text-[var(--text-caption-size)] focus:outline-none"
-                />
-              )}
-            </div>
-            <div className="flex shrink-0 gap-2 text-[var(--text-caption-size)] text-[var(--color-primary)]">
-              <button type="button" className="hover:underline">Cc</button>
-              <button type="button" className="hover:underline">Bcc</button>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 border-b border-[var(--color-border)] px-4 py-2.5">
-            <span className="w-14 shrink-0 text-[var(--text-caption-size)] font-medium text-[var(--color-muted-foreground)]">
-              Subject
-            </span>
-            <input
-              type="text"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              className="min-w-0 flex-1 bg-transparent text-[var(--text-caption-size)] font-medium text-[var(--color-foreground)] focus:outline-none"
-            />
-          </div>
-
-          <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            rows={14}
-            className="w-full resize-none bg-transparent px-4 py-3 text-[var(--text-caption-size)] leading-relaxed text-[var(--color-foreground)] focus:outline-none"
-            aria-label="Email message"
-          />
-
-          <div className="border-t border-[var(--color-border)] px-4 py-3">
-            <div
-              className={cn(
-                "inline-flex max-w-full items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)]",
-                "bg-[var(--color-muted)]/30 px-3 py-2",
-              )}
-            >
-              <FileText className="h-4 w-4 shrink-0 text-[var(--color-error)]" aria-hidden />
-              <TruncatedText text={attachmentName} inline className="text-[var(--text-caption-size)] text-[var(--color-foreground)]" />
-            </div>
-          </div>
-        </div>
+        <MailComposer
+          to={to}
+          subject={subject}
+          body={body}
+          onToChange={setTo}
+          onSubjectChange={setSubject}
+          onBodyChange={setBody}
+          attachment={{ name: attachmentName }}
+        />
       </div>
       )}
     </DrawerPanel>

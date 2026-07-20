@@ -30,6 +30,7 @@ import {
   getTreemapBackedCategoryIds,
   normalizeGapCategoryId,
   resolveSelectedTaxonomyIds,
+  resolveBeaconCatalogCategories,
   type GapCategoryFilterOption,
 } from "@/lib/mock-data/assortment-gap-categories";
 import { computeOpportunityForTreemapNodes } from "@/lib/mock-data/treemap-revenue";
@@ -90,7 +91,7 @@ export function AssortmentGapView({
   const [drillPath, setDrillPath] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drawerCategory, setDrawerCategory] = useState<string | null>(null);
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>(defaultCategoryIds);
+  const [appliedCategoryIds, setAppliedCategoryIds] = useState<string[]>(defaultCategoryIds);
 
   const treemapBackedCategoryIds = useMemo(
     () => getTreemapBackedCategoryIds(categories),
@@ -110,18 +111,23 @@ export function AssortmentGapView({
   );
 
   const selectedTreemapNodeIds = useMemo(
-    () => selectedCategoryIds.filter((id) => treemapBackedCategoryIds.includes(id)),
-    [selectedCategoryIds, treemapBackedCategoryIds],
+    () => appliedCategoryIds.filter((id) => treemapBackedCategoryIds.includes(id)),
+    [appliedCategoryIds, treemapBackedCategoryIds],
   );
 
   const filteredProducts = useMemo(
-    () => filterProductsByCategories(products, selectedCategoryIds, categories),
-    [products, selectedCategoryIds, categories],
+    () => filterProductsByCategories(products, appliedCategoryIds, categories),
+    [products, appliedCategoryIds, categories],
   );
 
   const filteredRevenueOpportunity = useMemo(
     () => computeOpportunityForTreemapNodes(treemapRoot, selectedTreemapNodeIds),
     [treemapRoot, selectedTreemapNodeIds],
+  );
+
+  const beaconCatalogCategories = useMemo(
+    () => resolveBeaconCatalogCategories(appliedCategoryIds, categories, allTaxonomyIds),
+    [appliedCategoryIds, categories, allTaxonomyIds],
   );
 
   useEffect(() => {
@@ -301,8 +307,8 @@ export function AssortmentGapView({
           <>
             <CategoryMultiSelectFilter
               categories={categoryOptions}
-              selectedIds={selectedCategoryIds}
-              onChange={setSelectedCategoryIds}
+              selectedIds={appliedCategoryIds}
+              onApply={setAppliedCategoryIds}
               allTaxonomyIds={allTaxonomyIds}
               taxonomyCategoryCount={taxonomyCategoryCount}
               treemapCategoryIds={treemapBackedCategoryIds}
@@ -325,6 +331,7 @@ export function AssortmentGapView({
         revenueOpportunity={filteredRevenueOpportunity}
         planItemCount={planItems.length}
         planItemNames={planItems}
+        beaconCategories={beaconCatalogCategories}
         onAddToPlan={handleBeaconAddToPlan}
         onRemoveFromPlan={(name) => removePlanItem(name)}
         onBeaconDrawerOpen={() => {
@@ -346,7 +353,7 @@ export function AssortmentGapView({
       />
 
       <MissingProductsTable
-        key={selectedCategoryIds.join(",")}
+        key={appliedCategoryIds.join(",")}
         products={filteredProducts}
         planItems={planItems}
         onAddToPlan={(name, revenueM) => guardedAdd(() => addPlanItem(name, revenueM))}

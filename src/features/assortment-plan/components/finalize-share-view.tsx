@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Check, Copy, Send, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { MailComposer, MailComposerShimmer } from "@/components/ui/mail-composer";
 import { PageHeader } from "@/components/layout/page-header";
 import { MarkerTag } from "@/components/ui/status-tag";
-import { cn } from "@/lib/utils";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { useToastStore } from "@/stores/toast-store";
 
@@ -67,23 +67,6 @@ jordan.lee@target.com | (612) 555-0182`,
   };
 }
 
-// ── Shimmer placeholder ───────────────────────────────────────────────────────
-
-function EmailShimmer() {
-  return (
-    <div className="space-y-3 animate-pulse" aria-hidden>
-      {/* To / Subject lines */}
-      <div className="h-4 w-3/4 rounded bg-gray-200" />
-      <div className="h-4 w-1/2 rounded bg-gray-200" />
-      <div className="mt-4 h-px w-full rounded bg-gray-100" />
-      {/* Body lines */}
-      {[100, 90, 95, 60, 100, 80, 70, 100, 85, 50, 100, 65, 90, 40].map((w, i) => (
-        <div key={i} className={`h-3 rounded bg-gray-200`} style={{ width: `${w}%` }} />
-      ))}
-    </div>
-  );
-}
-
 // ── Main view ─────────────────────────────────────────────────────────────────
 
 export function FinalizeShareView() {
@@ -107,7 +90,6 @@ export function FinalizeShareView() {
   const [draft, setDraft] = useState<EmailDraft | null>(null);
   const [generating, setGenerating] = useState(true);
   const [copied, setCopied] = useState(false);
-  const bodyRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     // 3-second shimmer before "AI" delivers the draft
@@ -241,58 +223,31 @@ export function FinalizeShareView() {
             )}
           </div>
 
-          {/* Email composer shell */}
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)]">
-            {/* Header rows */}
-            <div className="border-b border-[var(--color-border)] px-4 py-2.5">
-              <div className="flex items-center gap-2 text-[var(--text-caption-size)]">
-                <span className="w-16 shrink-0 font-semibold text-[var(--color-muted-foreground)]">To</span>
-                {generating ? (
-                  <div className="h-4 w-64 rounded bg-gray-200 animate-pulse" />
-                ) : (
-                  <span className="text-[var(--color-foreground)]">{draft?.to}</span>
-                )}
-              </div>
-            </div>
-            <div className="border-b border-[var(--color-border)] px-4 py-2.5">
-              <div className="flex items-center gap-2 text-[var(--text-caption-size)]">
-                <span className="w-16 shrink-0 font-semibold text-[var(--color-muted-foreground)]">Subject</span>
-                {generating ? (
-                  <div className="h-4 w-80 rounded bg-gray-200 animate-pulse" />
-                ) : (
-                  <span className="font-medium text-[var(--color-foreground)]">{draft?.subject}</span>
-                )}
-              </div>
-            </div>
+          {generating ? (
+            <MailComposerShimmer />
+          ) : draft ? (
+            <MailComposer
+              to={draft.to}
+              subject={draft.subject}
+              body={draft.body}
+              onToChange={(to) => setDraft((prev) => (prev ? { ...prev, to } : prev))}
+              onSubjectChange={(subject) => setDraft((prev) => (prev ? { ...prev, subject } : prev))}
+              onBodyChange={(body) => setDraft((prev) => (prev ? { ...prev, body } : prev))}
+              bodyRows={22}
+            />
+          ) : null}
 
-            {/* Body */}
-            <div className="p-4">
-              {generating ? (
-                <EmailShimmer />
-              ) : (
-                <textarea
-                  ref={bodyRef}
-                  defaultValue={draft?.body ?? ""}
-                  rows={22}
-                  spellCheck
-                  className="w-full resize-none bg-transparent text-[var(--text-body-size)] leading-relaxed text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none"
-                />
-              )}
+          {!generating && draft ? (
+            <div className="mt-3 flex items-center justify-between">
+              <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
+                Drafted by Beacon Outreach Agent · based on your FY 2025-26 assortment plan
+              </p>
+              <Button size="sm" onClick={handleSend}>
+                <Send className="h-3.5 w-3.5" />
+                Send via Outlook
+              </Button>
             </div>
-
-            {/* Footer */}
-            {!generating && (
-              <div className="flex items-center justify-between border-t border-[var(--color-border)] px-4 py-3">
-                <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-                  Drafted by Beacon Outreach Agent · based on your FY 2025-26 assortment plan
-                </p>
-                <Button size="sm" onClick={handleSend}>
-                  <Send className="h-3.5 w-3.5" />
-                  Send via Outlook
-                </Button>
-              </div>
-            )}
-          </div>
+          ) : null}
         </Card>
       </div>
     </>

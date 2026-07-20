@@ -1,4 +1,8 @@
-import { getMatchingPlanItemsForSeller } from "@/lib/mock-data/plan-item-matching";
+import {
+  filterSellersMatchingPlan,
+  getMatchingPlanItemsForSeller,
+  getPlanCategories,
+} from "@/lib/mock-data/plan-item-matching";
 import { sellers, type Seller } from "@/lib/mock-data/sellers";
 
 export const LLM_RANK_LIMIT = 60;
@@ -13,22 +17,12 @@ export function selectCandidatesForRanking(
   allSellers: Seller[],
   planItems: string[],
 ): Seller[] {
-  if (allSellers.length <= LLM_RANK_LIMIT) return allSellers;
+  const pool =
+    planItems.length > 0 ? filterSellersMatchingPlan(allSellers, planItems) : allSellers;
 
-  let pool = allSellers;
-  if (planItems.length > 0) {
-    const matched = allSellers.filter((s) =>
-      planItems.some((pi) => {
-        const piLower = pi.toLowerCase();
-        return s.categories.some(
-          (c) =>
-            piLower.includes(c.toLowerCase().split(" ")[0]) ||
-            c.toLowerCase().includes(piLower.split(" ")[0]),
-        );
-      }),
-    );
-    if (matched.length >= 20) pool = matched;
-  }
+  if (pool.length === 0) return [];
+
+  if (pool.length <= LLM_RANK_LIMIT) return pool;
 
   return [...pool].sort((a, b) => b.confidenceScore - a.confidenceScore).slice(0, LLM_RANK_LIMIT);
 }
@@ -40,30 +34,39 @@ export function rankSellersLocally(planItems: string[]): {
 } {
   const candidates = selectCandidatesForRanking(sellers, planItems);
 
-  const scored = candidates.map((seller) => {
-    const planMatch = getMatchingPlanItemsForSeller(seller, planItems);
-    const score =
-      planMatch.length * 10 +
-      seller.confidenceScore +
-      (seller.viralTrendy ? 1 : 0) +
-      seller.gmv / 5_000_000;
-    return { seller, planMatch, score };
-  });
+  const scored = candidates
+    .map((seller) => {
+      const planMatch = getMatchingPlanItemsForSeller(seller, planItems);
+      const score =
+        planMatch.length * 10 +
+        seller.confidenceScore +
+        (seller.viralTrendy ? 1 : 0) +
+        seller.gmv / 5_000_000;
+      return { seller, planMatch, score };
+    })
+    .filter(({ planMatch }) => planItems.length === 0 || planMatch.length > 0);
 
   scored.sort((a, b) => b.score - a.score);
 
-  const rankedSellers = scored.map(({ seller, planMatch }, index) => ({
+  const planCategories = getPlanCategories(planItems);
+  const categoryLabel =
+    planCategories.length > 0 ? planCategories.join(", ") : "your plan categories";
+
+  const rankedSellers = scored.map(({ seller, planMatch }) => ({
     sellerId: seller.id,
     relevanceReason:
       planMatch.length > 0
         ? `Strong fit for ${planMatch.slice(0, 2).join(", ")}${planMatch.length > 2 ? " and more" : ""} from your assortment plan.`
-        : `Ranked #${index + 1} by confidence score and category alignment for the current plan.`,
+        : `Matches ${categoryLabel} from your assortment plan.`,
     planMatch,
   }));
 
   return {
     rankedSellers,
-    summary: `Ranked ${rankedSellers.length} sellers by plan alignment, confidence, and GMV.`,
+    summary:
+      planItems.length > 0
+        ? `Found ${rankedSellers.length} sellers aligned to ${categoryLabel}.`
+        : `Ranked ${rankedSellers.length} sellers by confidence and GMV.`,
   };
 }
 

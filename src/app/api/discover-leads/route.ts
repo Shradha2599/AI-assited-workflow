@@ -8,6 +8,7 @@ import {
   type RankedSellerResult,
 } from "@/lib/mock-data/discover-leads-ranking";
 import { buildMarketIntelligenceContext, loadMockJson, type ItemType } from "@/lib/agents/mock-loader";
+import { getPlanCategories } from "@/lib/mock-data/plan-item-matching";
 
 const groq = createGroq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -56,6 +57,11 @@ export async function POST(req: Request) {
 
   const candidates = selectCandidatesForRanking(sellers, planItems);
 
+  if (candidates.length === 0) {
+    const { rankedSellers, summary } = rankSellersLocally(planItems);
+    return Response.json({ rankedSellers, summary, source: "mock" });
+  }
+
   const sellerProfiles = candidates.map((s) => ({
     id: s.id,
     name: s.legalBusinessName,
@@ -86,14 +92,15 @@ export async function POST(req: Request) {
       )
     : itemTypes.slice(0, 10);
 
-  const planCategories = [
-    ...new Set([
-      ...sellers.flatMap((s) => s.categories),
-      ...matchedItemTypes.map((it) => it.categoryId.replace("cat_", "").replace(/_/g, " ")),
-    ]),
-  ];
+  const planCategories = getPlanCategories(planItems);
+  const categoryScope =
+    planCategories.length > 0
+      ? planCategories.join(", ")
+      : "the plan categories";
 
-  const marketIntelligence = buildMarketIntelligenceContext(planCategories);
+  const marketIntelligence = buildMarketIntelligenceContext(
+    planCategories.length > 0 ? planCategories : matchedItemTypes.map((it) => it.categoryId.replace("cat_", "").replace(/_/g, " ")),
+  );
 
   const itemTypesContext =
     matchedItemTypes.length > 0
@@ -119,7 +126,7 @@ ${JSON.stringify(sellerProfiles, null, 2)}
 ${itemTypesContext}
 ${marketIntelligence}
 
-Task: Rank ALL ${candidates.length} sellers by how well they match the assortment plan requirements.
+Task: Rank ALL ${candidates.length} sellers (pre-filtered to ${categoryScope}) by how well they match the assortment plan item types.
 
 Ranking criteria:
 - Category alignment with plan item types (most important)
@@ -131,8 +138,8 @@ Ranking criteria:
 
 Every seller must appear exactly once in the output, sorted best-match first.
 Use ONLY seller ids from the provided list — do not invent ids.
-For planMatch, list only item types from the plan that this seller could realistically supply.
-If a seller has no category match to the plan, planMatch can be empty but still include the seller.`,
+For planMatch, list only item types from the plan that this seller could realistically supply based on their categories.
+Do not include sellers outside ${categoryScope}.`,
       temperature: 0.2,
     });
 

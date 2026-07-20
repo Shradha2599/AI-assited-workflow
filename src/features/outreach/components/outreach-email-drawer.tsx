@@ -1,10 +1,11 @@
 "use client";
 
-import { Loader2, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
 import { DrawerPanel } from "@/components/ui/drawer-panel";
+import { MailComposer, MailComposerShimmer } from "@/components/ui/mail-composer";
 import { cn } from "@/lib/utils";
 import type { OutreachMailType } from "@/lib/mock-data/outreach-mail";
 import { useOutreachStore } from "../store/outreach-store";
@@ -151,66 +152,20 @@ export function OutreachEmailDrawer() {
           </div>
         )}
 
-        {isGenerating && (
-          <div className="flex flex-col items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border)] py-16">
-            <Loader2 className="mb-3 h-8 w-8 animate-spin text-[var(--color-primary)]" />
-            <p className="text-[var(--text-caption-size)] font-medium">Outreach Agent is drafting…</p>
-            <p className="mt-1 text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
-              Personalizing based on partner context
-            </p>
-          </div>
-        )}
+        {isGenerating && <MailComposerShimmer />}
 
         {showComposer && draft && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 border-b border-[var(--color-border)] pb-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary)] text-[10px] font-bold text-white">
-                SD
-              </div>
-              <div>
-                <p className="text-[var(--text-caption-size)] font-semibold">{draft.fromName}</p>
-                <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
-                  {draft.fromEmail}
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <label className="text-[var(--text-label-size)] font-medium text-[var(--color-muted-foreground)]">
-                To
-              </label>
-              <input
-                type="email"
-                value={draft.to}
-                onChange={(e) => updateDraft({ to: e.target.value })}
-                className="mt-1 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--text-caption-size)] focus:border-[var(--color-primary)] focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="text-[var(--text-label-size)] font-medium text-[var(--color-muted-foreground)]">
-                Subject
-              </label>
-              <input
-                type="text"
-                value={draft.subject}
-                onChange={(e) => updateDraft({ subject: e.target.value })}
-                className="mt-1 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--text-caption-size)] focus:border-[var(--color-primary)] focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="text-[var(--text-label-size)] font-medium text-[var(--color-muted-foreground)]">
-                Message
-              </label>
-              <textarea
-                value={draft.body}
-                onChange={(e) => updateDraft({ body: e.target.value })}
-                rows={14}
-                className="mt-1 w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--text-caption-size)] leading-relaxed focus:border-[var(--color-primary)] focus:outline-none"
-              />
-            </div>
-          </div>
+          <MailComposer
+            fromName={draft.fromName}
+            fromEmail={draft.fromEmail}
+            to={draft.to}
+            subject={draft.subject}
+            body={draft.body}
+            onToChange={(to) => updateDraft({ to })}
+            onSubjectChange={(subject) => updateDraft({ subject })}
+            onBodyChange={(body) => updateDraft({ body })}
+            bodyRows={14}
+          />
         )}
       </div>
     </DrawerPanel>

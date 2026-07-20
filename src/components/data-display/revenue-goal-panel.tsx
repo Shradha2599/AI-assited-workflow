@@ -25,6 +25,8 @@ interface RevenueGoalPanelProps {
   revenueOpportunity: string;
   planItemCount: number;
   planItemNames: string[];
+  /** When set, Beacon plans only within these catalog categories. Null = all categories. */
+  beaconCategories?: string[] | null;
   onAddToPlan: (items: Array<{ name: string; revenueM: number }>) => void;
   onRemoveFromPlan?: (name: string) => void;
   onBeaconDrawerOpen?: () => void;
@@ -35,6 +37,7 @@ export function RevenueGoalPanel({
   revenueOpportunity,
   planItemCount,
   planItemNames,
+  beaconCategories = null,
   onAddToPlan,
   onRemoveFromPlan,
   onBeaconDrawerOpen,
@@ -257,7 +260,7 @@ export function RevenueGoalPanel({
         <div>
           <div className="mb-[var(--space-2)] flex items-center gap-1.5">
             <h3 className="text-[var(--text-section-size)] font-semibold text-[var(--color-foreground)]">
-              Assortment Plan
+              Assortment Opportunities
             </h3>
             <Info className="h-3.5 w-3.5 text-[var(--color-muted-foreground)]" aria-hidden />
           </div>
@@ -287,7 +290,7 @@ export function RevenueGoalPanel({
               >
                 <Link href="/assortment/plan">
                   <SvgIcon name="calendar" size={14} variant="primary" />
-                  Customize Calendar
+                  Create Assortment Plan
                 </Link>
               </Button>
             )}
@@ -307,6 +310,7 @@ export function RevenueGoalPanel({
       <BeaconPlanDrawer
         open={beaconDrawerOpen}
         existingPlanItems={planItemNames}
+        beaconCategories={beaconCategories}
         revenueGoal={hasSavedGoal ? formatRevenueGoalDisplay(savedGoal) : revenueOpportunity}
         revenuePlanned={plannedRevStr}
         revenuePlannedPercent={displayPercent}
