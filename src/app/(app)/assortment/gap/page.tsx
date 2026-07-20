@@ -7,9 +7,9 @@ export default async function AssortmentGapPage() {
   return (
     <AssortmentGapView
       lastUpdatedLabel={analysis.lastUpdatedLabel}
-      revenueOpportunity={analysis.revenueOpportunity}
-      selectedCategoryCount={analysis.selectedCategoryCount}
       competitors={analysis.competitors}
+      categories={analysis.categories}
+      defaultCategoryIds={analysis.defaultCategoryIds}
       treemapRoot={analysis.treemapRoot}
       products={analysis.missingProducts}
     />

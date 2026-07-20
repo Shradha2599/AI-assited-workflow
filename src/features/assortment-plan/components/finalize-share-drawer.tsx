@@ -9,6 +9,7 @@ import { TruncatedText } from "@/components/ui/truncated-text";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { getCalendarPdfFilename } from "@/lib/utils/calendar-pdf";
 import { formatRevenueGoalDisplay } from "@/lib/utils/revenue-goal-input";
+import { markerToneClass } from "@/components/ui/status-tag";
 import { cn } from "@/lib/utils";
 import { useToastStore } from "@/stores/toast-store";
 
@@ -206,7 +207,7 @@ export function FinalizeShareDrawer({ open, onClose }: FinalizeShareDrawerProps)
               To
             </span>
             <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
-              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-muted)] px-2 py-0.5 text-[var(--text-caption-size)] text-[var(--color-foreground)]">
+              <span className={cn("inline-flex items-center gap-1 px-2 py-0.5 text-[var(--text-caption-size)]", markerToneClass.muted)}>
                 {to}
                 <button
                   type="button"

@@ -7,6 +7,7 @@ import { ArrowLeft, Check, Copy, Send, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
+import { MarkerTag } from "@/components/ui/status-tag";
 import { cn } from "@/lib/utils";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { useToastStore } from "@/stores/toast-store";
@@ -185,12 +186,9 @@ export function FinalizeShareView() {
           {categories.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2">
               {categories.map((cat) => (
-                <span
-                  key={cat}
-                  className="rounded-full border border-[var(--color-primary)]/30 bg-[var(--color-primary)]/8 px-2.5 py-1 text-[var(--text-caption-size)] font-medium text-[var(--color-primary)]"
-                >
+                <MarkerTag key={cat} tone="info" className="px-2.5 py-1 text-[var(--text-caption-size)]">
                   {cat}
-                </span>
+                </MarkerTag>
               ))}
             </div>
           )}

@@ -1,16 +1,12 @@
 import { StatusTag } from "@/components/ui/status-tag";
+import { MARKER_BG } from "@/components/ui/marker-colors";
 
 export type GapOpportunityLevel = "high" | "medium" | "low";
 
-const GAP_BADGE_TEXT = "#3c4043";
-
-const GAP_OPPORTUNITY_STYLES: Record<
-  GapOpportunityLevel,
-  { bg: string; text: string; label: string }
-> = {
-  high: { bg: "#FAA69E", text: GAP_BADGE_TEXT, label: "High" },
-  medium: { bg: "#FFE34D", text: GAP_BADGE_TEXT, label: "Medium" },
-  low: { bg: "#f1f3f4", text: GAP_BADGE_TEXT, label: "Low" },
+const GAP_OPPORTUNITY_STYLES: Record<GapOpportunityLevel, { bg: string; label: string }> = {
+  high: { bg: MARKER_BG.red, label: "High" },
+  medium: { bg: MARKER_BG.yellow, label: "Medium" },
+  low: { bg: MARKER_BG.neutral, label: "Low" },
 };
 
 function normalizeGapOpportunity(value: string): GapOpportunityLevel {
@@ -30,7 +26,7 @@ export function GapOpportunityBadge({ value, className }: GapOpportunityBadgePro
   const style = GAP_OPPORTUNITY_STYLES[level];
 
   return (
-    <StatusTag className={className} style={{ backgroundColor: style.bg, color: style.text }}>
+    <StatusTag className={className} style={{ backgroundColor: style.bg }}>
       {style.label}
     </StatusTag>
   );

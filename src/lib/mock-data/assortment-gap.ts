@@ -6,6 +6,7 @@ import type { MissingProduct } from "@/components/data-display/missing-products-
 import type { TreemapItem } from "@/components/data-display/category-treemap";
 import type { TreemapHierarchyRoot } from "@/lib/mock-data/treemap-hierarchy";
 import { loadTreemapHierarchy } from "@/lib/mock-data/treemap-hierarchy.server";
+import { loadTargetCategories, type TargetCategory } from "@/lib/mock-data/target-categories";
 import {
   computeOverallOpportunity,
   enrichTreemapWithComputedRevenue,
@@ -38,8 +39,9 @@ export interface AssortmentGapAnalysisData {
   lastUpdatedAt: string;
   lastUpdatedLabel: string;
   revenueOpportunity: string;
-  selectedCategoryCount: number;
   competitors: string[];
+  categories: TargetCategory[];
+  defaultCategoryIds: string[];
   treemapRoot: TreemapHierarchyRoot;
   /** @deprecated use treemapRoot */
   treemapItems: TreemapItem[];
@@ -64,6 +66,10 @@ function formatLastUpdated(iso: string): string {
 export async function getAssortmentGapAnalysis(): Promise<AssortmentGapAnalysisData> {
   const mock = loadAnalysisMock();
   const treemapRoot = enrichTreemapWithComputedRevenue(loadTreemapHierarchy());
+  const categories = loadTargetCategories();
+  const defaultCategoryIds = treemapRoot.children
+    .map((node) => node.categoryId)
+    .filter((id): id is string => Boolean(id));
 
   const topLevel = treemapRoot.children.map((node) => ({
     id: node.id,
@@ -82,8 +88,9 @@ export async function getAssortmentGapAnalysis(): Promise<AssortmentGapAnalysisD
     lastUpdatedAt: mock.lastUpdatedAt,
     lastUpdatedLabel: formatLastUpdated(mock.lastUpdatedAt),
     revenueOpportunity: computeOverallOpportunity(treemapRoot),
-    selectedCategoryCount: mock.selectedCategoryCount,
     competitors: mock.competitors,
+    categories,
+    defaultCategoryIds,
     treemapRoot,
     treemapItems: topLevel,
     kitchenSubcategories: kitchen?.children ?? [],

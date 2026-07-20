@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { MARKER_BG } from "@/components/ui/marker-colors";
 import { StatusTag } from "@/components/ui/status-tag";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -49,13 +50,11 @@ function cellGmv(stage: string, count: number): string {
   return `$${((count * avg) / 1_000_000).toFixed(1)}M`;
 }
 
-// Badge colors mirror the lag-badge palette + text color from lag-badge.ts
-const BADGE_TEXT = "#3c4043";
 
 function cellHealth(count: number): { label: string; bg: string } {
-  if (count >= 35) return { label: "On Track",        bg: "#D1F0D1" };
-  if (count >= 20) return { label: "Needs Attention", bg: "#FFAB66" };
-  return               { label: "At Risk",           bg: "#FAA69E" };
+  if (count >= 35) return { label: "On Track", bg: MARKER_BG.green };
+  if (count >= 20) return { label: "Needs Attention", bg: MARKER_BG.orange };
+  return { label: "At Risk", bg: MARKER_BG.red };
 }
 
 // ── Positioning — ported from treemap tooltip ─────────────────────────────────
@@ -290,10 +289,7 @@ export function PipelineHeatmap({
               {(() => {
                 const h = cellHealth(hover.value);
                 return (
-                  <StatusTag
-                    className="text-[10px]"
-                    style={{ backgroundColor: h.bg, color: BADGE_TEXT }}
-                  >
+                  <StatusTag className="text-[10px]" style={{ backgroundColor: h.bg }}>
                     {h.label}
                   </StatusTag>
                 );

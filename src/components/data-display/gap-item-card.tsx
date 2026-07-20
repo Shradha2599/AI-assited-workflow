@@ -40,7 +40,7 @@ export function GapItemCard({
             className="min-w-0 flex-1 text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]"
           />
           <span
-            className="inline-flex shrink-0 items-center gap-0.5 rounded-[var(--radius-full)] px-2 py-0.5 text-[var(--text-label-size)] font-medium"
+            className="inline-flex shrink-0 items-center gap-0.5 rounded-[4px] px-2 py-0.5 text-[var(--text-label-size)] font-medium"
             style={{ backgroundColor: lag.bg, color: LAG_BADGE_TEXT_COLOR }}
           >
             {lag.showArrowDown && <ArrowDown className="h-3 w-3" aria-hidden />}

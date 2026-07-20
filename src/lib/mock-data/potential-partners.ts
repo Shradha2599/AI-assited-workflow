@@ -55,10 +55,35 @@ function enrichPipelineTasks(tasks: OnboardingTask[]): OnboardingTask[] {
   });
 }
 
+function formatShortDate(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function partnerDates(index: number): { createdOn: string; lastActivity: string } {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const created = new Date(today);
+  // ~1 month old with slight row-to-row variation (27–33 days ago)
+  created.setDate(created.getDate() - (27 + (index % 7)));
+
+  const activity = new Date(today);
+  // Recent activity within the last week (0–6 days ago)
+  activity.setDate(activity.getDate() - (index % 7));
+
+  return {
+    createdOn: formatShortDate(created),
+    lastActivity: `Activity on ${formatShortDate(activity)}`,
+  };
+}
+
 function pipelinePartnerToPotential(partner: PipelinePartner, index: number): PotentialPartner {
   const gmvNumeric = Math.round(partner.gmvValue * 1_000_000);
-  const createdDay = Math.min(28, 4 + (index % 24));
-  const activityDay = Math.min(28, 8 + (index % 20));
+  const { createdOn, lastActivity } = partnerDates(index);
 
   return {
     id: partner.id,
@@ -72,8 +97,8 @@ function pipelinePartnerToPotential(partner: PipelinePartner, index: number): Po
     skus: Math.max(120, Math.round(gmvNumeric / 5000)),
     confidenceScore: partner.confidenceScore ?? 8,
     tasks: partner.tasks ? enrichPipelineTasks(partner.tasks) : undefined,
-    createdOn: `Jan ${createdDay}, 2026`,
-    lastActivity: `Activity on Mar ${activityDay}, 2026`,
+    createdOn,
+    lastActivity,
   };
 }
 

@@ -19,6 +19,7 @@ export interface TreemapItem {
   revenue?: string;
   gapPercent?: string;
   competitorLeader?: string;
+  categoryId?: string;
   drillDown?: boolean;
   opensDrawer?: string;
   children?: TreemapItem[];
@@ -49,7 +50,6 @@ interface CategoryTreemapProps {
   breadcrumbLabels?: string[];
   onBreadcrumbNavigate?: (index: number) => void;
   gridConfig?: TreemapGridConfig;
-  selectedCategoryCount?: number;
   competitors?: string[];
   className?: string;
 }
@@ -62,7 +62,6 @@ export function CategoryTreemap({
   breadcrumbLabels = [],
   onBreadcrumbNavigate,
   gridConfig = { columns: 5, rowTemplate: "1.2fr 1fr 0.8fr" },
-  selectedCategoryCount = 8,
   competitors = ["Amazon"],
   className,
 }: CategoryTreemapProps) {
@@ -152,12 +151,6 @@ export function CategoryTreemap({
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
-                className="rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]"
-              >
-                View by Category ({selectedCategoryCount}) ▾
-              </button>
-              <button
-                type="button"
                 className="rounded-[var(--radius-sm)] border border-dashed border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-primary)]"
               >
                 + Competitor
@@ -233,11 +226,16 @@ export function CategoryTreemap({
           ref={gridRef}
           className="relative grid w-full gap-0.5"
           style={{
-            height: isDrilledDown ? "17.5rem" : "14rem",
+            height: isDrilledDown ? "17.5rem" : items.length > 0 ? "14rem" : "6rem",
             gridTemplateColumns: `repeat(${gridConfig.columns}, minmax(0, 1fr))`,
             gridTemplateRows: gridConfig.rowTemplate,
           }}
         >
+          {items.length === 0 ? (
+            <div className="col-span-full flex items-center justify-center text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
+              No categories match the current filter
+            </div>
+          ) : null}
           {items.map((item) => {
             const isActive = activeTileId === item.id;
             const isSelected = selectedId === item.id;

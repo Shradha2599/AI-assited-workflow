@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 
 import { Card } from "@/components/ui/card";
-import { StatusTag } from "@/components/ui/status-tag";
+import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
 import { cn } from "@/lib/utils";
 import type { OnboardingPartner, OnboardingSection, OnboardingTask } from "@/lib/mock-data/onboarding";
 import {
@@ -172,7 +172,7 @@ function SectionRow({
         </div>
 
         <div className="flex shrink-0 flex-col items-end gap-2">
-          <StatusTag className="inline-flex items-center gap-1.5 border border-[var(--color-border)] bg-[var(--color-card)] tabular-nums text-[var(--color-muted-foreground)]">
+          <StatusTag className={cn("inline-flex items-center gap-1.5 tabular-nums font-normal", markerToneClass.neutral)}>
             <ChecklistIcon src="/icons/list-partial.svg" size={16} />
             {profileCompletedSteps}/{section.totalSteps} steps
           </StatusTag>

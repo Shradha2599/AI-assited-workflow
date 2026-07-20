@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConfidenceScoreBadge } from "@/components/data-display/confidence-score-badge";
+import { MarkerTag } from "@/components/ui/status-tag";
 import { RegisterPageHeader } from "@/components/layout/page-header";
 import { SvgIcon } from "@/components/ui/svg-icon";
 import { useOutreachMail } from "@/features/outreach/hooks/use-outreach-mail";
@@ -403,12 +404,9 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
                 <CardContent>
                   <div className="flex flex-wrap gap-1.5">
                     {matchingItems.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1 text-[var(--text-caption-size)]"
-                      >
+                      <MarkerTag key={item} tone="neutral" className="px-2.5 py-1 text-[var(--text-caption-size)]">
                         {item}
-                      </span>
+                      </MarkerTag>
                     ))}
                   </div>
                 </CardContent>

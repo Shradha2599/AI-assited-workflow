@@ -16,7 +16,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { SvgIcon } from "@/components/ui/svg-icon";
-import { StatusTag } from "@/components/ui/status-tag";
+import { StatusTag, MarkerTag } from "@/components/ui/status-tag";
 import { Button } from "@/components/ui/button";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import {
@@ -85,12 +85,9 @@ function DrawerSectionCard({
 }
 
 function ConfidenceChip({ score }: { score: number }) {
-  const { bg, text } = getConfidenceBadgeStyle(score);
+  const { bg } = getConfidenceBadgeStyle(score);
   return (
-    <StatusTag
-      className="px-2.5 text-[var(--text-caption-size)]"
-      style={{ backgroundColor: bg, color: text }}
-    >
+    <StatusTag className="px-2.5 text-[var(--text-caption-size)]" style={{ backgroundColor: bg }}>
       Confidence : {score.toFixed(1)}/10
     </StatusTag>
   );
@@ -350,12 +347,9 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
           <DrawerSectionCard title={`Item Type Match (${matchingItems.length})`}>
             <div className="flex flex-wrap gap-1.5">
               {matchingItems.map((item) => (
-                <span
-                  key={item}
-                  className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1 text-[var(--text-caption-size)]"
-                >
+                <MarkerTag key={item} tone="neutral" className="px-2.5 py-1 text-[var(--text-caption-size)]">
                   {item}
-                </span>
+                </MarkerTag>
               ))}
             </div>
           </DrawerSectionCard>

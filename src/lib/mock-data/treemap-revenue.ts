@@ -73,3 +73,16 @@ export function computeOverallOpportunity(root: TreemapHierarchyRoot): string {
   );
   return formatRevenueMillion(totalM);
 }
+
+/** Sum top-level treemap revenue for the selected category IDs. */
+export function computeOpportunityForCategories(
+  root: TreemapHierarchyRoot,
+  categoryIds: string[],
+): string {
+  const selected = new Set(categoryIds);
+  const totalM = root.children.reduce((sum, node) => {
+    if (!node.categoryId || !selected.has(node.categoryId)) return sum;
+    return sum + parseRevenueMillion(node.revenue);
+  }, 0);
+  return formatRevenueMillion(totalM);
+}

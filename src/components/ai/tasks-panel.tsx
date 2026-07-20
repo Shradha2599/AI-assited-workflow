@@ -11,7 +11,8 @@ import { Button } from "@/components/ui/button";
 import { TruncatedText } from "@/components/ui/truncated-text";
 
 import { SvgIcon } from "@/components/ui/svg-icon";
-import { StatusTag } from "@/components/ui/status-tag";
+import { StatusTag, MarkerTag, validationMarkerClass } from "@/components/ui/status-tag";
+import { getConfidenceBadgeStyle } from "@/lib/utils/confidence-badge";
 import { useOnboardingReviewStore } from "@/features/partner-onboarding/store/onboarding-review-store";
 import { useOutreachStore } from "@/features/outreach/store/outreach-store";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
@@ -56,18 +57,8 @@ interface TasksPanelProps {
   pathname?: string;
 }
 
-function scoreBadgeColor(score: number): string {
-  if (score >= 9) return "bg-green-600";
-  if (score >= 8) return "bg-green-500";
-  if (score >= 7) return "bg-amber-500";
-  return "bg-red-500";
-}
-
-function validationBadgeClass(status: RecommendedTask["validationStatus"]): string {
-  if (status === "valid") return "bg-[var(--color-success-light)] text-[var(--color-success)]";
-  if (status === "invalid") return "bg-[var(--color-error-light)] text-[var(--color-error)]";
-  if (status === "partial") return "bg-[var(--color-warning-light)] text-[var(--color-warning)]";
-  return "bg-[var(--color-muted)] text-[var(--color-muted-foreground)]";
+function scoreBadgeStyle(score: number): { backgroundColor: string } {
+  return { backgroundColor: getConfidenceBadgeStyle(score).bg };
 }
 
 function OnboardingTaskCard({
@@ -88,12 +79,12 @@ function OnboardingTaskCard({
             <h3 className="text-[var(--text-body-size)] font-medium leading-snug">{task.title}</h3>
             <div className="flex shrink-0 items-center gap-2">
               {task.validationStatus && (
-                <StatusTag className={validationBadgeClass(task.validationStatus)}>
+                <StatusTag className={validationMarkerClass(task.validationStatus)}>
                   {statusLabel(task.validationStatus)}
                 </StatusTag>
               )}
               {task.score != null && (
-                <StatusTag className={cn("text-white", scoreBadgeColor(task.score))}>
+                <StatusTag className="tabular-nums" style={scoreBadgeStyle(task.score)}>
                   {task.score.toFixed(1)}/10
                 </StatusTag>
               )}
@@ -122,9 +113,9 @@ function OnboardingTaskCard({
               <Link href={task.actionHref}>{task.actionLabel}</Link>
             </Button>
           ) : approved && task.actionType === "approve_onboarding" ? (
-            <span className="mt-2 inline-flex items-center gap-1 text-[var(--text-caption-size)] font-medium text-[var(--color-success)]">
+            <MarkerTag tone="success" className="mt-2 gap-1">
               <Check className="h-3 w-3" /> Approved
-            </span>
+            </MarkerTag>
           ) : (
             <Button
               variant="ghost"
@@ -161,7 +152,7 @@ function StandardTaskCard({
             </h3>
             <div className="flex shrink-0 items-center gap-2">
               {task.score != null && (
-                <StatusTag className={cn("text-white", scoreBadgeColor(task.score))}>
+                <StatusTag className="tabular-nums" style={scoreBadgeStyle(task.score)}>
                   {task.score.toFixed(1)}/10
                 </StatusTag>
               )}

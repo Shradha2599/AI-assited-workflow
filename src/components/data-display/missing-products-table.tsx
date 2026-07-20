@@ -14,6 +14,7 @@ export interface MissingProduct {
   id: string;
   name: string;
   category: string;
+  categoryId?: string;
   gapOpportunity: string;
   topCompetitor: string;
   estimatedRevenue: string;
@@ -73,12 +74,6 @@ export function MissingProductsTable({
           </span>
         </h3>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]"
-          >
-            Select Categories (7) ▾
-          </button>
           <div className="flex rounded-[var(--radius-sm)] border border-[var(--color-border)]">
             <button type="button" className="px-2 py-1 text-[var(--color-muted-foreground)]" aria-label="List view">
               <List className="h-3.5 w-3.5" />

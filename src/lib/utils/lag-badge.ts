@@ -1,3 +1,5 @@
+import { MARKER_BG } from "@/components/ui/marker-colors";
+
 /** Lag badge colors and labels by percentage threshold */
 export function getLagBadge(lagPercent: number): {
   bg: string;
@@ -7,7 +9,7 @@ export function getLagBadge(lagPercent: number): {
 } {
   if (lagPercent < 0) {
     return {
-      bg: "#79D279",
+      bg: MARKER_BG.green,
       label: `${Math.abs(lagPercent)}% Ahead`,
       showArrowDown: false,
       showArrowUp: true,
@@ -15,7 +17,7 @@ export function getLagBadge(lagPercent: number): {
   }
   if (lagPercent >= 20) {
     return {
-      bg: "#FAA69E",
+      bg: MARKER_BG.red,
       label: `${lagPercent}% Lag`,
       showArrowDown: true,
       showArrowUp: false,
@@ -23,7 +25,7 @@ export function getLagBadge(lagPercent: number): {
   }
   if (lagPercent >= 10) {
     return {
-      bg: "#FFAB66",
+      bg: MARKER_BG.orange,
       label: `${lagPercent}% Lag`,
       showArrowDown: true,
       showArrowUp: false,
@@ -31,14 +33,14 @@ export function getLagBadge(lagPercent: number): {
   }
   if (lagPercent >= 5) {
     return {
-      bg: "#FFE34D",
+      bg: MARKER_BG.yellow,
       label: `${lagPercent}% Lag`,
       showArrowDown: true,
       showArrowUp: false,
     };
   }
   return {
-    bg: "#D1F0D1",
+    bg: MARKER_BG.green,
     label: lagPercent === 0 ? "At Par" : `${lagPercent}% At Par`,
     showArrowDown: false,
     showArrowUp: false,

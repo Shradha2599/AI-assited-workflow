@@ -18,7 +18,7 @@ import {
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { Button } from "@/components/ui/button";
 import { DrawerHeaderShell, DrawerPanel } from "@/components/ui/drawer-panel";
-import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
+import { StatusTag, markerToneClass, validationMarkerClass } from "@/components/ui/status-tag";
 import { cn } from "@/lib/utils";
 import type { LeadFormAnalysis, ValidationStatus } from "@/lib/mock-data/lead-form-analysis";
 import { statusLabel } from "@/lib/mock-data/lead-form-analysis";
@@ -66,14 +66,8 @@ function DrawerSectionCard({
 }
 
 function StatusMarker({ status }: { status: ValidationStatus }) {
-  const styles: Record<ValidationStatus, string> = {
-    valid: markerToneClass.success,
-    invalid: markerToneClass.error,
-    partial: markerToneClass.warning,
-    unverified: markerToneClass.neutral,
-  };
   return (
-    <StatusTag className={cn(styles[status])}>
+    <StatusTag className={validationMarkerClass(status)}>
       {status === "valid" ? "No Risk" : statusLabel(status)}
     </StatusTag>
   );

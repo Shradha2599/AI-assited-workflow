@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Calendar } from "lucide-react";
 
 import { AssortmentAnalysisBanner } from "@/components/data-display/assortment-analysis-banner";
@@ -18,19 +18,24 @@ import { NoGoalModal } from "@/components/ui/no-goal-modal";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { abbreviateRevenueGoalInput, formatRevenueGoalDisplay, parseRevenueGoalToMillions } from "@/lib/utils/revenue-goal-input";
 import {
+  findTreemapNode,
   getTreemapBreadcrumbLabels,
   getTreemapGridConfig,
   getTreemapLevelItems,
   type TreemapHierarchyRoot,
   type TreemapNode,
 } from "@/lib/mock-data/treemap-hierarchy";
+import type { TargetCategory } from "@/lib/mock-data/target-categories";
+import { computeOpportunityForCategories } from "@/lib/mock-data/treemap-revenue";
+import { CategoryMultiSelectFilter } from "@/components/data-display/category-multi-select-filter";
 import { getGapItemsByCategory } from "@/lib/mock-data/gap-items-catalog";
+import { layoutTreemapItems } from "@/lib/utils/treemap-layout";
 
 interface AssortmentGapViewProps {
   lastUpdatedLabel: string;
-  revenueOpportunity: string;
-  selectedCategoryCount: number;
   competitors: string[];
+  categories: TargetCategory[];
+  defaultCategoryIds: string[];
   treemapRoot: TreemapHierarchyRoot;
   products: MissingProduct[];
 }
@@ -44,22 +49,70 @@ function nodeToTreemapItem(node: TreemapNode): TreemapItem {
     revenue: node.revenue,
     gapPercent: node.gapPercent,
     competitorLeader: node.competitorLeader,
+    categoryId: node.categoryId,
     opensDrawer: node.opensDrawer,
     children: node.children,
   };
 }
 
+function filterProductsByCategories(
+  products: MissingProduct[],
+  selectedCategoryIds: string[],
+  categories: TargetCategory[],
+): MissingProduct[] {
+  const selectedNames = new Set(
+    categories.filter((c) => selectedCategoryIds.includes(c.id)).map((c) => c.name),
+  );
+
+  return products.filter((product) => {
+    if (product.categoryId) return selectedCategoryIds.includes(product.categoryId);
+    return (
+      selectedNames.has(product.category) ||
+      [...selectedNames].some(
+        (name) => product.category.startsWith(name) || name.startsWith(product.category),
+      )
+    );
+  });
+}
+
 export function AssortmentGapView({
   lastUpdatedLabel,
-  revenueOpportunity,
-  selectedCategoryCount,
   competitors,
+  categories,
+  defaultCategoryIds,
   treemapRoot,
   products,
 }: AssortmentGapViewProps) {
   const [drillPath, setDrillPath] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drawerCategory, setDrawerCategory] = useState<string | null>(null);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>(defaultCategoryIds);
+
+  const categoryOptions = useMemo(
+    () => categories.map((category) => ({ id: category.id, name: category.name })),
+    [categories],
+  );
+
+  const filteredProducts = useMemo(
+    () => filterProductsByCategories(products, selectedCategoryIds, categories),
+    [products, selectedCategoryIds, categories],
+  );
+
+  const filteredRevenueOpportunity = useMemo(
+    () => computeOpportunityForCategories(treemapRoot, selectedCategoryIds),
+    [treemapRoot, selectedCategoryIds],
+  );
+
+  useEffect(() => {
+    if (drillPath.length === 0) return;
+    const topNode = findTreemapNode(treemapRoot, [drillPath[0]]);
+    const categoryId = "categoryId" in topNode ? topNode.categoryId : undefined;
+    if (categoryId && !selectedCategoryIds.includes(categoryId)) {
+      setDrillPath([]);
+      setSelectedId(null);
+      setDrawerCategory(null);
+    }
+  }, [selectedCategoryIds, drillPath, treemapRoot]);
 
   const planItems      = usePlanStore((state) => state.planItems);
   const planRevenues   = usePlanStore((state) => state.planRevenues);
@@ -90,7 +143,7 @@ export function AssortmentGapView({
   );
 
   function handleUseOpportunity() {
-    const goalStr = abbreviateRevenueGoalInput(revenueOpportunity);
+    const goalStr = abbreviateRevenueGoalInput(filteredRevenueOpportunity);
     storeSetGoal(goalStr);
     setShowNoGoalModal(false);
     pendingAddRef.current?.();
@@ -128,15 +181,35 @@ export function AssortmentGapView({
           ? `$${Math.max(goalMillions - plannedRevM, 0).toFixed(1)}M away from completing your assortment plan`
           : "";
 
-  const activeItems = useMemo(
-    () => getTreemapLevelItems(treemapRoot, drillPath).map(nodeToTreemapItem),
-    [treemapRoot, drillPath],
-  );
+  const { activeItems, gridConfig } = useMemo(() => {
+    const raw = getTreemapLevelItems(treemapRoot, drillPath).map(nodeToTreemapItem);
+    const filtered =
+      drillPath.length > 0
+        ? raw
+        : raw.filter(
+            (item) => !item.categoryId || selectedCategoryIds.includes(item.categoryId),
+          );
 
-  const gridConfig = useMemo(
-    () => getTreemapGridConfig(treemapRoot, drillPath),
-    [treemapRoot, drillPath],
-  );
+    if (drillPath.length > 0) {
+      return {
+        activeItems: filtered,
+        gridConfig: getTreemapGridConfig(treemapRoot, drillPath),
+      };
+    }
+
+    if (filtered.length === treemapRoot.children.length) {
+      return {
+        activeItems: filtered,
+        gridConfig: getTreemapGridConfig(treemapRoot, []),
+      };
+    }
+
+    const laidOut = layoutTreemapItems(filtered);
+    return {
+      activeItems: laidOut.items,
+      gridConfig: laidOut.gridConfig,
+    };
+  }, [treemapRoot, drillPath, selectedCategoryIds]);
 
   const breadcrumbLabels = useMemo(
     () => getTreemapBreadcrumbLabels(treemapRoot, drillPath),
@@ -205,18 +278,27 @@ export function AssortmentGapView({
           { label: "Assortment Gap Analysis" },
         ]}
         actions={
-          <Button variant="secondary" size="icon" aria-label="Open assortment calendar" asChild>
-            <Link href="/assortment/plan">
-              <Calendar className="h-4 w-4" />
-            </Link>
-          </Button>
+          <>
+            <CategoryMultiSelectFilter
+              categories={categoryOptions}
+              selectedIds={selectedCategoryIds}
+              onChange={setSelectedCategoryIds}
+              align="end"
+              className="[&>button]:h-9 [&>button]:bg-[var(--color-card)] [&>button]:px-3"
+            />
+            <Button variant="secondary" size="icon" aria-label="Open assortment calendar" asChild>
+              <Link href="/assortment/plan">
+                <Calendar className="h-4 w-4" />
+              </Link>
+            </Button>
+          </>
         }
       />
 
       <AssortmentAnalysisBanner lastUpdatedLabel={lastUpdatedLabel} />
 
       <RevenueGoalPanel
-        revenueOpportunity={revenueOpportunity}
+        revenueOpportunity={filteredRevenueOpportunity}
         planItemCount={planItems.length}
         planItemNames={planItems}
         onAddToPlan={handleBeaconAddToPlan}
@@ -235,20 +317,20 @@ export function AssortmentGapView({
         breadcrumbLabels={breadcrumbLabels}
         onBreadcrumbNavigate={handleBreadcrumbNavigate}
         gridConfig={gridConfig}
-        selectedCategoryCount={selectedCategoryCount}
         competitors={competitors}
         className="mb-[var(--space-4)]"
       />
 
       <MissingProductsTable
-        products={products}
+        key={selectedCategoryIds.join(",")}
+        products={filteredProducts}
         planItems={planItems}
         onAddToPlan={(name, revenueM) => guardedAdd(() => addPlanItem(name, revenueM))}
       />
 
       {showNoGoalModal && (
         <NoGoalModal
-          revenueOpportunity={revenueOpportunity}
+          revenueOpportunity={filteredRevenueOpportunity}
           onUseOpportunity={handleUseOpportunity}
           onSetManually={handleSetManually}
           onClose={() => { setShowNoGoalModal(false); pendingAddRef.current = null; }}

@@ -4,7 +4,7 @@ import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { StatusTag } from "@/components/ui/status-tag";
+import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
 import {
   DrawerHeaderShell,
   DrawerPanel,
@@ -16,6 +16,7 @@ import {
   type PartnerStage,
 } from "@/lib/mock-data/pipeline-partners";
 import { getOnboardingBySellerID, computeOnboardingOverallProgress } from "@/lib/mock-data/onboarding";
+import { cn } from "@/lib/utils";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -159,9 +160,7 @@ function EstablishedBody({ partner }: { partner: PipelinePartner }) {
           <span className="font-medium text-[var(--color-foreground)]">{partner.joinedDate}</span>
         </p>
       )}
-      <StatusTag className="bg-green-100 text-[10px] text-green-700">
-        ✓ Live
-      </StatusTag>
+      <StatusTag className={cn("text-[10px]", markerToneClass.success)}>✓ Live</StatusTag>
     </div>
   );
 }
