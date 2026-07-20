@@ -6,7 +6,12 @@ import type { MissingProduct } from "@/components/data-display/missing-products-
 import type { TreemapItem } from "@/components/data-display/category-treemap";
 import type { TreemapHierarchyRoot } from "@/lib/mock-data/treemap-hierarchy";
 import { loadTreemapHierarchy } from "@/lib/mock-data/treemap-hierarchy.server";
-import { loadTargetCategories, type TargetCategory } from "@/lib/mock-data/target-categories";
+import { loadAssortmentGapCategories } from "@/lib/mock-data/assortment-gap-categories.server";
+import {
+  buildGapCategoryFilterOptions,
+  getDefaultGapCategoryIds,
+  type GapCategoryFilterOption,
+} from "@/lib/mock-data/assortment-gap-categories";
 import {
   computeOverallOpportunity,
   enrichTreemapWithComputedRevenue,
@@ -40,7 +45,9 @@ export interface AssortmentGapAnalysisData {
   lastUpdatedLabel: string;
   revenueOpportunity: string;
   competitors: string[];
-  categories: TargetCategory[];
+  categories: GapCategoryFilterOption[];
+  allTaxonomyIds: string[];
+  taxonomyCategoryCount: number;
   defaultCategoryIds: string[];
   treemapRoot: TreemapHierarchyRoot;
   /** @deprecated use treemapRoot */
@@ -66,10 +73,10 @@ function formatLastUpdated(iso: string): string {
 export async function getAssortmentGapAnalysis(): Promise<AssortmentGapAnalysisData> {
   const mock = loadAnalysisMock();
   const treemapRoot = enrichTreemapWithComputedRevenue(loadTreemapHierarchy());
-  const categories = loadTargetCategories();
-  const defaultCategoryIds = treemapRoot.children
-    .map((node) => node.categoryId)
-    .filter((id): id is string => Boolean(id));
+  const taxonomyCategories = loadAssortmentGapCategories();
+  const categories = buildGapCategoryFilterOptions(treemapRoot, taxonomyCategories);
+  const defaultCategoryIds = getDefaultGapCategoryIds(treemapRoot);
+  const allTaxonomyIds = taxonomyCategories.map((category) => category.id);
 
   const topLevel = treemapRoot.children.map((node) => ({
     id: node.id,
@@ -90,6 +97,8 @@ export async function getAssortmentGapAnalysis(): Promise<AssortmentGapAnalysisD
     revenueOpportunity: computeOverallOpportunity(treemapRoot),
     competitors: mock.competitors,
     categories,
+    allTaxonomyIds,
+    taxonomyCategoryCount: taxonomyCategories.length,
     defaultCategoryIds,
     treemapRoot,
     treemapItems: topLevel,

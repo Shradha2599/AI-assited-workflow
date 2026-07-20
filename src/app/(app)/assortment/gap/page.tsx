@@ -9,6 +9,8 @@ export default async function AssortmentGapPage() {
       lastUpdatedLabel={analysis.lastUpdatedLabel}
       competitors={analysis.competitors}
       categories={analysis.categories}
+      allTaxonomyIds={analysis.allTaxonomyIds}
+      taxonomyCategoryCount={analysis.taxonomyCategoryCount}
       defaultCategoryIds={analysis.defaultCategoryIds}
       treemapRoot={analysis.treemapRoot}
       products={analysis.missingProducts}

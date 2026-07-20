@@ -1,0 +1,23 @@
+[
+  { "id": "cat_clothing_shoes_accessories", "name": "Clothing, Shoes & Accessories", "hasSubcategories": true },
+  { "id": "cat_home_decor", "name": "Home & Decor", "hasSubcategories": true },
+  { "id": "cat_kitchen_dining", "name": "Kitchen & Dining", "hasSubcategories": true },
+  { "id": "cat_outdoor_living_garden", "name": "Outdoor Living & Garden", "hasSubcategories": true },
+  { "id": "cat_grocery", "name": "Grocery", "hasSubcategories": true },
+  { "id": "cat_household_essentials", "name": "Household Essentials", "hasSubcategories": true },
+  { "id": "cat_baby", "name": "Baby", "hasSubcategories": true },
+  { "id": "cat_beauty", "name": "Beauty", "hasSubcategories": true },
+  { "id": "cat_personal_care", "name": "Personal Care", "hasSubcategories": true },
+  { "id": "cat_sports_outdoors", "name": "Sports & Outdoors", "hasSubcategories": true },
+  { "id": "cat_health", "name": "Health", "hasSubcategories": true },
+  { "id": "cat_wellness", "name": "Wellness", "hasSubcategories": false },
+  { "id": "cat_school_office", "name": "School & Office Supplies", "hasSubcategories": true },
+  { "id": "cat_toys_games", "name": "Toys & Games", "hasSubcategories": true },
+  { "id": "cat_electronics", "name": "Electronics", "hasSubcategories": true },
+  { "id": "cat_video_games", "name": "Video Games", "hasSubcategories": true },
+  { "id": "cat_movies_music_books", "name": "Movies, Music & Books", "hasSubcategories": true },
+  { "id": "cat_party_supplies", "name": "Party Supplies", "hasSubcategories": true },
+  { "id": "cat_gift_ideas", "name": "Gift Ideas", "hasSubcategories": false },
+  { "id": "cat_gift_cards", "name": "Gift Cards", "hasSubcategories": true },
+  { "id": "cat_pets", "name": "Pets", "hasSubcategories": true }
+]

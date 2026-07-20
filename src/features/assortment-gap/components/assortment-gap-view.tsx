@@ -18,15 +18,21 @@ import { NoGoalModal } from "@/components/ui/no-goal-modal";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { abbreviateRevenueGoalInput, formatRevenueGoalDisplay, parseRevenueGoalToMillions } from "@/lib/utils/revenue-goal-input";
 import {
-  findTreemapNode,
   getTreemapBreadcrumbLabels,
   getTreemapGridConfig,
   getTreemapLevelItems,
   type TreemapHierarchyRoot,
   type TreemapNode,
 } from "@/lib/mock-data/treemap-hierarchy";
-import type { TargetCategory } from "@/lib/mock-data/target-categories";
-import { computeOpportunityForCategories } from "@/lib/mock-data/treemap-revenue";
+import {
+  buildGapCategoryFilterOptions,
+  getDefaultGapCategoryIds,
+  getTreemapBackedCategoryIds,
+  normalizeGapCategoryId,
+  resolveSelectedTaxonomyIds,
+  type GapCategoryFilterOption,
+} from "@/lib/mock-data/assortment-gap-categories";
+import { computeOpportunityForTreemapNodes } from "@/lib/mock-data/treemap-revenue";
 import { CategoryMultiSelectFilter } from "@/components/data-display/category-multi-select-filter";
 import { getGapItemsByCategory } from "@/lib/mock-data/gap-items-catalog";
 import { layoutTreemapItems } from "@/lib/utils/treemap-layout";
@@ -34,7 +40,9 @@ import { layoutTreemapItems } from "@/lib/utils/treemap-layout";
 interface AssortmentGapViewProps {
   lastUpdatedLabel: string;
   competitors: string[];
-  categories: TargetCategory[];
+  categories: GapCategoryFilterOption[];
+  allTaxonomyIds: string[];
+  taxonomyCategoryCount: number;
   defaultCategoryIds: string[];
   treemapRoot: TreemapHierarchyRoot;
   products: MissingProduct[];
@@ -58,20 +66,14 @@ function nodeToTreemapItem(node: TreemapNode): TreemapItem {
 function filterProductsByCategories(
   products: MissingProduct[],
   selectedCategoryIds: string[],
-  categories: TargetCategory[],
+  categories: GapCategoryFilterOption[],
 ): MissingProduct[] {
-  const selectedNames = new Set(
-    categories.filter((c) => selectedCategoryIds.includes(c.id)).map((c) => c.name),
-  );
+  const selectedTaxonomyIds = resolveSelectedTaxonomyIds(selectedCategoryIds, categories);
 
   return products.filter((product) => {
-    if (product.categoryId) return selectedCategoryIds.includes(product.categoryId);
-    return (
-      selectedNames.has(product.category) ||
-      [...selectedNames].some(
-        (name) => product.category.startsWith(name) || name.startsWith(product.category),
-      )
-    );
+    const normalizedId = normalizeGapCategoryId(product.categoryId);
+    if (normalizedId) return selectedTaxonomyIds.has(normalizedId);
+    return false;
   });
 }
 
@@ -79,6 +81,8 @@ export function AssortmentGapView({
   lastUpdatedLabel,
   competitors,
   categories,
+  allTaxonomyIds,
+  taxonomyCategoryCount,
   defaultCategoryIds,
   treemapRoot,
   products,
@@ -88,9 +92,26 @@ export function AssortmentGapView({
   const [drawerCategory, setDrawerCategory] = useState<string | null>(null);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>(defaultCategoryIds);
 
-  const categoryOptions = useMemo(
-    () => categories.map((category) => ({ id: category.id, name: category.name })),
+  const treemapBackedCategoryIds = useMemo(
+    () => getTreemapBackedCategoryIds(categories),
     [categories],
+  );
+
+  const categoryOptions = useMemo(
+    () =>
+      categories.map((category) => ({
+        id: category.id,
+        name: category.name,
+        hasSubcategories: category.hasSubcategories,
+        hasGapData: category.hasGapData,
+        taxonomyId: category.taxonomyId,
+      })),
+    [categories],
+  );
+
+  const selectedTreemapNodeIds = useMemo(
+    () => selectedCategoryIds.filter((id) => treemapBackedCategoryIds.includes(id)),
+    [selectedCategoryIds, treemapBackedCategoryIds],
   );
 
   const filteredProducts = useMemo(
@@ -99,20 +120,19 @@ export function AssortmentGapView({
   );
 
   const filteredRevenueOpportunity = useMemo(
-    () => computeOpportunityForCategories(treemapRoot, selectedCategoryIds),
-    [treemapRoot, selectedCategoryIds],
+    () => computeOpportunityForTreemapNodes(treemapRoot, selectedTreemapNodeIds),
+    [treemapRoot, selectedTreemapNodeIds],
   );
 
   useEffect(() => {
     if (drillPath.length === 0) return;
-    const topNode = findTreemapNode(treemapRoot, [drillPath[0]]);
-    const categoryId = "categoryId" in topNode ? topNode.categoryId : undefined;
-    if (categoryId && !selectedCategoryIds.includes(categoryId)) {
+    const topNodeId = drillPath[0];
+    if (!selectedTreemapNodeIds.includes(topNodeId)) {
       setDrillPath([]);
       setSelectedId(null);
       setDrawerCategory(null);
     }
-  }, [selectedCategoryIds, drillPath, treemapRoot]);
+  }, [selectedTreemapNodeIds, drillPath]);
 
   const planItems      = usePlanStore((state) => state.planItems);
   const planRevenues   = usePlanStore((state) => state.planRevenues);
@@ -186,9 +206,7 @@ export function AssortmentGapView({
     const filtered =
       drillPath.length > 0
         ? raw
-        : raw.filter(
-            (item) => !item.categoryId || selectedCategoryIds.includes(item.categoryId),
-          );
+        : raw.filter((item) => selectedTreemapNodeIds.includes(item.id));
 
     if (drillPath.length > 0) {
       return {
@@ -209,7 +227,7 @@ export function AssortmentGapView({
       activeItems: laidOut.items,
       gridConfig: laidOut.gridConfig,
     };
-  }, [treemapRoot, drillPath, selectedCategoryIds]);
+  }, [treemapRoot, drillPath, selectedTreemapNodeIds]);
 
   const breadcrumbLabels = useMemo(
     () => getTreemapBreadcrumbLabels(treemapRoot, drillPath),
@@ -269,6 +287,8 @@ export function AssortmentGapView({
     setDrawerCategory(null);
   }
 
+  const visibleTreemapTileCount = activeItems.length;
+
   return (
     <>
       <PageHeader
@@ -283,6 +303,10 @@ export function AssortmentGapView({
               categories={categoryOptions}
               selectedIds={selectedCategoryIds}
               onChange={setSelectedCategoryIds}
+              allTaxonomyIds={allTaxonomyIds}
+              taxonomyCategoryCount={taxonomyCategoryCount}
+              treemapCategoryIds={treemapBackedCategoryIds}
+              treemapTileCount={visibleTreemapTileCount}
               align="end"
               className="[&>button]:h-9 [&>button]:bg-[var(--color-card)] [&>button]:px-3"
             />

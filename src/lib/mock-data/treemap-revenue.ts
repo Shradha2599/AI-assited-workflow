@@ -1,4 +1,5 @@
 import type { GapItem } from "@/components/data-display/gaps-drawer";
+import { normalizeGapCategoryId } from "@/lib/mock-data/assortment-gap-categories";
 import type { TreemapHierarchyRoot, TreemapNode } from "@/lib/mock-data/treemap-hierarchy";
 import { getGapItemsByCategory } from "@/lib/mock-data/gap-items-catalog";
 
@@ -74,14 +75,28 @@ export function computeOverallOpportunity(root: TreemapHierarchyRoot): string {
   return formatRevenueMillion(totalM);
 }
 
-/** Sum top-level treemap revenue for the selected category IDs. */
+/** Sum revenue for selected treemap root nodes. */
+export function computeOpportunityForTreemapNodes(
+  root: TreemapHierarchyRoot,
+  treemapNodeIds: string[],
+): string {
+  const selected = new Set(treemapNodeIds);
+  const totalM = root.children.reduce((sum, node) => {
+    if (!selected.has(node.id)) return sum;
+    return sum + parseRevenueMillion(node.revenue);
+  }, 0);
+  return formatRevenueMillion(totalM);
+}
+
+/** @deprecated Use computeOpportunityForTreemapNodes for gap-analysis filters. */
 export function computeOpportunityForCategories(
   root: TreemapHierarchyRoot,
   categoryIds: string[],
 ): string {
   const selected = new Set(categoryIds);
   const totalM = root.children.reduce((sum, node) => {
-    if (!node.categoryId || !selected.has(node.categoryId)) return sum;
+    const categoryId = normalizeGapCategoryId(node.categoryId);
+    if (!categoryId || !selected.has(categoryId)) return sum;
     return sum + parseRevenueMillion(node.revenue);
   }, 0);
   return formatRevenueMillion(totalM);
