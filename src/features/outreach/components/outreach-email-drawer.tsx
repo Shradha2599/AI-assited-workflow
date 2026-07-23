@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -39,39 +40,38 @@ export function OutreachEmailDrawer() {
   const updateDraft = useOutreachStore((s) => s.updateDraft);
   const sendMail = useOutreachStore((s) => s.sendMail);
 
-  if (!drawerOpen) return null;
-
   const selectedPartner =
     (selectedPartnerId
       ? partners.find((p) => p.partnerId === selectedPartnerId)
       : undefined) ?? (partners.length === 1 ? partners[0] : undefined);
 
-  const generateHeading = selectedPartner
-    ? mailType === "document_reminder" || mailType === "onboarding_completion"
-      ? `Ready to generate reminder email for ${selectedPartner.legalBusinessName}`
-      : mailType === "onboarding_kickoff"
-        ? `Ready to generate onboarding email for ${selectedPartner.legalBusinessName}`
-        : `Ready to generate outreach email for ${selectedPartner.legalBusinessName}`
-    : "Select a partner to generate a contextual email";
-
   const showPartnerList = multiPartner && partners.length > 1;
-  const canGenerate = Boolean(selectedPartner) && !draft && !isGenerating;
   const showComposer = Boolean(draft);
+  const autoGenerate = mailType === "acquisition_outreach" && Boolean(selectedPartner);
+
+  useEffect(() => {
+    if (!drawerOpen || !autoGenerate || draft || isGenerating) return;
+    void generateDraft();
+  }, [drawerOpen, autoGenerate, draft, isGenerating, generateDraft, selectedPartnerId]);
+
+  if (!drawerOpen) return null;
 
   return (
     <DrawerPanel
       title={drawerTitle(mailType)}
       ariaLabel={drawerTitle(mailType)}
       onClose={closeDrawer}
+      bodyClassName="flex flex-col overflow-hidden"
+      footerClassName="pt-0"
       footer={
-        <Button className="w-full" disabled={!draft} onClick={sendMail}>
+        <Button className="w-full" disabled={!draft || isGenerating} onClick={sendMail}>
           Send with Outlook
         </Button>
       }
     >
-      <div className="px-[var(--space-4)] py-[var(--space-4)]">
+      <div className="flex min-h-0 flex-1 flex-col gap-4 px-[var(--space-4)] py-[var(--space-4)] pb-6">
         {showPartnerList && (
-          <section className="mb-5">
+          <section className="shrink-0">
             <p className="mb-3 text-[var(--text-caption-size)] font-semibold">Partners</p>
             <div className="space-y-2">
               {partners.map((partner) => {
@@ -117,22 +117,15 @@ export function OutreachEmailDrawer() {
           </section>
         )}
 
-        {!showComposer && !isGenerating && (
-          <div className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center">
+        {!showComposer && !isGenerating && !autoGenerate && (
+          <div className="shrink-0 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center">
             {selectedPartner ? (
               <>
                 <Sparkles className="mx-auto mb-3 h-8 w-8 text-[var(--color-primary)]" />
-                <p className="text-[var(--text-body-size)] font-semibold">{generateHeading}</p>
-                <p className="mt-2 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-                  The Outreach Agent will create a personalized draft based on the partner&apos;s context
-                  and current workflow stage.
+                <p className="text-[var(--text-body-size)] font-semibold">
+                  Ready to generate email for {selectedPartner.legalBusinessName}
                 </p>
-                <Button
-                  size="sm"
-                  className="mt-4 gap-1.5"
-                  onClick={() => generateDraft()}
-                  disabled={!canGenerate}
-                >
+                <Button size="sm" className="mt-4 gap-1.5" onClick={() => generateDraft()}>
                   <Sparkles className="h-3.5 w-3.5" />
                   Generate Draft
                 </Button>
@@ -141,11 +134,7 @@ export function OutreachEmailDrawer() {
               <>
                 <Sparkles className="mx-auto mb-3 h-8 w-8 text-[var(--color-muted-foreground)]" />
                 <p className="text-[var(--text-body-size)] font-semibold">
-                  Select a partner to generate a contextual reminder email
-                </p>
-                <p className="mt-2 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-                  The Outreach Agent will draft a personalized message based on each partner&apos;s missing
-                  documentation and onboarding progress.
+                  Select a partner to generate a contextual email
                 </p>
               </>
             )}
@@ -156,6 +145,8 @@ export function OutreachEmailDrawer() {
 
         {showComposer && draft && (
           <MailComposer
+            fillHeight
+            className="min-h-0 flex-1"
             fromName={draft.fromName}
             fromEmail={draft.fromEmail}
             to={draft.to}
@@ -164,7 +155,6 @@ export function OutreachEmailDrawer() {
             onToChange={(to) => updateDraft({ to })}
             onSubjectChange={(subject) => updateDraft({ subject })}
             onBodyChange={(body) => updateDraft({ body })}
-            bodyRows={14}
           />
         )}
       </div>

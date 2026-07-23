@@ -8,7 +8,7 @@ import type { DashboardMetric } from "@/services/analytics.service";
 import { DonutChart } from "@/components/data-display/donut-chart";
 import { GapBarChart } from "@/components/data-display/gap-bar-chart";
 import { HolidayBanner } from "@/components/data-display/holiday-banner";
-import { PipelineHeatmap } from "@/components/data-display/pipeline-heatmap";
+import { PipelineHeatmapSynced } from "@/components/data-display/pipeline-heatmap-synced";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { SvgIcon } from "@/components/ui/svg-icon";
@@ -64,11 +64,20 @@ export function DashboardView({
       </section>
 
       <section className="mb-[var(--space-4)] grid min-w-0 items-stretch gap-[var(--space-4)] lg:grid-cols-2 lg:min-h-[320px]">
-        <DonutChart title="Industry Sales & Contribution" total="$48B" segments={industrySegments} className="h-full" />
-        <GapBarChart data={gapBarData} className="h-full" />
+        <DonutChart
+          title="Industry Sales & Contribution"
+          total="$48B"
+          segments={industrySegments}
+          filterLabel="Categories (1)"
+          className="h-full"
+        />
+        <GapBarChart data={gapBarData} filterLabel="Categories (1)" className="h-full" />
       </section>
 
-      <PipelineHeatmap columns={pipeline.columns} rows={pipeline.rows} />
+      <PipelineHeatmapSynced
+        baseline={pipeline}
+        categoryFilterLabel="Categories (1)"
+      />
     </>
   );
 }

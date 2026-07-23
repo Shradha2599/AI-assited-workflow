@@ -1,13 +1,18 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight, Calendar } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useGapDrawerStore } from "@/features/assortment-gap/store/gap-drawer-store";
+import { HALLOWEEN_TRENDING_GAP_COUNT } from "@/lib/mock-data/fy-plan-seeds";
 
 const BANNER_IMAGE_WIDTH = 280;
 
 export function HolidayBanner() {
+  const openDrawer = useGapDrawerStore((s) => s.openDrawer);
+
   return (
     <Card className="relative mb-[var(--space-4)] min-h-[120px] overflow-hidden border-[var(--color-border)] bg-[var(--color-holiday-bg)]">
       <div
@@ -21,14 +26,19 @@ export function HolidayBanner() {
         <h2 className="mt-2 text-[18px] font-bold leading-tight text-[var(--color-holiday-text)]">
           Plan for Halloween
         </h2>
-        <p className="mt-1.5 truncate text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-          Spooky-season searches are up 34% YoY — lock in décor, lighting, and party assortments before the October rush.
+        <p className="mt-1.5 text-[var(--text-caption-size)] leading-snug text-[var(--color-muted-foreground)]">
+          Stay ahead of seasonal demand. {HALLOWEEN_TRENDING_GAP_COUNT} trending Halloween product
+          types seen over the last 3 years aren&apos;t in your assortment. Plan before the October
+          shopping rush.
         </p>
-        <Button variant="outline" size="sm" className="mt-3" asChild>
-          <Link href="/assortment/plan">
-            Plan Assortment Now
-            <ArrowRight className="h-3 w-3" />
-          </Link>
+        <Button
+          variant="outline"
+          size="sm"
+          className="mt-3"
+          onClick={() => openDrawer("Kitchen & Dining — Halloween", "calendar-update", "Kitchen & Dining")}
+        >
+          Plan Assortment
+          <ArrowRight className="h-3 w-3" />
         </Button>
       </div>
       <div

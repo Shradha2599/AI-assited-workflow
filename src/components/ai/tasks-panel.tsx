@@ -4,6 +4,7 @@ import { ArrowRight, Check, Copy, ExternalLink, Loader2, Pencil, Plus, RotateCcw
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useChat } from "@ai-sdk/react";
 import { useGapDrawerStore } from "@/features/assortment-gap/store/gap-drawer-store";
 
@@ -328,11 +329,24 @@ function BadResponseModal({ onClose }: { onClose: () => void }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [details, setDetails] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  if (submitted) {
-    return (
-      <div className="fixed inset-0 z-[var(--z-modal)] flex items-center justify-center bg-black/40 p-4">
-        <div className="w-full max-w-sm rounded-[var(--radius-lg)] bg-white p-6 shadow-[var(--shadow-drawer)]">
+  useEffect(() => {
+    setMounted(true);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  const modal = submitted ? (
+    <div className="fixed inset-0 z-[var(--z-modal)]">
+      <div className="absolute inset-0 bg-black/40" onClick={onClose} aria-hidden />
+      <div className="relative flex h-full items-center justify-center p-4">
+        <div className="w-full max-w-sm rounded-[var(--radius-lg)] bg-[var(--color-card)] p-6 shadow-[var(--shadow-drawer)]">
           <div className="flex flex-col items-center gap-3 text-center">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
               <Check className="h-5 w-5 text-green-600" />
@@ -343,50 +357,58 @@ function BadResponseModal({ onClose }: { onClose: () => void }) {
           </div>
         </div>
       </div>
-    );
-  }
-
-  return (
-    <div className="fixed inset-0 z-[var(--z-modal)] flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-sm rounded-[var(--radius-lg)] bg-white shadow-[var(--shadow-drawer)]">
-        <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-4">
-          <div>
-            <p className="text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]">What went wrong?</p>
-            <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">Help Beacon improve its responses</p>
+    </div>
+  ) : (
+    <div className="fixed inset-0 z-[var(--z-modal)]">
+      <div className="absolute inset-0 bg-black/40" onClick={onClose} aria-hidden />
+      <div className="relative flex h-full items-center justify-center p-4">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="bad-response-modal-title"
+          className="w-full max-w-sm overflow-hidden rounded-[var(--radius-lg)] bg-[var(--color-card)] shadow-[var(--shadow-drawer)]"
+        >
+          <div className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-card)] px-5 py-4">
+            <div>
+              <p id="bad-response-modal-title" className="text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]">What went wrong?</p>
+              <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">Help Beacon improve its responses</p>
+            </div>
+            <button type="button" onClick={onClose} className="cursor-pointer rounded p-1 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]">
+              <X className="h-4 w-4" />
+            </button>
           </div>
-          <button type="button" onClick={onClose} className="cursor-pointer rounded p-1 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]">
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-        <div className="space-y-2 px-5 py-4">
-          {BAD_RESPONSE_REASONS.map((reason) => (
-            <label key={reason} className="flex cursor-pointer items-center gap-2.5">
-              <input
-                type="radio"
-                name="bad-reason"
-                value={reason}
-                checked={selected === reason}
-                onChange={() => setSelected(reason)}
-                className="accent-[var(--color-primary)]"
-              />
-              <span className="text-[var(--text-caption-size)] text-[var(--color-foreground)]">{reason}</span>
-            </label>
-          ))}
-          <textarea
-            value={details}
-            onChange={(e) => setDetails(e.target.value)}
-            placeholder="Additional details (optional)"
-            rows={2}
-            className="mt-2 w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border)] px-3 py-2 text-[var(--text-caption-size)] placeholder:text-[var(--color-muted-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
-          />
-        </div>
-        <div className="flex justify-end gap-2 border-t border-[var(--color-border)] px-5 py-3">
-          <Button variant="ghost" size="sm" onClick={onClose}>Cancel</Button>
-          <Button size="sm" disabled={!selected} onClick={() => setSubmitted(true)}>Submit Feedback</Button>
+          <div className="space-y-2 bg-[var(--color-card)] px-5 py-4">
+            {BAD_RESPONSE_REASONS.map((reason) => (
+              <label key={reason} className="flex cursor-pointer items-center gap-2.5">
+                <input
+                  type="radio"
+                  name="bad-reason"
+                  value={reason}
+                  checked={selected === reason}
+                  onChange={() => setSelected(reason)}
+                  className="accent-[var(--color-primary)]"
+                />
+                <span className="text-[var(--text-caption-size)] text-[var(--color-foreground)]">{reason}</span>
+              </label>
+            ))}
+            <textarea
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
+              placeholder="Additional details (optional)"
+              rows={2}
+              className="mt-2 w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-card)] px-3 py-2 text-[var(--text-caption-size)] placeholder:text-[var(--color-muted-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
+            />
+          </div>
+          <div className="flex justify-end gap-2 border-t border-[var(--color-border)] bg-[var(--color-card)] px-5 py-3">
+            <Button variant="ghost" size="sm" onClick={onClose}>Cancel</Button>
+            <Button size="sm" disabled={!selected} onClick={() => setSubmitted(true)}>Submit Feedback</Button>
+          </div>
         </div>
       </div>
     </div>
   );
+
+  return createPortal(modal, document.body);
 }
 
 export function TasksPanel({

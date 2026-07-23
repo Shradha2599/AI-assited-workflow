@@ -20,6 +20,7 @@ import {
 import { ConfidenceScoreBadge } from "@/components/data-display/confidence-score-badge";
 import { ItemTypesDrawer } from "@/components/data-display/item-types-drawer";
 import { ItemTypesInlineList } from "@/components/data-display/item-types-inline-list";
+import { FiscalYearSelector } from "@/components/data-display/fiscal-year-selector";
 import { useOutreachMail } from "@/features/outreach/hooks/use-outreach-mail";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/layout/page-header";
@@ -27,7 +28,8 @@ import { sellers, type Seller } from "@/lib/mock-data/sellers";
 import { toDiscoveryPayload, rankSellersLocally } from "@/lib/mock-data/discover-leads-ranking";
 import { getPlanCategories } from "@/lib/mock-data/plan-item-matching";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
-import { useDiscoveryStore } from "../store/discovery-store";
+import { formatFYShort, type FiscalYearId } from "@/lib/mock-data/fy-plan-seeds";
+import { useDiscoveryStore, useFYDiscoverySnapshot } from "../store/discovery-store";
 import {
   LeadDiscoveryFiltersDrawer,
   type FilterDraft,
@@ -72,10 +74,11 @@ function emptyFilterDraft(activeFilters: {
 }
 
 export function LeadDiscoveryView() {
+  const fiscalYear = usePlanStore((s) => s.fiscalYear);
   const planItems = usePlanStore((s) => s.planItems);
+  const snap = useFYDiscoverySnapshot(fiscalYear);
+  const { discoveredIds, shortlistedIds, contactedIds, hasUserInitiatedDiscovery } = snap;
 
-  const discoveredIds = useDiscoveryStore((s) => s.discoveredIds);
-  const shortlistedIds = useDiscoveryStore((s) => s.shortlistedIds);
   const isDiscovering = useDiscoveryStore((s) => s.isDiscovering);
   const activeFilters = useDiscoveryStore((s) => s.activeFilters);
   const setDiscovered = useDiscoveryStore((s) => s.setDiscovered);
@@ -85,6 +88,7 @@ export function LeadDiscoveryView() {
   const setFilter = useDiscoveryStore((s) => s.setFilter);
   const clearDiscoveryResults = useDiscoveryStore((s) => s.clearDiscoveryResults);
   const syncLeadPoolVersion = useDiscoveryStore((s) => s.syncLeadPoolVersion);
+  const syncFYDiscoverySeed = useDiscoveryStore((s) => s.syncFYDiscoverySeed);
   const openOutreach = useOutreachMail();
 
   const [activeTab, setActiveTab] = useState<Tab>("discovered");
@@ -100,7 +104,8 @@ export function LeadDiscoveryView() {
 
   useEffect(() => {
     syncLeadPoolVersion();
-  }, [syncLeadPoolVersion]);
+    syncFYDiscoverySeed();
+  }, [syncLeadPoolVersion, syncFYDiscoverySeed]);
 
   const planItemsKey = planItems.join("\u0001");
   const planCategories = useMemo(() => getPlanCategories(planItems), [planItemsKey]);
@@ -116,9 +121,9 @@ export function LeadDiscoveryView() {
     });
 
     if (!stillRelevant) {
-      clearDiscoveryResults();
+      clearDiscoveryResults(fiscalYear);
     }
-  }, [planItemsKey, planCategories, discoveredIds, clearDiscoveryResults]);
+  }, [planItemsKey, planCategories, discoveredIds, clearDiscoveryResults, fiscalYear]);
 
   async function runDiscovery() {
     setPage(1);
@@ -146,17 +151,17 @@ export function LeadDiscoveryView() {
         data.rankedSellers?.length ? data.rankedSellers : rankSellersLocally(planItems).rankedSellers;
 
       if (rankedSellers.length === 0) {
-        setDiscovered([], {}, {});
+        setDiscovered(fiscalYear, [], {}, {});
         return;
       }
 
       const { ids, reasons, planMatches } = toDiscoveryPayload(rankedSellers);
-      setDiscovered(ids, reasons, planMatches);
+      setDiscovered(fiscalYear, ids, reasons, planMatches);
       setActiveTab("discovered");
     } catch {
       const { rankedSellers } = rankSellersLocally(planItems);
       const { ids, reasons, planMatches } = toDiscoveryPayload(rankedSellers);
-      setDiscovered(ids, reasons, planMatches);
+      setDiscovered(fiscalYear, ids, reasons, planMatches);
       setActiveTab("discovered");
     } finally {
       setIsDiscovering(false);
@@ -164,30 +169,24 @@ export function LeadDiscoveryView() {
   }
 
   useEffect(() => {
-    if (planItems.length === 0 || discoveredIds.length > 0 || isDiscovering) return;
-    void runDiscovery();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [planItemsKey]);
-
-  useEffect(() => {
     if (discoveredIds.length === 0) return;
     const validIds = discoveredIds.filter((id) => sellers.some((s) => s.id === id));
     if (validIds.length !== discoveredIds.length) {
       if (validIds.length === 0) {
-        clearDiscoveryResults();
+        clearDiscoveryResults(fiscalYear);
       } else {
-        const reasons = useDiscoveryStore.getState().relevanceReasons;
-        const planMatches = useDiscoveryStore.getState().planMatches;
+        const reasons = useDiscoveryStore.getState().getSnapshot(fiscalYear).relevanceReasons;
+        const planMatches = useDiscoveryStore.getState().getSnapshot(fiscalYear).planMatches;
         const nextReasons = Object.fromEntries(
           validIds.map((id) => [id, reasons[id] ?? ""]),
         );
         const nextPlanMatches = Object.fromEntries(
           validIds.flatMap((id) => (planMatches[id] ? [[id, planMatches[id]]] : [])),
         );
-        setDiscovered(validIds, nextReasons, nextPlanMatches);
+        setDiscovered(fiscalYear, validIds, nextReasons, nextPlanMatches);
       }
     }
-  }, [clearDiscoveryResults, discoveredIds, setDiscovered]);
+  }, [clearDiscoveryResults, discoveredIds, setDiscovered, fiscalYear]);
 
   function openDiscoverDrawer() {
     setFilterDraft(emptyFilterDraft(activeFilters));
@@ -226,11 +225,10 @@ export function LeadDiscoveryView() {
   }
 
   const baseList = useMemo(() => {
-    return discoveredIds.length > 0
-      ? (discoveredIds
-          .map((id) => sellers.find((s) => s.id === id))
-          .filter(Boolean) as Seller[])
-      : [...sellers].sort((a, b) => b.confidenceScore - a.confidenceScore);
+    if (discoveredIds.length === 0) return [];
+    return discoveredIds
+      .map((id) => sellers.find((s) => s.id === id))
+      .filter(Boolean) as Seller[];
   }, [discoveredIds]);
 
   const discoveredList = useMemo(() => {
@@ -275,12 +273,7 @@ export function LeadDiscoveryView() {
   );
 
   const highMatchCount = discoveredList.filter((s) => s.confidenceScore >= 8).length;
-  const contactedCount = useMemo(() => {
-    const ids = new Set(discoveredIds);
-    return sellers.filter(
-      (s) => ids.has(s.id) && (s.status === "contacted" || s.status === "applied"),
-    ).length;
-  }, [discoveredIds]);
+  const contactedCount = contactedIds.length;
 
   const hasActiveFilters = !!(
     activeFilters.category ||
@@ -320,8 +313,10 @@ export function LeadDiscoveryView() {
   const hasDiscoveredResults = discoveredIds.length > 0;
   const hasShortlistedResults = shortlistedIds.length > 0;
   const showTable =
-    (activeTab === "discovered" && hasDiscoveredResults) ||
+    (activeTab === "discovered" && hasUserInitiatedDiscovery && hasDiscoveredResults) ||
     (activeTab === "shortlisted" && hasShortlistedResults);
+
+  const fyShort = formatFYShort(fiscalYear as FiscalYearId);
 
   return (
     <>
@@ -355,10 +350,7 @@ export function LeadDiscoveryView() {
             </button>
           ))}
         </div>
-        <div className="flex cursor-default items-center gap-1 rounded-[var(--radius-md)] border border-[var(--color-border)] px-3 py-1.5 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-          FY 2026-2027
-          <ChevronDown className="h-3.5 w-3.5" />
-        </div>
+        <FiscalYearSelector />
       </div>
 
       {isShortlistedEmpty ? (
@@ -389,16 +381,10 @@ export function LeadDiscoveryView() {
       {/* Assortment Plan Items — discovered tab only */}
       {activeTab === "discovered" && (
         <Card className="mb-[var(--space-3)] px-[var(--space-4)] py-3">
-          <div className="mb-2.5 flex items-center justify-between">
+          <div className="mb-2.5">
             <p className="text-[var(--text-caption-size)] font-semibold text-[var(--color-foreground)]">
-              Assortment Plan Items
+              Assortment Plan Items · FY {fyShort}
             </p>
-            <button
-              type="button"
-              className="flex items-center gap-1 rounded-[var(--radius-md)] border border-[var(--color-primary)] px-2.5 py-1 text-[var(--text-caption-size)] font-medium text-[var(--color-primary)] hover:bg-blue-50"
-            >
-              <Plus className="h-3 w-3" /> Categories
-            </button>
           </div>
           {planItems.length > 0 ? (
             <ItemTypesInlineList
@@ -426,7 +412,7 @@ export function LeadDiscoveryView() {
         </div>
       )}
 
-      {activeTab === "discovered" && !hasDiscoveredResults && (
+      {activeTab === "discovered" && !hasUserInitiatedDiscovery && (
         <Card className="px-6 py-14 text-center">
           <p className="text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]">
             You haven&apos;t started your lead discovery yet
@@ -438,7 +424,7 @@ export function LeadDiscoveryView() {
         </Card>
       )}
 
-      {hasDiscoveredResults && activeTab === "discovered" && (
+      {hasUserInitiatedDiscovery && hasDiscoveredResults && activeTab === "discovered" && (
         <DashboardKpiStrip metrics={discoveryMetrics} showChange={false} className="mb-[var(--space-4)]" />
       )}
 
@@ -558,7 +544,7 @@ export function LeadDiscoveryView() {
                           isShortlisted ? (
                             <button
                               type="button"
-                              onClick={() => removeFromShortlist(seller.id)}
+                              onClick={() => removeFromShortlist(fiscalYear, seller.id)}
                               className="text-[var(--text-caption-size)] text-green-600"
                             >
                               ✓ Shortlisted
@@ -566,7 +552,7 @@ export function LeadDiscoveryView() {
                           ) : (
                             <button
                               type="button"
-                              onClick={() => shortlistSeller(seller.id)}
+                              onClick={() => shortlistSeller(fiscalYear, seller.id)}
                               className="flex items-center gap-1 text-[var(--text-caption-size)] font-semibold text-blue-600 hover:text-blue-700"
                             >
                               <Plus className="h-3.5 w-3.5" /> Shortlist
@@ -592,7 +578,7 @@ export function LeadDiscoveryView() {
                             <button
                               type="button"
                               title="Remove from shortlist"
-                              onClick={() => removeFromShortlist(seller.id)}
+                              onClick={() => removeFromShortlist(fiscalYear, seller.id)}
                               className="text-[var(--color-muted-foreground)] hover:text-red-500"
                             >
                               <Trash2 className="h-4 w-4" />

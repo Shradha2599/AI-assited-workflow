@@ -1,4 +1,5 @@
 import type { GapItem } from "@/components/data-display/gaps-drawer";
+import { enrichGapItem } from "@/lib/mock-data/gap-item-images";
 
 /**
  * Comprehensive gap-item catalog keyed by the drawer category name.
@@ -244,7 +245,14 @@ const CATALOG: Record<string, GapItem[]> = {
     { id: "hd-5", name: "Holiday Wreath & Garland Sets",     lagPercent: 22,  lagSeverity: "high",        estimatedRevenue: "$1.8M", competitor: "Amazon",    skuCount: 131 },
     { id: "hd-6", name: "Nutcracker Figurine Collections",   lagPercent: 17,  lagSeverity: "medium-high", estimatedRevenue: "$1.2M", competitor: "Amazon",    skuCount: 96  },
   ],
-  "Halloween": [
+  "Kitchen & Dining — Halloween": [
+    { id: "kdh-1", name: "Pumpkin-Shaped Serving Bowls",          lagPercent: 28, lagSeverity: "high",        estimatedRevenue: "$1.4M", competitor: "Amazon", skuCount: 112 },
+    { id: "kdh-2", name: "Halloween Cookie Cutter & Baking Sets", lagPercent: 24, lagSeverity: "high",        estimatedRevenue: "$1.2M", competitor: "Amazon", skuCount: 98  },
+    { id: "kdh-3", name: "Spooky Tablescape Centerpieces",        lagPercent: 21, lagSeverity: "high",        estimatedRevenue: "$1.1M", competitor: "Amazon", skuCount: 86  },
+    { id: "kdh-4", name: "Black & Orange Halloween Drinkware Sets", lagPercent: 18, lagSeverity: "medium-high", estimatedRevenue: "$0.9M", competitor: "Amazon", skuCount: 74  },
+    { id: "kdh-5", name: "Halloween Party Plate & Napkin Bundles", lagPercent: 16, lagSeverity: "medium-high", estimatedRevenue: "$0.8M", competitor: "Amazon", skuCount: 68  },
+  ],
+  Halloween: [
     { id: "hw-1", name: "Animatronic Skeleton Displays",     lagPercent: 30,   lagSeverity: "high",        estimatedRevenue: "$2.5M", competitor: "Amazon",    skuCount: 168 },
     { id: "hw-2", name: "Inflatable Yard Decoration Kits",   lagPercent: 25,   lagSeverity: "high",        estimatedRevenue: "$2.1M", competitor: "Amazon",    skuCount: 142 },
     { id: "hw-3", name: "Halloween String Lights & Lanterns",lagPercent: 20,   lagSeverity: "high",        estimatedRevenue: "$1.6M", competitor: "Amazon",    skuCount: 118 },
@@ -358,20 +366,28 @@ const CATALOG: Record<string, GapItem[]> = {
  * Falls back to a generic set if the category is not in the catalog.
  */
 export function getGapItemsByCategory(category: string): GapItem[] {
+  let items: GapItem[] | undefined;
+
   // Exact match
-  if (CATALOG[category]) return CATALOG[category];
+  if (CATALOG[category]) items = CATALOG[category];
 
-  // Partial / case-insensitive match
-  const lower = category.toLowerCase();
-  const key = Object.keys(CATALOG).find((k) => k.toLowerCase() === lower);
-  if (key) return CATALOG[key];
+  if (!items) {
+    // Partial / case-insensitive match
+    const lower = category.toLowerCase();
+    const key = Object.keys(CATALOG).find((k) => k.toLowerCase() === lower);
+    if (key) items = CATALOG[key];
+  }
 
-  // Partial / truncated label match (e.g. "Party Supp..." → "Party Supplies")
-  const trimmed = lower.replace(/\.\.\.$/, "").trim();
-  const prefixKey = Object.keys(CATALOG).find(
-    (k) => k.toLowerCase().startsWith(trimmed) || trimmed.startsWith(k.toLowerCase().slice(0, 8)),
-  );
-  if (prefixKey) return CATALOG[prefixKey];
+  if (!items) {
+    const lower = category.toLowerCase();
+    const trimmed = lower.replace(/\.\.\.$/, "").trim();
+    const prefixKey = Object.keys(CATALOG).find(
+      (k) => k.toLowerCase().startsWith(trimmed) || trimmed.startsWith(k.toLowerCase().slice(0, 8)),
+    );
+    if (prefixKey) items = CATALOG[prefixKey];
+  }
 
-  return [];
+  if (!items) return [];
+
+  return items.map((item) => enrichGapItem(item, category));
 }

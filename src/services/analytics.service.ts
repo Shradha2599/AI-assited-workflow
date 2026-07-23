@@ -31,13 +31,13 @@ export async function getIndustrySegments() {
 
 export async function getGapBarData() {
   return [
-    { label: "Lighting", value: 22, revenueOpportunity: "$4.2M" },
-    { label: "Furniture", value: 20, revenueOpportunity: "$3.8M" },
-    { label: "Holiday & Fes...", value: 18, revenueOpportunity: "$3.1M" },
-    { label: "Storage & Or...", value: 12, revenueOpportunity: "$2.4M" },
-    { label: "Kitchen & Din...", value: 28, revenueOpportunity: "$5.6M" },
-    { label: "Outdoor Livi...", value: 10, revenueOpportunity: "$1.9M" },
-    { label: "Party Sup...", value: 5, revenueOpportunity: "$0.9M" },
+    { label: "Serveware", value: 28, revenueOpportunity: "$1.8M" },
+    { label: "Dining & Ent...", value: 28, revenueOpportunity: "$4.5M" },
+    { label: "Cookware", value: 24, revenueOpportunity: "$3.1M" },
+    { label: "Glassware", value: 22, revenueOpportunity: "$2.1M" },
+    { label: "Countertop St...", value: 19, revenueOpportunity: "$2.4M" },
+    { label: "Table Linens", value: 16, revenueOpportunity: "$1.9M" },
+    { label: "Appliances", value: 14, revenueOpportunity: "$1.7M" },
   ];
 }
 
@@ -52,24 +52,17 @@ const PIPELINE_STAGES: PartnerStage[] = [
   "Discovered",
 ];
 
-const PIPELINE_COLUMNS = [
-  "Lighting",
-  "Furniture",
-  "Holiday & Fes...",
-  "Storage & Or...",
-  "Kitchen & Din...",
-  "Outdoor Livi...",
-  "Party Supplies",
-  "Rugs",
-] as const;
+const KITCHEN_CATEGORY_LABEL = "Kitchen & Din...";
 
 export async function getPipelineData() {
   return {
-    columns: [...PIPELINE_COLUMNS],
-    rows: PIPELINE_STAGES.map((stage) => ({
-      stage,
-      values: PIPELINE_COLUMNS.map((col) => cellCount(stage, col)),
-    })),
+    stageColumns: [...PIPELINE_STAGES],
+    categoryRows: [
+      {
+        category: "Kitchen & Dining",
+        values: PIPELINE_STAGES.map((stage) => cellCount(stage, KITCHEN_CATEGORY_LABEL)),
+      },
+    ],
   };
 }
 

@@ -1,10 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Check, ChevronDown, Download, GripVertical, Loader2, MessageSquare, Plus, Sparkles, X } from "lucide-react";
+import { Check, ChevronDown, Download, GripVertical, Loader2, MessageSquare, Plus, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { SvgIcon } from "@/components/ui/svg-icon";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { cn } from "@/lib/utils";
 import { downloadCalendarPdf } from "@/lib/utils/calendar-pdf";
@@ -12,6 +13,7 @@ import {
   usePlanStore,
   type ScheduledCalendarItem,
 } from "@/features/assortment-plan/store/plan-store";
+import { formatFYShort } from "@/lib/mock-data/fy-plan-seeds";
 
 // ─── Calendar structure ───────────────────────────────────────────────────────
 
@@ -151,6 +153,13 @@ function rowForItem(itemName: string): string {
     if (keywords.some((kw) => lower.includes(kw))) return row;
   }
   return "Kitchen & Dining"; // safe fallback
+}
+
+/** Clamp start month and span so items stay within the 12-month grid */
+function clampSchedule(startMonth: number, span: number): { startMonth: number; span: number } {
+  const start = Math.max(0, Math.min(11, startMonth));
+  const clampedSpan = Math.max(1, Math.min(12 - start, span));
+  return { startMonth: start, span: clampedSpan };
 }
 
 const LANE_HEIGHT = 48;
@@ -329,8 +338,10 @@ interface AssortmentCalendarProps {
 }
 
 export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
+  const fiscalYear = usePlanStore((s) => s.fiscalYear);
   const planItems = usePlanStore((s) => s.planItems);
   const scheduledItems = usePlanStore((s) => s.scheduledItems);
+  const getOpportunityItems = usePlanStore((s) => s.getOpportunityItems);
   const addPlanItem = usePlanStore((s) => s.addPlanItem);
   const removePlanItem = usePlanStore((s) => s.removePlanItem);
   const scheduleItem = usePlanStore((s) => s.scheduleItem);
@@ -344,9 +355,10 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
     () => new Set(scheduledItems.map((s) => s.label)),
     [scheduledItems],
   );
-  const unscheduledPlanItems = useMemo(
-    () => planItems.filter((name) => !scheduledLabels.has(name)),
-    [planItems, scheduledLabels],
+  const opportunityItems = useMemo(() => getOpportunityItems(), [getOpportunityItems]);
+  const unscheduledOpportunityItems = useMemo(
+    () => opportunityItems.filter((name) => !scheduledLabels.has(name)),
+    [opportunityItems, scheduledLabels],
   );
 
   const [draggingItem, setDraggingItem] = useState<string | null>(null);
@@ -509,10 +521,15 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
       const { scheduledItems: generated } = (await res.json()) as {
         scheduledItems: Omit<ScheduledCalendarItem, "id">[];
       };
-      const withIds: ScheduledCalendarItem[] = generated.map((item, i) => ({
-        ...item,
-        id: `gen-${Date.now()}-${i}`,
-      }));
+      const withIds: ScheduledCalendarItem[] = generated.map((item, i) => {
+        const { startMonth, span } = clampSchedule(item.startMonth, item.span);
+        return {
+          ...item,
+          startMonth,
+          span,
+          id: `gen-${Date.now()}-${i}`,
+        };
+      });
       setScheduledItems(withIds);
     } catch {
       // silent — keep existing schedule on failure
@@ -527,16 +544,20 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
   const headerSeason = "bg-[#FFF9DB] text-[#4B4B4B]";
   const headerEvents = "bg-[#FFFCEB] text-[#4B4B4B]";
 
+  const fyShort = formatFYShort(fiscalYear);
+  const isNewFY = fiscalYear === "2026-2027";
+
   return (
     <div className={cn("space-y-[var(--space-4)]", className)}>
-      {/* ── Assortment Plan strip ─────────────────────────────────────────── */}
+      {/* ── Assortment Opportunities strip ─────────────────────────────────── */}
       <Card className="p-[var(--space-4)]">
-        <div className="mb-3 flex items-center gap-2">
-          <h3 className="text-[var(--text-section-size)] font-semibold">Assortment Plan</h3>
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <h3 className="text-[var(--text-section-size)] font-semibold">Assortment Opportunities</h3>
+          <Button variant="outline" size="sm">+ Item Types</Button>
         </div>
         <div className="flex flex-wrap gap-2">
-          {/* Draggable — not yet placed on calendar */}
-          {unscheduledPlanItems.map((item) => (
+          {/* Draggable — new item types not yet placed on calendar */}
+          {unscheduledOpportunityItems.map((item) => (
             <span
               key={item}
               draggable
@@ -560,19 +581,24 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
             </span>
           ))}
 
-          {planItems.length === 0 && (
+          {isNewFY && opportunityItems.length === 0 && (
             <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-              Add items from the Gap Analysis page, then generate or drag them onto the calendar.
+              Start building FY {fyShort} by adding item types from Gap Analysis or generate a calendar below.
             </p>
           )}
-          {planItems.length > 0 && unscheduledPlanItems.length === 0 && (
+          {!isNewFY && opportunityItems.length === 0 && (
+            <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
+              Add item types from Gap Analysis or seasonal recommendations. New opportunities will
+              appear here to schedule on the calendar below.
+            </p>
+          )}
+          {opportunityItems.length > 0 && unscheduledOpportunityItems.length === 0 && (
             <p className="text-[var(--text-caption-size)] text-[var(--color-primary)]">
-              All item types have been placed on the calendar.
+              All new opportunities have been placed on the calendar.
             </p>
           )}
         </div>
-        <div className="mt-3 flex gap-2">
-          <Button variant="outline" size="sm">+ Item Types</Button>
+        <div className="mt-3">
           <Button
             size="sm"
             onClick={handleGenerateCalendar}
@@ -581,7 +607,7 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
             {generating ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
             ) : (
-              <Sparkles className="h-3.5 w-3.5" />
+              <SvgIcon name="aiSparkle" size={14} variant="onPrimary" />
             )}
             {generating ? "Generating…" : "Generate Calendar"}
           </Button>
@@ -591,7 +617,7 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
       {/* ── Calendar grid ─────────────────────────────────────────────────── */}
       <Card className="overflow-hidden border-0 shadow-none">
         <div className="flex items-center justify-between border-b border-[var(--color-border)] p-[var(--space-4)]">
-          <h3 className="text-[var(--text-section-size)] font-semibold">Calendar Plan 2025-26</h3>
+          <h3 className="text-[var(--text-section-size)] font-semibold">Calendar Plan {fyShort}</h3>
           <CalendarToolbar />
         </div>
 
@@ -702,7 +728,7 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
                       {/* Droppable cells (one per month) with absolute-positioned items on top */}
                       <td
                         colSpan={12}
-                        className="border border-[var(--color-border)] p-0"
+                        className="overflow-hidden border border-[var(--color-border)] p-0"
                         style={{ position: "relative", height: `${rowHeight}px` }}
                       >
                         {/* Drop target grid — vertical lines per month */}
@@ -747,8 +773,9 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
                         {rowItems.map((item) => {
                           const lane = laneMap.get(item.id) ?? 0;
                           const isResizing = resizeOverride?.id === item.id;
-                          const activeStart = isResizing ? (resizeOverride.startMonth ?? item.startMonth) : item.startMonth;
-                          const activeSpan = isResizing ? resizeOverride.span : item.span;
+                          const rawStart = isResizing ? (resizeOverride.startMonth ?? item.startMonth) : item.startMonth;
+                          const rawSpan = isResizing ? resizeOverride.span : item.span;
+                          const { startMonth: activeStart, span: activeSpan } = clampSchedule(rawStart, rawSpan);
                           const isSelected = selectedItemId === item.id || isResizing;
                           return (
                             <div
@@ -875,7 +902,7 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
         </div>
       </Card>
 
-      <FinalizeShareButton />
+      <PlanActionButton />
     </div>
   );
 }
@@ -905,9 +932,10 @@ function CalendarToolbar() {
   );
 }
 
-function FinalizeShareButton() {
+function PlanActionButton() {
   const scheduledItems = usePlanStore((s) => s.scheduledItems);
   const openFinalizeDrawer = usePlanStore((s) => s.openFinalizeDrawer);
+
   const hasItems = scheduledItems.length > 0;
 
   return (

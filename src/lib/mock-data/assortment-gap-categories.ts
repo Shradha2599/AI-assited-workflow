@@ -63,9 +63,10 @@ export function buildGapCategoryFilterOptions(
   return [...treemapOptions, ...additionalOptions];
 }
 
-/** Default selection — all treemap-backed categories (7). */
+/** Default selection — Kitchen & Dining only for category manager scope. */
 export function getDefaultGapCategoryIds(treemapRoot: TreemapHierarchyRoot): string[] {
-  return treemapRoot.children.map((node) => node.id);
+  const kitchen = treemapRoot.children.find((node) => node.id === "kitchen");
+  return kitchen ? ["kitchen"] : treemapRoot.children.map((node) => node.id);
 }
 
 export function getTreemapBackedCategoryIds(options: GapCategoryFilterOption[]): string[] {

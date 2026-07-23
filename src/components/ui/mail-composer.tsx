@@ -21,6 +21,7 @@ export interface MailComposerProps {
   onBodyChange?: (value: string) => void;
   attachment?: MailComposerAttachment | null;
   bodyRows?: number;
+  fillHeight?: boolean;
   className?: string;
 }
 
@@ -35,6 +36,7 @@ export function MailComposer({
   onBodyChange,
   attachment = null,
   bodyRows = 14,
+  fillHeight = false,
   className,
 }: MailComposerProps) {
   const editable = Boolean(onToChange || onSubjectChange || onBodyChange);
@@ -43,6 +45,7 @@ export function MailComposer({
     <div
       className={cn(
         "overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-card)]",
+        fillHeight && "flex min-h-0 flex-col",
         className,
       )}
     >
@@ -129,9 +132,12 @@ export function MailComposer({
         <textarea
           value={body}
           onChange={(e) => onBodyChange(e.target.value)}
-          rows={bodyRows}
+          rows={fillHeight ? undefined : bodyRows}
           spellCheck
-          className="w-full resize-none bg-transparent px-4 py-3 text-[var(--text-caption-size)] leading-relaxed text-[var(--color-foreground)] focus:outline-none"
+          className={cn(
+            "w-full resize-none bg-transparent px-4 py-3 text-[var(--text-caption-size)] leading-relaxed text-[var(--color-foreground)] focus:outline-none",
+            fillHeight && "min-h-0 flex-1",
+          )}
           aria-label="Email message"
         />
       ) : (

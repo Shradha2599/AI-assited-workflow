@@ -15,6 +15,8 @@ interface DrawerPanelProps {
   ariaLabel: string;
   className?: string;
   widthClassName?: string;
+  bodyClassName?: string;
+  footerClassName?: string;
 }
 
 export function DrawerPanel({
@@ -26,6 +28,8 @@ export function DrawerPanel({
   ariaLabel,
   className,
   widthClassName = "w-[var(--drawer-width)]",
+  bodyClassName,
+  footerClassName,
 }: DrawerPanelProps) {
   const [visible, setVisible] = useState(false);
 
@@ -57,10 +61,10 @@ export function DrawerPanel({
       >
         {header ?? <DrawerHeaderShell title={title} onClose={onClose} />}
 
-        <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
+        <div className={cn("min-h-0 flex-1 overflow-y-auto", bodyClassName)}>{children}</div>
 
         {footer && (
-          <div className="shrink-0 border-t border-[var(--color-border)] p-[var(--space-4)]">
+          <div className={cn("shrink-0 border-t border-[var(--color-border)] p-[var(--space-4)]", footerClassName)}>
             {footer}
           </div>
         )}

@@ -88,7 +88,7 @@ export function AssortmentGapView({
   treemapRoot,
   products,
 }: AssortmentGapViewProps) {
-  const [drillPath, setDrillPath] = useState<string[]>([]);
+  const [drillPath, setDrillPath] = useState<string[]>(["kitchen"]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drawerCategory, setDrawerCategory] = useState<string | null>(null);
   const [appliedCategoryIds, setAppliedCategoryIds] = useState<string[]>(defaultCategoryIds);
@@ -293,8 +293,6 @@ export function AssortmentGapView({
     setDrawerCategory(null);
   }
 
-  const visibleTreemapTileCount = activeItems.length;
-
   return (
     <>
       <PageHeader
@@ -312,7 +310,6 @@ export function AssortmentGapView({
               allTaxonomyIds={allTaxonomyIds}
               taxonomyCategoryCount={taxonomyCategoryCount}
               treemapCategoryIds={treemapBackedCategoryIds}
-              treemapTileCount={visibleTreemapTileCount}
               align="end"
               className="[&>button]:h-9 [&>button]:bg-[var(--color-card)] [&>button]:px-3"
             />

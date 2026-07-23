@@ -15,6 +15,9 @@ import {
   type PipelinePartner,
   type PartnerStage,
 } from "@/lib/mock-data/pipeline-partners";
+import { getPartnersForPipelineCell } from "@/lib/pipeline-discovery-sync";
+import { useFYDiscoverySnapshot } from "@/features/lead-discovery/store/discovery-store";
+import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { getOnboardingBySellerID, computeOnboardingOverallProgress } from "@/lib/mock-data/onboarding";
 import { cn } from "@/lib/utils";
 
@@ -234,7 +237,20 @@ export function PipelineStageDrawer({
   count,
   onClose,
 }: PipelineStageDrawerProps) {
-  const partners = getPartnersByStageAndCategory(stage as PartnerStage, category);
+  const fiscalYear = usePlanStore((s) => s.fiscalYear);
+  const snap = useFYDiscoverySnapshot(fiscalYear);
+  const staticPartners = getPartnersByStageAndCategory(stage as PartnerStage, category);
+  const partners = getPartnersForPipelineCell(
+    stage as PartnerStage,
+    category,
+    staticPartners,
+    {
+      discoveredIds: snap.discoveredIds,
+      shortlistedIds: snap.shortlistedIds,
+      contactedIds: snap.contactedIds,
+      hasUserInitiatedDiscovery: snap.hasUserInitiatedDiscovery,
+    },
+  );
   const displayPartners = partners.slice(0, 8);
   const totalInCell = partners.length > 0 ? partners.length : count;
   const gmv = formatGmv(stage, totalInCell);

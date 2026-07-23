@@ -10,7 +10,7 @@ import {
   Plus,
 } from "lucide-react";
 
-import { PipelineHeatmap } from "@/components/data-display/pipeline-heatmap";
+import { PipelineHeatmapSynced } from "@/components/data-display/pipeline-heatmap-synced";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -30,8 +30,8 @@ import {
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
 interface PipelineData {
-  columns: string[];
-  rows: { stage: string; values: number[] }[];
+  stageColumns: string[];
+  categoryRows: { category: string; values: number[] }[];
 }
 
 interface PartnerOnboardingViewProps {
@@ -346,7 +346,7 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
         </div>
       </Card>
 
-      <PipelineHeatmap columns={pipeline.columns} rows={pipeline.rows} />
+      <PipelineHeatmapSynced baseline={pipeline} />
     </>
   );
 }

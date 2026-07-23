@@ -10,6 +10,7 @@ import {
   type OutreachPartnerContext,
 } from "@/lib/mock-data/outreach-mail";
 import { useDiscoveryStore } from "@/features/lead-discovery/store/discovery-store";
+import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { useToastStore } from "@/stores/toast-store";
 
 interface OpenDrawerOptions {
@@ -119,7 +120,8 @@ export const useOutreachStore = create<OutreachStore>((set, get) => ({
   sendMail: () => {
     const { draft, mailType, activeSellerId } = get();
     if (mailType === "acquisition_outreach" && activeSellerId) {
-      useDiscoveryStore.getState().shortlistSeller(activeSellerId);
+      const fiscalYear = usePlanStore.getState().fiscalYear;
+      useDiscoveryStore.getState().markContacted(fiscalYear, activeSellerId);
     }
     get().closeDrawer();
     useToastStore.getState().showToast({

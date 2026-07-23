@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Info, Pencil, Save } from "lucide-react";
+import { ChevronDown, Info, Pencil, Save } from "lucide-react";
 
 import { AssortmentPlanItems } from "@/components/data-display/assortment-plan-items";
 import { BeaconPlanDrawer } from "@/components/data-display/beacon-plan-drawer";
@@ -18,6 +18,7 @@ import {
   parseRevenueGoalToMillions,
 } from "@/lib/utils/revenue-goal-input";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
+import { FISCAL_YEAR_OPTIONS, type FiscalYearId } from "@/lib/mock-data/fy-plan-seeds";
 import { useToastStore } from "@/stores/toast-store";
 import { cn } from "@/lib/utils";
 
@@ -47,12 +48,17 @@ export function RevenueGoalPanel({
   const planRevenues   = usePlanStore((s) => s.planRevenues);
   const savedGoal      = usePlanStore((s) => s.revenueGoal);
   const storeSetGoal   = usePlanStore((s) => s.setRevenueGoal);
+  const fiscalYear     = usePlanStore((s) => s.fiscalYear);
+  const setFiscalYear  = usePlanStore((s) => s.setFiscalYear);
 
   const [goalInput, setGoalInput]           = useState(savedGoal);
   const [isEditingGoal, setIsEditingGoal]   = useState(false);
   const [beaconDrawerOpen, setBeaconDrawerOpen] = useState(false);
   const [showNoGoalModal, setShowNoGoalModal] = useState(false);
+  const [fyOpen, setFyOpen] = useState(false);
   const pendingBeaconOpenRef = useRef(false);
+
+  const activeFY = FISCAL_YEAR_OPTIONS.find((opt) => opt.id === fiscalYear) ?? FISCAL_YEAR_OPTIONS[0];
 
   const hasSavedGoal  = savedGoal.length > 0;
   const canSave       = isValidRevenueGoalInput(goalInput);
@@ -163,11 +169,48 @@ export function RevenueGoalPanel({
   return (
     <>
       <Card className={cn("mb-[var(--space-4)] p-[var(--space-4)] shadow-[var(--shadow-low)]", className)}>
-        <div className="mb-[var(--space-3)] flex items-center gap-1.5">
-          <h3 className="text-[var(--text-section-size)] font-semibold text-[var(--color-foreground)]">
-            Set Revenue Goal
-          </h3>
-          <Info className="h-3.5 w-3.5 text-[var(--color-muted-foreground)]" aria-hidden />
+        <div className="mb-[var(--space-3)] flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5">
+            <h3 className="text-[var(--text-section-size)] font-semibold text-[var(--color-foreground)]">
+              Set Revenue Goal
+            </h3>
+            <Info className="h-3.5 w-3.5 text-[var(--color-muted-foreground)]" aria-hidden />
+          </div>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setFyOpen((value) => !value)}
+              className="inline-flex items-center gap-1 rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2.5 py-1 text-[var(--text-caption-size)] text-[var(--color-foreground)]"
+            >
+              {activeFY.shortLabel}
+              <ChevronDown className={cn("h-3 w-3 text-[var(--color-muted-foreground)] transition-transform", fyOpen && "rotate-180")} />
+            </button>
+            {fyOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setFyOpen(false)} aria-hidden />
+                <ul className="absolute right-0 top-full z-50 mt-1 min-w-[140px] rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-card)] py-1 shadow-[var(--shadow-medium)]">
+                  {FISCAL_YEAR_OPTIONS.map((opt) => (
+                    <li key={opt.id}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFiscalYear(opt.id as FiscalYearId);
+                          setIsEditingGoal(false);
+                          setFyOpen(false);
+                        }}
+                        className={cn(
+                          "w-full px-3 py-2 text-left text-[var(--text-caption-size)] hover:bg-[var(--color-muted)]",
+                          opt.id === fiscalYear && "font-medium text-[var(--color-foreground)]",
+                        )}
+                      >
+                        {opt.shortLabel}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
         </div>
 
         <div className="mb-[var(--space-5)] flex flex-col gap-[var(--space-3)] sm:flex-row">

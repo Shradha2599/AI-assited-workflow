@@ -26,8 +26,10 @@ import { cn } from "@/lib/utils";
 import type { Seller } from "@/lib/mock-data/sellers";
 import { getSellerProfileDetails } from "@/lib/mock-data/seller-profile-details";
 import { useSellerMatchingPlanItems } from "../hooks/use-seller-matching-plan-items";
+import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import {
   useDiscoveryStore,
+  useFYDiscoverySnapshot,
   type VerificationResult,
   type VerificationSource,
 } from "../store/discovery-store";
@@ -76,8 +78,9 @@ function SourceRow({ label, source }: { label: string; source: VerificationSourc
 }
 
 export function SellerProfileView({ seller }: SellerProfileViewProps) {
+  const fiscalYear = usePlanStore((s) => s.fiscalYear);
+  const snap = useFYDiscoverySnapshot(fiscalYear);
   const verifications = useDiscoveryStore((s) => s.verifications);
-  const shortlistedIds = useDiscoveryStore((s) => s.shortlistedIds);
   const shortlistSeller = useDiscoveryStore((s) => s.shortlistSeller);
   const removeFromShortlist = useDiscoveryStore((s) => s.removeFromShortlist);
   const setVerification = useDiscoveryStore((s) => s.setVerification);
@@ -94,7 +97,7 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
   const details = getSellerProfileDetails(seller);
   const matchingItems = useSellerMatchingPlanItems(seller);
   const cached = verifications[seller.id];
-  const isShortlisted = shortlistedIds.includes(seller.id);
+  const isShortlisted = snap.shortlistedIds.includes(seller.id);
 
   const [activeTab, setActiveTab] = useState<ProfileTab>("overview");
   const [verifying, setVerifying] = useState(!cached);
@@ -162,11 +165,11 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
             </div>
             <div className="flex items-center gap-2">
               {isShortlisted ? (
-                <Button variant="outline" size="sm" onClick={() => removeFromShortlist(seller.id)}>
+                <Button variant="outline" size="sm" onClick={() => removeFromShortlist(fiscalYear, seller.id)}>
                   Remove from Shortlist
                 </Button>
               ) : (
-                <Button size="sm" className="gap-1.5" onClick={() => shortlistSeller(seller.id)}>
+                <Button size="sm" className="gap-1.5" onClick={() => shortlistSeller(fiscalYear, seller.id)}>
                   <Plus className="h-3.5 w-3.5" /> Shortlist Lead
                 </Button>
               )}

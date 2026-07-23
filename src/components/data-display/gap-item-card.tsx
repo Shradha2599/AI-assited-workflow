@@ -17,6 +17,10 @@ interface GapItemCardProps {
   selectable?: boolean;
   selected?: boolean;
   onToggleSelect?: () => void;
+  /** List-only mode for calendar-update drawers — no revenue, keeps Add to Plan ghost CTA */
+  calendarUpdate?: boolean;
+  /** @deprecated use calendarUpdate */
+  compact?: boolean;
 }
 
 export function GapItemCard({
@@ -27,6 +31,8 @@ export function GapItemCard({
   selectable = false,
   selected = false,
   onToggleSelect,
+  calendarUpdate = false,
+  compact = false,
 }: GapItemCardProps) {
   const lag = getLagBadge(item.lagPercent);
 
@@ -48,9 +54,11 @@ export function GapItemCard({
             {lag.label}
           </span>
         </div>
+        {!compact && (
         <p className="mt-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
           Est. Revenue: {item.estimatedRevenue} | {item.competitor}: {item.skuCount} SKUs
         </p>
+        )}
         {!selectable &&
           (item.inPlan ? (
             <Button

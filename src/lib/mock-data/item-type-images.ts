@@ -74,5 +74,9 @@ export function resolveItemTypeImageUrl({
     if (byId) return byId;
   }
 
-  return imageUrl?.startsWith("/") ? imageUrl : undefined;
+  if (imageUrl?.startsWith("http") || imageUrl?.startsWith("/")) {
+    return imageUrl;
+  }
+
+  return undefined;
 }
