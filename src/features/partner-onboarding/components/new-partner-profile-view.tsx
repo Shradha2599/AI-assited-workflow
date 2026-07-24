@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { LeadFormView } from "@/features/partner-onboarding/components/lead-form-view";
+import { OnboardingCommentsDrawer } from "@/features/partner-onboarding/components/onboarding-comments-drawer";
 import { PartnerProfileHeader } from "@/features/partner-onboarding/components/partner-profile-header";
 import { AssortmentAnalysisTab } from "@/features/partner-onboarding/components/assortment-analysis-tab";
 import { Card } from "@/components/ui/card";
@@ -66,6 +67,7 @@ export function NewPartnerProfileView({ partner, form }: NewPartnerProfileViewPr
           <AssortmentAnalysisTab content={content} />
         </Card>
       )}
+      <OnboardingCommentsDrawer partner={partner} />
     </div>
   );
 }

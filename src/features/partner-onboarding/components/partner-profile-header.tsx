@@ -11,6 +11,7 @@ import { SvgIcon } from "@/components/ui/svg-icon";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { useOutreachMail } from "@/features/outreach/hooks/use-outreach-mail";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
+import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 import { PartnerStatusBadge } from "./partner-status-badge";
 
 function formatCurrency(n: number): string {
@@ -75,6 +76,7 @@ export function PartnerProfileHeader({
 }: PartnerProfileHeaderProps) {
   const initials = getInitials(partner.legalBusinessName);
   const openOutreach = useOutreachMail();
+  const openComments = useOnboardingReviewStore((s) => s.openComments);
 
   const metadataItems = [
     {
@@ -177,7 +179,7 @@ export function PartnerProfileHeader({
             <Button variant="outline" size="sm" className="gap-1.5">
               <Activity className="h-3.5 w-3.5" /> Activity
             </Button>
-            <Button variant="outline" size="sm" className="gap-1.5">
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={() => openComments()}>
               <MessageSquare className="h-3.5 w-3.5" /> Comments
             </Button>
             <Button

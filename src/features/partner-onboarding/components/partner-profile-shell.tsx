@@ -6,6 +6,7 @@ import { LeadFormView } from "@/features/partner-onboarding/components/lead-form
 import { NewPartnerProfileView } from "@/features/partner-onboarding/components/new-partner-profile-view";
 import { OnboardingChecklistView } from "@/features/partner-onboarding/components/onboarding-checklist-view";
 import { PartnerProfileHeader } from "@/features/partner-onboarding/components/partner-profile-header";
+import { OnboardingCommentsDrawer } from "@/features/partner-onboarding/components/onboarding-comments-drawer";
 import type { LeadFormData } from "@/lib/mock-data/lead-forms";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import { getOnboardingForPartner } from "@/lib/mock-data/onboarding";
@@ -56,6 +57,7 @@ export function PartnerProfileShell({ partner, form, onboarding }: PartnerProfil
       <div className="space-y-[var(--space-4)]">
         <PartnerProfileHeader partner={displayPartner} />
         <LeadFormView partner={displayPartner} form={form} />
+        <OnboardingCommentsDrawer partner={displayPartner} />
       </div>
     );
   }
