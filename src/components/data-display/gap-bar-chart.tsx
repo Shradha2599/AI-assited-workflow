@@ -16,6 +16,7 @@ interface GapBarChartProps {
   title?: string;
   data: GapBar[];
   filterLabel?: string;
+  showFilter?: boolean;
   className?: string;
 }
 
@@ -26,12 +27,13 @@ export function GapBarChart({
   title = "Assortment Gap Analysis",
   data,
   filterLabel = "Categories (8)",
+  showFilter = true,
   className,
 }: GapBarChartProps) {
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
 
   return (
-    <AmChartCard title={title} filterLabel={filterLabel} className={className}>
+    <AmChartCard title={title} filterLabel={filterLabel} showFilter={showFilter} className={className}>
       <div className="flex h-full min-h-[220px] w-full min-w-0 flex-col">
         <div className="flex min-h-0 flex-1 gap-1">
           <div className="relative w-9 shrink-0 self-stretch">

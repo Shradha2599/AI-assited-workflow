@@ -17,6 +17,7 @@ interface DonutChartProps {
   total: string;
   segments: DonutSegment[];
   filterLabel?: string;
+  showFilter?: boolean;
   lockedLabels?: string[];
   showAddCompetitor?: boolean;
   className?: string;
@@ -46,6 +47,7 @@ export function DonutChart({
   total,
   segments: initialSegments,
   filterLabel = "Categories (8)",
+  showFilter = true,
   lockedLabels,
   showAddCompetitor = true,
   className,
@@ -81,7 +83,7 @@ export function DonutChart({
   }
 
   return (
-    <AmChartCard title={title} filterLabel={filterLabel} className={className}>
+    <AmChartCard title={title} filterLabel={filterLabel} showFilter={showFilter} className={className}>
       <div className="flex h-full min-h-0 w-full min-w-0 flex-col">
         <div className="flex min-h-[180px] flex-1 items-center justify-center">
           <div className="relative aspect-square h-full max-w-full">

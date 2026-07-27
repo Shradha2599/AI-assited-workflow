@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 interface AmChartCardProps {
   title: string;
   filterLabel?: string;
+  showFilter?: boolean;
   children: React.ReactNode;
   className?: string;
 }
@@ -11,6 +12,7 @@ interface AmChartCardProps {
 export function AmChartCard({
   title,
   filterLabel = "Categories (8)",
+  showFilter = true,
   children,
   className,
 }: AmChartCardProps) {
@@ -18,12 +20,14 @@ export function AmChartCard({
     <Card className={cn("flex min-h-0 flex-col overflow-hidden", className)}>
       <CardHeader className="shrink-0 flex-row items-center justify-between space-y-0 pb-2">
         <h3 className="text-[var(--text-section-size)] font-semibold">{title}</h3>
-        <button
-          type="button"
-          className="shrink-0 rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]"
-        >
-          {filterLabel} ▾
-        </button>
+        {showFilter && (
+          <button
+            type="button"
+            className="shrink-0 rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]"
+          >
+            {filterLabel} ▾
+          </button>
+        )}
       </CardHeader>
       <CardContent className="flex min-h-0 flex-1 flex-col overflow-hidden pt-0">
         {children}

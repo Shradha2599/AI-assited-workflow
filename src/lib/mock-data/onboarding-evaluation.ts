@@ -19,6 +19,14 @@ export interface AgentRecommendation {
   suggestedComment: string;
 }
 
+export interface AiFieldSuggestion {
+  fieldId: string;
+  label: string;
+  submittedValue: string;
+  suggestedValue: string;
+  reason: string;
+}
+
 export interface OnboardingTaskEvaluation {
   taskId: string;
   sellerId: string;
@@ -31,6 +39,7 @@ export interface OnboardingTaskEvaluation {
   source: string;
   checkedOn: string;
   agentRecommendation?: AgentRecommendation;
+  aiFieldSuggestions?: AiFieldSuggestion[];
   fields: OnboardingFieldValidation[];
 }
 
@@ -77,18 +86,16 @@ function buildBrandProfileFields(
   website: string,
   description: string,
   sourcing: string,
-  bannerInvalid: boolean,
+  descriptionInvalid: boolean,
 ): OnboardingFieldValidation[] {
   return [
     {
       id: "banner",
       label: "Banner/ Cover Image",
       submittedValue: "Cover.png",
-      status: bannerInvalid ? "invalid" : "valid",
+      status: "valid",
       source: "Image quality analysis",
-      detail: bannerInvalid
-        ? `${COVER_FILE_SIZE} — Resolution below 1200×675 minimum; compression artifacts detected`
-        : `${COVER_FILE_SIZE} — Resolution and aspect ratio meet guidelines`,
+      detail: `${COVER_FILE_SIZE} — Resolution and aspect ratio meet guidelines`,
       checkedOn: CHECKED,
     },
     {
@@ -104,9 +111,11 @@ function buildBrandProfileFields(
       id: "description",
       label: "Brand description",
       submittedValue: description,
-      status: "valid",
+      status: descriptionInvalid ? "invalid" : "valid",
       source: website,
-      detail: "Aligns with brand positioning on website and product catalog",
+      detail: descriptionInvalid
+        ? "Too short and missing category keywords required for Target Plus marketplace"
+        : "Aligns with brand positioning on website and product catalog",
       checkedOn: CHECKED,
     },
     {
@@ -130,6 +139,17 @@ function buildBrandProfileFields(
   ];
 }
 
+function brandDescriptionAiSuggestion(displayName: string): AiFieldSuggestion {
+  return {
+    fieldId: "description",
+    label: "Brand description",
+    submittedValue: "Kitchen and dining essentials for modern homes",
+    suggestedValue: `${displayName} offers curated kitchen and dining products for modern households — from serveware and cookware to tabletop essentials — designed for Target guests seeking quality and style.`,
+    reason:
+      "Description must be at least 120 characters and include primary category keywords (kitchen, dining) plus a clear value proposition for Target guests.",
+  };
+}
+
 function brandProfileEvaluation(
   sellerId: string,
   taskId: string,
@@ -138,6 +158,7 @@ function brandProfileEvaluation(
   description: string,
 ): OnboardingTaskEvaluation {
   const sourcing = "Certified suppliers, non-GMO materials";
+  const aiSuggestion = brandDescriptionAiSuggestion(displayName);
   return {
     taskId,
     sellerId,
@@ -146,15 +167,15 @@ function brandProfileEvaluation(
     reviewable: true,
     autoValidated: false,
     validationStatus: "invalid",
-    summary: "Cover image does not meet marketplace display guidelines.",
+    summary: "Brand description does not meet marketplace copy guidelines.",
     source: "Brand profile analysis",
     checkedOn: CHECKED,
     agentRecommendation: {
-      title: "Banner / Cover Image — review required",
-      message: `Cover image for ${displayName} is below marketplace resolution guidelines. Brand display name, description, website URL, and sourcing details align with submitted brand assets. Add a comment so the seller can upload a corrected cover image.`,
-      suggestedComment:
-        "Please replace the cover image with a higher-resolution asset (minimum 1200×675) that matches your brand guidelines.",
+      title: "Brand description — review required",
+      message: `The brand description for ${displayName} does not meet Target Plus criteria. Display name, website, sourcing, logo, and cover image passed validation. Review the AI suggestion for brand description or approve if you accept the partner copy.`,
+      suggestedComment: aiSuggestion.suggestedValue,
     },
+    aiFieldSuggestions: [{ ...aiSuggestion, submittedValue: description }],
     fields: buildBrandProfileFields(displayName, website, description, sourcing, true),
   };
 }
@@ -178,12 +199,6 @@ function validBrandProfileEvaluation(
     summary: "Brand profile fields align with submitted assets.",
     source: "Brand profile analysis",
     checkedOn: CHECKED,
-    agentRecommendation: {
-      title: "Brand profile ready for review",
-      message: `Display name, description, website, logo, and cover image for ${displayName} align with submitted brand assets. Approve if everything looks correct, or add a comment for the seller to update any brand field.`,
-      suggestedComment:
-        "Please review your brand display name, description, and cover image to ensure they match current marketplace guidelines.",
-    },
     fields: buildBrandProfileFields(displayName, website, description, sourcing, false),
   };
 }
@@ -519,14 +534,16 @@ const documentationEvaluations: Record<string, { general: DocumentUpload[]; bran
         instruction: "Upload a completed W9 tax form.",
         fileName: "Pinnacle Goods W9.pdf",
         fileSize: "0.9 MB",
-        validationStatus: "valid",
-        summary: "W9 form is complete and matches the legal business name.",
+        validationStatus: "invalid",
+        summary: "W9 legal name does not match registered business name.",
         source: "IRS W9 validation",
         checkedOn: CHECKED,
         agentRecommendation: {
-          title: "W9 form submitted",
-          message: "Tax document uploaded — W9 fields match business identity. Approve or request corrected document.",
-          suggestedComment: "W9 fields match business identity. Approve or request corrected document.",
+          title: "W9 form — review required",
+          message:
+            "Legal name on the W9 does not match the registered business name on file. Review the AI suggestion or request an updated form from the seller.",
+          suggestedComment:
+            "Please upload a corrected W9 with the legal business name matching your registration.",
         },
       },
     ],
@@ -829,6 +846,8 @@ export function getProfileTaskEvaluations(sellerId: string): OnboardingTaskEvalu
       const website = `www.${displayName.toLowerCase().replace(/\s+/g, "")}.com`;
       const description = `${displayName} — brand profile submitted for review.`;
       const bannerInvalid = Boolean(task.issue);
+      const descriptionInvalid = bannerInvalid;
+      const aiSuggestion = brandDescriptionAiSuggestion(displayName);
       return {
         taskId: task.id,
         sellerId,
@@ -836,23 +855,30 @@ export function getProfileTaskEvaluations(sellerId: string): OnboardingTaskEvalu
         title: "Brand profile",
         reviewable: true,
         autoValidated: false,
-        validationStatus: (bannerInvalid ? "invalid" : "partial") as ValidationStatus,
-        summary: task.issueSource ?? task.issue ?? "Brand profile ready for TM review.",
+        validationStatus: (descriptionInvalid ? "invalid" : "valid") as ValidationStatus,
+        summary: descriptionInvalid
+          ? "Brand description does not meet marketplace copy guidelines."
+          : "Brand profile fields align with submitted assets.",
         source: "Brand profile analysis",
         checkedOn: CHECKED,
-        agentRecommendation: task.agentRecommendation ?? {
-          title: bannerInvalid ? "Banner / Cover Image — review required" : "Brand profile ready for review",
-          message: bannerInvalid
-            ? `Cover image for ${displayName} may not meet marketplace guidelines. Other brand fields were checked against submitted assets. Add a comment so the seller can rectify the issue.`
-            : `Brand details for ${displayName} were checked against submitted assets. Approve or add a comment for the seller to update any field.`,
-          suggestedComment: task.issueSource ?? "Please review your brand profile fields and update any details that need correction.",
-        },
+        ...(descriptionInvalid
+          ? {
+              agentRecommendation: {
+                title: "Brand description — review required",
+                message: `The brand description for ${displayName} does not meet Target Plus criteria. Other brand details and assets passed validation.`,
+                suggestedComment: aiSuggestion.suggestedValue,
+              },
+              aiFieldSuggestions: [
+                { ...aiSuggestion, submittedValue: description },
+              ] as AiFieldSuggestion[],
+            }
+          : {}),
         fields: buildBrandProfileFields(
           displayName,
           website,
           description,
           "Certified suppliers, non-GMO materials",
-          bannerInvalid,
+          descriptionInvalid,
         ),
       };
     });

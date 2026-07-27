@@ -7,14 +7,14 @@ export interface DashboardMetric {
   value: string;
   change: string;
   changeType?: "positive" | "negative" | "neutral";
-  icon: "revenue" | "goal" | "gap" | "sellers";
+  icon: "revenue" | "goal" | "gap" | "sellers" | "items";
 }
 
 export async function getDashboardMetrics(): Promise<DashboardMetric[]> {
   return [
     { label: "Total Revenue", value: "$ 1.8B", change: "24%", changeType: "positive", icon: "revenue" },
     { label: "Revenue Goal", value: "$ 2.5B", change: "10.4%", changeType: "positive", icon: "goal" },
-    { label: "Assortment Gap Covered", value: "23%", change: "4.5%", changeType: "positive", icon: "gap" },
+    { label: "Item Types Added", value: "18", change: "3", changeType: "positive", icon: "items" },
     { label: "Active Sellers", value: "2,345", change: "2.5%", changeType: "positive", icon: "sellers" },
   ];
 }

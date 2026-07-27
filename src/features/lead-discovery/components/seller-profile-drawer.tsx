@@ -3,16 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  ArrowRight,
   CheckCircle2,
   ChevronDown,
   ChevronUp,
   CircleDashed,
   ExternalLink,
   Loader2,
-  Plus,
   Sparkles,
   Star,
+  Trash2,
+  User,
+  X,
   XCircle,
 } from "lucide-react";
 import { SvgIcon } from "@/components/ui/svg-icon";
@@ -183,7 +184,11 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
 
   useEffect(() => {
     if (cached) {
-      setLocalVerification(cached);
+      const stable =
+        cached.confidenceScore === seller.confidenceScore
+          ? cached
+          : { ...cached, confidenceScore: seller.confidenceScore };
+      setLocalVerification(stable);
       setVerifying(false);
       return;
     }
@@ -195,30 +200,41 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
     })
       .then((r) => r.json())
       .then((result: VerificationResult) => {
-        setLocalVerification(result);
-        setVerification(seller.id, result);
+        const stable: VerificationResult = {
+          ...result,
+          confidenceScore: seller.confidenceScore,
+        };
+        setLocalVerification(stable);
+        setVerification(seller.id, stable);
       })
       .catch(() => setLocalVerification(null))
       .finally(() => setVerifying(false));
   }, [seller.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const initials = getInitials(seller.legalBusinessName);
-  const confidenceScore = verification?.confidenceScore ?? seller.confidenceScore;
+  const confidenceScore = seller.confidenceScore;
 
   return (
     <>
     <DrawerPanel
       ariaLabel={`Seller profile: ${seller.legalBusinessName}`}
       onClose={onClose}
+      bodyClassName="min-w-0 overflow-x-hidden"
       header={
         <DrawerHeaderShell onClose={onClose} title={seller.legalBusinessName} />
       }
       footer={
-        <div className="flex gap-2">
+        <div className="grid min-w-0 grid-cols-3 gap-2">
+          <Button size="sm" className="min-w-0 gap-1 px-2" asChild>
+            <Link href={getSellerProfilePath(seller.id)}>
+              <User className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">View</span>
+            </Link>
+          </Button>
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 gap-1.5"
+            className="min-w-0 gap-1 px-2"
             onClick={() =>
               openOutreach({
                 mailType: "acquisition_outreach",
@@ -228,25 +244,26 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
               })
             }
           >
-            <SvgIcon name="mail" size={14} variant="primary" /> Send Mail
+            <SvgIcon name="mail" size={14} variant="primary" className="shrink-0" />
+            <span className="truncate">Send</span>
           </Button>
-          {isShortlisted ? (
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1"
-              onClick={() => removeFromShortlist(fiscalYear, seller.id)}
-            >
-              Remove from Shortlist
-            </Button>
-          ) : (
-            <Button size="sm" className="flex-1 gap-1.5" onClick={() => shortlistSeller(fiscalYear, seller.id)}>
-              <Plus className="h-3.5 w-3.5" /> Shortlist Lead
-            </Button>
-          )}
+          <Button
+            variant="outline"
+            size="sm"
+            className="min-w-0 gap-1 px-2"
+            onClick={() =>
+              isShortlisted
+                ? removeFromShortlist(fiscalYear, seller.id)
+                : shortlistSeller(fiscalYear, seller.id)
+            }
+          >
+            <Trash2 className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">Shortlist</span>
+          </Button>
         </div>
       }
     >
+      <div className="min-w-0 max-w-full overflow-x-hidden">
       {/* Profile meta */}
       <div className="px-[var(--space-4)] py-[var(--space-4)]">
         <div className="mb-4 flex items-start justify-between gap-3">
@@ -255,7 +272,7 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
               {initials}
             </div>
             <div className="min-w-0">
-              <div className="flex items-center gap-2">
+              <div className="flex min-w-0 items-center gap-2">
                 <TruncatedText
                   text={seller.legalBusinessName}
                   inline
@@ -278,13 +295,13 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
           </div>
         </div>
 
-        <div className="flex divide-x divide-[var(--color-border)]">
+        <div className="grid min-w-0 grid-cols-3 gap-2 divide-x divide-[var(--color-border)]">
           {[
             { label: "Avg. annual GMV", value: formatCurrency(seller.gmv) },
             { label: "Largest Category", value: seller.category },
             { label: "SKUs", value: seller.skus.toLocaleString() },
           ].map((stat) => (
-            <div key={stat.label} className="min-w-0 flex-1 px-3 first:pl-0 last:pr-0">
+            <div key={stat.label} className="min-w-0 px-2 first:pl-0 last:pr-0">
               <p className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
                 {stat.label}
               </p>
@@ -297,7 +314,7 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
         </div>
       </div>
 
-      <div className="space-y-3 p-[var(--space-4)]">
+      <div className="min-w-0 space-y-3 p-[var(--space-4)]">
         <DrawerSectionCard>
           <button
             type="button"
@@ -382,7 +399,7 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
                 <dt className="text-[var(--text-label-size)] text-[var(--color-muted-foreground)]">
                   {item.label}
                 </dt>
-                <dd className="text-[var(--text-caption-size)] font-medium">
+                <dd className="break-words text-[var(--text-caption-size)] font-medium">
                   {"isLink" in item && item.isLink ? (
                     <a
                       href={`https://${seller.website}`}
@@ -439,13 +456,7 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
             </div>
           ))}
         </DrawerSectionCard>
-
-        <Link
-          href={getSellerProfilePath(seller.id)}
-          className="inline-flex items-center gap-1 px-1 text-[var(--text-caption-size)] font-medium text-[var(--color-primary)] hover:underline"
-        >
-          View More Details <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
+      </div>
       </div>
     </DrawerPanel>
 

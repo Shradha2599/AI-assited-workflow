@@ -51,6 +51,7 @@ export function ValidationAlert({
   if (variant === "banner") {
     return (
       <InfoBanner
+        variant="warning"
         className="mb-6"
         title={title}
         message={
@@ -66,6 +67,7 @@ export function ValidationAlert({
 
   return (
     <InfoBanner
+      variant="info"
       className="mb-5"
       title={title}
       message={
@@ -76,6 +78,154 @@ export function ValidationAlert({
       }
       onDismiss={() => dismissAlert(taskId)}
     />
+  );
+}
+
+/** AI review banner — warning when issues flagged, success when ready to approve. */
+export function AiSubtaskReviewBanner({
+  alertId,
+  taskApproveId,
+  taskSubmitted,
+  tmApproved,
+  mode,
+  warningTitle,
+  warningMessage,
+  successTitle,
+  successMessage,
+  recommendationFields,
+  modalTitle,
+  modalSubtitle,
+  applyToastMessage,
+  approveToastMessage,
+}: {
+  alertId: string;
+  taskApproveId: string;
+  taskSubmitted: boolean;
+  tmApproved: boolean;
+  mode: "warning" | "success";
+  warningTitle: string;
+  warningMessage: string;
+  successTitle: string;
+  successMessage: string;
+  recommendationFields: import("@/lib/mock-data/onboarding-evaluation").AiFieldSuggestion[];
+  modalTitle: string;
+  modalSubtitle: string;
+  applyToastMessage: string;
+  approveToastMessage: string;
+}) {
+  const dismissed = useOnboardingReviewStore((s) => s.dismissedAlerts.includes(alertId));
+  const openRecommendationModal = useOnboardingReviewStore((s) => s.openRecommendationModal);
+  const approveWithAcknowledgement = useOnboardingReviewStore((s) => s.approveWithAcknowledgement);
+
+  if (!taskSubmitted || tmApproved || dismissed) return null;
+
+  if (mode === "warning" && recommendationFields.length > 0) {
+    return (
+      <InfoBanner
+        variant="warning"
+        className="mb-6"
+        title={warningTitle}
+        message={
+          <>
+            {warningMessage}
+            <div className="mt-3">
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-[var(--color-warning-icon)] bg-white text-[var(--color-warning-icon)] hover:bg-white/90"
+                onClick={() =>
+                  openRecommendationModal({
+                    alertId,
+                    taskApproveId,
+                    title: modalTitle,
+                    subtitle: modalSubtitle,
+                    fields: recommendationFields,
+                    toastMessage: applyToastMessage,
+                    approveOnApply: false,
+                  })
+                }
+              >
+                View recommendation
+              </Button>
+            </div>
+          </>
+        }
+      />
+    );
+  }
+
+  if (mode === "success") {
+    return (
+      <InfoBanner
+        variant="success"
+        className="mb-6"
+        title={successTitle}
+        message={
+          <>
+            {successMessage}
+            <div className="mt-3">
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-[var(--color-primary)] bg-white text-[var(--color-primary)] hover:bg-white/90"
+                onClick={() => approveWithAcknowledgement(taskApproveId, alertId, approveToastMessage)}
+              >
+                Approve
+              </Button>
+            </div>
+          </>
+        }
+      />
+    );
+  }
+
+  return null;
+}
+
+/** Approve / Reject aligned with sub-task title when AI review is active. */
+export function AiSubtaskReviewHeaderActions({
+  alertId,
+  taskApproveId,
+  taskSubmitted,
+  tmApproved,
+  mode,
+  recommendationFields,
+  approveToastMessage,
+  onReject,
+}: {
+  alertId: string;
+  taskApproveId: string;
+  taskSubmitted: boolean;
+  tmApproved: boolean;
+  mode: "warning" | "success";
+  recommendationFields: import("@/lib/mock-data/onboarding-evaluation").AiFieldSuggestion[];
+  approveToastMessage: string;
+  onReject: () => void;
+}) {
+  const dismissed = useOnboardingReviewStore((s) => s.dismissedAlerts.includes(alertId));
+  const approveWithAcknowledgement = useOnboardingReviewStore((s) => s.approveWithAcknowledgement);
+
+  const showAiReview =
+    taskSubmitted &&
+    !tmApproved &&
+    !dismissed &&
+    (mode === "success" || (mode === "warning" && recommendationFields.length > 0));
+
+  if (!showAiReview) return null;
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button
+        size="sm"
+        disabled={mode !== "success"}
+        onClick={() => approveWithAcknowledgement(taskApproveId, alertId, approveToastMessage)}
+      >
+        Approve
+      </Button>
+      <Button size="sm" variant="outline" onClick={onReject}>
+        Reject
+      </Button>
+    </div>
   );
 }
 
@@ -101,6 +251,15 @@ export function ReviewActionBar({
         </Button>
       )}
     </div>
+  );
+}
+
+export function SubtaskReviewBadge() {
+  return (
+    <StatusTag className={cn("inline-flex items-center gap-1.5 font-normal", markerToneClass.review)}>
+      <Image src="/icons/review-document.svg" alt="" width={14} height={14} aria-hidden />
+      Review
+    </StatusTag>
   );
 }
 

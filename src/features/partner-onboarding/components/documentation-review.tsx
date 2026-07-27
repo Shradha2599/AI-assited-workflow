@@ -11,6 +11,7 @@ import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import { getSectionProgressPercent } from "@/lib/mock-data/onboarding";
 import {
   getDocumentationEvaluation,
+  type AiFieldSuggestion,
   type BrandDocumentRow,
   type DocumentUpload,
 } from "@/lib/mock-data/onboarding-evaluation";
@@ -19,7 +20,8 @@ import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
 import { OnboardingSubtaskNav } from "./onboarding-subtask-nav";
-import { FileAttachmentRow, ReviewActionBar, ValidationAlert } from "./profile-review-shared";
+import { FileAttachmentRow, AiSubtaskReviewBanner, AiSubtaskReviewHeaderActions, SubtaskReviewBadge } from "./profile-review-shared";
+import { AiRecommendationModal } from "./ai-recommendation-modal";
 import {
   documentationSubtaskApproveId,
   isDocumentationSubtaskTmApproved,
@@ -41,13 +43,28 @@ const DOC_SUBTASK_HINTS = {
   brands: "Provide brand related documents.",
 } as const;
 
-function ReviewBadge() {
-  return (
-    <StatusTag className={cn("inline-flex items-center gap-1.5 font-normal", markerToneClass.review)}>
-      <Image src="/icons/review-document.svg" alt="" width={14} height={14} aria-hidden />
-      Review
-    </StatusTag>
-  );
+function docUploadToAiField(doc: DocumentUpload): AiFieldSuggestion {
+  return {
+    fieldId: doc.id,
+    label: doc.label,
+    submittedValue: doc.fileName,
+    suggestedValue:
+      doc.agentRecommendation?.suggestedComment ??
+      "Upload a corrected document that meets the stated requirements.",
+    reason: doc.agentRecommendation?.message ?? doc.summary,
+  };
+}
+
+function brandDocToAiField(brand: BrandDocumentRow): AiFieldSuggestion {
+  return {
+    fieldId: brand.id,
+    label: brand.name,
+    submittedValue: brand.documentName,
+    suggestedValue:
+      brand.agentRecommendation?.suggestedComment ??
+      "Provide an updated authorization letter with all required fields.",
+    reason: brand.agentRecommendation?.message ?? brand.summary,
+  };
 }
 
 function GeneralDocumentFile({
@@ -102,58 +119,6 @@ function GeneralDocumentFile({
         </div>
       )}
     </div>
-  );
-}
-
-function DocumentRecommendationBanner({
-  doc,
-  approveId,
-  approved,
-  onReject,
-  onAddComment,
-}: {
-  doc: DocumentUpload;
-  approveId: string;
-  approved: boolean;
-  onReject: () => void;
-  onAddComment: () => void;
-}) {
-  if (approved || !doc.agentRecommendation) return null;
-
-  return (
-    <ValidationAlert
-      taskId={approveId}
-      title={doc.agentRecommendation.title}
-      message={doc.agentRecommendation.message}
-      onAddComment={onAddComment}
-      onRejectRecommendation={onReject}
-      variant="banner"
-    />
-  );
-}
-
-function BrandDocumentsAlert({
-  alertId,
-  title,
-  message,
-  onReject,
-  onAddComment,
-}: {
-  alertId: string;
-  title: string;
-  message: string;
-  onReject: () => void;
-  onAddComment: () => void;
-}) {
-  return (
-    <ValidationAlert
-      taskId={alertId}
-      title={title}
-      message={message}
-      onAddComment={onAddComment}
-      onRejectRecommendation={onReject}
-      variant="banner"
-    />
   );
 }
 
@@ -385,30 +350,31 @@ export function DocumentationReview({
     );
   }
 
-  const brandWithAlert = docs.brands.find((b) => b.agentRecommendation);
-  const brandAlertId = brandWithAlert ? `brand-alert-${brandWithAlert.id}` : "";
-  const recommendationDoc = tabDocs.find(
-    (doc) => doc.agentRecommendation && !isApproved(`doc-${doc.id}`),
-  );
   const usesW9ContractFlow = docs.general.some(
     (doc) => doc.id === "w9" || doc.id === "contract",
   );
   const subtaskApproveId = documentationSubtaskApproveId(partner.id, activeSubSection);
   const subtaskTmApproved = isDocumentationSubtaskTmApproved(partner.id, activeSubSection, approvedIds);
-  const allSubtaskItemsApproved =
+
+  const invalidDocFields: AiFieldSuggestion[] =
     activeSubSection === "general"
-      ? tabDocs.every((doc) => isApproved(`doc-${doc.id}`))
+      ? tabDocs.filter((d) => d.validationStatus === "invalid").map(docUploadToAiField)
       : usesW9ContractFlow
-        ? tabDocs.every((doc) => isApproved(`doc-${doc.id}`))
-        : docs.brands.every((brand) => isApproved(`brand-${brand.id}`));
-  const subtaskItemCount =
-    activeSubSection === "general"
-      ? tabDocs.length
-      : usesW9ContractFlow
-        ? tabDocs.length
-        : docs.brands.length;
-  const showSubtaskReviewActions =
-    subtaskItemCount > 0 && taskSubmitted && !subtaskTmApproved && allSubtaskItemsApproved;
+        ? tabDocs.filter((d) => d.validationStatus === "invalid").map(docUploadToAiField)
+        : docs.brands.filter((b) => b.validationStatus === "invalid").map(brandDocToAiField);
+
+  const subtaskItemsForValidation =
+    activeSubSection === "general" || usesW9ContractFlow ? tabDocs : docs.brands;
+  const allSubtaskItemsValid =
+    subtaskItemsForValidation.length > 0 &&
+    (activeSubSection === "general" || usesW9ContractFlow
+      ? tabDocs.every((d) => d.validationStatus === "valid")
+      : docs.brands.every((b) => b.validationStatus === "valid"));
+
+  const docSubtaskLabel =
+    activeSubSection === "general" ? "General documents" : "Brand documents";
+  const docAiMode: "warning" | "success" =
+    invalidDocFields.length > 0 ? "warning" : allSubtaskItemsValid ? "success" : "warning";
 
   const approveDocumentationItem = (itemApproveId: string) => {
     tryCompleteDocumentationSubtask(
@@ -447,52 +413,45 @@ export function DocumentationReview({
           <h3 className="text-[20px] font-semibold text-[var(--color-foreground)]">
             {activeSubSection === "general" ? "General documents" : "Brand documents"}
           </h3>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {subtaskTmApproved ? (
               <StatusTag className={cn("inline-flex items-center gap-1 font-normal", markerToneClass.success)}>
                 <Check className="h-3 w-3" /> Approved
               </StatusTag>
-            ) : taskSubmitted ? (
-              <ReviewBadge />
-            ) : null}
+            ) : (
+              <>
+                {taskSubmitted ? <SubtaskReviewBadge /> : null}
+                <AiSubtaskReviewHeaderActions
+                  alertId={subtaskApproveId}
+                  taskApproveId={subtaskApproveId}
+                  taskSubmitted={taskSubmitted}
+                  tmApproved={subtaskTmApproved}
+                  mode={docAiMode}
+                  recommendationFields={invalidDocFields}
+                  approveToastMessage={`${docSubtaskLabel} sub-task marked as approved.`}
+                  onReject={() => openComments(activeTask?.id ?? subtaskApproveId)}
+                />
+              </>
+            )}
           </div>
         </div>
 
-        {activeSubSection === "brands" && brandWithAlert?.agentRecommendation && docs.brands.length > 0 && (
-          <BrandDocumentsAlert
-            alertId={brandAlertId}
-            title={brandWithAlert.agentRecommendation.title}
-            message={brandWithAlert.agentRecommendation.message}
-            onReject={() =>
-              openFeedback({
-                taskId: `brand-${brandWithAlert.id}`,
-                title: brandWithAlert.agentRecommendation!.title,
-                agentMessage: brandWithAlert.agentRecommendation!.message,
-              })
-            }
-            onAddComment={() => openComments(`brand-${brandWithAlert.id}`)}
-          />
-        )}
-
-        {recommendationDoc && (
-          <DocumentRecommendationBanner
-            doc={recommendationDoc}
-            approveId={`doc-${recommendationDoc.id}`}
-            approved={isApproved(`doc-${recommendationDoc.id}`)}
-            onReject={() => {
-              if (recommendationDoc.agentRecommendation) {
-                openFeedback({
-                  taskId: `doc-${recommendationDoc.id}`,
-                  title: recommendationDoc.agentRecommendation.title,
-                  agentMessage: recommendationDoc.agentRecommendation.message,
-                });
-              } else {
-                openComments(`doc-${recommendationDoc.id}`);
-              }
-            }}
-            onAddComment={() => openComments(`doc-${recommendationDoc.id}`)}
-          />
-        )}
+        <AiSubtaskReviewBanner
+          alertId={subtaskApproveId}
+          taskApproveId={subtaskApproveId}
+          taskSubmitted={taskSubmitted}
+          tmApproved={subtaskTmApproved}
+          mode={docAiMode}
+          warningTitle={`${docSubtaskLabel} — action required`}
+          warningMessage={`AI flagged one or more items in ${docSubtaskLabel.toLowerCase()} that do not meet Target criteria. Review recommendations before approving this sub-task.`}
+          successTitle={`${docSubtaskLabel} ready to approve`}
+          successMessage={`All documents in this sub-task meet validation criteria. Approve when your review is complete.`}
+          recommendationFields={invalidDocFields}
+          modalTitle={`${docSubtaskLabel} recommendations`}
+          modalSubtitle="Suggested updates for documents that did not meet criteria."
+          applyToastMessage={`AI recommendations for ${docSubtaskLabel.toLowerCase()} were shared with the partner.`}
+          approveToastMessage={`${docSubtaskLabel} sub-task marked as approved.`}
+        />
 
         {tabDocs.length > 0 ? (
           <div className="space-y-8">
@@ -542,19 +501,11 @@ export function DocumentationReview({
           />
         ) : null}
 
-        {showSubtaskReviewActions && (
-          <ReviewActionBar
-            primary={{ label: "Approve", onClick: () => approveItem(subtaskApproveId) }}
-            secondary={{
-              label: "Reject",
-              onClick: () => openComments(activeTask?.id ?? subtaskApproveId),
-            }}
-          />
-        )}
       </OnboardingSectionReviewLayout>
 
       <OnboardingCommentsDrawer partner={partner} />
       <AgentFeedbackModal />
+      <AiRecommendationModal />
     </>
   );
 }

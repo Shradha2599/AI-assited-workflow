@@ -22,13 +22,15 @@ import {
 } from "./onboarding-subtask-nav";
 import {
   CompleteBadge,
+  AiSubtaskReviewBanner,
+  AiSubtaskReviewHeaderActions,
   FileAttachment,
   ReadOnlyBadge,
-  ReviewActionBar,
   SectionDivider,
+  SubtaskReviewBadge,
   UnderlinedField,
-  ValidationAlert,
 } from "./profile-review-shared";
+import { AiRecommendationModal } from "./ai-recommendation-modal";
 import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
 import { ProfileSubTaskContentView } from "./profile-subtask-views";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
@@ -58,37 +60,45 @@ function BrandProfileContent({
   partner,
   fields,
   taskId,
-  agentRecommendation,
-  showReviewActions,
-  onApprove,
-  onReject,
-  onAddComment,
-  onRejectRecommendation,
+  taskApproveId,
+  taskSubmitted,
+  tmApproved,
+  aiFieldSuggestions,
+  validationStatus,
 }: {
   partner: PotentialPartner;
   fields: { id: string; submittedValue: string }[];
   taskId: string;
-  agentRecommendation?: { title: string; message: string };
-  showReviewActions: boolean;
-  onApprove: () => void;
-  onReject: () => void;
-  onAddComment: () => void;
-  onRejectRecommendation: () => void;
+  taskApproveId: string;
+  taskSubmitted: boolean;
+  tmApproved: boolean;
+  aiFieldSuggestions?: import("@/lib/mock-data/onboarding-evaluation").AiFieldSuggestion[];
+  validationStatus: string;
 }) {
   const bannerName = parseAssetFileName(getFieldValue(fields, "banner", "Cover.png"));
+  const hasDescriptionIssue =
+    validationStatus === "invalid" && (aiFieldSuggestions?.length ?? 0) > 0;
+  const allGood = validationStatus === "valid" && taskSubmitted;
 
   return (
     <>
-      {agentRecommendation && (
-        <ValidationAlert
-          taskId={taskId}
-          title={agentRecommendation.title}
-          message={agentRecommendation.message}
-          onAddComment={onAddComment}
-          onRejectRecommendation={onRejectRecommendation}
-          variant="banner"
-        />
-      )}
+      <AiSubtaskReviewBanner
+        alertId={taskId}
+        taskApproveId={taskApproveId}
+        taskSubmitted={taskSubmitted}
+        tmApproved={tmApproved}
+        mode={hasDescriptionIssue ? "warning" : allGood ? "success" : "warning"}
+        warningTitle="Brand description does not meet criteria"
+        warningMessage="AI flagged the brand description in Brand details. Other fields in this sub-task passed validation. Review the suggested copy before the partner can proceed."
+        successTitle="Brand profile ready to approve"
+        successMessage="Brand display name, description, website, sourcing, and assets meet Target Plus criteria. Approve this sub-task when review is complete."
+        recommendationFields={aiFieldSuggestions ?? []}
+        modalTitle="Brand description recommendation"
+        modalSubtitle="Suggested copy for fields that did not meet marketplace criteria."
+        applyToastMessage="AI brand description recommendation was shared with the partner."
+        approveToastMessage="Brand profile sub-task marked as approved."
+      />
+
 
       <section>
         <h4 className="text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]">
@@ -135,13 +145,6 @@ function BrandProfileContent({
           />
         </div>
       </section>
-
-      {showReviewActions && (
-        <ReviewActionBar
-          primary={{ label: "Approve", onClick: onApprove }}
-          secondary={{ label: "Reject", onClick: onReject }}
-        />
-      )}
     </>
   );
 }
@@ -153,9 +156,8 @@ export function ProfileInformationReview({
 }: ProfileInformationReviewProps) {
   const setContext = useOnboardingReviewStore((s) => s.setContext);
   const openComments = useOnboardingReviewStore((s) => s.openComments);
-  const openFeedback = useOnboardingReviewStore((s) => s.openFeedback);
-  const approveItem = useOnboardingReviewStore((s) => s.approveItem);
   const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
+  const dismissedAlerts = useOnboardingReviewStore((s) => s.dismissedAlerts);
 
   const profileSection = onboarding.sections.find((s) => s.id === "profile");
   const profileProgress = profileSection
@@ -187,27 +189,25 @@ export function ProfileInformationReview({
   const isBrandProfile = activeTask.id === brandProfileTaskId;
   const fields = activeEval?.fields ?? [];
 
-  const handleAddComment = () => {
-    openComments(activeEval?.taskId ?? activeTaskId);
-  };
-
-  const handleRejectRecommendation = () => {
-    const rec = activeEval?.agentRecommendation ?? activeTask.agentRecommendation;
-    if (rec) {
-      openFeedback({
-        taskId: activeEval?.taskId ?? activeTaskId,
-        title: rec.title,
-        agentMessage: rec.message,
-      });
-    }
-  };
-
   const taskApproveId = profileTaskApproveId(activeTaskId);
   const tmApproved = approvedIds.includes(taskApproveId);
   const taskSubmitted = isProfileTaskSubmitted(activeTask);
 
-  const agentRec = activeEval?.agentRecommendation ?? activeTask.agentRecommendation;
-  const showReviewActions = isBrandProfile && taskSubmitted && !tmApproved;
+  const activeEvaluation = isBrandProfile ? activeEval : undefined;
+  const brandAiMode: "warning" | "success" =
+    activeEvaluation?.validationStatus === "invalid" &&
+    (activeEvaluation?.aiFieldSuggestions?.length ?? 0) > 0
+      ? "warning"
+      : activeEvaluation?.validationStatus === "valid" && taskSubmitted
+        ? "success"
+        : "warning";
+  const brandShowAiReview =
+    isBrandProfile &&
+    taskSubmitted &&
+    !tmApproved &&
+    !dismissedAlerts.includes(activeTaskId) &&
+    (brandAiMode === "success" ||
+      (brandAiMode === "warning" && (activeEvaluation?.aiFieldSuggestions?.length ?? 0) > 0));
 
   return (
     <>
@@ -232,15 +232,32 @@ export function ProfileInformationReview({
             {activeTask.title}
           </h3>
           <div className="flex flex-wrap items-center gap-2">
-            <ReadOnlyBadge />
             {isBrandProfile ? (
               tmApproved ? (
                 <StatusTag className={cn("inline-flex items-center gap-1 font-normal", markerToneClass.success)}>
                   <Check className="h-3 w-3" /> Approved
                 </StatusTag>
-              ) : null
+              ) : (
+                <>
+                  {taskSubmitted ? <SubtaskReviewBadge /> : null}
+                  <AiSubtaskReviewHeaderActions
+                    alertId={activeTaskId}
+                    taskApproveId={taskApproveId}
+                    taskSubmitted={taskSubmitted}
+                    tmApproved={tmApproved}
+                    mode={brandAiMode}
+                    recommendationFields={activeEvaluation?.aiFieldSuggestions ?? []}
+                    approveToastMessage="Brand profile sub-task marked as approved."
+                    onReject={() => openComments(activeEval?.taskId ?? activeTaskId)}
+                  />
+                  {!brandShowAiReview && !taskSubmitted ? <ReadOnlyBadge /> : null}
+                </>
+              )
             ) : (
-              <CompleteBadge />
+              <>
+                <ReadOnlyBadge />
+                <CompleteBadge />
+              </>
             )}
           </div>
         </div>
@@ -250,12 +267,11 @@ export function ProfileInformationReview({
             partner={partner}
             fields={fields}
             taskId={activeTaskId}
-            agentRecommendation={agentRec}
-            showReviewActions={showReviewActions}
-            onApprove={() => approveItem(taskApproveId)}
-            onReject={() => openComments(activeTaskId)}
-            onAddComment={handleAddComment}
-            onRejectRecommendation={handleRejectRecommendation}
+            taskApproveId={taskApproveId}
+            taskSubmitted={taskSubmitted}
+            tmApproved={tmApproved}
+            aiFieldSuggestions={activeEvaluation?.aiFieldSuggestions}
+            validationStatus={activeEvaluation?.validationStatus ?? "partial"}
           />
         ) : (
           <ProfileSubTaskContentView partner={partner} taskTitle={activeTask.title} />
@@ -264,6 +280,7 @@ export function ProfileInformationReview({
 
       <OnboardingCommentsDrawer partner={partner} />
       <AgentFeedbackModal />
+      <AiRecommendationModal />
     </>
   );
 }

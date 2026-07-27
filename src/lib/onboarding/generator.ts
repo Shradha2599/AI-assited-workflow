@@ -147,8 +147,8 @@ function buildTask(
 
   // Brand profile in review often has a banner issue (deterministic per partner)
   if (def.suffix === "01" && status === "in_progress" && seededRandom(seed, 40) > 0.25) {
-    issue = "Invalid Banner/Cover Image";
-    issueSource = "Image quality analysis: low resolution, does not meet guidelines";
+    issue = "Brand description below marketplace guidelines";
+    issueSource = "Copy analysis: missing category keywords and minimum length";
   }
 
   // Integration completes on submission — never left in_progress once tier reached
