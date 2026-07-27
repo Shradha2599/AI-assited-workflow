@@ -59,12 +59,12 @@ export function DashboardView({
 
       <HolidayBanner />
 
-      <section aria-label="Pipeline" className="mb-[var(--space-4)]">
-        <PipelineHeatmapSynced baseline={pipeline} />
-      </section>
-
       <section aria-label="Key metrics" className="mb-[var(--space-4)]">
         <DashboardKpiStrip metrics={metrics} />
+      </section>
+
+      <section aria-label="Pipeline" className="mb-[var(--space-4)]">
+        <PipelineHeatmapSynced baseline={pipeline} />
       </section>
 
       <section className="mb-[var(--space-4)] grid min-w-0 items-stretch gap-[var(--space-4)] lg:grid-cols-2 lg:min-h-[320px]">
