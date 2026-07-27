@@ -85,6 +85,7 @@ export function ValidationAlert({
 export function AiSubtaskReviewBanner({
   alertId,
   taskApproveId,
+  partnerId,
   taskSubmitted,
   tmApproved,
   mode,
@@ -100,6 +101,7 @@ export function AiSubtaskReviewBanner({
 }: {
   alertId: string;
   taskApproveId: string;
+  partnerId: string;
   taskSubmitted: boolean;
   tmApproved: boolean;
   mode: "warning" | "success";
@@ -114,10 +116,11 @@ export function AiSubtaskReviewBanner({
   approveToastMessage: string;
 }) {
   const dismissed = useOnboardingReviewStore((s) => s.dismissedAlerts.includes(alertId));
+  const isSubtaskRejected = useOnboardingReviewStore((s) => s.isSubtaskRejected(partnerId, taskApproveId));
   const openRecommendationModal = useOnboardingReviewStore((s) => s.openRecommendationModal);
   const approveWithAcknowledgement = useOnboardingReviewStore((s) => s.approveWithAcknowledgement);
 
-  if (!taskSubmitted || tmApproved || dismissed) return null;
+  if (!taskSubmitted || tmApproved || dismissed || isSubtaskRejected) return null;
 
   if (mode === "warning" && recommendationFields.length > 0) {
     return (
@@ -132,7 +135,7 @@ export function AiSubtaskReviewBanner({
               <Button
                 variant="outline"
                 size="sm"
-                className="border-[var(--color-warning-icon)] bg-white text-[var(--color-warning-icon)] hover:bg-white/90"
+                className="border-[var(--color-primary)] bg-white text-[var(--color-primary)] hover:bg-white/90"
                 onClick={() =>
                   openRecommendationModal({
                     alertId,
@@ -184,6 +187,8 @@ export function AiSubtaskReviewBanner({
 
 /** Approve / Reject aligned with sub-task title when AI review is active. */
 export function AiSubtaskReviewHeaderActions({
+  partnerId,
+  subtaskName,
   alertId,
   taskApproveId,
   taskSubmitted,
@@ -191,8 +196,9 @@ export function AiSubtaskReviewHeaderActions({
   mode,
   recommendationFields,
   approveToastMessage,
-  onReject,
 }: {
+  partnerId: string;
+  subtaskName: string;
   alertId: string;
   taskApproveId: string;
   taskSubmitted: boolean;
@@ -200,32 +206,39 @@ export function AiSubtaskReviewHeaderActions({
   mode: "warning" | "success";
   recommendationFields: import("@/lib/mock-data/onboarding-evaluation").AiFieldSuggestion[];
   approveToastMessage: string;
-  onReject: () => void;
 }) {
   const dismissed = useOnboardingReviewStore((s) => s.dismissedAlerts.includes(alertId));
+  const isSubtaskRejected = useOnboardingReviewStore((s) => s.isSubtaskRejected(partnerId, taskApproveId));
+  const openSubtaskReject = useOnboardingReviewStore((s) => s.openSubtaskReject);
   const approveWithAcknowledgement = useOnboardingReviewStore((s) => s.approveWithAcknowledgement);
 
+  const inReview = taskSubmitted && !tmApproved && !isSubtaskRejected;
   const showAiReview =
-    taskSubmitted &&
-    !tmApproved &&
+    inReview &&
     !dismissed &&
     (mode === "success" || (mode === "warning" && recommendationFields.length > 0));
 
-  if (!showAiReview) return null;
+  if (!inReview) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <>
+      {showAiReview ? (
+        <Button
+          size="sm"
+          disabled={mode !== "success"}
+          onClick={() => approveWithAcknowledgement(taskApproveId, alertId, approveToastMessage)}
+        >
+          Approve
+        </Button>
+      ) : null}
       <Button
         size="sm"
-        disabled={mode !== "success"}
-        onClick={() => approveWithAcknowledgement(taskApproveId, alertId, approveToastMessage)}
+        variant="outline"
+        onClick={() => openSubtaskReject({ partnerId, subtaskName, alertId, taskApproveId })}
       >
-        Approve
-      </Button>
-      <Button size="sm" variant="outline" onClick={onReject}>
         Reject
       </Button>
-    </div>
+    </>
   );
 }
 
@@ -260,6 +273,38 @@ export function SubtaskReviewBadge() {
       <Image src="/icons/review-document.svg" alt="" width={14} height={14} aria-hidden />
       Review
     </StatusTag>
+  );
+}
+
+export function SubtaskRejectedBadge() {
+  return (
+    <StatusTag className={cn("inline-flex items-center gap-1.5 font-normal", markerToneClass.rejected)}>
+      <Image src="/icons/close.svg" alt="" width={14} height={14} aria-hidden />
+      Rejected
+    </StatusTag>
+  );
+}
+
+export function SubtaskRejectionReasonBanner({ reason }: { reason: string }) {
+  return (
+    <InfoBanner variant="warning" className="mb-6" title="Rejection reason" message={reason} />
+  );
+}
+
+export function DocumentRejectionReasonBanner({
+  documentLabel,
+  reason,
+}: {
+  documentLabel: string;
+  reason: string;
+}) {
+  return (
+    <InfoBanner
+      variant="warning"
+      className="mb-4"
+      title={`${documentLabel} — valid document requested`}
+      message={reason}
+    />
   );
 }
 

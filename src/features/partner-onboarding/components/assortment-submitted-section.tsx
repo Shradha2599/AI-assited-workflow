@@ -9,6 +9,7 @@ import {
   getAssortmentCurationContent,
   type AssortmentSkuRow,
 } from "@/lib/mock-data/assortment-curation-content";
+import { useAssortmentCurationStore } from "../store/assortment-curation-store";
 import { TablePagination } from "./profile-review-shared";
 
 function TableToolbar() {
@@ -104,13 +105,15 @@ interface AssortmentSubmittedSectionProps {
 }
 
 export function AssortmentSubmittedSection({ partnerId }: AssortmentSubmittedSectionProps) {
-  const content = getAssortmentCurationContent(partnerId);
+  const storeContent = useAssortmentCurationStore((s) => s.content);
+  const content = storeContent ?? getAssortmentCurationContent(partnerId);
+  const submittedCount = content.submittedSkus.length;
 
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <p className="text-[var(--text-body-size)] font-semibold">
-          Assortment submitted through lead form ({content.submittedCount.toLocaleString()})
+          Assortment submitted through lead form ({submittedCount.toLocaleString()})
         </p>
         <Button variant="outline" size="sm" className="gap-1.5">
           <Image src="/icons/download.svg" alt="" width={14} height={14} aria-hidden />
@@ -119,7 +122,7 @@ export function AssortmentSubmittedSection({ partnerId }: AssortmentSubmittedSec
       </div>
       <TableToolbar />
       <AssortmentSubmittedTable rows={content.submittedSkus} />
-      <TablePagination showing={content.submittedSkus.length} total={content.submittedCount} />
+      <TablePagination showing={content.submittedSkus.length} total={submittedCount} />
     </div>
   );
 }

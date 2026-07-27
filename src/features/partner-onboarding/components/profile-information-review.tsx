@@ -28,9 +28,12 @@ import {
   ReadOnlyBadge,
   SectionDivider,
   SubtaskReviewBadge,
+  SubtaskRejectedBadge,
+  SubtaskRejectionReasonBanner,
   UnderlinedField,
 } from "./profile-review-shared";
 import { AiRecommendationModal } from "./ai-recommendation-modal";
+import { SubtaskRejectModal } from "./subtask-reject-modal";
 import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
 import { ProfileSubTaskContentView } from "./profile-subtask-views";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
@@ -65,6 +68,7 @@ function BrandProfileContent({
   tmApproved,
   aiFieldSuggestions,
   validationStatus,
+  rejectionReason,
 }: {
   partner: PotentialPartner;
   fields: { id: string; submittedValue: string }[];
@@ -74,17 +78,26 @@ function BrandProfileContent({
   tmApproved: boolean;
   aiFieldSuggestions?: import("@/lib/mock-data/onboarding-evaluation").AiFieldSuggestion[];
   validationStatus: string;
+  rejectionReason: string | null;
 }) {
+  const appliedFieldValues = useOnboardingReviewStore((s) => s.appliedFieldValues);
+  const appliedDescription = appliedFieldValues[`${taskId}:description`];
+
   const bannerName = parseAssetFileName(getFieldValue(fields, "banner", "Cover.png"));
   const hasDescriptionIssue =
-    validationStatus === "invalid" && (aiFieldSuggestions?.length ?? 0) > 0;
-  const allGood = validationStatus === "valid" && taskSubmitted;
+    validationStatus === "invalid" &&
+    (aiFieldSuggestions?.length ?? 0) > 0 &&
+    !appliedDescription;
+  const allGood = (validationStatus === "valid" || Boolean(appliedDescription)) && taskSubmitted;
 
   return (
     <>
+      {rejectionReason ? <SubtaskRejectionReasonBanner reason={rejectionReason} /> : null}
+
       <AiSubtaskReviewBanner
         alertId={taskId}
         taskApproveId={taskApproveId}
+        partnerId={partner.id}
         taskSubmitted={taskSubmitted}
         tmApproved={tmApproved}
         mode={hasDescriptionIssue ? "warning" : allGood ? "success" : "warning"}
@@ -110,11 +123,14 @@ function BrandProfileContent({
         />
         <UnderlinedField
           label="Brand description"
-          value={getFieldValue(
-            fields,
-            "description",
-            "Pinnacle Goods is a lifestyle retailer offering curated home, kitchen, and wellness products designed for modern living.",
-          )}
+          value={
+            appliedDescription ??
+            getFieldValue(
+              fields,
+              "description",
+              "Pinnacle Goods is a lifestyle retailer offering curated home, kitchen, and wellness products designed for modern living.",
+            )
+          }
         />
         <UnderlinedField
           label="Website URL"
@@ -155,7 +171,6 @@ export function ProfileInformationReview({
   activeTaskId,
 }: ProfileInformationReviewProps) {
   const setContext = useOnboardingReviewStore((s) => s.setContext);
-  const openComments = useOnboardingReviewStore((s) => s.openComments);
   const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
   const dismissedAlerts = useOnboardingReviewStore((s) => s.dismissedAlerts);
 
@@ -183,6 +198,18 @@ export function ProfileInformationReview({
     }));
   }, [profileSection, partner.id]);
 
+  const taskApproveIdForStore = profileTaskApproveId(activeTaskId);
+  const brandSubtaskRejected = useOnboardingReviewStore((s) =>
+    s.isSubtaskRejected(partner.id, taskApproveIdForStore),
+  );
+  const brandRejectionReason = useOnboardingReviewStore((s) => {
+    const record = s.getSubtaskRejection(partner.id, taskApproveIdForStore);
+    return record?.reason ?? null;
+  });
+  const appliedDescription = useOnboardingReviewStore(
+    (s) => s.appliedFieldValues[`${activeTaskId}:description`],
+  );
+
   if (!profileSection || !activeTask) return null;
 
   const brandProfileTaskId = profileSection.tasks.find((t) => t.title === "Brand profile")?.id;
@@ -208,6 +235,10 @@ export function ProfileInformationReview({
     !dismissedAlerts.includes(activeTaskId) &&
     (brandAiMode === "success" ||
       (brandAiMode === "warning" && (activeEvaluation?.aiFieldSuggestions?.length ?? 0) > 0));
+  const brandInReview = isBrandProfile && taskSubmitted && !tmApproved;
+  const brandAiModeResolved: "warning" | "success" = appliedDescription
+    ? "success"
+    : brandAiMode;
 
   return (
     <>
@@ -231,26 +262,32 @@ export function ProfileInformationReview({
           <h3 className="text-[20px] font-semibold text-[var(--color-foreground)]">
             {activeTask.title}
           </h3>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center justify-end gap-2">
             {isBrandProfile ? (
               tmApproved ? (
                 <StatusTag className={cn("inline-flex items-center gap-1 font-normal", markerToneClass.success)}>
                   <Check className="h-3 w-3" /> Approved
                 </StatusTag>
+              ) : brandSubtaskRejected ? (
+                <SubtaskRejectedBadge />
               ) : (
                 <>
-                  {taskSubmitted ? <SubtaskReviewBadge /> : null}
                   <AiSubtaskReviewHeaderActions
+                    partnerId={partner.id}
+                    subtaskName={activeTask.title}
                     alertId={activeTaskId}
                     taskApproveId={taskApproveId}
                     taskSubmitted={taskSubmitted}
                     tmApproved={tmApproved}
-                    mode={brandAiMode}
+                    mode={brandAiModeResolved}
                     recommendationFields={activeEvaluation?.aiFieldSuggestions ?? []}
                     approveToastMessage="Brand profile sub-task marked as approved."
-                    onReject={() => openComments(activeEval?.taskId ?? activeTaskId)}
                   />
-                  {!brandShowAiReview && !taskSubmitted ? <ReadOnlyBadge /> : null}
+                  {brandInReview ? (
+                    <SubtaskReviewBadge />
+                  ) : !brandShowAiReview && !taskSubmitted ? (
+                    <ReadOnlyBadge />
+                  ) : null}
                 </>
               )
             ) : (
@@ -272,6 +309,7 @@ export function ProfileInformationReview({
             tmApproved={tmApproved}
             aiFieldSuggestions={activeEvaluation?.aiFieldSuggestions}
             validationStatus={activeEvaluation?.validationStatus ?? "partial"}
+            rejectionReason={brandRejectionReason}
           />
         ) : (
           <ProfileSubTaskContentView partner={partner} taskTitle={activeTask.title} />
@@ -281,6 +319,7 @@ export function ProfileInformationReview({
       <OnboardingCommentsDrawer partner={partner} />
       <AgentFeedbackModal />
       <AiRecommendationModal />
+      <SubtaskRejectModal />
     </>
   );
 }

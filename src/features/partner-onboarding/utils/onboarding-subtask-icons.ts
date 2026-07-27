@@ -10,8 +10,9 @@ export function getChecklistSubTaskIconSrc(
   task: OnboardingTask,
   approvedIds: string[] = [],
   sectionLocked = false,
+  partnerId?: string,
 ): string {
-  return getSubtaskStatusIconSrc(task, sectionId, approvedIds, sectionLocked, "sm");
+  return getSubtaskStatusIconSrc(task, sectionId, approvedIds, sectionLocked, "sm", partnerId);
 }
 
 export function shouldGrayChecklistSubTaskIcon(
@@ -19,6 +20,7 @@ export function shouldGrayChecklistSubTaskIcon(
   task: OnboardingTask,
   approvedIds: string[] = [],
   sectionLocked = false,
+  partnerId?: string,
 ): boolean {
-  return shouldGraySubtaskStatusIcon(task, sectionId, approvedIds, sectionLocked);
+  return shouldGraySubtaskStatusIcon(task, sectionId, approvedIds, sectionLocked, partnerId);
 }

@@ -4,14 +4,13 @@ import Image from "next/image";
 import { useEffect, useMemo } from "react";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import { getSectionProgressPercent } from "@/lib/mock-data/onboarding";
 import {
   getDocumentationEvaluation,
-  type AiFieldSuggestion,
   type BrandDocumentRow,
   type DocumentUpload,
 } from "@/lib/mock-data/onboarding-evaluation";
@@ -20,16 +19,21 @@ import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
 import { OnboardingSubtaskNav } from "./onboarding-subtask-nav";
-import { FileAttachmentRow, AiSubtaskReviewBanner, AiSubtaskReviewHeaderActions, SubtaskReviewBadge } from "./profile-review-shared";
-import { AiRecommendationModal } from "./ai-recommendation-modal";
+import {
+  FileAttachmentRow,
+  SubtaskReviewBadge,
+  DocumentRejectionReasonBanner,
+} from "./profile-review-shared";
+import {
+  DocumentationAiReviewCarousel,
+  type DocumentationReviewTarget,
+} from "./documentation-ai-review-carousel";
 import {
   documentationSubtaskApproveId,
   isDocumentationSubtaskTmApproved,
 } from "../utils/documentation-task-progress";
 import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
-import {
-  isDocumentationTaskSubmitted,
-} from "../utils/documentation-task-progress";
+import { isDocumentationTaskSubmitted } from "../utils/documentation-task-progress";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
 interface DocumentationReviewProps {
@@ -43,27 +47,27 @@ const DOC_SUBTASK_HINTS = {
   brands: "Provide brand related documents.",
 } as const;
 
-function docUploadToAiField(doc: DocumentUpload): AiFieldSuggestion {
+function docToReviewTarget(doc: DocumentUpload): DocumentationReviewTarget {
   return {
-    fieldId: doc.id,
+    approveId: `doc-${doc.id}`,
     label: doc.label,
-    submittedValue: doc.fileName,
-    suggestedValue:
+    validationStatus: doc.validationStatus,
+    rejectionReason: doc.agentRecommendation?.message ?? doc.summary,
+    suggestedComment:
       doc.agentRecommendation?.suggestedComment ??
-      "Upload a corrected document that meets the stated requirements.",
-    reason: doc.agentRecommendation?.message ?? doc.summary,
+      `Please upload an updated ${doc.label.toLowerCase()} that meets Target requirements.`,
   };
 }
 
-function brandDocToAiField(brand: BrandDocumentRow): AiFieldSuggestion {
+function brandToReviewTarget(brand: BrandDocumentRow): DocumentationReviewTarget {
   return {
-    fieldId: brand.id,
+    approveId: `brand-${brand.id}`,
     label: brand.name,
-    submittedValue: brand.documentName,
-    suggestedValue:
+    validationStatus: brand.validationStatus,
+    rejectionReason: brand.agentRecommendation?.message ?? brand.summary,
+    suggestedComment:
       brand.agentRecommendation?.suggestedComment ??
-      "Provide an updated authorization letter with all required fields.",
-    reason: brand.agentRecommendation?.message ?? brand.summary,
+      `Please provide an updated authorization document for ${brand.name}.`,
   };
 }
 
@@ -302,6 +306,7 @@ export function DocumentationReview({
   const approveItem = useOnboardingReviewStore((s) => s.approveItem);
   const isApproved = useOnboardingReviewStore((s) => s.isApproved);
   const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
+  const documentRejections = useOnboardingReviewStore((s) => s.documentRejections);
 
   const docSection = onboarding.sections.find((s) => s.id === "documentation");
   const docProgress = docSection ? getSectionProgressPercent(docSection, approvedIds) : 0;
@@ -340,6 +345,19 @@ export function DocumentationReview({
     ];
   }, [partner.id, generalTask, brandsTask]);
 
+  const usesW9ContractFlow = docs?.general.some(
+    (doc) => doc.id === "w9" || doc.id === "contract",
+  );
+
+  const reviewTargets: DocumentationReviewTarget[] = useMemo(() => {
+    if (!docs) return [];
+    if (tabDocs.length > 0) return tabDocs.map(docToReviewTarget);
+    if (activeSubSection === "brands" && !usesW9ContractFlow) {
+      return docs.brands.map(brandToReviewTarget);
+    }
+    return [];
+  }, [tabDocs, docs, activeSubSection, usesW9ContractFlow]);
+
   if (!docs || !docSection || navItems.length === 0) {
     return (
       <div className="space-y-[var(--space-4)]">
@@ -350,31 +368,14 @@ export function DocumentationReview({
     );
   }
 
-  const usesW9ContractFlow = docs.general.some(
-    (doc) => doc.id === "w9" || doc.id === "contract",
-  );
-  const subtaskApproveId = documentationSubtaskApproveId(partner.id, activeSubSection);
   const subtaskTmApproved = isDocumentationSubtaskTmApproved(partner.id, activeSubSection, approvedIds);
-
-  const invalidDocFields: AiFieldSuggestion[] =
-    activeSubSection === "general"
-      ? tabDocs.filter((d) => d.validationStatus === "invalid").map(docUploadToAiField)
-      : usesW9ContractFlow
-        ? tabDocs.filter((d) => d.validationStatus === "invalid").map(docUploadToAiField)
-        : docs.brands.filter((b) => b.validationStatus === "invalid").map(brandDocToAiField);
-
-  const subtaskItemsForValidation =
-    activeSubSection === "general" || usesW9ContractFlow ? tabDocs : docs.brands;
-  const allSubtaskItemsValid =
-    subtaskItemsForValidation.length > 0 &&
-    (activeSubSection === "general" || usesW9ContractFlow
-      ? tabDocs.every((d) => d.validationStatus === "valid")
-      : docs.brands.every((b) => b.validationStatus === "valid"));
 
   const docSubtaskLabel =
     activeSubSection === "general" ? "General documents" : "Brand documents";
-  const docAiMode: "warning" | "success" =
-    invalidDocFields.length > 0 ? "warning" : allSubtaskItemsValid ? "success" : "warning";
+
+  const documentRejectionBanners = reviewTargets
+    .map((t) => documentRejections[t.approveId])
+    .filter(Boolean);
 
   const approveDocumentationItem = (itemApproveId: string) => {
     tryCompleteDocumentationSubtask(
@@ -387,6 +388,23 @@ export function DocumentationReview({
       tabDocs,
       usesW9ContractFlow,
     );
+  };
+
+  const approveAllDocuments = (approveIds: string[]) => {
+    approveIds.forEach((id) => {
+      if (!useOnboardingReviewStore.getState().isApproved(id)) {
+        approveItem(id);
+      }
+    });
+    const subtaskApproveId = documentationSubtaskApproveId(partner.id, activeSubSection);
+    const latestApproved = useOnboardingReviewStore.getState().approvedIds;
+    const allItemsApproved =
+      activeSubSection === "general" || usesW9ContractFlow
+        ? tabDocs.every((doc) => latestApproved.includes(`doc-${doc.id}`))
+        : docs.brands.every((brand) => latestApproved.includes(`brand-${brand.id}`));
+    if (allItemsApproved && !latestApproved.includes(subtaskApproveId)) {
+      approveItem(subtaskApproveId);
+    }
   };
 
   return (
@@ -411,46 +429,34 @@ export function DocumentationReview({
       >
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h3 className="text-[20px] font-semibold text-[var(--color-foreground)]">
-            {activeSubSection === "general" ? "General documents" : "Brand documents"}
+            {docSubtaskLabel}
           </h3>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center justify-end gap-2">
             {subtaskTmApproved ? (
               <StatusTag className={cn("inline-flex items-center gap-1 font-normal", markerToneClass.success)}>
                 <Check className="h-3 w-3" /> Approved
               </StatusTag>
-            ) : (
-              <>
-                {taskSubmitted ? <SubtaskReviewBadge /> : null}
-                <AiSubtaskReviewHeaderActions
-                  alertId={subtaskApproveId}
-                  taskApproveId={subtaskApproveId}
-                  taskSubmitted={taskSubmitted}
-                  tmApproved={subtaskTmApproved}
-                  mode={docAiMode}
-                  recommendationFields={invalidDocFields}
-                  approveToastMessage={`${docSubtaskLabel} sub-task marked as approved.`}
-                  onReject={() => openComments(activeTask?.id ?? subtaskApproveId)}
-                />
-              </>
-            )}
+            ) : taskSubmitted ? (
+              <SubtaskReviewBadge />
+            ) : null}
           </div>
         </div>
 
-        <AiSubtaskReviewBanner
-          alertId={subtaskApproveId}
-          taskApproveId={subtaskApproveId}
+        {documentRejectionBanners.map((rejection) => (
+          <DocumentRejectionReasonBanner
+            key={`${rejection.documentLabel}-${rejection.requestedAt}`}
+            documentLabel={rejection.documentLabel}
+            reason={rejection.reason}
+          />
+        ))}
+
+        <DocumentationAiReviewCarousel
+          targets={reviewTargets}
           taskSubmitted={taskSubmitted}
-          tmApproved={subtaskTmApproved}
-          mode={docAiMode}
-          warningTitle={`${docSubtaskLabel} — action required`}
-          warningMessage={`AI flagged one or more items in ${docSubtaskLabel.toLowerCase()} that do not meet Target criteria. Review recommendations before approving this sub-task.`}
-          successTitle={`${docSubtaskLabel} ready to approve`}
-          successMessage={`All documents in this sub-task meet validation criteria. Approve when your review is complete.`}
-          recommendationFields={invalidDocFields}
-          modalTitle={`${docSubtaskLabel} recommendations`}
-          modalSubtitle="Suggested updates for documents that did not meet criteria."
-          applyToastMessage={`AI recommendations for ${docSubtaskLabel.toLowerCase()} were shared with the partner.`}
-          approveToastMessage={`${docSubtaskLabel} sub-task marked as approved.`}
+          subtaskTmApproved={subtaskTmApproved}
+          onApproveDocument={approveDocumentationItem}
+          onApproveAll={approveAllDocuments}
+          subtaskLabel={docSubtaskLabel}
         />
 
         {tabDocs.length > 0 ? (
@@ -468,6 +474,9 @@ export function DocumentationReview({
                   approved={isApproved(approveId)}
                   onApprove={approveDocumentationItem}
                   onReject={() => {
+                    const suggested =
+                      doc.agentRecommendation?.suggestedComment ??
+                      `Please upload an updated ${doc.label.toLowerCase()} that meets Target requirements.`;
                     if (doc.agentRecommendation) {
                       openFeedback({
                         taskId: approveId,
@@ -475,14 +484,14 @@ export function DocumentationReview({
                         agentMessage: doc.agentRecommendation.message,
                       });
                     } else {
-                      openComments(approveId);
+                      openComments(approveId, suggested);
                     }
                   }}
                 />
               );
             })}
           </div>
-        ) : docs.brands.length > 0 ? (
+        ) : docs.brands.length > 0 && activeSubSection === "brands" && !usesW9ContractFlow ? (
           <BrandDocumentsTable
             brands={docs.brands}
             onApprove={approveDocumentationItem}
@@ -494,18 +503,19 @@ export function DocumentationReview({
                   agentMessage: brand.agentRecommendation.message,
                 });
               } else {
-                openComments(`brand-${brand.id}`);
+                openComments(
+                  `brand-${brand.id}`,
+                  `Please provide an updated authorization document for ${brand.name}.`,
+                );
               }
             }}
             isApproved={isApproved}
           />
         ) : null}
-
       </OnboardingSectionReviewLayout>
 
       <OnboardingCommentsDrawer partner={partner} />
       <AgentFeedbackModal />
-      <AiRecommendationModal />
     </>
   );
 }

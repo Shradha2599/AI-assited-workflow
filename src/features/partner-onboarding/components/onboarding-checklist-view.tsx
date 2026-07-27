@@ -62,9 +62,10 @@ function getSubTaskIconSrc(
   task: OnboardingTask,
   approvedIds?: string[],
   sectionLocked = false,
+  partnerId?: string,
 ): string {
   return (
-    getChecklistSubTaskIconSrc(sectionId, task, approvedIds, sectionLocked) ||
+    getChecklistSubTaskIconSrc(sectionId, task, approvedIds, sectionLocked, partnerId) ||
     ONBOARDING_SUBTASK_ICON.pending
   );
 }
@@ -132,7 +133,12 @@ function SectionRow({
   const progress = resolveSectionProgressPercent(section, approvedIds);
   const profileCompletedSteps = resolveSectionCompletedSteps(section, approvedIds);
   const sectionIcon = SECTION_ICON_SRC[section.id] ?? "/icons/marketplace.svg";
-  const statusIcon = resolveOnboardingSectionStatusIcon(section, sections, approvedIds);
+  const statusIcon = resolveOnboardingSectionStatusIcon(
+    section,
+    sections,
+    approvedIds,
+    partnerId,
+  );
 
   const content = (
     <div
@@ -181,13 +187,25 @@ function SectionRow({
           </StatusTag>
           <div className="flex flex-wrap justify-end gap-1.5">
             {section.tasks.map((task) => {
-              const iconSrc = getSubTaskIconSrc(section.id, task, approvedIds, locked);
+              const iconSrc = getSubTaskIconSrc(
+                section.id,
+                task,
+                approvedIds,
+                locked,
+                partnerId,
+              );
               return (
               <ChecklistIcon
                 key={task.id}
                 src={iconSrc}
                 size={16}
-                gray={shouldGrayChecklistSubTaskIcon(section.id, task, approvedIds, locked)}
+                gray={shouldGrayChecklistSubTaskIcon(
+                  section.id,
+                  task,
+                  approvedIds,
+                  locked,
+                  partnerId,
+                )}
               />
             );})}
           </div>

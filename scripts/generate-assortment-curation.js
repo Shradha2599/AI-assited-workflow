@@ -6,306 +6,95 @@
 const fs = require("fs");
 const path = require("path");
 
-const SUBMITTED_SKUS = [
-  {
-    partnerSku: "PG-1001",
-    barcode: "0194251234567",
-    brand: "Pinnacle Goods",
-    productTitle: "Ceramic Mixing Bowl Set 3pc White",
-    productDescription: "Stackable ceramic bowls for baking and prep.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Mixing Bowls",
-    shipSpeed: "2 days",
-    retailPrice: "$24.99",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/bowl-set-white.jpg",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Cookware",
-    itemType: "Mixing Bowl",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Registered",
-    wercsActionRequired: "—",
-  },
-  {
-    partnerSku: "PG-1002",
-    barcode: "0194251234568",
-    brand: "Pinnacle Goods",
-    productTitle: "Bamboo Cutting Board Large",
-    productDescription: "Eco-friendly bamboo board with juice groove.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Cutting Boards",
-    shipSpeed: "1 day",
-    retailPrice: "$18.50",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/bamboo-board-lg.jpg",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Tools",
-    itemType: "Cutting Board",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Registered",
-    wercsActionRequired: "—",
-  },
-  {
-    partnerSku: "PG-1003",
-    barcode: "0194251234569",
-    brand: "Pinnacle Goods",
-    productTitle: "Stainless Steel Measuring Cup Set",
-    productDescription: "Nested measuring cups with engraved sizes.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Measuring Tools",
-    shipSpeed: "2 days",
-    retailPrice: "$14.99",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/measuring-cups.jpg",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Tools",
-    itemType: "Measuring Cup",
-    protectedBrand: false,
-    barcodeStatus: "Invalid",
-    wercsStatus: "Pending review",
-    wercsActionRequired: "Verify barcode with supplier",
-  },
-  {
-    partnerSku: "PG-1004",
-    barcode: "0194251234570",
-    brand: "Pinnacle Goods",
-    productTitle: "Linen Table Runner Sage Green",
-    productDescription: "Washed linen runner for dining tables.",
-    partnerItemCategory: "Home Decor",
-    partnerItemSubcategory: "Table Linens",
-    shipSpeed: "2 days",
-    retailPrice: "$22.00",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/linen-runner-sage.jpg",
-    bu: "Home",
-    division: "Decor",
-    department: "Textiles",
-    itemType: "Table Runner",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Registered",
-    wercsActionRequired: "—",
-  },
-  {
-    partnerSku: "PG-1005",
-    barcode: "0194251234571",
-    brand: "Pinnacle Goods",
-    productTitle: "Glass Storage Jar Set 4pc",
-    productDescription: "Airtight glass jars with bamboo lids.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Food Storage",
-    shipSpeed: "2 days",
-    retailPrice: "$32.00",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/glass-jars-4pc.jpg",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Storage",
-    itemType: "Food Storage",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Registered",
-    wercsActionRequired: "—",
-  },
-  {
-    partnerSku: "PG-1006",
-    barcode: "0194251234572",
-    brand: "Pinnacle Goods",
-    productTitle: "Cast Iron Skillet 10 inch",
-    productDescription: "Pre-seasoned cast iron skillet.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Cookware",
-    shipSpeed: "3 days",
-    retailPrice: "$39.99",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/cast-iron-10.jpg",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Cookware",
-    itemType: "Skillet",
-    protectedBrand: false,
-    barcodeStatus: "Unavailable",
-    wercsStatus: "Not submitted",
-    wercsActionRequired: "Request WERCS documentation",
-  },
-  {
-    partnerSku: "PG-1007",
-    barcode: "0194251234573",
-    brand: "Pinnacle Goods",
-    productTitle: "Ceramic Mug Set 4pc Matte Black",
-    productDescription: "Stackable mugs with ergonomic handle.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Drinkware",
-    shipSpeed: "1 day",
-    retailPrice: "$28.00",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/mug-set-black.jpg",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Drinkware",
-    itemType: "Mug",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Registered",
-    wercsActionRequired: "—",
-  },
-  {
-    partnerSku: "PG-1008",
-    barcode: "0194251234574",
-    brand: "Pinnacle Goods",
-    productTitle: "Woven Placemat Set 6pc Natural",
-    productDescription: "Hand-woven placemats for everyday dining.",
-    partnerItemCategory: "Home Decor",
-    partnerItemSubcategory: "Table Linens",
-    shipSpeed: "2 days",
-    retailPrice: "$19.99",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/placemats-natural.jpg",
-    bu: "Home",
-    division: "Decor",
-    department: "Textiles",
-    itemType: "Placemat",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Registered",
-    wercsActionRequired: "—",
-  },
-  {
-    partnerSku: "PG-1009",
-    barcode: "0194251234575",
-    brand: "Pinnacle Goods",
-    productTitle: "Silicone Spatula Set 3pc",
-    productDescription: "Heat-resistant spatulas for non-stick cookware.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Utensils",
-    shipSpeed: "1 day",
-    retailPrice: "$12.99",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/spatula-set.jpg",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Tools",
-    itemType: "Utensil",
-    protectedBrand: false,
-    barcodeStatus: "Invalid",
-    wercsStatus: "UPC not registered",
-    wercsActionRequired: "Reach out to supplier for registration",
-  },
-  {
-    partnerSku: "PG-1010",
-    barcode: "0194251234576",
-    brand: "Pinnacle Goods",
-    productTitle: "Marble Coaster Set 4pc",
-    productDescription: "Natural marble coasters with cork backing.",
-    partnerItemCategory: "Home Decor",
-    partnerItemSubcategory: "Coasters",
-    shipSpeed: "2 days",
-    retailPrice: "$16.50",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/marble-coasters.jpg",
-    bu: "Home",
-    division: "Decor",
-    department: "Accessories",
-    itemType: "Coaster",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Registered",
-    wercsActionRequired: "—",
-  },
+const SUBMITTED_SKU_COUNT = 72;
+const AI_ADD_COUNT = 22;
+
+const CATEGORIES = [
+  { category: "Kitchen & Dining", sub: "Mixing Bowls", itemType: "Mixing Bowl", division: "Kitchen", department: "Cookware" },
+  { category: "Kitchen & Dining", sub: "Cutting Boards", itemType: "Cutting Board", division: "Kitchen", department: "Tools" },
+  { category: "Kitchen & Dining", sub: "Bakeware", itemType: "Baking Sheet", division: "Kitchen", department: "Bakeware" },
+  { category: "Home Decor", sub: "Table Linens", itemType: "Table Runner", division: "Decor", department: "Textiles" },
+  { category: "Home Decor", sub: "Coasters", itemType: "Coaster", division: "Decor", department: "Accessories" },
+  { category: "Storage & Organization", sub: "Food Storage", itemType: "Food Storage", division: "Kitchen", department: "Storage" },
 ];
 
-const AI_ADD_SKUS = [
-  {
-    partnerSku: "AI-PG-2001",
-    barcode: "0194259876501",
-    brand: "Pinnacle Goods",
-    productTitle: "Non-Stick Baking Sheet Half Sheet 2pk",
-    productDescription: "Found on Amazon — top seller in kitchen bakeware, aligns with Pinnacle Goods catalog.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Bakeware",
-    shipSpeed: "2 days",
-    retailPrice: "$21.99",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/baking-sheet-2pk.jpg",
-    marketplaceSource: "Amazon",
-    aiReason: "High search volume on Target.com; gap in submitted assortment vs. competitor listings.",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Bakeware",
-    itemType: "Baking Sheet",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Registered",
-    wercsActionRequired: "—",
-  },
-  {
-    partnerSku: "AI-PG-2002",
-    barcode: "0194259876502",
-    brand: "Pinnacle Goods",
-    productTitle: "Acacia Wood Serving Tray Round",
-    productDescription: "Listed on Google Shopping under Pinnacle Goods brand storefront.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Serveware",
-    shipSpeed: "2 days",
-    retailPrice: "$34.00",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/acacia-tray-round.jpg",
-    marketplaceSource: "Google Shopping",
-    aiReason: "Strong margin item; complements existing home decor SKUs.",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Serveware",
-    itemType: "Serving Tray",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Registered",
-    wercsActionRequired: "—",
-  },
-  {
-    partnerSku: "AI-PG-2003",
-    barcode: "0194259876503",
-    brand: "Pinnacle Goods",
-    productTitle: "Dish Drying Rack Stainless Foldable",
-    productDescription: "Marketplace match from Walmart.com seller profile.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Organization",
-    shipSpeed: "2 days",
-    retailPrice: "$29.99",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/dish-rack-fold.jpg",
-    marketplaceSource: "Walmart Marketplace",
-    aiReason: "Category gap — no drying/organization SKUs in seller submission.",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Organization",
-    itemType: "Dish Rack",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Pending review",
-    wercsActionRequired: "Verify WERCS before listing",
-  },
-  {
-    partnerSku: "AI-PG-2004",
-    barcode: "0194259876504",
-    brand: "Pinnacle Goods",
-    productTitle: "Cotton Kitchen Towel Set 6pc Stripe",
-    productDescription: "Best seller on brand website indexed by Google.",
-    partnerItemCategory: "Kitchen & Dining",
-    partnerItemSubcategory: "Linens",
-    shipSpeed: "1 day",
-    retailPrice: "$17.99",
-    primaryImageUrl: "https://cdn.example.com/pinnacle/towel-set-stripe.jpg",
-    marketplaceSource: "Google Search",
-    aiReason: "High repeat-purchase item; improves basket size for kitchen launch.",
-    bu: "Home",
-    division: "Kitchen",
-    department: "Textiles",
-    itemType: "Kitchen Towel",
-    protectedBrand: false,
-    barcodeStatus: "Available",
-    wercsStatus: "Registered",
-    wercsActionRequired: "—",
-  },
-];
+const BARCODE_STATUSES = ["Available", "Available", "Available", "Invalid", "Unavailable"];
+const MARKETPLACE_SOURCES = ["Amazon", "Google Shopping", "Walmart Marketplace", "Target.com", "Google Search"];
 
-const AI_REMOVE_SKU_IDS = ["PG-1003", "PG-1006", "PG-1009"];
+function pick(arr, index) {
+  return arr[index % arr.length];
+}
+
+function buildSubmittedSkus(count) {
+  const skus = [];
+  for (let i = 0; i < count; i++) {
+    const n = i + 1;
+    const meta = pick(CATEGORIES, i);
+    const barcodeStatus = pick(BARCODE_STATUSES, i);
+    skus.push({
+      partnerSku: `PG-${1000 + n}`,
+      barcode: `0194251234${String(560 + n).padStart(3, "0")}`,
+      brand: "Pinnacle Goods",
+      productTitle: `${meta.itemType} ${n} — seller assortment`,
+      productDescription: `Submitted SKU ${n} for onboarding demo.`,
+      partnerItemCategory: meta.category,
+      partnerItemSubcategory: meta.sub,
+      shipSpeed: n % 3 === 0 ? "3 days" : "2 days",
+      retailPrice: `$${(12 + (n % 40)).toFixed(2)}`,
+      primaryImageUrl: `https://cdn.example.com/pinnacle/sku-${n}.jpg`,
+      bu: "Home",
+      division: meta.division,
+      department: meta.department,
+      itemType: meta.itemType,
+      protectedBrand: n % 17 === 0,
+      barcodeStatus,
+      wercsStatus: barcodeStatus === "Unavailable" ? "Not submitted" : barcodeStatus === "Invalid" ? "Pending review" : "Registered",
+      wercsActionRequired: barcodeStatus === "Available" ? "—" : "Review required",
+    });
+  }
+  return skus;
+}
+
+function buildAiAddSkus(count, submittedSkus) {
+  const skus = [];
+  for (let i = 0; i < count; i++) {
+    const n = i + 1;
+    const meta = pick(CATEGORIES, i + 3);
+    skus.push({
+      partnerSku: `AI-PG-${2000 + n}`,
+      barcode: `0194259876${String(500 + n).padStart(3, "0")}`,
+      brand: "Pinnacle Goods",
+      productTitle: `AI suggested ${meta.itemType} ${n}`,
+      productDescription: `Marketplace match — complements seller catalog.`,
+      partnerItemCategory: meta.category,
+      partnerItemSubcategory: meta.sub,
+      shipSpeed: "2 days",
+      retailPrice: `$${(18 + (n % 35)).toFixed(2)}`,
+      primaryImageUrl: `https://cdn.example.com/pinnacle/ai-sku-${n}.jpg`,
+      marketplaceSource: pick(MARKETPLACE_SOURCES, i),
+      aiReason: `Gap vs. competitor listings; aligns with ${submittedSkus[0]?.partnerItemCategory ?? "Home"}.`,
+      bu: "Home",
+      division: meta.division,
+      department: meta.department,
+      itemType: meta.itemType,
+      protectedBrand: false,
+      barcodeStatus: "Available",
+      wercsStatus: "Registered",
+      wercsActionRequired: "—",
+    });
+  }
+  return skus;
+}
+
+const SUBMITTED_SKUS = buildSubmittedSkus(SUBMITTED_SKU_COUNT);
+const AI_ADD_SKUS = buildAiAddSkus(AI_ADD_COUNT, SUBMITTED_SKUS);
+
+const AI_REMOVE_SKU_IDS = [SUBMITTED_SKUS[2].partnerSku, SUBMITTED_SKUS[5].partnerSku, SUBMITTED_SKUS[8].partnerSku];
 
 const AI_REMOVE_REASONS = {
-  "PG-1003": "Invalid barcode — duplicate UPC conflict with existing Target catalog item.",
-  "PG-1006": "WERCS documentation missing; cast iron requires compliance review before launch.",
-  "PG-1009": "Low margin + barcode registration issue; better alternatives available from AI search.",
+  [SUBMITTED_SKUS[2].partnerSku]: "Invalid barcode — duplicate UPC conflict with existing Target catalog item.",
+  [SUBMITTED_SKUS[5].partnerSku]: "WERCS documentation missing; requires compliance review before launch.",
+  [SUBMITTED_SKUS[8].partnerSku]: "Low margin + barcode issue; better alternatives from AI search.",
 };
 
 function buildAnalysis(totalSkus, homeSkus, apparelSkus, brands, itemTypes, skuDrillDown) {
@@ -330,20 +119,78 @@ function buildAnalysis(totalSkus, homeSkus, apparelSkus, brands, itemTypes, skuD
   };
 }
 
+function aggregateBrands(skuDrillDown, sellerName) {
+  const map = new Map();
+  for (const row of skuDrillDown) {
+    const brand = row.brand;
+    const cur = map.get(brand) ?? { skus: 0, protected: false, agp: 0 };
+    map.set(brand, {
+      skus: cur.skus + 1,
+      protected: cur.protected || Boolean(row.protectedBrand),
+      agp: cur.agp,
+    });
+  }
+  if (map.size === 0) {
+    return [{ brand: sellerName, skus: 0, protected: false, agp: 0 }];
+  }
+  return Array.from(map.entries()).map(([brand, data]) => ({ brand, ...data }));
+}
+
+function aggregateItemTypes(skuDrillDown) {
+  const map = new Map();
+  for (const row of skuDrillDown) {
+    const t = row.itemType ?? "Other";
+    const cur = map.get(t) ?? { total: 0, available: 0, invalid: 0, unavailable: 0 };
+    cur.total += 1;
+    if (row.barcodeStatus === "Available") cur.available += 1;
+    else if (row.barcodeStatus === "Invalid") cur.invalid += 1;
+    else cur.unavailable += 1;
+    map.set(t, cur);
+  }
+  const total = skuDrillDown.length || 1;
+  return Array.from(map.entries())
+    .map(([itemType, stats]) => ({
+      itemType,
+      totalSkus: stats.total,
+      coveragePercent: Math.round((stats.total / total) * 100),
+      barcodeAvailable: stats.available,
+      barcodeInvalid: stats.invalid,
+      barcodeUnavailable: stats.unavailable,
+    }))
+    .sort((a, b) => b.totalSkus - a.totalSkus)
+    .slice(0, 8);
+}
+
+function versionSkuIds(submitted, aiAdds, removeIds, aiAddSlice) {
+  const keep = submitted.filter((s) => !removeIds.includes(s.partnerSku)).map((s) => s.partnerSku);
+  const adds = aiAdds.slice(0, aiAddSlice).map((s) => s.partnerSku);
+  return {
+    included: [...keep, ...adds],
+    aiAdded: adds,
+    removed: removeIds.filter((id) => submitted.some((s) => s.partnerSku === id)),
+  };
+}
+
 function buildPartnerRecord(sellerId, sellerName) {
-  const submittedCount = 1032;
+  const submittedCount = SUBMITTED_SKUS.length;
+  const v1Meta = versionSkuIds(SUBMITTED_SKUS, AI_ADD_SKUS, AI_REMOVE_SKU_IDS, 14);
+  const v2Meta = versionSkuIds(
+    SUBMITTED_SKUS,
+    AI_ADD_SKUS,
+    [SUBMITTED_SKUS[5].partnerSku, SUBMITTED_SKUS[8].partnerSku],
+    AI_ADD_SKUS.length,
+  );
+
   const v1Skus = [
-    ...SUBMITTED_SKUS.filter((s) => !AI_REMOVE_SKU_IDS.includes(s.partnerSku)),
-    ...AI_ADD_SKUS.slice(0, 3),
+    ...SUBMITTED_SKUS.filter((s) => v1Meta.included.includes(s.partnerSku) || v1Meta.removed.includes(s.partnerSku)),
+    ...AI_ADD_SKUS.filter((s) => v1Meta.included.includes(s.partnerSku)),
   ];
   const v2Skus = [
-    ...SUBMITTED_SKUS.filter((s) => !["PG-1006", "PG-1009"].includes(s.partnerSku)),
-    ...AI_ADD_SKUS,
+    ...SUBMITTED_SKUS.filter((s) => v2Meta.included.includes(s.partnerSku) || v2Meta.removed.includes(s.partnerSku)),
+    ...AI_ADD_SKUS.filter((s) => v2Meta.included.includes(s.partnerSku)),
   ];
 
   const sellerDrillDown = SUBMITTED_SKUS;
-  const v1DrillDown = v1Skus;
-  const v2DrillDown = v2Skus;
 
   return {
     sellerId,
@@ -372,12 +219,11 @@ function buildPartnerRecord(sellerId, sellerName) {
         label: "Version 1 — conservative add",
         createdAt: "2026-07-09T10:00:00Z",
         createdBy: "Shaun Doe",
-        status: "shared",
-        sharedAt: "2026-07-10T09:00:00Z",
-        includedSkuIds: v1Skus.map((s) => s.partnerSku),
-        aiAddedSkuIds: AI_ADD_SKUS.slice(0, 3).map((s) => s.partnerSku),
-        removedSkuIds: AI_REMOVE_SKU_IDS,
-        recommendedCount: v1Skus.length + (submittedCount - SUBMITTED_SKUS.length),
+        status: "draft",
+        includedSkuIds: v1Meta.included,
+        aiAddedSkuIds: v1Meta.aiAdded,
+        removedSkuIds: v1Meta.removed,
+        recommendedCount: v1Meta.included.length + v1Meta.removed.length,
       },
       {
         id: "v2",
@@ -386,10 +232,10 @@ function buildPartnerRecord(sellerId, sellerName) {
         createdAt: "2026-07-11T11:30:00Z",
         createdBy: "Shaun Doe",
         status: "draft",
-        includedSkuIds: v2Skus.map((s) => s.partnerSku),
-        aiAddedSkuIds: AI_ADD_SKUS.map((s) => s.partnerSku),
-        removedSkuIds: ["PG-1006", "PG-1009"],
-        recommendedCount: v2Skus.length + (submittedCount - SUBMITTED_SKUS.length),
+        includedSkuIds: v2Meta.included,
+        aiAddedSkuIds: v2Meta.aiAdded,
+        removedSkuIds: v2Meta.removed,
+        recommendedCount: v2Meta.included.length + v2Meta.removed.length,
       },
     ],
     analysisSources: [
@@ -399,19 +245,10 @@ function buildPartnerRecord(sellerId, sellerName) {
         type: "seller_submission",
         ...buildAnalysis(
           submittedCount,
-          Math.round(submittedCount * 0.69),
-          Math.round(submittedCount * 0.31),
-          [
-            { brand: sellerName, skus: submittedCount - 120, protected: false, agp: 1 },
-            { brand: "Partner Brand Co.", skus: 80, protected: true, agp: 0 },
-            { brand: "Home Essentials", skus: 40, protected: false, agp: 2 },
-          ],
-          [
-            { itemType: "Mixing Bowl", totalSkus: 142, coveragePercent: 14, barcodeAvailable: 120, barcodeInvalid: 15, barcodeUnavailable: 7 },
-            { itemType: "Cutting Board", totalSkus: 98, coveragePercent: 9, barcodeAvailable: 85, barcodeInvalid: 8, barcodeUnavailable: 5 },
-            { itemType: "Table Runner", totalSkus: 85, coveragePercent: 8, barcodeAvailable: 78, barcodeInvalid: 4, barcodeUnavailable: 3 },
-            { itemType: "Food Storage", totalSkus: 110, coveragePercent: 11, barcodeAvailable: 95, barcodeInvalid: 10, barcodeUnavailable: 5 },
-          ],
+          Math.round(submittedCount * 0.85),
+          Math.round(submittedCount * 0.15),
+          aggregateBrands(sellerDrillDown, sellerName),
+          aggregateItemTypes(sellerDrillDown),
           sellerDrillDown,
         ),
       },
@@ -421,19 +258,12 @@ function buildPartnerRecord(sellerId, sellerName) {
         type: "tm_version",
         versionId: "v1",
         ...buildAnalysis(
-          v1Skus.length + (submittedCount - SUBMITTED_SKUS.length),
-          Math.round((v1Skus.length + 900) * 0.72),
-          Math.round((v1Skus.length + 900) * 0.28),
-          [
-            { brand: sellerName, skus: v1Skus.length + 880, protected: false, agp: 0 },
-            { brand: "Partner Brand Co.", skus: 75, protected: true, agp: 0 },
-          ],
-          [
-            { itemType: "Mixing Bowl", totalSkus: 130, coveragePercent: 13, barcodeAvailable: 118, barcodeInvalid: 8, barcodeUnavailable: 4 },
-            { itemType: "Baking Sheet", totalSkus: 95, coveragePercent: 9, barcodeAvailable: 90, barcodeInvalid: 3, barcodeUnavailable: 2 },
-            { itemType: "Serving Tray", totalSkus: 72, coveragePercent: 7, barcodeAvailable: 68, barcodeInvalid: 2, barcodeUnavailable: 2 },
-          ],
-          v1DrillDown,
+          v1Meta.included.length + v1Meta.removed.length,
+          Math.round((v1Meta.included.length + v1Meta.removed.length) * 0.85),
+          Math.round((v1Meta.included.length + v1Meta.removed.length) * 0.15),
+          aggregateBrands(v1Skus, sellerName),
+          aggregateItemTypes(v1Skus),
+          v1Skus,
         ),
       },
       {
@@ -442,19 +272,12 @@ function buildPartnerRecord(sellerId, sellerName) {
         type: "tm_version",
         versionId: "v2",
         ...buildAnalysis(
-          v2Skus.length + (submittedCount - SUBMITTED_SKUS.length),
-          Math.round((v2Skus.length + 900) * 0.74),
-          Math.round((v2Skus.length + 900) * 0.26),
-          [
-            { brand: sellerName, skus: v2Skus.length + 890, protected: false, agp: 0 },
-            { brand: "Partner Brand Co.", skus: 70, protected: true, agp: 0 },
-          ],
-          [
-            { itemType: "Mixing Bowl", totalSkus: 128, coveragePercent: 12, barcodeAvailable: 115, barcodeInvalid: 9, barcodeUnavailable: 4 },
-            { itemType: "Kitchen Towel", totalSkus: 88, coveragePercent: 8, barcodeAvailable: 82, barcodeInvalid: 4, barcodeUnavailable: 2 },
-            { itemType: "Dish Rack", totalSkus: 65, coveragePercent: 6, barcodeAvailable: 60, barcodeInvalid: 3, barcodeUnavailable: 2 },
-          ],
-          v2DrillDown,
+          v2Meta.included.length + v2Meta.removed.length,
+          Math.round((v2Meta.included.length + v2Meta.removed.length) * 0.85),
+          Math.round((v2Meta.included.length + v2Meta.removed.length) * 0.15),
+          aggregateBrands(v2Skus, sellerName),
+          aggregateItemTypes(v2Skus),
+          v2Skus,
         ),
       },
     ],
@@ -471,4 +294,6 @@ const data = {
 
 const outPath = path.join(__dirname, "..", "mock", "business", "assortment_curation.json");
 fs.writeFileSync(outPath, JSON.stringify(data, null, 2));
-console.log(`Wrote ${outPath} (${Object.keys(data).length} partner records)`);
+console.log(
+  `Wrote ${outPath} — ${SUBMITTED_SKU_COUNT} submitted SKUs, ${AI_ADD_COUNT} AI suggestions per partner`,
+);

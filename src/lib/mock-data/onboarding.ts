@@ -39,9 +39,20 @@ export {
 export const ASSORTMENT_REVIEW_ICON_SRC = "/icons/clipboard.svg";
 
 /** Assortment stays under review after form submission — not auto-complete. */
-export function isAssortmentSectionInReview(section: OnboardingSection): boolean {
+export function isAssortmentSectionInReview(
+  section: OnboardingSection,
+  approvedIds: string[] = [],
+  partnerId?: string,
+): boolean {
   if (section.id !== "assortment") return false;
-  return section.tasks.some((task) => task.status === "in_progress");
+  const assortmentPartnerId = partnerId ?? section.tasks[0]?.sellerId;
+  if (
+    assortmentPartnerId &&
+    approvedIds.includes(`assortment-${assortmentPartnerId}`)
+  ) {
+    return false;
+  }
+  return true;
 }
 
 export function getAssortmentTaskIconSrc(
@@ -55,6 +66,7 @@ export function getOnboardingSectionStatusIconSrc(
   section: OnboardingSection,
   sections: OnboardingSection[],
   approvedIds: string[] = [],
+  partnerId?: string,
 ): string {
-  return getSectionStatusIconSrc(section, sections, approvedIds);
+  return getSectionStatusIconSrc(section, sections, approvedIds, partnerId);
 }

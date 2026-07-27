@@ -2,9 +2,11 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import {
+  generateListingDetailFromSku,
   getListingItemsForPartner,
   type ListingItemDetail,
 } from "@/lib/mock-data/item-listing";
+import { getAssortmentCurationContent, getVersionSkus } from "@/lib/mock-data/assortment-curation-content";
 
 interface ItemListingStore {
   /** partnerId → AI-generated listing drafts */
@@ -12,6 +14,7 @@ interface ItemListingStore {
   generatingPartnerId: string | null;
   ensureListingsForPartner: (partnerId: string) => void;
   regenerateListings: (partnerId: string) => Promise<void>;
+  generateMissingAttributesDrafts: (partnerId: string) => Promise<number>;
   updateListingField: (
     partnerId: string,
     partnerSku: string,
@@ -47,6 +50,54 @@ export const useItemListingStore = create<ItemListingStore>()(
           },
         }));
       },
+      generateMissingAttributesDrafts: async (partnerId) => {
+        const list = get().byPartner[partnerId] ?? [];
+        const missingSkus = list.filter((item) => item.attributesMissing).map((i) => i.partnerSku);
+        if (missingSkus.length === 0) return 0;
+
+        set((s) => ({
+          byPartner: {
+            ...s.byPartner,
+            [partnerId]: list.map((item) =>
+              item.attributesMissing
+                ? { ...item, generatingAttributes: true }
+                : item,
+            ),
+          },
+        }));
+
+        await new Promise((r) => setTimeout(r, 5000));
+
+        const content = getAssortmentCurationContent(partnerId);
+        const version = content.versions[0];
+        const skus = version ? getVersionSkus(content, version.id) : content.submittedSkus;
+        const skuById = new Map(skus.map((s, index) => [s.partnerSku, { sku: s, index }]));
+
+        set((s) => {
+          const current = s.byPartner[partnerId] ?? [];
+          return {
+            byPartner: {
+              ...s.byPartner,
+              [partnerId]: current.map((item) => {
+                if (!missingSkus.includes(item.partnerSku)) return item;
+                const match = skuById.get(item.partnerSku);
+                if (!match) {
+                  return { ...item, generatingAttributes: false, attributesMissing: false };
+                }
+                const filled = generateListingDetailFromSku(match.sku, match.index);
+                return {
+                  ...filled,
+                  attributesMissing: false,
+                  generatingAttributes: false,
+                  latestStatus: "AI_READY" as const,
+                };
+              }),
+            },
+          };
+        });
+
+        return missingSkus.length;
+      },
       updateListingField: (partnerId, partnerSku, field, value) => {
         set((s) => {
           const list = s.byPartner[partnerId];
@@ -69,6 +120,6 @@ export const useItemListingStore = create<ItemListingStore>()(
       getListing: (partnerId, partnerSku) =>
         get().byPartner[partnerId]?.find((i) => i.partnerSku === partnerSku),
     }),
-    { name: "item-listing-drafts", skipHydration: true },
+    { name: "item-listing-drafts-v2", skipHydration: true },
   ),
 );

@@ -43,6 +43,10 @@ export interface ListingItemDetail extends ListingItemRow {
   submittedPriceAsOf: string;
   fields: ListingFieldRow[];
   listingErrors: string[];
+  /** Required listing attributes not yet populated (AI can draft). */
+  attributesMissing?: boolean;
+  /** Shimmer while AI fills missing attributes. */
+  generatingAttributes?: boolean;
 }
 
 const RELATIONSHIPS: ListingRelationship[] = ["SA", "VC", "VAR"];
@@ -79,18 +83,35 @@ function buildAiDescription(sku: AssortmentSkuRow): string {
   return enriched.replace(/\s+/g, " ").trim();
 }
 
+function cleanProductTitle(title: string): string {
+  return title
+    .replace(/\s*—\s*seller assortment\s*$/i, "")
+    .replace(/^AI suggested\s+/i, "")
+    .trim();
+}
+
+function shouldMarkAttributesMissing(index: number, sku: AssortmentSkuRow): boolean {
+  if (sku.recommendationAction === "ai_add") return index % 4 === 0;
+  return index % 9 === 1 || index % 9 === 5;
+}
+
 export function generateListingDetailFromSku(
   sku: AssortmentSkuRow,
   index: number,
 ): ListingItemDetail {
   const seed = hashSku(sku.partnerSku);
+  const attributesMissing = shouldMarkAttributesMissing(index, sku);
   const retail = parsePrice(sku.retailPrice);
   const listAmount = retail > 0 ? retail : 12.99 + (seed % 40);
   const listPrice = formatListPrice(listAmount);
   const submitted = formatListPrice(Math.max(listAmount - 0.5, listAmount * 0.92));
   const inventory = 15 + (seed % 85);
   const relationship = RELATIONSHIPS[seed % RELATIONSHIPS.length];
-  const latestStatus: ListingLatestStatus = index < 3 ? "NEEDS_REVIEW" : "AI_READY";
+  const latestStatus: ListingLatestStatus = attributesMissing
+    ? "NEEDS_REVIEW"
+    : index < 3
+      ? "NEEDS_REVIEW"
+      : "AI_READY";
   const bullets = buildBullets(sku);
 
   const depth = 4 + (seed % 6);
@@ -103,7 +124,7 @@ export function generateListingDetailFromSku(
     { field: "Item Type", value: sku.itemType ?? sku.partnerItemSubcategory, aiGenerated: true },
     { field: "IDC Code", value: `IDC-${800000 + (seed % 99999)}`, aiGenerated: true },
     { field: "Brand", value: sku.brand, aiGenerated: false },
-    { field: "Product Title", value: sku.productTitle, aiGenerated: true },
+    { field: "Product Title", value: cleanProductTitle(sku.productTitle), aiGenerated: true },
     { field: "Product Description", value: buildAiDescription(sku), aiGenerated: true },
     ...bullets.map((text, i) => ({
       field: `Bullet Feature ${i + 1}`,
@@ -131,22 +152,26 @@ export function generateListingDetailFromSku(
   return {
     partnerSku: sku.partnerSku,
     tcin: null,
-    title: sku.productTitle,
-    itemType: sku.itemType ?? sku.partnerItemSubcategory,
-    inventory,
+    title: cleanProductTitle(sku.productTitle),
+    itemType: attributesMissing ? "—" : (sku.itemType ?? sku.partnerItemSubcategory),
+    inventory: attributesMissing ? 0 : inventory,
     relationship,
     publishStatus: "No",
     latestStatus,
-    lastUpdated: "Pending setup",
-    listPrice,
+    lastUpdated: attributesMissing ? "Attributes pending" : "Pending setup",
+    listPrice: attributesMissing ? "—" : listPrice,
     imageUrl: sku.primaryImageUrl,
     barcode: sku.barcode,
     brand: sku.brand,
-    productDescription: buildAiDescription(sku),
-    submittedPrice: submitted,
-    submittedPriceAsOf: "As of today, AI draft",
-    fields,
-    listingErrors,
+    productDescription: attributesMissing ? "" : buildAiDescription(sku),
+    submittedPrice: attributesMissing ? "—" : submitted,
+    submittedPriceAsOf: attributesMissing ? "—" : "As of today, AI draft",
+    fields: attributesMissing ? [] : fields,
+    listingErrors: attributesMissing
+      ? ["Missing required listing attributes — generate an AI draft to continue."]
+      : listingErrors,
+    attributesMissing,
+    generatingAttributes: false,
   };
 }
 

@@ -66,10 +66,12 @@ function OnboardingTaskCard({
   task,
   onAction,
   approved,
+  hideActions = false,
 }: {
   task: RecommendedTask;
   onAction: (task: RecommendedTask) => void;
   approved?: boolean;
+  hideActions?: boolean;
 }) {
   return (
     <article className="rounded-[var(--radius-lg)] bg-[var(--color-task-card)] p-[var(--space-4)]">
@@ -109,24 +111,25 @@ function OnboardingTaskCard({
               {task.checkedOn ? ` · Checked on ${task.checkedOn}` : ""}
             </p>
           )}
-          {task.actionHref ? (
-            <Button variant="ghost" size="sm" className="mt-2 h-auto px-0 py-0 text-[var(--color-primary)]" asChild>
-              <Link href={task.actionHref}>{task.actionLabel}</Link>
-            </Button>
-          ) : approved && task.actionType === "approve_onboarding" ? (
-            <MarkerTag tone="success" className="mt-2 gap-1">
-              <Check className="h-3 w-3" /> Approved
-            </MarkerTag>
-          ) : (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="mt-2 h-auto px-0 py-0 text-[var(--color-primary)]"
-              onClick={() => onAction(task)}
-            >
-              {task.actionLabel}
-            </Button>
-          )}
+          {!hideActions &&
+            (task.actionHref ? (
+              <Button variant="ghost" size="sm" className="mt-2 h-auto px-0 py-0 text-[var(--color-primary)]" asChild>
+                <Link href={task.actionHref}>{task.actionLabel}</Link>
+              </Button>
+            ) : approved && task.actionType === "approve_onboarding" ? (
+              <MarkerTag tone="success" className="mt-2 gap-1">
+                <Check className="h-3 w-3" /> Approved
+              </MarkerTag>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mt-2 h-auto px-0 py-0 text-[var(--color-primary)]"
+                onClick={() => onAction(task)}
+              >
+                {task.actionLabel}
+              </Button>
+            ))}
         </div>
       </div>
     </article>
@@ -636,6 +639,7 @@ export function TasksPanel({
                       task={task}
                       onAction={handleTaskAction}
                       approved={task.reviewTaskId ? isApproved(task.reviewTaskId) : false}
+                      hideActions
                     />
                   ))}
                 </div>
@@ -659,6 +663,7 @@ export function TasksPanel({
                     task={task}
                     onAction={handleTaskAction}
                     approved={task.reviewTaskId ? isApproved(task.reviewTaskId) : false}
+                    hideActions
                   />
                 ))
               )}

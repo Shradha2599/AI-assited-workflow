@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Check, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 
 import { SvgIcon } from "@/components/ui/svg-icon";
 import { cn } from "@/lib/utils";
@@ -19,12 +19,7 @@ const variantStyles: Record<
   warning: {
     container: "border-[var(--color-warning-light)] bg-[var(--color-warning-light)]",
     stripe: "bg-[var(--color-warning)]",
-    icon: (
-      <AlertTriangle
-        className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-warning-icon)]"
-        aria-hidden
-      />
-    ),
+    icon: <SvgIcon name="warningFill" size={20} className="mt-0.5 shrink-0" alt="" />,
   },
   success: {
     container: "border-[#D1F0D1] bg-[#F0FAF0]",
@@ -41,7 +36,7 @@ const variantStyles: Record<
 };
 
 interface InfoBannerProps {
-  title: string;
+  title: React.ReactNode;
   message: React.ReactNode;
   className?: string;
   actions?: React.ReactNode;

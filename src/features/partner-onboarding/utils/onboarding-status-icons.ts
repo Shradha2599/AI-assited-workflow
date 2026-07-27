@@ -84,9 +84,21 @@ export function resolveSectionStatusVisualState(
   section: OnboardingSection,
   sections: OnboardingSection[],
   approvedIds: string[] = [],
+  partnerId?: string,
 ): OnboardingSectionVisualState {
   if (isOnboardingSectionLocked(section, sections, approvedIds)) {
     return "locked";
+  }
+
+  if (section.id === "assortment") {
+    const assortmentPartnerId = partnerId ?? section.tasks[0]?.sellerId;
+    if (
+      assortmentPartnerId &&
+      approvedIds.includes(`assortment-${assortmentPartnerId}`)
+    ) {
+      return "complete";
+    }
+    return "in_review";
   }
 
   const completed = countSectionCompletedSteps(section, approvedIds);
@@ -123,6 +135,17 @@ export function resolveSubtaskStatusVisualState(
   partnerId?: string,
 ): OnboardingSubtaskVisualState {
   if (sectionLocked) return "locked";
+
+  if (sectionId === "assortment") {
+    const assortmentPartnerId = partnerId ?? task.sellerId;
+    if (
+      assortmentPartnerId &&
+      approvedIds.includes(`assortment-${assortmentPartnerId}`)
+    ) {
+      return "complete";
+    }
+    return "to_be_reviewed";
+  }
 
   if (isSubtaskComplete(task, sectionId, approvedIds, partnerId)) {
     return "complete";
@@ -190,8 +213,9 @@ export function shouldGraySectionStatusIcon(
   section: OnboardingSection,
   sections: OnboardingSection[],
   approvedIds: string[] = [],
+  partnerId?: string,
 ): boolean {
-  const state = resolveSectionStatusVisualState(section, sections, approvedIds);
+  const state = resolveSectionStatusVisualState(section, sections, approvedIds, partnerId);
   return (
     state === "not_started" || state === "in_review" || state === "in_progress"
   );
@@ -202,10 +226,18 @@ export function shouldGraySubtaskStatusIcon(
   sectionId: string,
   approvedIds: string[] = [],
   sectionLocked = false,
+  partnerId?: string,
 ): boolean {
-  const state = resolveSubtaskStatusVisualState(task, sectionId, approvedIds, sectionLocked);
+  const state = resolveSubtaskStatusVisualState(
+    task,
+    sectionId,
+    approvedIds,
+    sectionLocked,
+    partnerId,
+  );
   // Sub-task SVGs ship with their own gray/green/orange fills — avoid washing them out.
   if (state === "complete" || state === "incorrect" || state === "locked") return false;
+  if (state === "to_be_reviewed" || state === "pending" || state === "started") return true;
   return false;
 }
 
@@ -213,8 +245,9 @@ export function getSectionStatusIconSrc(
   section: OnboardingSection,
   sections: OnboardingSection[],
   approvedIds: string[] = [],
+  partnerId?: string,
 ): string {
-  const state = resolveSectionStatusVisualState(section, sections, approvedIds);
+  const state = resolveSectionStatusVisualState(section, sections, approvedIds, partnerId);
   return sectionStatusIconSrc(state);
 }
 
