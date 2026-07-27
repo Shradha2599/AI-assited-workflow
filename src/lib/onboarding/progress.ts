@@ -28,6 +28,12 @@ export function countSectionCompletedSteps(
   if (section.id === "documentation") {
     return countDocumentationSectionCompletedSteps(section, approvedIds);
   }
+  if (section.id === "assortment") {
+    const partnerId = section.tasks[0]?.sellerId;
+    if (partnerId && approvedIds.includes(`assortment-${partnerId}`)) {
+      return section.totalSteps;
+    }
+  }
   return section.tasks.filter((task) => task.status === "complete").length;
 }
 
@@ -84,6 +90,12 @@ export function isOnboardingSectionLocked(
   sections: OnboardingSection[],
   approvedIds: string[] = [],
 ): boolean {
+  if (section.id === "item-listing") {
+    const assortment = sections.find((s) => s.id === "assortment");
+    const partnerId = assortment?.tasks[0]?.sellerId;
+    if (!partnerId) return true;
+    return !approvedIds.includes(`assortment-${partnerId}`);
+  }
   if (!LOCKED_ONBOARDING_SECTION_IDS.has(section.id)) return false;
   const prerequisites = sections.filter((s) => !LOCKED_ONBOARDING_SECTION_IDS.has(s.id));
   return !prerequisites.every(
@@ -106,6 +118,8 @@ export function deriveSectionStatus(
   if (isOnboardingSectionLocked(section, sections, approvedIds)) return "locked";
   if (section.id === "assortment") {
     const task = section.tasks[0];
+    const partnerId = task?.sellerId;
+    if (partnerId && approvedIds.includes(`assortment-${partnerId}`)) return "complete";
     if (task?.status === "complete") return "complete";
     if (task?.status === "in_progress") return "under_review";
     return "pending";

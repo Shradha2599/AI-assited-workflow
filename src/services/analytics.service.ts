@@ -44,12 +44,12 @@ export async function getGapBarData() {
 import { cellCount, type PartnerStage } from "@/lib/mock-data/pipeline-partners";
 
 const PIPELINE_STAGES: PartnerStage[] = [
-  "Established",
-  "Onboarding",
-  "New Lead",
-  "Contacted",
-  "Shortlisted",
   "Discovered",
+  "Shortlisted",
+  "Contacted",
+  "New Lead",
+  "Onboarding",
+  "Established",
 ];
 
 const KITCHEN_CATEGORY_LABEL = "Kitchen & Din...";

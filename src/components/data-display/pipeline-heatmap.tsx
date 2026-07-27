@@ -28,12 +28,12 @@ interface PipelineHeatmapProps {
 const CATEGORY_COLUMN_WIDTH = 140;
 
 const STAGE_HEAT_COLORS = [
-  "#89A8E6",
-  "#A5BDEC",
-  "#D1DDF5",
-  "#EEF3FB",
-  "#FFFCEB",
   "#FFF9DB",
+  "#FFFCEB",
+  "#EEF3FB",
+  "#D1DDF5",
+  "#A5BDEC",
+  "#89A8E6",
 ];
 
 const AVG_GMV_PER_SELLER: Record<string, number> = {
@@ -109,6 +109,11 @@ export function PipelineHeatmap({
   const [drawer, setDrawer] = useState<DrawerState | null>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const singleCategory = categoryRows.length === 1;
+  const cardTitle = singleCategory
+    ? `${categoryRows[0].category} Pipeline`
+    : "Pipeline Overview";
+
   useEffect(() => () => { if (hideTimer.current) clearTimeout(hideTimer.current); }, []);
 
   function cancelHide() {
@@ -150,7 +155,7 @@ export function PipelineHeatmap({
     <>
       <Card className={cn("min-w-0 overflow-hidden", className)}>
         <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
-          <h3 className="text-[var(--text-section-size)] font-semibold">Pipeline Overview</h3>
+          <h3 className="text-[var(--text-section-size)] font-semibold">{cardTitle}</h3>
           <div className="flex shrink-0 gap-2">
             <button
               type="button"
@@ -170,32 +175,35 @@ export function PipelineHeatmap({
         <CardContent className="min-w-0 overflow-x-auto p-[var(--space-4)] pt-0">
           <table className="w-full min-w-[640px] border-collapse text-[var(--text-caption-size)]">
             <colgroup>
-              <col style={{ width: CATEGORY_COLUMN_WIDTH }} />
+              {!singleCategory && <col style={{ width: CATEGORY_COLUMN_WIDTH }} />}
               {stageColumns.map((stage) => (
                 <col key={stage} />
               ))}
             </colgroup>
-            <thead>
-              <tr className="align-top">
-                <th className="bg-[var(--color-card)] pb-2 pl-0 pr-3 pt-0 text-left font-medium text-[var(--color-muted-foreground)]">
-                  Category
-                </th>
-                {stageColumns.map((stage) => (
-                  <th
-                    key={stage}
-                    className="bg-[var(--color-card)] px-1 pb-2 pt-0 text-center align-top font-medium text-[var(--color-muted-foreground)]"
-                  >
-                    <TruncatedText text={stage} className="text-center" />
+            {!singleCategory && (
+              <thead>
+                <tr className="align-top">
+                  <th className="bg-[var(--color-card)] pb-2 pl-0 pr-3 pt-0 text-left font-medium text-[var(--color-muted-foreground)]">
+                    Category
                   </th>
-                ))}
-              </tr>
-            </thead>
+                  {stageColumns.map((stage) => (
+                    <th
+                      key={`head-spacer-${stage}`}
+                      className="bg-[var(--color-card)] pb-2 pt-0"
+                      aria-hidden
+                    />
+                  ))}
+                </tr>
+              </thead>
+            )}
             <tbody>
               {categoryRows.map((row, rowIndex) => (
                 <tr key={row.category}>
-                  <td className="bg-[var(--color-card)] px-0 py-2 pr-3 text-left align-middle font-medium text-[var(--color-foreground)]">
-                    {row.category}
-                  </td>
+                  {!singleCategory && (
+                    <td className="bg-[var(--color-card)] px-0 py-2 pr-3 text-left align-middle font-medium text-[var(--color-foreground)]">
+                      {row.category}
+                    </td>
+                  )}
                   {row.values.map((value, colIndex) => {
                     const stage = stageColumns[colIndex];
                     const stageColor = STAGE_HEAT_COLORS[colIndex] ?? STAGE_HEAT_COLORS.at(-1)!;
@@ -205,7 +213,7 @@ export function PipelineHeatmap({
                     return (
                       <td
                         key={`${row.category}-${stage}`}
-                        className="cursor-pointer border border-[#D6D6D6] px-1 py-2 text-center align-middle font-medium text-[var(--color-foreground)] transition-[filter]"
+                        className="cursor-pointer border border-[#D6D6D6] px-1 pb-1 pt-2 text-center align-middle font-medium text-[var(--color-foreground)] transition-[filter]"
                         style={{
                           backgroundColor: stageColor,
                           outline: isHovered ? "2px solid var(--color-primary)" : "none",
@@ -222,6 +230,21 @@ export function PipelineHeatmap({
                 </tr>
               ))}
             </tbody>
+            <tfoot>
+              <tr className="align-top">
+                {!singleCategory && (
+                  <td className="bg-[var(--color-card)] px-0 pt-2 pr-3" aria-hidden />
+                )}
+                {stageColumns.map((stage) => (
+                  <td
+                    key={`label-${stage}`}
+                    className="bg-[var(--color-card)] px-1 pt-2 text-center align-top font-medium text-[var(--color-muted-foreground)]"
+                  >
+                    <TruncatedText text={stage} className="text-center" />
+                  </td>
+                ))}
+              </tr>
+            </tfoot>
           </table>
         </CardContent>
       </Card>

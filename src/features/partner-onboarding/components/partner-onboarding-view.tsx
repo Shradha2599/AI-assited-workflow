@@ -159,6 +159,10 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
         actions={pageHeaderActions}
       />
 
+      <section aria-label="Pipeline" className="mb-[var(--space-4)]">
+        <PipelineHeatmapSynced baseline={pipeline} />
+      </section>
+
       <Card className="mb-[var(--space-4)] overflow-hidden">
         <div className="px-6">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--color-border)] py-3">
@@ -345,8 +349,6 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
           </div>
         </div>
       </Card>
-
-      <PipelineHeatmapSynced baseline={pipeline} />
     </>
   );
 }

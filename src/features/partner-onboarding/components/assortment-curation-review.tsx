@@ -20,6 +20,7 @@ import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layou
 import { ReadOnlyBadge, ReviewActionBar, ValidationAlert } from "./profile-review-shared";
 import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
 import { useAssortmentCurationStore } from "../store/assortment-curation-store";
+import { useItemListingStore } from "../store/item-listing-store";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
 type AssortmentTab = "submitted" | "recommended" | "analysis";
@@ -65,6 +66,8 @@ export function AssortmentCurationReview({
   const initForPartner = useAssortmentCurationStore((s) => s.initForPartner);
   const storeContent = useAssortmentCurationStore((s) => s.content);
   const activeVersionId = useAssortmentCurationStore((s) => s.activeVersionId);
+  const ensureListings = useItemListingStore((s) => s.ensureListingsForPartner);
+  const regenerateListings = useItemListingStore((s) => s.regenerateListings);
 
   const assortmentSection = onboarding.sections.find((s) => s.id === "assortment");
   const assortmentTask = assortmentSection?.tasks[0];
@@ -164,7 +167,11 @@ export function AssortmentCurationReview({
         <ReviewActionBar
           primary={{
             label: approved ? "Approved" : "Approve",
-            onClick: () => approveItem(approveId),
+            onClick: () => {
+              approveItem(approveId);
+              ensureListings(partner.id);
+              void regenerateListings(partner.id);
+            },
             disabled: approved,
           }}
           secondary={{

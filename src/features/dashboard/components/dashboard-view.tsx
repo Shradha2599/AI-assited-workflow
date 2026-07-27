@@ -59,6 +59,10 @@ export function DashboardView({
 
       <HolidayBanner />
 
+      <section aria-label="Pipeline" className="mb-[var(--space-4)]">
+        <PipelineHeatmapSynced baseline={pipeline} />
+      </section>
+
       <section aria-label="Key metrics" className="mb-[var(--space-4)]">
         <DashboardKpiStrip metrics={metrics} />
       </section>
@@ -73,11 +77,6 @@ export function DashboardView({
         />
         <GapBarChart data={gapBarData} filterLabel="Categories (1)" className="h-full" />
       </section>
-
-      <PipelineHeatmapSynced
-        baseline={pipeline}
-        categoryFilterLabel="Categories (1)"
-      />
     </>
   );
 }

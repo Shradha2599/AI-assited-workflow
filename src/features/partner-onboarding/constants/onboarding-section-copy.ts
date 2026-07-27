@@ -5,6 +5,8 @@ export const ONBOARDING_SECTION_SUBTITLES: Record<string, string> = {
   documentation: "Partner's business related information",
   integrations:
     "Partner's marketplace integration for order management, inventory & fulfilment operations",
+  "item-listing":
+    "AI-assisted item setup — titles, descriptions, pricing, and logistics before publish",
   stripe: "Partner's payment setup",
 };
 

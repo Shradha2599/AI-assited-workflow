@@ -82,6 +82,9 @@ function isSectionLinkable(
   sections: OnboardingSection[],
   approvedIds: string[],
 ): boolean {
+  if (section.id === "item-listing") {
+    return !isSectionLocked(section, sections, approvedIds);
+  }
   if (!TM_REVIEW_SECTIONS.has(section.id)) return false;
   if (isSectionLocked(section, sections, approvedIds)) return false;
   if (section.id === "assortment") return true;
@@ -194,8 +197,12 @@ function SectionRow({
   );
 
   if (linkable) {
+    const href =
+      section.id === "item-listing"
+        ? `/sellers/onboarding/${partnerId}/review/item-listing`
+        : `/sellers/onboarding/${partnerId}/review/${section.id}`;
     return (
-      <Link href={`/sellers/onboarding/${partnerId}/review/${section.id}`} className="block">
+      <Link href={href} className="block">
         {content}
       </Link>
     );
