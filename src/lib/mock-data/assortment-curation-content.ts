@@ -226,6 +226,95 @@ export function getAnalysisSourceOptions(
   return options;
 }
 
+export function buildLiveAnalysisSourceForVersion(
+  content: AssortmentCurationContent,
+  versionId: string,
+): AssortmentAnalysisSource {
+  const version = content.versions.find((v) => v.id === versionId);
+  const skuDrillDown = getVersionSkus(content, versionId);
+  const template =
+    content.analysisSources.find((s) => s.type === "tm_version") ??
+    content.analysisSources.find((s) => s.type === "seller_submission") ??
+    content.analysisSources[0];
+
+  const totalSkus = skuDrillDown.length;
+  const homeSkus = skuDrillDown.filter((s) => s.bu === "Home" || !s.bu).length;
+  const apparelSkus = Math.max(0, totalSkus - homeSkus);
+
+  const brandMap = new Map<string, { skus: number; protected: boolean; agp: number }>();
+  for (const row of skuDrillDown) {
+    const brand = row.brand || "Unknown";
+    const existing = brandMap.get(brand) ?? {
+      skus: 0,
+      protected: false,
+      agp: 0,
+    };
+    brandMap.set(brand, {
+      skus: existing.skus + 1,
+      protected: existing.protected || Boolean(row.protectedBrand),
+      agp: existing.agp,
+    });
+  }
+  const brands: BrandSummaryRow[] = Array.from(brandMap.entries())
+    .map(([brand, data]) => ({ brand, ...data }))
+    .sort((a, b) => b.skus - a.skus);
+
+  const itemTypeMap = new Map<
+    string,
+    { total: number; available: number; invalid: number; unavailable: number }
+  >();
+  for (const row of skuDrillDown) {
+    const itemType = row.itemType ?? "Other";
+    const cur = itemTypeMap.get(itemType) ?? {
+      total: 0,
+      available: 0,
+      invalid: 0,
+      unavailable: 0,
+    };
+    cur.total += 1;
+    if (row.barcodeStatus === "Available") cur.available += 1;
+    else if (row.barcodeStatus === "Invalid") cur.invalid += 1;
+    else cur.unavailable += 1;
+    itemTypeMap.set(itemType, cur);
+  }
+  const itemTypes: ItemTypeAnalysisRow[] = Array.from(itemTypeMap.entries())
+    .map(([itemType, stats]) => ({
+      itemType,
+      totalSkus: stats.total,
+      coveragePercent: totalSkus > 0 ? Math.round((stats.total / totalSkus) * 100) : 0,
+      barcodeAvailable: stats.available,
+      barcodeInvalid: stats.invalid,
+      barcodeUnavailable: stats.unavailable,
+    }))
+    .sort((a, b) => b.totalSkus - a.totalSkus);
+
+  const barcodesAvailable = skuDrillDown.filter((s) => s.barcodeStatus === "Available").length;
+  const barcodesInvalid = skuDrillDown.filter((s) => s.barcodeStatus === "Invalid").length;
+  const barcodesUnavailable = skuDrillDown.filter((s) => s.barcodeStatus === "Unavailable").length;
+
+  return {
+    ...template,
+    id: `version-${versionId}`,
+    label: version?.name ?? versionId,
+    type: "tm_version",
+    versionId,
+    analysis: {
+      totalSkus,
+      wercsFlagged: skuDrillDown.filter((s) => s.wercsStatus !== "Registered").length,
+      homeSkus,
+      apparelSkus,
+      uniqueBrands: brands.length,
+      protectedBrands: brands.filter((b) => b.protected).length,
+      barcodesAvailable,
+      barcodesInvalid,
+      barcodesUnavailable,
+    },
+    brands,
+    itemTypes,
+    skuDrillDown,
+  };
+}
+
 export function buildAnalysisSourceForVersion(
   content: AssortmentCurationContent,
   version: AssortmentVersion,
@@ -274,6 +363,6 @@ export function buildVersionFromSellerBaseline(
     includedSkuIds: [...keepIds, ...aiAddIds],
     aiAddedSkuIds: aiAddIds,
     removedSkuIds: content.aiRecommendations.remove.map((r) => r.partnerSku),
-    recommendedCount: keepIds.length + aiAddIds.length + (content.submittedCount - content.submittedSkus.length),
+    recommendedCount: keepIds.length + aiAddIds.length + content.aiRecommendations.remove.length,
   };
 }

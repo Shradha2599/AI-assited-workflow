@@ -17,6 +17,7 @@ interface PipelineHeatmapSyncedProps {
   baseline: PipelineData;
   fyLabel?: string;
   categoryFilterLabel?: string;
+  showHeaderFilters?: boolean;
   className?: string;
 }
 

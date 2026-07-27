@@ -7,7 +7,10 @@ import Link from "next/link";
 import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import { getSectionProgressPercent } from "@/lib/mock-data/onboarding";
-import { getAssortmentCurationContent } from "@/lib/mock-data/assortment-curation-content";
+import {
+  getAssortmentCurationContent,
+  getVersionSkus,
+} from "@/lib/mock-data/assortment-curation-content";
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
 import { cn } from "@/lib/utils";
 import { TruncatedText } from "@/components/ui/truncated-text";
@@ -17,7 +20,7 @@ import { AssortmentRecommendedTab } from "./assortment-recommended-tab";
 import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
-import { ReadOnlyBadge, ReviewActionBar, ValidationAlert } from "./profile-review-shared";
+import { ReadOnlyBadge, ValidationAlert } from "./profile-review-shared";
 import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
 import { useAssortmentCurationStore } from "../store/assortment-curation-store";
 import { useItemListingStore } from "../store/item-listing-store";
@@ -31,10 +34,10 @@ interface AssortmentCurationReviewProps {
   activeTab: AssortmentTab;
 }
 
-const TABS: { id: AssortmentTab; label: string; countKey?: "submittedCount" | "recommendedCount" }[] = [
+const TABS: { id: AssortmentTab; label: string; countKey?: "submittedCount" | "recommendedCount" | "analysisCount" }[] = [
   { id: "submitted", label: "Assortment submitted through lead form", countKey: "submittedCount" },
   { id: "recommended", label: "Target recommended assortment", countKey: "recommendedCount" },
-  { id: "analysis", label: "Assortment analysis" },
+  { id: "analysis", label: "Assortment analysis", countKey: "analysisCount" },
 ];
 
 function ReviewBadge() {
@@ -76,7 +79,10 @@ export function AssortmentCurationReview({
     : 0;
   const content = storeContent ?? getAssortmentCurationContent(partner.id);
   const activeVersion = content.versions.find((v) => v.id === activeVersionId) ?? content.versions[0];
-  const recommendedCount = activeVersion?.recommendedCount ?? content.submittedCount;
+  const submittedTabCount = content.submittedSkus.length;
+  const recommendedTabCount = activeVersion
+    ? getVersionSkus(content, activeVersion.id).length
+    : submittedTabCount;
   const approveId = `assortment-${partner.id}`;
   const approved = isApproved(approveId);
 
@@ -98,8 +104,20 @@ export function AssortmentCurationReview({
     `/sellers/onboarding/${partner.id}/review/assortment?tab=${tab}`;
 
   const tabCounts: Record<string, number> = {
-    submittedCount: content.submittedCount,
-    recommendedCount,
+    submittedCount: submittedTabCount,
+    recommendedCount: recommendedTabCount,
+    analysisCount: recommendedTabCount,
+  };
+
+  const tmApproveProps = {
+    approved,
+    sellerApproved: activeVersion?.status === "approved",
+    onApprove: () => {
+      approveItem(approveId);
+      ensureListings(partner.id);
+      void regenerateListings(partner.id);
+    },
+    onReject: () => openComments(assortmentTask.id),
   };
 
   return (
@@ -160,26 +178,13 @@ export function AssortmentCurationReview({
 
         {activeTab === "submitted" && <AssortmentSubmittedSection partnerId={partner.id} />}
 
-        {activeTab === "recommended" && <AssortmentRecommendedTab content={content} />}
+        {activeTab === "recommended" && (
+          <AssortmentRecommendedTab content={content} tmApprove={tmApproveProps} />
+        )}
 
-        {activeTab === "analysis" && <AssortmentAnalysisTab content={content} />}
-
-        <ReviewActionBar
-          primary={{
-            label: approved ? "Approved" : "Approve",
-            onClick: () => {
-              approveItem(approveId);
-              ensureListings(partner.id);
-              void regenerateListings(partner.id);
-            },
-            disabled: approved,
-          }}
-          secondary={{
-            label: "Reject",
-            onClick: () => openComments(assortmentTask.id),
-            disabled: approved,
-          }}
-        />
+        {activeTab === "analysis" && (
+          <AssortmentAnalysisTab content={content} tmApprove={tmApproveProps} />
+        )}
       </OnboardingSectionReviewLayout>
 
       <OnboardingCommentsDrawer partner={partner} />

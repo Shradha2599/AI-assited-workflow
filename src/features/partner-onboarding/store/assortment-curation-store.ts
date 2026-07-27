@@ -22,6 +22,32 @@ interface AssortmentCurationStore {
   setAnalysisSource: (sourceId: string) => void;
 }
 
+const sellerApprovalTimers = new Map<string, ReturnType<typeof setTimeout>>();
+
+function scheduleSellerApproval(versionId: string) {
+  const existing = sellerApprovalTimers.get(versionId);
+  if (existing) clearTimeout(existing);
+
+  const delayMs = 30_000 + Math.floor(Math.random() * 30_000);
+  const timer = setTimeout(() => {
+    sellerApprovalTimers.delete(versionId);
+    const { content } = useAssortmentCurationStore.getState();
+    if (!content) return;
+
+    const target = content.versions.find((v) => v.id === versionId);
+    if (!target || target.status !== "shared") return;
+
+    const updatedVersions = content.versions.map((v) =>
+      v.id === versionId ? { ...v, status: "approved" as const } : v,
+    );
+    useAssortmentCurationStore.setState({
+      content: { ...content, versions: updatedVersions },
+    });
+  }, delayMs);
+
+  sellerApprovalTimers.set(versionId, timer);
+}
+
 export const useAssortmentCurationStore = create<AssortmentCurationStore>((set, get) => ({
   partnerId: null,
   content: null,
@@ -31,15 +57,20 @@ export const useAssortmentCurationStore = create<AssortmentCurationStore>((set, 
   initForPartner: (partnerId) => {
     const content = getAssortmentCurationContent(partnerId);
     const defaultVersion = content.versions.find((v) => v.status === "draft") ?? content.versions[0];
+    const versionId = defaultVersion?.id ?? null;
     set({
       partnerId,
       content,
-      activeVersionId: defaultVersion?.id ?? null,
-      analysisSourceId: content.analysisSources[0]?.id ?? null,
+      activeVersionId: versionId,
+      analysisSourceId: versionId ? `version-${versionId}` : content.analysisSources[0]?.id ?? null,
     });
   },
 
-  setActiveVersion: (versionId) => set({ activeVersionId: versionId }),
+  setActiveVersion: (versionId) =>
+    set({
+      activeVersionId: versionId,
+      analysisSourceId: `version-${versionId}`,
+    }),
 
   createVersion: (name) => {
     const { content } = get();
@@ -57,6 +88,7 @@ export const useAssortmentCurationStore = create<AssortmentCurationStore>((set, 
     set({
       content: updatedContent,
       activeVersionId: newVersion.id,
+      analysisSourceId: `version-${newVersion.id}`,
     });
 
     return newVersion;
@@ -79,6 +111,8 @@ export const useAssortmentCurationStore = create<AssortmentCurationStore>((set, 
     set({
       content: { ...content, versions: updatedVersions },
     });
+
+    scheduleSellerApproval(versionId);
   },
 
   removeSkuFromVersion: (versionId, partnerSku) => {
@@ -99,7 +133,12 @@ export const useAssortmentCurationStore = create<AssortmentCurationStore>((set, 
         aiAddedSkuIds,
         removedSkuIds,
         excludedSkuIds,
-        recommendedCount: includedSkuIds.length,
+        recommendedCount: Math.max(
+          0,
+          [...new Set([...includedSkuIds, ...removedSkuIds])].filter(
+            (id) => !excludedSkuIds.includes(id),
+          ).length,
+        ),
       };
     });
 

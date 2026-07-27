@@ -16,6 +16,7 @@ const ICONS = {
   chevronLeft: "/icons/chevron-left-double.svg",
   chevronRight: "/icons/chevron-right-double.svg",
   infoFill: "/icons/info-fill.svg",
+  warningFill: "/icons/warning-fill.svg",
 } as const;
 
 export type SvgIconName = keyof typeof ICONS;

@@ -10,13 +10,13 @@ const RECOMMENDATION_TEMPLATES: Record<
   { title: string; message: string; comment: string; cta: AiSuggestedAction; ctaLabel: string }
 > = {
   "profile-brand": {
-    title: "Banner / Cover Image — review required",
+    title: "Brand description — review required",
     message:
-      "Cover image resolution is below marketplace guidelines. Brand display name, description, website, and sourcing were checked against submitted assets. Add a comment so the seller can upload a corrected cover image.",
+      "Brand description does not meet Target Plus copy guidelines. Display name, website, sourcing, logo, and cover image were checked against submitted assets. Review the AI suggestion for brand description.",
     comment:
-      "Please replace the cover image with a higher-resolution asset (minimum 1200×675) aligned with your brand guidelines.",
+      "Please update your brand description to include primary category keywords and a clear guest value proposition (minimum 120 characters).",
     cta: "request_edits",
-    ctaLabel: "Add Comment",
+    ctaLabel: "View recommendation",
   },
   "profile-brand-clean": {
     title: "Brand profile ready for review",

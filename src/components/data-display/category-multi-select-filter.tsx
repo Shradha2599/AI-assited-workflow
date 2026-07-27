@@ -94,7 +94,7 @@ export function CategoryMultiSelectFilter({
     ? "All categories"
     : selectedIds.length === 0
       ? "Categories (0)"
-      : `Categories (${treemapTileCount ?? selectedIds.length})`;
+      : `Categories (${selectedIds.length})`;
 
   const hasPendingChanges =
     open &&
@@ -138,23 +138,21 @@ export function CategoryMultiSelectFilter({
 
   return (
     <div ref={rootRef} className={cn("relative", className)}>
-      <button
+      <Button
         type="button"
+        variant="outline"
+        size="sm"
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className={cn(
-          "inline-flex items-center gap-1 rounded-[var(--radius-sm)] border border-[var(--color-border)]",
-          "px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]",
-          open && "border-[var(--color-primary)] text-[var(--color-foreground)]",
-        )}
+        className="gap-1 font-normal"
       >
         {triggerLabel}
         <ChevronDown
           className={cn("h-3 w-3 transition-transform", open && "rotate-180")}
           aria-hidden
         />
-      </button>
+      </Button>
 
       {open && (
         <div

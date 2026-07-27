@@ -22,6 +22,7 @@ interface PipelineHeatmapProps {
   categoryRows: PipelineCategoryRow[];
   fyLabel?: string;
   categoryFilterLabel?: string;
+  showHeaderFilters?: boolean;
   className?: string;
 }
 
@@ -103,6 +104,7 @@ export function PipelineHeatmap({
   categoryRows,
   fyLabel = "FY 2025-26",
   categoryFilterLabel = "Categories (1)",
+  showHeaderFilters = true,
   className,
 }: PipelineHeatmapProps) {
   const [hover, setHover] = useState<HoverState | null>(null);
@@ -156,20 +158,22 @@ export function PipelineHeatmap({
       <Card className={cn("min-w-0 overflow-hidden", className)}>
         <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
           <h3 className="text-[var(--text-section-size)] font-semibold">{cardTitle}</h3>
-          <div className="flex shrink-0 gap-2">
-            <button
-              type="button"
-              className="rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]"
-            >
-              {fyLabel} ▾
-            </button>
-            <button
-              type="button"
-              className="rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]"
-            >
-              {categoryFilterLabel} ▾
-            </button>
-          </div>
+          {showHeaderFilters && (
+            <div className="flex shrink-0 gap-2">
+              <button
+                type="button"
+                className="rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]"
+              >
+                {fyLabel} ▾
+              </button>
+              <button
+                type="button"
+                className="rounded-[var(--radius-sm)] border border-[var(--color-border)] px-2 py-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]"
+              >
+                {categoryFilterLabel} ▾
+              </button>
+            </div>
+          )}
         </CardHeader>
 
         <CardContent className="min-w-0 overflow-x-auto p-[var(--space-4)] pt-0">
@@ -200,8 +204,8 @@ export function PipelineHeatmap({
               {categoryRows.map((row, rowIndex) => (
                 <tr key={row.category}>
                   {!singleCategory && (
-                    <td className="bg-[var(--color-card)] px-0 py-2 pr-3 text-left align-middle font-medium text-[var(--color-foreground)]">
-                      {row.category}
+                    <td className="h-10 max-w-[140px] bg-[var(--color-card)] px-0 py-2 pr-3 text-left align-middle font-medium text-[var(--color-foreground)]">
+                      <TruncatedText text={row.category} className="text-[var(--text-caption-size)] font-medium" />
                     </td>
                   )}
                   {row.values.map((value, colIndex) => {
@@ -213,7 +217,7 @@ export function PipelineHeatmap({
                     return (
                       <td
                         key={`${row.category}-${stage}`}
-                        className="cursor-pointer border border-[#D6D6D6] px-1 pb-1 pt-2 text-center align-middle font-medium text-[var(--color-foreground)] transition-[filter]"
+                        className="h-10 cursor-pointer border border-[#D6D6D6] px-1 py-0 text-center align-middle font-medium text-[var(--color-foreground)] transition-[filter]"
                         style={{
                           backgroundColor: stageColor,
                           outline: isHovered ? "2px solid var(--color-primary)" : "none",

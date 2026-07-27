@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ArrowUp, CircleDollarSign, Goal, Store, Target, type LucideIcon } from "lucide-react";
+import { ArrowDown, ArrowUp, CircleDollarSign, Goal, Layers, Store, Target, type LucideIcon } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { TruncatedText } from "@/components/ui/truncated-text";
@@ -11,13 +11,14 @@ export interface DashboardMetric {
   value: string;
   change?: string;
   changeType?: "positive" | "negative" | "neutral";
-  icon: "revenue" | "goal" | "gap" | "sellers";
+  icon: "revenue" | "goal" | "gap" | "sellers" | "items";
 }
 
 const iconMap: Record<DashboardMetric["icon"], LucideIcon> = {
   revenue: CircleDollarSign,
   goal:    Goal,
   gap:     Target,
+  items:   Layers,
   sellers: Store,
 };
 

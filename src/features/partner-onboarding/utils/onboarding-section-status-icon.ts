@@ -20,9 +20,10 @@ export function resolveOnboardingSectionStatusIcon(
   section: OnboardingSection,
   sections: OnboardingSection[],
   approvedIds: string[] = [],
+  partnerId?: string,
 ): OnboardingSectionStatusIconState {
-  const src = getOnboardingSectionStatusIconSrc(section, sections, approvedIds);
-  const gray = shouldGraySectionStatusIcon(section, sections, approvedIds);
+  const src = getOnboardingSectionStatusIconSrc(section, sections, approvedIds, partnerId);
+  const gray = shouldGraySectionStatusIcon(section, sections, approvedIds, partnerId);
 
   return { src, gray, title: section.title };
 }

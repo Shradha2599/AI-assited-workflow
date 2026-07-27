@@ -124,9 +124,11 @@ export function OnboardingProfileTaskProgressSteps({
 export function OnboardingChecklistProgressSteps({
   sections,
   approvedIds = [],
+  partnerId,
 }: {
   sections: OnboardingSection[];
   approvedIds?: string[];
+  partnerId?: string;
 }) {
   return (
     <div className="flex items-center gap-1">
@@ -135,6 +137,7 @@ export function OnboardingChecklistProgressSteps({
           section,
           sections,
           approvedIds,
+          partnerId,
         );
 
         return (
@@ -164,7 +167,13 @@ export function OnboardingPartnerProgressSteps({
   approvedIds?: string[];
 }) {
   const sections = getOnboardingForPartner(partner).sections;
-  return <OnboardingChecklistProgressSteps sections={sections} approvedIds={approvedIds} />;
+  return (
+    <OnboardingChecklistProgressSteps
+      sections={sections}
+      approvedIds={approvedIds}
+      partnerId={partner.id}
+    />
+  );
 }
 
 export function OnboardingProgressSteps({ tasks }: { tasks: PipelineOnboardingTask[] }) {

@@ -29,7 +29,14 @@ export function mergePipelineWithDiscovery(
     return baseline;
   }
 
-  const row = baseline.categoryRows[0];
+  const rowIndex = baseline.categoryRows.findIndex(
+    (r) => r.category === KITCHEN_CATEGORY || r.category.includes("Kitchen"),
+  );
+  if (rowIndex < 0) {
+    return baseline;
+  }
+
+  const row = baseline.categoryRows[rowIndex];
   const values = [...row.values];
   const discoveredIdx = stageIndex(baseline.stageColumns, "Discovered");
   const shortlistedIdx = stageIndex(baseline.stageColumns, "Shortlisted");
@@ -41,7 +48,9 @@ export function mergePipelineWithDiscovery(
 
   return {
     ...baseline,
-    categoryRows: [{ ...row, values }],
+    categoryRows: baseline.categoryRows.map((r, i) =>
+      i === rowIndex ? { ...row, values } : r,
+    ),
   };
 }
 

@@ -120,8 +120,7 @@ export function deriveSectionStatus(
     const task = section.tasks[0];
     const partnerId = task?.sellerId;
     if (partnerId && approvedIds.includes(`assortment-${partnerId}`)) return "complete";
-    if (task?.status === "complete") return "complete";
-    if (task?.status === "in_progress") return "under_review";
+    if (task?.status === "in_progress" || task?.status === "complete") return "under_review";
     return "pending";
   }
   const completed = countSectionCompletedSteps(section, approvedIds);
@@ -196,7 +195,10 @@ export function taskNeedsReview(
   if (sectionId === "integrations" || sectionId === "item-listing" || sectionId === "stripe") {
     return false;
   }
-  if (sectionId === "assortment") return task.status === "in_progress";
+  if (sectionId === "assortment") {
+    if (task.sellerId && approvedIds.includes(`assortment-${task.sellerId}`)) return false;
+    return task.status === "in_progress" || task.status === "complete";
+  }
   if (task.title === PROFILE_TM_REVIEW_TASK_TITLE) {
     if (isProfileTaskTmApproved(task.id, approvedIds)) return false;
     return task.status === "in_progress" || task.status === "complete" || Boolean(task.issue);

@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useEffect, useMemo } from "react";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { OnboardingPartner } from "@/lib/mock-data/onboarding";
 import { getSectionProgressPercent } from "@/lib/mock-data/onboarding";
@@ -19,15 +19,21 @@ import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
 import { OnboardingSectionReviewLayout } from "./onboarding-section-review-layout";
 import { OnboardingSubtaskNav } from "./onboarding-subtask-nav";
-import { FileAttachmentRow, ReviewActionBar, ValidationAlert } from "./profile-review-shared";
+import {
+  FileAttachmentRow,
+  SubtaskReviewBadge,
+  DocumentRejectionReasonBanner,
+} from "./profile-review-shared";
+import {
+  DocumentationAiReviewCarousel,
+  type DocumentationReviewTarget,
+} from "./documentation-ai-review-carousel";
 import {
   documentationSubtaskApproveId,
   isDocumentationSubtaskTmApproved,
 } from "../utils/documentation-task-progress";
 import { getOnboardingSectionSubtitle } from "../constants/onboarding-section-copy";
-import {
-  isDocumentationTaskSubmitted,
-} from "../utils/documentation-task-progress";
+import { isDocumentationTaskSubmitted } from "../utils/documentation-task-progress";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
 interface DocumentationReviewProps {
@@ -41,13 +47,28 @@ const DOC_SUBTASK_HINTS = {
   brands: "Provide brand related documents.",
 } as const;
 
-function ReviewBadge() {
-  return (
-    <StatusTag className={cn("inline-flex items-center gap-1.5 font-normal", markerToneClass.review)}>
-      <Image src="/icons/review-document.svg" alt="" width={14} height={14} aria-hidden />
-      Review
-    </StatusTag>
-  );
+function docToReviewTarget(doc: DocumentUpload): DocumentationReviewTarget {
+  return {
+    approveId: `doc-${doc.id}`,
+    label: doc.label,
+    validationStatus: doc.validationStatus,
+    rejectionReason: doc.agentRecommendation?.message ?? doc.summary,
+    suggestedComment:
+      doc.agentRecommendation?.suggestedComment ??
+      `Please upload an updated ${doc.label.toLowerCase()} that meets Target requirements.`,
+  };
+}
+
+function brandToReviewTarget(brand: BrandDocumentRow): DocumentationReviewTarget {
+  return {
+    approveId: `brand-${brand.id}`,
+    label: brand.name,
+    validationStatus: brand.validationStatus,
+    rejectionReason: brand.agentRecommendation?.message ?? brand.summary,
+    suggestedComment:
+      brand.agentRecommendation?.suggestedComment ??
+      `Please provide an updated authorization document for ${brand.name}.`,
+  };
 }
 
 function GeneralDocumentFile({
@@ -102,58 +123,6 @@ function GeneralDocumentFile({
         </div>
       )}
     </div>
-  );
-}
-
-function DocumentRecommendationBanner({
-  doc,
-  approveId,
-  approved,
-  onReject,
-  onAddComment,
-}: {
-  doc: DocumentUpload;
-  approveId: string;
-  approved: boolean;
-  onReject: () => void;
-  onAddComment: () => void;
-}) {
-  if (approved || !doc.agentRecommendation) return null;
-
-  return (
-    <ValidationAlert
-      taskId={approveId}
-      title={doc.agentRecommendation.title}
-      message={doc.agentRecommendation.message}
-      onAddComment={onAddComment}
-      onRejectRecommendation={onReject}
-      variant="banner"
-    />
-  );
-}
-
-function BrandDocumentsAlert({
-  alertId,
-  title,
-  message,
-  onReject,
-  onAddComment,
-}: {
-  alertId: string;
-  title: string;
-  message: string;
-  onReject: () => void;
-  onAddComment: () => void;
-}) {
-  return (
-    <ValidationAlert
-      taskId={alertId}
-      title={title}
-      message={message}
-      onAddComment={onAddComment}
-      onRejectRecommendation={onReject}
-      variant="banner"
-    />
   );
 }
 
@@ -337,6 +306,7 @@ export function DocumentationReview({
   const approveItem = useOnboardingReviewStore((s) => s.approveItem);
   const isApproved = useOnboardingReviewStore((s) => s.isApproved);
   const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
+  const documentRejections = useOnboardingReviewStore((s) => s.documentRejections);
 
   const docSection = onboarding.sections.find((s) => s.id === "documentation");
   const docProgress = docSection ? getSectionProgressPercent(docSection, approvedIds) : 0;
@@ -375,6 +345,19 @@ export function DocumentationReview({
     ];
   }, [partner.id, generalTask, brandsTask]);
 
+  const usesW9ContractFlow = docs?.general.some(
+    (doc) => doc.id === "w9" || doc.id === "contract",
+  );
+
+  const reviewTargets: DocumentationReviewTarget[] = useMemo(() => {
+    if (!docs) return [];
+    if (tabDocs.length > 0) return tabDocs.map(docToReviewTarget);
+    if (activeSubSection === "brands" && !usesW9ContractFlow) {
+      return docs.brands.map(brandToReviewTarget);
+    }
+    return [];
+  }, [tabDocs, docs, activeSubSection, usesW9ContractFlow]);
+
   if (!docs || !docSection || navItems.length === 0) {
     return (
       <div className="space-y-[var(--space-4)]">
@@ -385,30 +368,14 @@ export function DocumentationReview({
     );
   }
 
-  const brandWithAlert = docs.brands.find((b) => b.agentRecommendation);
-  const brandAlertId = brandWithAlert ? `brand-alert-${brandWithAlert.id}` : "";
-  const recommendationDoc = tabDocs.find(
-    (doc) => doc.agentRecommendation && !isApproved(`doc-${doc.id}`),
-  );
-  const usesW9ContractFlow = docs.general.some(
-    (doc) => doc.id === "w9" || doc.id === "contract",
-  );
-  const subtaskApproveId = documentationSubtaskApproveId(partner.id, activeSubSection);
   const subtaskTmApproved = isDocumentationSubtaskTmApproved(partner.id, activeSubSection, approvedIds);
-  const allSubtaskItemsApproved =
-    activeSubSection === "general"
-      ? tabDocs.every((doc) => isApproved(`doc-${doc.id}`))
-      : usesW9ContractFlow
-        ? tabDocs.every((doc) => isApproved(`doc-${doc.id}`))
-        : docs.brands.every((brand) => isApproved(`brand-${brand.id}`));
-  const subtaskItemCount =
-    activeSubSection === "general"
-      ? tabDocs.length
-      : usesW9ContractFlow
-        ? tabDocs.length
-        : docs.brands.length;
-  const showSubtaskReviewActions =
-    subtaskItemCount > 0 && taskSubmitted && !subtaskTmApproved && allSubtaskItemsApproved;
+
+  const docSubtaskLabel =
+    activeSubSection === "general" ? "General documents" : "Brand documents";
+
+  const documentRejectionBanners = reviewTargets
+    .map((t) => documentRejections[t.approveId])
+    .filter(Boolean);
 
   const approveDocumentationItem = (itemApproveId: string) => {
     tryCompleteDocumentationSubtask(
@@ -421,6 +388,23 @@ export function DocumentationReview({
       tabDocs,
       usesW9ContractFlow,
     );
+  };
+
+  const approveAllDocuments = (approveIds: string[]) => {
+    approveIds.forEach((id) => {
+      if (!useOnboardingReviewStore.getState().isApproved(id)) {
+        approveItem(id);
+      }
+    });
+    const subtaskApproveId = documentationSubtaskApproveId(partner.id, activeSubSection);
+    const latestApproved = useOnboardingReviewStore.getState().approvedIds;
+    const allItemsApproved =
+      activeSubSection === "general" || usesW9ContractFlow
+        ? tabDocs.every((doc) => latestApproved.includes(`doc-${doc.id}`))
+        : docs.brands.every((brand) => latestApproved.includes(`brand-${brand.id}`));
+    if (allItemsApproved && !latestApproved.includes(subtaskApproveId)) {
+      approveItem(subtaskApproveId);
+    }
   };
 
   return (
@@ -445,54 +429,35 @@ export function DocumentationReview({
       >
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h3 className="text-[20px] font-semibold text-[var(--color-foreground)]">
-            {activeSubSection === "general" ? "General documents" : "Brand documents"}
+            {docSubtaskLabel}
           </h3>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-end gap-2">
             {subtaskTmApproved ? (
               <StatusTag className={cn("inline-flex items-center gap-1 font-normal", markerToneClass.success)}>
                 <Check className="h-3 w-3" /> Approved
               </StatusTag>
             ) : taskSubmitted ? (
-              <ReviewBadge />
+              <SubtaskReviewBadge />
             ) : null}
           </div>
         </div>
 
-        {activeSubSection === "brands" && brandWithAlert?.agentRecommendation && docs.brands.length > 0 && (
-          <BrandDocumentsAlert
-            alertId={brandAlertId}
-            title={brandWithAlert.agentRecommendation.title}
-            message={brandWithAlert.agentRecommendation.message}
-            onReject={() =>
-              openFeedback({
-                taskId: `brand-${brandWithAlert.id}`,
-                title: brandWithAlert.agentRecommendation!.title,
-                agentMessage: brandWithAlert.agentRecommendation!.message,
-              })
-            }
-            onAddComment={() => openComments(`brand-${brandWithAlert.id}`)}
+        {documentRejectionBanners.map((rejection) => (
+          <DocumentRejectionReasonBanner
+            key={`${rejection.documentLabel}-${rejection.requestedAt}`}
+            documentLabel={rejection.documentLabel}
+            reason={rejection.reason}
           />
-        )}
+        ))}
 
-        {recommendationDoc && (
-          <DocumentRecommendationBanner
-            doc={recommendationDoc}
-            approveId={`doc-${recommendationDoc.id}`}
-            approved={isApproved(`doc-${recommendationDoc.id}`)}
-            onReject={() => {
-              if (recommendationDoc.agentRecommendation) {
-                openFeedback({
-                  taskId: `doc-${recommendationDoc.id}`,
-                  title: recommendationDoc.agentRecommendation.title,
-                  agentMessage: recommendationDoc.agentRecommendation.message,
-                });
-              } else {
-                openComments(`doc-${recommendationDoc.id}`);
-              }
-            }}
-            onAddComment={() => openComments(`doc-${recommendationDoc.id}`)}
-          />
-        )}
+        <DocumentationAiReviewCarousel
+          targets={reviewTargets}
+          taskSubmitted={taskSubmitted}
+          subtaskTmApproved={subtaskTmApproved}
+          onApproveDocument={approveDocumentationItem}
+          onApproveAll={approveAllDocuments}
+          subtaskLabel={docSubtaskLabel}
+        />
 
         {tabDocs.length > 0 ? (
           <div className="space-y-8">
@@ -509,6 +474,9 @@ export function DocumentationReview({
                   approved={isApproved(approveId)}
                   onApprove={approveDocumentationItem}
                   onReject={() => {
+                    const suggested =
+                      doc.agentRecommendation?.suggestedComment ??
+                      `Please upload an updated ${doc.label.toLowerCase()} that meets Target requirements.`;
                     if (doc.agentRecommendation) {
                       openFeedback({
                         taskId: approveId,
@@ -516,14 +484,14 @@ export function DocumentationReview({
                         agentMessage: doc.agentRecommendation.message,
                       });
                     } else {
-                      openComments(approveId);
+                      openComments(approveId, suggested);
                     }
                   }}
                 />
               );
             })}
           </div>
-        ) : docs.brands.length > 0 ? (
+        ) : docs.brands.length > 0 && activeSubSection === "brands" && !usesW9ContractFlow ? (
           <BrandDocumentsTable
             brands={docs.brands}
             onApprove={approveDocumentationItem}
@@ -535,22 +503,15 @@ export function DocumentationReview({
                   agentMessage: brand.agentRecommendation.message,
                 });
               } else {
-                openComments(`brand-${brand.id}`);
+                openComments(
+                  `brand-${brand.id}`,
+                  `Please provide an updated authorization document for ${brand.name}.`,
+                );
               }
             }}
             isApproved={isApproved}
           />
         ) : null}
-
-        {showSubtaskReviewActions && (
-          <ReviewActionBar
-            primary={{ label: "Approve", onClick: () => approveItem(subtaskApproveId) }}
-            secondary={{
-              label: "Reject",
-              onClick: () => openComments(activeTask?.id ?? subtaskApproveId),
-            }}
-          />
-        )}
       </OnboardingSectionReviewLayout>
 
       <OnboardingCommentsDrawer partner={partner} />
