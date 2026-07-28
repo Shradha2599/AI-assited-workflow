@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
+  ArrowRight,
   CheckCircle2,
   CircleDashed,
   ExternalLink,
@@ -98,6 +99,7 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
   const matchingItems = useSellerMatchingPlanItems(seller);
   const cached = verifications[seller.id];
   const isShortlisted = snap.shortlistedIds.includes(seller.id);
+  const isContacted = snap.contactedIds.includes(seller.id);
 
   const [activeTab, setActiveTab] = useState<ProfileTab>("overview");
   const [verifying, setVerifying] = useState(!cached);
@@ -173,8 +175,25 @@ export function SellerProfileView({ seller }: SellerProfileViewProps) {
                   <Plus className="h-3.5 w-3.5" /> Shortlist Lead
                 </Button>
               )}
-              <Button variant="outline" size="sm" className="gap-1.5" onClick={openAcquisitionMail}>
-                <SvgIcon name="mail" size={14} variant="primary" /> Send Email
+              <Button
+                variant="outline"
+                size="sm"
+                className={cn(
+                  "gap-1.5",
+                  isContacted && "border-transparent text-blue-600 hover:bg-blue-50 hover:text-blue-700",
+                )}
+                onClick={openAcquisitionMail}
+              >
+                {isContacted ? (
+                  <>
+                    Send Follow-up Mail
+                    <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                  </>
+                ) : (
+                  <>
+                    <SvgIcon name="mail" size={14} variant="primary" /> Send Email
+                  </>
+                )}
               </Button>
               <Button
                 variant="ghost"

@@ -13,6 +13,7 @@ export const markerToneClass = {
   error: `bg-[#faa69e] ${markerText}`,
   warning: `bg-[#ffab66] ${markerText}`,
   info: `bg-[#a5bdec] ${markerText}`,
+  infoLight: `bg-[#d1ddf5] ${markerText}`,
   neutral: `bg-[#f5f5f5] ${markerText}`,
   muted: `bg-[#f5f5f5] ${markerText}`,
   review: `bg-[#ffab66] ${markerText}`,
@@ -28,7 +29,7 @@ export const partnerStatusMarkerClass = {
   New: markerToneClass.yellow,
   "In Review": markerToneClass.review,
   Rejected: markerToneClass.rejected,
-  Onboarding: markerToneClass.info,
+  Onboarding: markerToneClass.infoLight,
   Approved: markerToneClass.success,
   "Future Interest": markerToneClass.pink,
 } as const;

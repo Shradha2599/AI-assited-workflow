@@ -5,6 +5,7 @@ import {
   getFYPlanSeed,
 } from "@/lib/mock-data/fy-plan-seeds";
 import { getAcquisitionWindow } from "@/lib/mock-data/seasonal-acquisition";
+import { applyBeaconPlanFix } from "@/lib/assortment-plan/beacon-plan-fixes";
 
 export interface ScheduledCalendarItem {
   id: string;
@@ -88,6 +89,10 @@ interface PlanStore extends FYRuntimeState {
   notifyChangesDrawerOpen: boolean;
   openNotifyChangesDrawer: () => void;
   closeNotifyChangesDrawer: () => void;
+
+  calendarApplyingBeaconFix: boolean;
+  dismissedBeaconPlanTaskIds: string[];
+  applyBeaconCalendarRecommendation: (taskId: string) => Promise<void>;
 }
 
 function syncActiveVersion(
@@ -118,6 +123,7 @@ export const usePlanStore = create<PlanStore>()((set, get) => ({
         fiscalYear: fy,
         fySnapshots: { ...nextSnapshots, [fy]: loaded },
         ...loaded,
+        dismissedBeaconPlanTaskIds: [],
         assortmentPlanningStarted: fy === "2025-2026" || loaded.planItems.length > 0,
       };
     }),
@@ -320,4 +326,32 @@ export const usePlanStore = create<PlanStore>()((set, get) => ({
   notifyChangesDrawerOpen: false,
   openNotifyChangesDrawer: () => set({ notifyChangesDrawerOpen: true }),
   closeNotifyChangesDrawer: () => set({ notifyChangesDrawerOpen: false }),
+
+  calendarApplyingBeaconFix: false,
+  dismissedBeaconPlanTaskIds: [],
+  applyBeaconCalendarRecommendation: async (taskId) => {
+    set({ calendarApplyingBeaconFix: true });
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    set((state) => {
+      const { scheduledItems, planRevenues } = applyBeaconPlanFix(taskId, {
+        planItems: state.planItems,
+        scheduledItems: state.scheduledItems,
+        planRevenues: state.planRevenues,
+      });
+      const dismissed = state.dismissedBeaconPlanTaskIds.includes(taskId)
+        ? state.dismissedBeaconPlanTaskIds
+        : [...state.dismissedBeaconPlanTaskIds, taskId];
+      return {
+        calendarApplyingBeaconFix: false,
+        dismissedBeaconPlanTaskIds: dismissed,
+        scheduledItems,
+        planRevenues,
+        calendarVersions: syncActiveVersion(
+          state.calendarVersions,
+          state.activeVersionId,
+          scheduledItems,
+        ),
+      };
+    });
+  },
 }));

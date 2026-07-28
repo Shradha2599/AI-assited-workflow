@@ -108,6 +108,7 @@ function truncateLabel(label: string, max = 16): string {
 export function buildDashboardMetrics(input: {
   fiscalYear: FiscalYearId;
   planItemCount: number;
+  baselinePlanItemCount: number;
   revenueGoal: string;
   selectedCategoryIds: string[];
   categoryOptions: GapCategoryFilterOption[];
@@ -123,7 +124,7 @@ export function buildDashboardMetrics(input: {
     return [
       { label: "Total Revenue", value: "$ 0", change: "0%", changeType: "neutral", icon: "revenue" },
       { label: "Revenue Goal", value: "—", change: "0%", changeType: "neutral", icon: "goal" },
-      { label: "Item Types Added", value: "0", change: "0", changeType: "neutral", icon: "items" },
+      { label: "Item Types Added", value: "0", change: "0%", changeType: "neutral", icon: "items" },
       { label: "Active Sellers", value: "0", change: "0%", changeType: "neutral", icon: "sellers" },
     ];
   }
@@ -131,6 +132,7 @@ export function buildDashboardMetrics(input: {
   let totalRevenueB = 0;
   let totalGoalM = 0;
   let totalItems = 0;
+  let baselineItems = 0;
   let totalSellers = 0;
   let weightedChange = 0;
 
@@ -151,8 +153,11 @@ export function buildDashboardMetrics(input: {
 
     if (treemapId === KITCHEN_TREEMAP_ID) {
       totalItems += input.planItemCount;
+      baselineItems += input.baselinePlanItemCount;
     } else {
-      totalItems += Math.round((seed?.itemTypes ?? 0) * scale);
+      const seeded = Math.round((seed?.itemTypes ?? 0) * scale);
+      totalItems += seeded;
+      baselineItems += seeded;
     }
 
     totalSellers += Math.max(1, Math.round(activeSellersForPrimary(primary) * scale));
@@ -168,8 +173,15 @@ export function buildDashboardMetrics(input: {
       ? formatRevenueGoalDisplay(input.revenueGoal)
       : formatGoalMillions(totalGoalM);
 
-  const itemChange =
-    totalItems > 0 && input.fiscalYear === "2025-2026" ? String(Math.min(5, selectedTreemap.length + 1)) : "0";
+  const itemChangePct =
+    baselineItems > 0
+      ? ((totalItems - baselineItems) / baselineItems) * 100
+      : totalItems > 0
+        ? 100
+        : 0;
+  const itemChange = `${Math.abs(itemChangePct).toFixed(1)}%`;
+  const itemChangeType: DashboardMetric["changeType"] =
+    itemChangePct > 0.05 ? "positive" : itemChangePct < -0.05 ? "negative" : "neutral";
 
   return [
     {
@@ -190,7 +202,7 @@ export function buildDashboardMetrics(input: {
       label: "Item Types Added",
       value: String(totalItems),
       change: itemChange,
-      changeType: totalItems > 0 ? "positive" : "neutral",
+      changeType: itemChangeType,
       icon: "items",
     },
     {

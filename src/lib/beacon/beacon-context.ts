@@ -6,6 +6,7 @@ import {
 } from "@/lib/mock-data/lead-form-analysis";
 import {
   getOnboardingReviewPanelItems,
+  type OnboardingReviewPanelState,
 } from "@/lib/mock-data/onboarding-review-panel";
 import { getOnboardingTasksForPanel, getDocumentationEvaluation } from "@/lib/mock-data/onboarding-evaluation";
 import {
@@ -20,7 +21,6 @@ import {
   type PartnerPipelineStatus,
 } from "@/lib/mock-data/potential-partners";
 import { getSellerById, sellers } from "@/lib/mock-data/sellers";
-import { getStageSummary } from "@/lib/mock-data/pipeline-partners";
 
 /** Sync gap bar rows — mirrors analytics.service getGapBarData */
 const GAP_CATEGORIES = [
@@ -38,13 +38,39 @@ const MISSING_PRODUCTS = [
   { name: "Storage Basket Set", revenue: "$980K", category: "Storage & Organization" },
 ] as const;
 
+/** AI-flagged viral / trending acquisition opportunities */
+const TRENDING_PRODUCTS = [
+  {
+    name: "Glass Beverage Dispenser",
+    revenue: "$1.2M",
+    category: "Kitchen & Dining",
+    signal: "Viral on TikTok & Amazon — low Target coverage",
+  },
+  {
+    name: "Smart LED Strip Kit",
+    revenue: "$890K",
+    category: "Lighting",
+    signal: "Holiday search spike · competitors expanded 28% depth",
+  },
+  {
+    name: "Ceramic Table Lamp",
+    revenue: "$1.4M",
+    category: "Lighting",
+    signal: "Trending cross-marketplace · top gap item this quarter",
+  },
+] as const;
+
 export interface BeaconContextInput {
   pathname: string;
   searchParams: URLSearchParams;
   statusOverrides: Record<string, PartnerPipelineStatus>;
   activeTaskId: string | null;
   planItems: string[];
-  scheduledItems: { label: string; row: string }[];
+  scheduledItems: { label: string; row: string; startMonth?: number; span?: number }[];
+  planRevenues?: Record<string, number>;
+  revenueGoal?: string;
+  dismissedBeaconPlanTaskIds?: string[];
+  onboardingReview?: OnboardingReviewPanelState;
 }
 
 export interface BeaconContextResult {
@@ -117,75 +143,102 @@ function collectOnboardingBlockers(limit = 6): OnboardingBlocker[] {
   return blockers.slice(0, limit);
 }
 
+function buildNearLaunchTasks(): RecommendedTask[] {
+  const tasks: RecommendedTask[] = [];
+
+  for (const ctx of outreachReminderPartners) {
+    const partner =
+      potentialPartners.find((p) => p.id === ctx.partnerId) ??
+      potentialPartners.find((p) => p.legalBusinessName === ctx.legalBusinessName);
+    const partnerId = partner?.id ?? ctx.partnerId;
+    const finishList =
+      ctx.missingItems.length > 0
+        ? ctx.missingItems.join(", ")
+        : "final TM reviews on profile & documentation";
+
+    tasks.push({
+      id: `dash-launch-${partnerId}`,
+      title: `${ctx.legalBusinessName} can go live after completing documentation`,
+      description: `${ctx.progressPercent}% onboarded · Remaining: ${finishList}.`,
+      actionLabel: "Send reminder →",
+      actionType: "open_outreach",
+      mailType: "document_reminder",
+      partnerId,
+      priority: "high",
+      category: "launch",
+    });
+  }
+
+  return tasks;
+}
+
 function buildDashboardTasks(): RecommendedTask[] {
   const tasks: RecommendedTask[] = [];
   const topGap = [...GAP_CATEGORIES].sort((a, b) => b.value - a.value)[0];
-  const topProduct = MISSING_PRODUCTS[0];
-  const blockers = collectOnboardingBlockers(3);
+  const blockers = collectOnboardingBlockers(5);
   const highMatchSellers = sellers.filter(
     (s) => s.confidenceScore >= 8.5 && (s.status === "discovered" || s.status === "shortlisted"),
   );
-  const stageTotals = getStageSummary();
+
+  for (const blocker of blockers) {
+    const reviewHref = `/sellers/onboarding/${blocker.partnerId}/review/${blocker.sectionId}${
+      blocker.reviewTaskId ? `?task=${blocker.reviewTaskId}` : ""
+    }`;
+    tasks.push({
+      id: `dash-onb-${blocker.partnerId}-${blocker.reviewTaskId}`,
+      title: `${blocker.taskTitle} blocking ${blocker.partnerName}`,
+      description: blocker.description,
+      actionLabel: "Review →",
+      actionHref: reviewHref,
+      partnerId: blocker.partnerId,
+      sectionId: blocker.sectionId,
+      reviewTaskId: blocker.reviewTaskId,
+      validationStatus: "invalid",
+      priority: "high",
+      category: "blocker",
+    });
+  }
+
+  for (const product of TRENDING_PRODUCTS.slice(0, 3)) {
+    tasks.push({
+      id: `dash-trend-${product.name.replace(/\s+/g, "-").toLowerCase()}`,
+      title: `Acquire trending ${product.name}`,
+      description: `${product.signal} · ${product.revenue} in ${product.category}.`,
+      actionLabel: "Add to plan →",
+      actionHref: "/assortment/plan",
+      priority: "high",
+      category: "trend",
+    });
+  }
+
+  tasks.push(...buildNearLaunchTasks());
 
   tasks.push({
     id: "dash-gap-top",
-    title: `${topGap.label} leads assortment gap at ${topGap.value}% vs competitors`,
-    description: `${topGap.revenueOpportunity} revenue opportunity — highest priority category this quarter.`,
-    actionLabel: "Explore Opportunity →",
+    title: `${topGap.label} gap is slowing revenue capture (${topGap.value}% vs competitors)`,
+    description: `${topGap.revenueOpportunity} opportunity · highest-impact category this quarter.`,
+    actionLabel: "Explore gap →",
     actionHref: "/assortment/gap",
+    priority: "high",
+    category: "trend",
   });
-
-  tasks.push({
-    id: "dash-product-gap",
-    title: `Add ${topProduct.name} to close ${topProduct.category} gap`,
-    description: `${topProduct.revenue} estimated revenue · top missing item in gap analysis.`,
-    actionLabel: "View in Gap Analysis →",
-    actionHref: "/assortment/gap",
-  });
-
-  if (blockers.length > 0) {
-    const first = blockers[0];
-    const reviewHref = `/sellers/onboarding/${first.partnerId}/review/${first.sectionId}${
-      first.reviewTaskId ? `?task=${first.reviewTaskId}` : ""
-    }`;
-    tasks.push({
-      id: `dash-onb-${first.partnerId}`,
-      title: `${first.taskTitle} — ${first.partnerName}`,
-      description: first.description,
-      actionLabel: "Review →",
-      actionHref: reviewHref,
-      partnerId: first.partnerId,
-      sectionId: first.sectionId,
-      reviewTaskId: first.reviewTaskId,
-      validationStatus: "invalid",
-    });
-  }
-
-  if (blockers.length > 1) {
-    tasks.push({
-      id: "dash-onb-list",
-      title: `${blockers.length} onboarding validation issues need review`,
-      description: `Partners in onboarding: ${stageTotals.Onboarding ?? 0}. Review flagged documents and profile fields.`,
-      actionLabel: "Open Onboarding →",
-      actionHref: "/sellers/onboarding",
-    });
-  }
 
   if (highMatchSellers.length > 0) {
-    const top = highMatchSellers.sort((a, b) => b.confidenceScore - a.confidenceScore)[0];
+    const top = [...highMatchSellers].sort((a, b) => b.confidenceScore - a.confidenceScore)[0];
     tasks.push({
       id: `dash-lead-${top.id}`,
       title: `${highMatchSellers.length} high-confidence sellers ready for outreach`,
       description: `${top.legalBusinessName} scores ${top.confidenceScore.toFixed(1)}/10 in ${top.category}.`,
-      actionLabel: "View Seller →",
+      actionLabel: "View seller →",
       actionHref: `/sellers/discovery/${top.id}`,
       sellerId: top.id,
       sellerName: top.legalBusinessName,
       score: top.confidenceScore,
+      priority: "normal",
     });
   }
 
-  return tasks.slice(0, 5);
+  return tasks.slice(0, 8);
 }
 
 function buildGapAnalysisTasks(): RecommendedTask[] {
@@ -351,60 +404,157 @@ function buildSellerProfileTasks(pathname: string): RecommendedTask[] {
 }
 
 function buildPlanTasks(input: BeaconContextInput): RecommendedTask[] {
-  const { planItems, scheduledItems } = input;
+  const {
+    planItems,
+    scheduledItems,
+    planRevenues = {},
+    revenueGoal = "$50M",
+    dismissedBeaconPlanTaskIds = [],
+  } = input;
+  const dismissed = new Set(dismissedBeaconPlanTaskIds);
   const scheduledLabels = new Set(scheduledItems.map((s) => s.label));
   const unscheduled = planItems.filter((p) => !scheduledLabels.has(p));
-  const categories = [...new Set(scheduledItems.map((s) => s.row))];
+  const tasks: RecommendedTask[] = [];
+  const pushTask = (task: RecommendedTask) => {
+    if (!dismissed.has(task.id)) tasks.push(task);
+  };
 
   if (planItems.length === 0) {
     return [
       {
         id: "apt-no-items",
-        title: "Start with Gap Analysis",
+        title: "Start with gap analysis before planning",
         description: "No item types in your plan yet. Identify high-opportunity gaps first.",
-        actionLabel: "Analyse Gaps →",
+        actionLabel: "Analyse gaps →",
         actionHref: "/assortment/gap",
+        priority: "high",
+        category: "plan",
       },
       {
         id: "apt-beacon-hint",
-        title: "Ask Beacon to build your plan",
+        title: "Ask Beacon to draft your first plan",
         description: "Beacon can recommend item types that meet your revenue goal from gap data.",
         actionLabel: "Chat with Beacon →",
-      },
-    ];
-  }
-
-  if (scheduledItems.length === 0) {
-    return [
-      {
-        id: "apt-drag",
-        title: `${planItems.length} item type${planItems.length > 1 ? "s" : ""} ready to schedule`,
-        description: "Drag items onto the calendar or let Beacon auto-schedule by demand seasonality.",
-        actionLabel: "Generate Calendar →",
+        priority: "normal",
+        category: "plan",
       },
     ];
   }
 
   if (unscheduled.length > 0) {
-    return [
-      {
-        id: "apt-partial",
-        title: `${scheduledItems.length} of ${planItems.length} items placed on calendar`,
-        description: `Still to schedule: ${unscheduled.slice(0, 3).join(", ")}${unscheduled.length > 3 ? ` +${unscheduled.length - 3} more` : ""}.`,
-        actionLabel: "Continue planning →",
-      },
-    ];
+    pushTask({
+      id: "apt-unscheduled",
+      title: `${unscheduled.length} item type${unscheduled.length > 1 ? "s" : ""} not on the calendar`,
+      description: `Still to schedule: ${unscheduled.slice(0, 3).join(", ")}${
+        unscheduled.length > 3 ? ` +${unscheduled.length - 3} more` : ""
+      }.`,
+      actionLabel: "Fix on calendar →",
+      actionHref: "/assortment/plan#calendar",
+      actionType: "scroll_plan_calendar",
+      priority: "high",
+      category: "plan",
+    });
   }
 
-  return [
-    {
+  const noRevenue = planItems.filter((name) => !planRevenues[name] || planRevenues[name] <= 0);
+  if (noRevenue.length > 0) {
+    pushTask({
+      id: "apt-no-revenue",
+      title: `${noRevenue.length} plan item${noRevenue.length > 1 ? "s" : ""} missing revenue estimates`,
+      description: `Add revenue targets to track progress toward ${revenueGoal}.`,
+      actionLabel: "Update estimates →",
+      actionHref: "/assortment/plan#calendar",
+      actionType: "scroll_plan_calendar",
+      priority: "high",
+      category: "plan",
+    });
+  }
+
+  const quarterCounts = [0, 0, 0, 0];
+  for (const item of scheduledItems) {
+    const month = item.startMonth ?? 0;
+    const quarter = Math.min(3, Math.floor(month / 3));
+    quarterCounts[quarter] += 1;
+  }
+  const busiestQuarter = quarterCounts.indexOf(Math.max(...quarterCounts));
+  if (quarterCounts[busiestQuarter] >= 4 && scheduledItems.length >= 5) {
+    pushTask({
+      id: "apt-quarter-cluster",
+      title: `Q${busiestQuarter + 1} has ${quarterCounts[busiestQuarter]} launches clustered together`,
+      description: "Spread launches across quarters to reduce acquisition risk and improve sell-through.",
+      actionLabel: "Rebalance plan →",
+      actionHref: "/assortment/plan#calendar",
+      actionType: "scroll_plan_calendar",
+      priority: "high",
+      category: "plan",
+    });
+  }
+
+  for (const item of scheduledItems) {
+    const labelLower = item.label.toLowerCase();
+    if (
+      (labelLower.includes("halloween") || labelLower.includes("holiday")) &&
+      (item.startMonth ?? 0) > 9
+    ) {
+      pushTask({
+        id: `apt-late-${item.label.replace(/\s+/g, "-")}`,
+        title: `"${item.label}" launches too late for peak demand`,
+        description: "Move acquisition earlier (Jul–Sep) so inventory is live before the seasonal spike.",
+        actionLabel: "Fix timing →",
+        actionHref: "/assortment/plan#calendar",
+        actionType: "scroll_plan_calendar",
+        priority: "high",
+        category: "plan",
+      });
+      break;
+    }
+  }
+
+  const rowCounts = new Map<string, number>();
+  for (const item of scheduledItems) {
+    rowCounts.set(item.row, (rowCounts.get(item.row) ?? 0) + 1);
+  }
+  const overloadedRow = [...rowCounts.entries()].find(([, count]) => count >= 5);
+  if (overloadedRow) {
+    pushTask({
+      id: "apt-row-overload",
+      title: `${overloadedRow[0]} row is overloaded (${overloadedRow[1]} items)`,
+      description: "Diversify categories or stagger launches to avoid supplier and ops bottlenecks.",
+      actionLabel: "Adjust calendar →",
+      actionHref: "/assortment/plan#calendar",
+      actionType: "scroll_plan_calendar",
+      priority: "high",
+      category: "plan",
+    });
+  }
+
+  if (tasks.length === 0 && scheduledItems.length === 0) {
+    pushTask({
+      id: "apt-drag",
+      title: `${planItems.length} item type${planItems.length > 1 ? "s" : ""} ready to schedule`,
+      description: "Place items on the calendar or let Beacon auto-schedule by demand seasonality.",
+      actionLabel: "Open calendar →",
+      actionHref: "/assortment/plan#calendar",
+      actionType: "scroll_plan_calendar",
+      priority: "high",
+      category: "plan",
+    });
+  }
+
+  if (tasks.length === 0 && unscheduled.length === 0 && planItems.length > 0) {
+    const categories = [...new Set(scheduledItems.map((s) => s.row))];
+    pushTask({
       id: "apt-done",
       title: `All ${planItems.length} item types scheduled`,
       description: `Spanning ${categories.length} categor${categories.length > 1 ? "ies" : "y"}. Ready to finalize and share.`,
-      actionLabel: "Finalize & Share →",
+      actionLabel: "Finalize & share →",
       actionType: "open_finalize_drawer",
-    },
-  ];
+      priority: "high",
+      category: "plan",
+    });
+  }
+
+  return tasks.slice(0, 5);
 }
 
 function getOnboardingReviewPanelTasks(
@@ -412,6 +562,7 @@ function getOnboardingReviewPanelTasks(
   pathname: string,
   searchParams: URLSearchParams,
   activeTaskId: string | null,
+  reviewState?: OnboardingReviewPanelState,
 ): { tasks: RecommendedTask[]; insights: RecommendedTask[] } {
   const partner = getPotentialPartnerById(partnerId);
   if (!partner || !showsOnboardingChecklist(partner.status)) {
@@ -420,7 +571,7 @@ function getOnboardingReviewPanelTasks(
 
   if (pathname.includes("/review/profile")) {
     const taskId = searchParams.get("task") ?? activeTaskId ?? undefined;
-    const panel = getOnboardingReviewPanelItems(partner.sellerId, "profile", { taskId });
+    const panel = getOnboardingReviewPanelItems(partner.sellerId, "profile", { taskId }, reviewState);
     return {
       tasks: panel.tasks.map((t) => ({ ...t, partnerId })),
       insights: panel.insights.map((t) => ({ ...t, partnerId })),
@@ -429,7 +580,12 @@ function getOnboardingReviewPanelTasks(
 
   if (pathname.includes("/review/documentation")) {
     const docTab = searchParams.get("tab") === "brands" ? "brands" : "general";
-    const panel = getOnboardingReviewPanelItems(partner.sellerId, "documentation", { docTab });
+    const panel = getOnboardingReviewPanelItems(
+      partner.sellerId,
+      "documentation",
+      { docTab },
+      reviewState,
+    );
     return {
       tasks: panel.tasks.map((t) => ({ ...t, partnerId })),
       insights: panel.insights.map((t) => ({ ...t, partnerId })),
@@ -738,6 +894,18 @@ function buildContextSummary(
     lines.push(
       `\nPlan state: ${input.planItems.length} items, ${input.scheduledItems.length} scheduled on calendar.`,
     );
+    const unscheduled = input.planItems.filter(
+      (p) => !input.scheduledItems.some((s) => s.label === p),
+    );
+    if (unscheduled.length) {
+      lines.push(`Unscheduled plan items: ${unscheduled.slice(0, 5).join(", ")}`);
+    }
+    if (tasks.length) {
+      lines.push("\nPlan efficiency flags:");
+      for (const t of tasks.filter((x) => x.category === "plan").slice(0, 4)) {
+        lines.push(`- ${t.title}`);
+      }
+    }
   }
 
   return lines.join("\n");
@@ -753,6 +921,7 @@ export function resolveBeaconContext(input: BeaconContextInput): BeaconContextRe
       input.pathname,
       input.searchParams,
       input.activeTaskId,
+      input.onboardingReview,
     );
     const starters = buildConversationStarters(
       page,

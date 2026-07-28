@@ -9,6 +9,7 @@ import { SvgIcon } from "@/components/ui/svg-icon";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { cn } from "@/lib/utils";
 import { downloadCalendarPdf } from "@/lib/utils/calendar-pdf";
+import { schedulePlanItems } from "@/lib/assortment-plan/plan-acquisition-schedule";
 import {
   usePlanStore,
   type ScheduledCalendarItem,
@@ -340,6 +341,7 @@ interface AssortmentCalendarProps {
 export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
   const fiscalYear = usePlanStore((s) => s.fiscalYear);
   const planItems = usePlanStore((s) => s.planItems);
+  const planRevenues = usePlanStore((s) => s.planRevenues);
   const scheduledItems = usePlanStore((s) => s.scheduledItems);
   const getOpportunityItems = usePlanStore((s) => s.getOpportunityItems);
   const addPlanItem = usePlanStore((s) => s.addPlanItem);
@@ -349,6 +351,8 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
   const updateScheduledItemSpan = usePlanStore((s) => s.updateScheduledItemSpan);
   const updateScheduledItemStartMonth = usePlanStore((s) => s.updateScheduledItemStartMonth);
   const setScheduledItems = usePlanStore((s) => s.setScheduledItems);
+
+  const calendarApplyingBeaconFix = usePlanStore((s) => s.calendarApplyingBeaconFix);
 
   // Items not yet placed on the calendar (available to drag)
   const scheduledLabels = useMemo(
@@ -532,7 +536,11 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
       });
       setScheduledItems(withIds);
     } catch {
-      // silent — keep existing schedule on failure
+      const fallback = schedulePlanItems(planItems, planRevenues).map((item, i) => ({
+        ...item,
+        id: `gen-${Date.now()}-${i}`,
+      }));
+      setScheduledItems(fallback);
     } finally {
       setGenerating(false);
     }
@@ -602,7 +610,7 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
           <Button
             size="sm"
             onClick={handleGenerateCalendar}
-            disabled={generating || planItems.length === 0}
+            disabled={generating || opportunityItems.length === 0}
           >
             {generating ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -615,7 +623,19 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
       </Card>
 
       {/* ── Calendar grid ─────────────────────────────────────────────────── */}
-      <Card className="overflow-hidden border-0 shadow-none">
+      <Card
+        id="assortment-plan-calendar"
+        className={cn(
+          "relative overflow-hidden border-0 shadow-none scroll-mt-6",
+          calendarApplyingBeaconFix && "animate-pulse",
+        )}
+      >
+        {calendarApplyingBeaconFix ? (
+          <div
+            className="pointer-events-none absolute inset-0 z-10 bg-[var(--color-card)]/50"
+            aria-hidden
+          />
+        ) : null}
         <div className="flex items-center justify-between border-b border-[var(--color-border)] p-[var(--space-4)]">
           <h3 className="text-[var(--text-section-size)] font-semibold">Calendar Plan {fyShort}</h3>
           <CalendarToolbar />

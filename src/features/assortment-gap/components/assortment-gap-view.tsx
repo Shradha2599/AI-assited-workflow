@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Calendar } from "lucide-react";
 
 import { AssortmentAnalysisBanner } from "@/components/data-display/assortment-analysis-banner";
 import {
@@ -14,6 +13,7 @@ import { MissingProductsTable, type MissingProduct } from "@/components/data-dis
 import { RevenueGoalPanel } from "@/components/data-display/revenue-goal-panel";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
+import { SvgIcon } from "@/components/ui/svg-icon";
 import { NoGoalModal } from "@/components/ui/no-goal-modal";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { abbreviateRevenueGoalInput, formatRevenueGoalDisplay, parseRevenueGoalToMillions } from "@/lib/utils/revenue-goal-input";
@@ -313,9 +313,9 @@ export function AssortmentGapView({
               align="end"
               className="[&>button]:h-9 [&>button]:bg-[var(--color-card)] [&>button]:px-3"
             />
-            <Button variant="secondary" size="icon" aria-label="Open assortment calendar" asChild>
+            <Button variant="outline" size="sm" className="h-7 w-7 px-0" aria-label="Open assortment calendar" asChild>
               <Link href="/assortment/plan">
-                <Calendar className="h-4 w-4" />
+                <SvgIcon name="calendar" size={16} className="icon-tint-primary" />
               </Link>
             </Button>
           </>

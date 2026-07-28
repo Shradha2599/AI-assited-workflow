@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
-  Calendar,
   ChevronDown,
   Download,
   MoreHorizontal,
@@ -13,6 +12,7 @@ import {
 import { PipelineHeatmapSynced } from "@/components/data-display/pipeline-heatmap-synced";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
+import { SvgIcon } from "@/components/ui/svg-icon";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
@@ -135,8 +135,10 @@ export function PartnerOnboardingView({ pipeline }: PartnerOnboardingViewProps) 
         <Button size="sm" className="gap-1.5">
           <Plus className="h-3.5 w-3.5" /> Add Partner
         </Button>
-        <Button variant="secondary" size="icon" aria-label="Calendar">
-          <Calendar className="h-4 w-4" />
+        <Button variant="outline" size="sm" className="h-7 w-7 px-0" aria-label="Open assortment calendar" asChild>
+          <Link href="/assortment/plan">
+            <SvgIcon name="calendar" size={16} className="icon-tint-primary" />
+          </Link>
         </Button>
         <Button
           variant="ghost"

@@ -1,10 +1,11 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
+import { ConfidenceScoreBadge } from "@/components/data-display/confidence-score-badge";
+import { MarkerTag } from "@/components/ui/status-tag";
 import {
   DrawerHeaderShell,
   DrawerPanel,
@@ -19,7 +20,6 @@ import { getPartnersForPipelineCell } from "@/lib/pipeline-discovery-sync";
 import { useFYDiscoverySnapshot } from "@/features/lead-discovery/store/discovery-store";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { getOnboardingBySellerID, computeOnboardingOverallProgress } from "@/lib/mock-data/onboarding";
-import { cn } from "@/lib/utils";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -38,7 +38,21 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
-const PIPELINE_CARD_BG = "#fafbfc";
+/** Active since date for established partners in the current calendar year (Jan–Jul). */
+function establishedActiveSinceLabel(partnerId: string): string {
+  let h = 0;
+  for (let i = 0; i < partnerId.length; i++) {
+    h = (Math.imul(31, h) + partnerId.charCodeAt(i)) >>> 0;
+  }
+  const month = h % 7;
+  const day = 1 + (h % 28);
+  const date = new Date(2026, month, day);
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
 
 // ── Avatar ────────────────────────────────────────────────────────────────────
 
@@ -84,8 +98,13 @@ function DiscoveredBody() {
 
 function ShortlistedBody() {
   return (
-    <Button variant="ghost" size="sm" className="mt-2 h-auto px-0 py-0 text-[var(--color-primary)]">
-      ✉ Send Intro Mail
+    <Button
+      variant="ghost"
+      size="sm"
+      className="mt-2 h-auto gap-1 px-0 py-0 text-blue-600 hover:text-blue-700"
+    >
+      Send Intro Mail
+      <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
     </Button>
   );
 }
@@ -102,32 +121,28 @@ function ContactedBody({ partner }: { partner: PipelinePartner }) {
           </span>
         </p>
       )}
-      <Button variant="ghost" size="sm" className="h-auto px-0 py-0 text-[var(--color-primary)]">
-        ↩ Send Follow-up Mail
+      <Button
+        variant="ghost"
+        size="sm"
+        className="h-auto gap-1 px-0 py-0 text-blue-600 hover:text-blue-700"
+      >
+        Send Follow-up Mail
+        <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
       </Button>
     </div>
   );
 }
 
-function NewLeadBody({ partner }: { partner: PipelinePartner }) {
+function NewLeadBody() {
   return (
-    <div className="mt-2 flex items-center justify-between">
-      {partner.confidenceScore != null && (
-        <div className="flex items-center gap-1.5">
-          <span className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">Confidence</span>
-          <span
-            className={`rounded px-1.5 py-0.5 text-[10px] font-bold text-white ${
-              partner.confidenceScore >= 9 ? "bg-green-600" : partner.confidenceScore >= 8 ? "bg-green-500" : "bg-amber-500"
-            }`}
-          >
-            {partner.confidenceScore.toFixed(1)}
-          </span>
-        </div>
-      )}
-      <Button variant="ghost" size="sm" className="h-auto px-0 py-0 text-[var(--color-primary)]">
-        View Form →
-      </Button>
-    </div>
+    <Button
+      variant="ghost"
+      size="sm"
+      className="mt-2 h-auto justify-start gap-1 px-0 py-0 text-blue-600 hover:text-blue-700"
+    >
+      View Form
+      <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+    </Button>
   );
 }
 
@@ -156,15 +171,12 @@ function OnboardingBody({ partner }: { partner: PipelinePartner }) {
 
 function EstablishedBody({ partner }: { partner: PipelinePartner }) {
   return (
-    <div className="mt-2 flex items-center justify-between gap-3">
-      {partner.joinedDate && (
-        <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
-          Active since{" "}
-          <span className="font-medium text-[var(--color-foreground)]">{partner.joinedDate}</span>
-        </p>
-      )}
-      <StatusTag className={cn("text-[10px]", markerToneClass.success)}>✓ Live</StatusTag>
-    </div>
+    <p className="mt-2 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
+      Active since{" "}
+      <span className="font-medium text-[var(--color-foreground)]">
+        {establishedActiveSinceLabel(partner.id)}
+      </span>
+    </p>
   );
 }
 
@@ -172,21 +184,28 @@ function EstablishedBody({ partner }: { partner: PipelinePartner }) {
 
 function PartnerCard({ partner, stage }: { partner: PipelinePartner; stage: PartnerStage }) {
   return (
-    <div
-      className="flex gap-3 rounded-[var(--radius-lg)] px-[var(--space-4)] py-[var(--space-4)]"
-      style={{ backgroundColor: PIPELINE_CARD_BG }}
-    >
+    <div className="flex gap-3 rounded-[var(--radius-lg)] bg-[var(--color-task-card)] px-[var(--space-4)] py-[var(--space-4)]">
       <Avatar name={partner.name} />
       <div className="min-w-0 flex-1">
         {/* Row 1: name · GMV + link */}
         <div className="flex items-start justify-between gap-2">
-          <p className="text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]">
-            {partner.name}
-            <span className="ml-2 text-[var(--text-caption-size)] font-normal text-[var(--color-muted-foreground)]">
+          <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+            <span className="text-[var(--text-body-size)] font-semibold text-[var(--color-foreground)]">
+              {partner.name}
+            </span>
+            <span className="text-[var(--text-caption-size)] font-normal text-[var(--color-muted-foreground)]">
               · GMV{" "}
               <span className="font-semibold text-[var(--color-foreground)]">{partner.gmv}</span>
             </span>
-          </p>
+            {stage === "New Lead" && partner.confidenceScore != null && (
+              <ConfidenceScoreBadge score={partner.confidenceScore} variant="table" />
+            )}
+            {stage === "Established" && (
+              <MarkerTag tone="success" className="text-[10px]">
+                Live
+              </MarkerTag>
+            )}
+          </div>
           <Link
             href={
               stage === "Onboarding"
@@ -212,7 +231,7 @@ function PartnerCard({ partner, stage }: { partner: PipelinePartner; stage: Part
         {stage === "Discovered"   && <DiscoveredBody />}
         {stage === "Shortlisted"  && <ShortlistedBody />}
         {stage === "Contacted"    && <ContactedBody partner={partner} />}
-        {stage === "New Lead"     && <NewLeadBody partner={partner} />}
+        {stage === "New Lead"     && <NewLeadBody />}
         {stage === "Onboarding"   && <OnboardingBody partner={partner} />}
         {stage === "Established"  && <EstablishedBody partner={partner} />}
       </div>
@@ -275,10 +294,7 @@ export function PipelineStageDrawer({
       <div className="p-[var(--space-4)]">
         {/* Summary cards */}
         <div className="mb-5 grid grid-cols-2 gap-3">
-          <div
-            className="rounded-[var(--radius-md)] border border-[var(--color-border)] px-4 py-3"
-            style={{ backgroundColor: PIPELINE_CARD_BG }}
-          >
+          <div className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-task-card)] px-4 py-3">
             <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
               Potential GMV
             </p>
@@ -286,10 +302,7 @@ export function PipelineStageDrawer({
               {gmv}
             </p>
           </div>
-          <div
-            className="rounded-[var(--radius-md)] border border-[var(--color-border)] px-4 py-3"
-            style={{ backgroundColor: PIPELINE_CARD_BG }}
-          >
+          <div className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-task-card)] px-4 py-3">
             <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
               Pipeline Health
             </p>

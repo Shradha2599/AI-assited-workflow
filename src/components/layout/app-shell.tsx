@@ -22,8 +22,13 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
   const { showSubnav } = useSidebar();
   const statusOverrides = usePartnerReviewStore((s) => s.statusOverrides);
   const activeTaskId = useOnboardingReviewStore((s) => s.activeTaskId);
+  const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
+  const appliedFieldValues = useOnboardingReviewStore((s) => s.appliedFieldValues);
   const planItems = usePlanStore((s) => s.planItems);
   const scheduledItems = usePlanStore((s) => s.scheduledItems);
+  const planRevenues = usePlanStore((s) => s.planRevenues);
+  const revenueGoal = usePlanStore((s) => s.revenueGoal);
+  const dismissedBeaconPlanTaskIds = usePlanStore((s) => s.dismissedBeaconPlanTaskIds);
 
   const beaconContext = useMemo(
     () =>
@@ -34,8 +39,24 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
         activeTaskId,
         planItems,
         scheduledItems,
+        planRevenues,
+        revenueGoal,
+        dismissedBeaconPlanTaskIds,
+        onboardingReview: { approvedIds, appliedFieldValues },
       }),
-    [pathname, searchParams, statusOverrides, activeTaskId, planItems, scheduledItems],
+    [
+      pathname,
+      searchParams,
+      statusOverrides,
+      activeTaskId,
+      approvedIds,
+      appliedFieldValues,
+      planItems,
+      scheduledItems,
+      planRevenues,
+      revenueGoal,
+      dismissedBeaconPlanTaskIds,
+    ],
   );
 
   const showInsightsTab = false;

@@ -15,6 +15,7 @@ import {
   User,
   X,
   XCircle,
+  ArrowRight,
 } from "lucide-react";
 import { SvgIcon } from "@/components/ui/svg-icon";
 import { StatusTag } from "@/components/ui/status-tag";
@@ -175,6 +176,7 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
   const profileDetails = getSellerProfileDetails(seller);
   const cached = verifications[seller.id];
   const isShortlisted = snap.shortlistedIds.includes(seller.id);
+  const isContacted = snap.contactedIds.includes(seller.id);
   const matchingItems = useSellerMatchingPlanItems(seller);
 
   const [verifying, setVerifying] = useState(!cached);
@@ -234,7 +236,10 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
           <Button
             variant="outline"
             size="sm"
-            className="min-w-0 gap-1 px-2"
+            className={cn(
+              "min-w-0 gap-1 px-2",
+              isContacted && "border-transparent text-blue-600 hover:bg-blue-50 hover:text-blue-700",
+            )}
             onClick={() =>
               openOutreach({
                 mailType: "acquisition_outreach",
@@ -244,8 +249,17 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
               })
             }
           >
-            <SvgIcon name="mail" size={14} variant="primary" className="shrink-0" />
-            <span className="truncate">Send</span>
+            {isContacted ? (
+              <>
+                <span className="truncate">Send Follow-up Mail</span>
+                <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+              </>
+            ) : (
+              <>
+                <SvgIcon name="mail" size={14} variant="primary" className="shrink-0" />
+                <span className="truncate">Send</span>
+              </>
+            )}
           </Button>
           <Button
             variant="outline"

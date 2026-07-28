@@ -14,7 +14,7 @@ export async function getDashboardMetrics(): Promise<DashboardMetric[]> {
   return [
     { label: "Total Revenue", value: "$ 1.8B", change: "24%", changeType: "positive", icon: "revenue" },
     { label: "Revenue Goal", value: "$ 2.5B", change: "10.4%", changeType: "positive", icon: "goal" },
-    { label: "Item Types Added", value: "18", change: "3", changeType: "positive", icon: "items" },
+    { label: "Item Types Added", value: "18", change: "11.1%", changeType: "positive", icon: "items" },
     { label: "Active Sellers", value: "2,345", change: "2.5%", changeType: "positive", icon: "sellers" },
   ];
 }

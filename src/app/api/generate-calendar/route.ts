@@ -2,6 +2,11 @@ import { generateObject } from "ai";
 import { createGroq } from "@ai-sdk/groq";
 import { z } from "zod";
 import { loadMockJson, type ItemType } from "@/lib/agents/mock-loader";
+import {
+  acquisitionWindowForItem,
+  estimateRevenueM,
+  rowForPlanItem as rowForPlanItemSchedule,
+} from "@/lib/assortment-plan/plan-acquisition-schedule";
 
 const groq = createGroq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -165,11 +170,17 @@ Return a schedule for all ${planItems.length} items.`,
     temperature: 0.2,
   });
 
-  // Attach the correct row computed server-side (not from AI)
-  const withRows = object.scheduledItems.map((item) => ({
-    ...item,
-    row: rowForItem(item.label),
-  }));
+  // Event/revenue-aware windows (staggered), with category rows computed server-side
+  const withRows = object.scheduledItems.map((item) => {
+    const revenueM = estimateRevenueM(item.label, {});
+    const window = acquisitionWindowForItem(item.label, revenueM);
+    return {
+      label: item.label,
+      row: rowForPlanItemSchedule(item.label),
+      startMonth: window.startMonth,
+      span: window.span,
+    };
+  });
 
   return Response.json({ scheduledItems: withRows });
 }

@@ -2,6 +2,7 @@
 export const MARKER_BG = {
   green: "#a9e5a9",
   blue: "#a5bdec",
+  blueLight: "#d1ddf5",
   purple: "#c9b7e1",
   pink: "#efcbdb",
   red: "#faa69e",

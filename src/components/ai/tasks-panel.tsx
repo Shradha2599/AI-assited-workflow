@@ -15,6 +15,8 @@ import { SvgIcon } from "@/components/ui/svg-icon";
 import { StatusTag, MarkerTag, validationMarkerClass } from "@/components/ui/status-tag";
 import { getConfidenceBadgeStyle } from "@/lib/utils/confidence-badge";
 import { useOnboardingReviewStore } from "@/features/partner-onboarding/store/onboarding-review-store";
+import { profileTaskApproveId } from "@/features/partner-onboarding/utils/profile-task-progress";
+import { getTaskEvaluation } from "@/lib/mock-data/onboarding-evaluation";
 import { useOutreachStore } from "@/features/outreach/store/outreach-store";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { usePartnerReviewStore } from "@/features/partner-onboarding/store/partner-review-store";
@@ -29,7 +31,7 @@ export interface RecommendedTask {
   description: string;
   actionLabel: string;
   actionHref?: string;
-  actionType?: "open_analysis" | "open_onboarding_comment" | "approve_onboarding" | "navigate_review" | "open_outreach" | "open_finalize_drawer" | "lead_decision";
+  actionType?: "open_analysis" | "open_onboarding_comment" | "open_onboarding_recommendation" | "approve_onboarding" | "navigate_review" | "open_outreach" | "open_finalize_drawer" | "lead_decision" | "scroll_plan_calendar";
   secondaryActionLabel?: string;
   leadDecision?: "accept" | "reject" | "future_interest";
   partnerId?: string;
@@ -43,6 +45,9 @@ export interface RecommendedTask {
   checkedOn?: string;
   sectionId?: string;
   reviewTaskId?: string;
+  /** Shown under Recommended Tasks — surfaced for dashboard & plan context */
+  priority?: "high" | "normal";
+  category?: "blocker" | "trend" | "launch" | "plan";
 }
 
 interface TasksPanelProps {
@@ -140,13 +145,22 @@ function StandardTaskCard({
   task,
   onAction,
   onSecondaryAction,
+  pathname = "",
+  applying = false,
 }: {
   task: RecommendedTask;
   onAction: (task: RecommendedTask) => void;
   onSecondaryAction?: (task: RecommendedTask) => void;
+  pathname?: string;
+  applying?: boolean;
 }) {
   return (
-    <article className="rounded-[var(--radius-lg)] bg-[var(--color-task-card)] p-[var(--space-4)]">
+    <article
+      className={cn(
+        "rounded-[var(--radius-lg)] bg-[var(--color-task-card)] p-[var(--space-4)]",
+        applying && "animate-pulse",
+      )}
+    >
       <div className="flex items-start gap-3">
         <SvgIcon name="aiSparkle" size={16} variant="primary" className="shrink-0" />
         <div className="min-w-0 flex-1">
@@ -168,9 +182,24 @@ function StandardTaskCard({
           <p className="mt-1 text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
             {task.description}
           </p>
-          {task.actionHref ? (
+          {task.actionHref && task.actionType !== "scroll_plan_calendar" ? (
             <Button variant="ghost" size="sm" className="mt-2 h-auto px-0 py-0 text-[var(--color-primary)]" asChild>
-              <Link href={task.actionHref}>{task.actionLabel}</Link>
+              <Link
+                href={task.actionHref.split("#")[0] || task.actionHref}
+                onClick={(e) => {
+                  const hash = task.actionHref?.includes("#")
+                    ? task.actionHref.split("#")[1]
+                    : undefined;
+                  if (hash === "calendar" && pathname?.startsWith("/assortment/plan")) {
+                    e.preventDefault();
+                    document.getElementById("assortment-plan-calendar")?.scrollIntoView({
+                      behavior: "smooth",
+                    });
+                  }
+                }}
+              >
+                {task.actionLabel}
+              </Link>
             </Button>
           ) : (
             <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -178,9 +207,17 @@ function StandardTaskCard({
                 variant="ghost"
                 size="sm"
                 className="h-auto px-0 py-0 text-[var(--color-primary)]"
+                disabled={applying}
                 onClick={() => onAction(task)}
               >
-                {task.actionLabel}
+                {applying ? (
+                  <>
+                    <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                    Applying…
+                  </>
+                ) : (
+                  task.actionLabel
+                )}
               </Button>
               {task.secondaryActionLabel && task.leadDecision && onSecondaryAction && (
                 <Button
@@ -439,10 +476,15 @@ export function TasksPanel({
   const openAnalysis = usePartnerReviewStore((s) => s.openAnalysis);
   const setPartnerDecision = usePartnerReviewStore((s) => s.setPartnerDecision);
   const openComments = useOnboardingReviewStore((s) => s.openComments);
+  const openRecommendationModal = useOnboardingReviewStore((s) => s.openRecommendationModal);
   const approveItem = useOnboardingReviewStore((s) => s.approveItem);
   const isApproved = useOnboardingReviewStore((s) => s.isApproved);
   const openOutreach = useOutreachStore((s) => s.openDrawer);
   const openFinalizeDrawer = usePlanStore((s) => s.openFinalizeDrawer);
+  const applyBeaconCalendarRecommendation = usePlanStore(
+    (s) => s.applyBeaconCalendarRecommendation,
+  );
+  const [applyingPlanTaskId, setApplyingPlanTaskId] = useState<string | null>(null);
 
   const { messages, append, setMessages, reload, isLoading, error } = useChat({
     api: "/api/beacon",
@@ -466,6 +508,25 @@ export function TasksPanel({
       openComments(task.reviewTaskId);
       return;
     }
+    if (task.actionType === "open_onboarding_recommendation" && task.reviewTaskId && task.partnerId) {
+      const partner = getPotentialPartnerById(task.partnerId);
+      if (!partner) return;
+      const evaluation = getTaskEvaluation(partner.sellerId, task.reviewTaskId);
+      if (!evaluation?.aiFieldSuggestions?.length) {
+        openComments(task.reviewTaskId);
+        return;
+      }
+      openRecommendationModal({
+        alertId: task.reviewTaskId,
+        taskApproveId: profileTaskApproveId(task.reviewTaskId),
+        title: "Brand description recommendation",
+        subtitle: "Suggested copy for fields that did not meet marketplace criteria.",
+        fields: evaluation.aiFieldSuggestions,
+        toastMessage: "AI brand description recommendation was shared with the partner.",
+        approveOnApply: false,
+      });
+      return;
+    }
     if (task.actionType === "approve_onboarding" && task.reviewTaskId) {
       approveItem(task.reviewTaskId);
       return;
@@ -483,6 +544,15 @@ export function TasksPanel({
     }
     if (task.actionType === "open_finalize_drawer") {
       openFinalizeDrawer();
+      return;
+    }
+    if (task.actionType === "scroll_plan_calendar") {
+      document.getElementById("assortment-plan-calendar")?.scrollIntoView({ behavior: "smooth" });
+      setApplyingPlanTaskId(task.id);
+      void applyBeaconCalendarRecommendation(task.id).finally(() => {
+        setApplyingPlanTaskId(null);
+      });
+      return;
     }
   }
 
@@ -546,6 +616,35 @@ export function TasksPanel({
     tasks.some((t) => t.validationStatus) ||
     insightItems.some((t) => t.validationStatus);
 
+  const orderedTasks = [...tasks].sort((a, b) => {
+    if (a.priority === "high" && b.priority !== "high") return -1;
+    if (b.priority === "high" && a.priority !== "high") return 1;
+    return 0;
+  });
+
+  function renderRecommendedTask(task: RecommendedTask) {
+    if (isOnboardingPanel) {
+      return (
+        <OnboardingTaskCard
+          key={task.id}
+          task={task}
+          onAction={handleTaskAction}
+          approved={task.reviewTaskId ? isApproved(task.reviewTaskId) : false}
+        />
+      );
+    }
+    return (
+      <StandardTaskCard
+        key={task.id}
+        task={task}
+        onAction={handleTaskAction}
+        onSecondaryAction={handleTaskSecondaryAction}
+        pathname={pathname}
+        applying={applyingPlanTaskId === task.id}
+      />
+    );
+  }
+
   return (
     <aside
       className="flex h-full min-h-0 flex-col overflow-hidden rounded-[var(--radius-lg)] bg-[var(--color-tasks-panel)] shadow-[var(--shadow-medium)]"
@@ -602,28 +701,12 @@ export function TasksPanel({
               Recommended Tasks
             </h2>
             <div className="space-y-[var(--space-3)]">
-              {tasks.length === 0 ? (
+              {orderedTasks.length === 0 ? (
                 <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
                   No pending review tasks.
                 </p>
               ) : (
-                tasks.map((task) =>
-                  isOnboardingPanel ? (
-                    <OnboardingTaskCard
-                      key={task.id}
-                      task={task}
-                      onAction={handleTaskAction}
-                      approved={task.reviewTaskId ? isApproved(task.reviewTaskId) : false}
-                    />
-                  ) : (
-                    <StandardTaskCard
-                      key={task.id}
-                      task={task}
-                      onAction={handleTaskAction}
-                      onSecondaryAction={handleTaskSecondaryAction}
-                    />
-                  ),
-                )
+                orderedTasks.map((task) => renderRecommendedTask(task))
               )}
             </div>
 
