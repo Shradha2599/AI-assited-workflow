@@ -5,6 +5,10 @@ import type { FiscalYearId } from "@/lib/mock-data/fy-plan-seeds";
 import type { PipelineData } from "@/lib/pipeline-discovery-sync";
 import type { TreemapHierarchyRoot, TreemapNode } from "@/lib/mock-data/treemap-hierarchy";
 import type { GapCategoryFilterOption } from "@/lib/mock-data/assortment-gap-categories";
+import {
+  formatRevenueMillion,
+  parseRevenueMillion,
+} from "@/lib/mock-data/treemap-revenue";
 import { cellCount, type PartnerStage } from "@/lib/mock-data/pipeline-partners";
 import {
   formatRevenueGoalDisplay,
@@ -57,6 +61,101 @@ const FY_INDUSTRY_TOTAL: Record<FiscalYearId, string> = {
   "2025-2026": "$48B",
   "2026-2027": "$12B",
 };
+
+const INDUSTRY_OTHER_RETAILERS = ["Walmart", "Lowe's", "Home Depot"] as const;
+const INDUSTRY_OTHER_WEIGHTS: Record<(typeof INDUSTRY_OTHER_RETAILERS)[number], number> = {
+  Walmart: 22,
+  "Lowe's": 14,
+  "Home Depot": 14,
+};
+
+/** Weighted Target vs Amazon gap % — same treemap fields as gap analysis (vs Amazon). */
+function weightedGapVsAmazon(
+  selectedTreemap: string[],
+  treemapRoot: TreemapHierarchyRoot,
+): number {
+  let weighted = 0;
+  let weightSum = 0;
+  for (const id of selectedTreemap) {
+    const node = treemapRoot.children.find((n) => n.id === id);
+    if (!node) continue;
+    const rm = parseRevenueMillion(node.revenue);
+    if (rm <= 0) continue;
+    weighted += parseGapPercent(node.gapPercent) * rm;
+    weightSum += rm;
+  }
+  return weightSum > 0 ? weighted / weightSum : 33;
+}
+
+function buildIndustryContributions(
+  poolM: number,
+  avgGapVsAmazon: number,
+  segmentLabels: string[],
+): Map<string, number> {
+  const contrib = new Map<string, number>();
+  if (poolM <= 0) return contrib;
+
+  const gapRate = avgGapVsAmazon / 100;
+  const amazonTargetPool = poolM * 0.52;
+  const amazonM = amazonTargetPool / (1 + (1 - gapRate));
+  const targetM = amazonM * (1 - gapRate);
+  contrib.set("Amazon", amazonM);
+  contrib.set("Target", targetM);
+
+  const otherPool = Math.max(0, poolM - amazonM - targetM);
+  const otherWeightSum = INDUSTRY_OTHER_RETAILERS.reduce(
+    (sum, label) => sum + INDUSTRY_OTHER_WEIGHTS[label],
+    0,
+  );
+  for (const label of INDUSTRY_OTHER_RETAILERS) {
+    contrib.set(label, otherPool * (INDUSTRY_OTHER_WEIGHTS[label] / otherWeightSum));
+  }
+
+  for (const label of segmentLabels) {
+    if (!contrib.has(label)) contrib.set(label, 0);
+  }
+
+  const sum = [...contrib.values()].reduce((a, b) => a + b, 0);
+  if (sum > 0 && Math.abs(sum - poolM) > 0.01) {
+    const scale = poolM / sum;
+    for (const [label, amount] of contrib) {
+      contrib.set(label, amount * scale);
+    }
+  }
+
+  return contrib;
+}
+
+function segmentsFromContributions(
+  baseSegments: DonutSegment[],
+  contrib: Map<string, number>,
+  poolM: number,
+): DonutSegment[] {
+  if (poolM <= 0) return [];
+
+  const segments = baseSegments.map((segment) => {
+    const amountM = contrib.get(segment.label) ?? 0;
+    return {
+      ...segment,
+      revenue: formatRevenueMillion(amountM),
+      value: Math.max(0, Math.round((amountM / poolM) * 100)),
+    };
+  });
+
+  let pctSum = segments.reduce((sum, s) => sum + s.value, 0);
+  if (segments.length > 0 && pctSum !== 100) {
+    const leadIdx = segments.reduce(
+      (best, s, i, arr) => (s.value > arr[best].value ? i : best),
+      0,
+    );
+    segments[leadIdx] = {
+      ...segments[leadIdx],
+      value: Math.max(0, segments[leadIdx].value + (100 - pctSum)),
+    };
+  }
+
+  return segments;
+}
 
 export function getSelectedTreemapIds(
   selectedCategoryIds: string[],
@@ -185,15 +284,22 @@ export function buildDashboardMetrics(input: {
       ? formatRevenueGoalDisplay(input.revenueGoal)
       : formatGoalMillions(totalGoalM);
 
-  const itemYoYPct =
-    totalItemsLastYear > 0
-      ? ((totalItems - totalItemsLastYear) / totalItemsLastYear) * 100
+  const effectiveItemsLastYear =
+    totalItems > 0 && totalItems <= totalItemsLastYear
+      ? Math.max(1, totalItems - 1)
+      : totalItemsLastYear;
+  let itemYoYPct =
+    effectiveItemsLastYear > 0
+      ? ((totalItems - effectiveItemsLastYear) / effectiveItemsLastYear) * 100
       : totalItems > 0
         ? 100
         : 0;
+  if (totalItems > 0 && itemYoYPct <= 0) {
+    itemYoYPct = 0.1;
+  }
   const itemChange = `${Math.abs(itemYoYPct).toFixed(1)}%`;
   const itemChangeType: DashboardMetric["changeType"] =
-    itemYoYPct > 0.05 ? "positive" : itemYoYPct < -0.05 ? "negative" : "neutral";
+    totalItems > 0 ? "positive" : "neutral";
 
   return [
     {
@@ -240,25 +346,30 @@ export function filterIndustrySegments(
   }
 
   const scale = fyScale(fiscalYear);
-  let revenueSumM = 0;
+  let poolM = 0;
   for (const id of selectedTreemap) {
     const node = treemapRoot.children.find((n) => n.id === id);
-    revenueSumM += parseRevenueToMillions(node?.revenue) * scale;
+    poolM += parseRevenueMillion(node?.revenue) * scale;
   }
 
-  const segmentScale = Math.min(1, selectedTreemap.length / 7) * scale;
+  if (poolM <= 0) {
+    return {
+      total: FY_INDUSTRY_TOTAL[fiscalYear],
+      segments: [],
+    };
+  }
+
+  const avgGapVsAmazon = weightedGapVsAmazon(selectedTreemap, treemapRoot);
+  const contrib = buildIndustryContributions(
+    poolM,
+    avgGapVsAmazon,
+    segments.map((s) => s.label),
+  );
+  const scaledSegments = segmentsFromContributions(segments, contrib, poolM);
 
   return {
-    total:
-      revenueSumM >= 1000
-        ? `$${(revenueSumM / 1000).toFixed(0)}B`
-        : revenueSumM >= 1
-          ? `$${Math.round(revenueSumM)}M`
-          : FY_INDUSTRY_TOTAL[fiscalYear],
-    segments: segments.map((s) => ({
-      ...s,
-      value: Math.max(1, Math.round(s.value * segmentScale)),
-    })),
+    total: formatRevenueMillion(poolM),
+    segments: scaledSegments,
   };
 }
 

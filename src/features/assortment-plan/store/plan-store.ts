@@ -93,6 +93,13 @@ interface PlanStore extends FYRuntimeState {
   calendarApplyingBeaconFix: boolean;
   dismissedBeaconPlanTaskIds: string[];
   applyBeaconCalendarRecommendation: (taskId: string) => Promise<void>;
+
+  /** Gap / seasonal “Add to calendar” — 2s shimmer on plan page, then ack banner */
+  calendarApplyingGapImport: boolean;
+  gapImportAckFy: FiscalYearId | null;
+  startGapCalendarImport: () => void;
+  finishGapCalendarImport: () => void;
+  clearGapImportAck: () => void;
 }
 
 function syncActiveVersion(
@@ -193,25 +200,61 @@ export const usePlanStore = create<PlanStore>()((set, get) => ({
       store.setFiscalYear(targetFy);
     }
 
+    const state = get();
+    let scheduledItems = [...state.scheduledItems];
+    const baselinePlanItems = [...state.baselinePlanItems];
+    const baselineScheduledItems = [...state.baselineScheduledItems];
+    let planItems = [...state.planItems];
+    let planRevenues = { ...state.planRevenues };
+
     for (let i = 0; i < itemNames.length; i++) {
       const name = itemNames[i];
       const { row, startMonth, span } = getAcquisitionWindow(category, i);
 
-      if (!get().planItems.includes(name)) {
-        get().addPlanItem(name);
+      if (!planItems.includes(name)) {
+        planItems = [...planItems, name];
+      }
+      if (!baselinePlanItems.includes(name)) {
+        baselinePlanItems.push(name);
       }
 
-      set((state) => {
-        const updated = [
-          ...state.scheduledItems.filter((item) => item.label !== name),
-          { id: `sch-gap-${Date.now()}-${i}`, label: name, row, startMonth, span },
-        ];
-        return {
-          scheduledItems: updated,
-          calendarVersions: syncActiveVersion(state.calendarVersions, state.activeVersionId, updated),
-        };
-      });
+      const entry: ScheduledCalendarItem = {
+        id: `sch-gap-${Date.now()}-${i}`,
+        label: name,
+        row,
+        startMonth,
+        span,
+      };
+      scheduledItems = [...scheduledItems.filter((item) => item.label !== name), entry];
+
+      if (!baselineScheduledItems.some((item) => item.label === name)) {
+        baselineScheduledItems.push({ ...entry });
+      }
     }
+
+    set((state) => {
+      const nextState = {
+        assortmentPlanningStarted: true,
+        planItems,
+        planRevenues,
+        baselinePlanItems,
+        baselineScheduledItems,
+        scheduledItems,
+        calendarVersions: syncActiveVersion(
+          state.calendarVersions,
+          state.activeVersionId,
+          scheduledItems,
+        ),
+      };
+      const merged = { ...state, ...nextState };
+      return {
+        ...nextState,
+        fySnapshots: {
+          ...state.fySnapshots,
+          [state.fiscalYear]: snapshotFromState(merged),
+        },
+      };
+    });
   },
 
   scheduleItem: (label, row, startMonth, span = 2) =>
@@ -329,6 +372,16 @@ export const usePlanStore = create<PlanStore>()((set, get) => ({
 
   calendarApplyingBeaconFix: false,
   dismissedBeaconPlanTaskIds: [],
+  calendarApplyingGapImport: false,
+  gapImportAckFy: null,
+  startGapCalendarImport: () =>
+    set({ calendarApplyingGapImport: true, gapImportAckFy: null }),
+  finishGapCalendarImport: () =>
+    set({
+      calendarApplyingGapImport: false,
+      gapImportAckFy: "2025-2026",
+    }),
+  clearGapImportAck: () => set({ gapImportAckFy: null }),
   applyBeaconCalendarRecommendation: async (taskId) => {
     set({ calendarApplyingBeaconFix: true });
     await new Promise((resolve) => setTimeout(resolve, 2000));

@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { X } from "lucide-react";
 
 import { AmChartCard } from "@/components/data-display/am-chart-card";
+import { formatRevenueMillion, parseRevenueMillion } from "@/lib/mock-data/treemap-revenue";
 
 export interface DonutSegment {
   label: string;
@@ -30,6 +31,30 @@ const RADIUS = 72;
 const STROKE_WIDTH = 28;
 const GAP_DEGREES = 2;
 
+function normalizeSegmentShares(segments: DonutSegment[]): DonutSegment[] {
+  const totalM = segments.reduce((sum, s) => sum + parseRevenueMillion(s.revenue), 0);
+  if (totalM <= 0) return segments;
+
+  const next = segments.map((segment) => ({
+    ...segment,
+    value: Math.max(0, Math.round((parseRevenueMillion(segment.revenue) / totalM) * 100)),
+  }));
+
+  const pctSum = next.reduce((sum, s) => sum + s.value, 0);
+  if (next.length > 0 && pctSum !== 100) {
+    const leadIdx = next.reduce(
+      (best, s, i, arr) => (s.value > arr[best].value ? i : best),
+      0,
+    );
+    next[leadIdx] = {
+      ...next[leadIdx],
+      value: Math.max(0, next[leadIdx].value + (100 - pctSum)),
+    };
+  }
+
+  return next;
+}
+
 function polarToCartesian(cx: number, cy: number, r: number, angle: number) {
   const rad = ((angle - 90) * Math.PI) / 180;
   return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
@@ -54,6 +79,15 @@ export function DonutChart({
 }: DonutChartProps) {
   const [segments, setSegments] = useState(initialSegments);
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
+
+  useEffect(() => {
+    setSegments(normalizeSegmentShares(initialSegments));
+  }, [initialSegments]);
+
+  const centerTotal = useMemo(() => {
+    const sumM = segments.reduce((acc, s) => acc + parseRevenueMillion(s.revenue), 0);
+    return sumM > 0 ? formatRevenueMillion(sumM) : total;
+  }, [segments, total]);
   const lockedLabelSet = useMemo(
     () => new Set(lockedLabels ?? Array.from(DEFAULT_LOCKED_LABELS)),
     [lockedLabels],
@@ -78,7 +112,9 @@ export function DonutChart({
   const hovered = arcs.find((arc) => arc.label === hoveredLabel);
 
   function removeSegment(label: string) {
-    setSegments((current) => current.filter((segment) => segment.label !== label));
+    setSegments((current) =>
+      normalizeSegmentShares(current.filter((segment) => segment.label !== label)),
+    );
     setHoveredLabel(null);
   }
 
@@ -126,7 +162,7 @@ export function DonutChart({
 
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
               <span className="text-[clamp(1.125rem,18%,1.75rem)] font-semibold text-[var(--color-foreground)]">
-                {total}
+                {centerTotal}
               </span>
             </div>
 

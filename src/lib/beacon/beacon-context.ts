@@ -180,6 +180,44 @@ function buildDashboardTasks(): RecommendedTask[] {
     (s) => s.confidenceScore >= 8.5 && (s.status === "discovered" || s.status === "shortlisted"),
   );
 
+  for (const product of TRENDING_PRODUCTS.slice(0, 3)) {
+    tasks.push({
+      id: `dash-trend-${product.name.replace(/\s+/g, "-").toLowerCase()}`,
+      title: `Acquire trending ${product.name}`,
+      description: `${product.signal} · ${product.revenue} in ${product.category}.`,
+      actionLabel: "Add to plan →",
+      actionHref: "/assortment/plan",
+      priority: "high",
+      category: "acquisition",
+    });
+  }
+
+  if (highMatchSellers.length > 0) {
+    const top = [...highMatchSellers].sort((a, b) => b.confidenceScore - a.confidenceScore)[0];
+    tasks.push({
+      id: `dash-lead-${top.id}`,
+      title: `${highMatchSellers.length} high-confidence sellers ready for outreach`,
+      description: `${top.legalBusinessName} scores ${top.confidenceScore.toFixed(1)}/10 in ${top.category}.`,
+      actionLabel: "View seller →",
+      actionHref: `/sellers/discovery/${top.id}`,
+      sellerId: top.id,
+      sellerName: top.legalBusinessName,
+      score: top.confidenceScore,
+      priority: "high",
+      category: "acquisition",
+    });
+  }
+
+  tasks.push({
+    id: "dash-gap-top",
+    title: `${topGap.label} gap is slowing revenue capture (${topGap.value}% vs competitors)`,
+    description: `${topGap.revenueOpportunity} opportunity · highest-impact category this quarter.`,
+    actionLabel: "Explore gap →",
+    actionHref: "/assortment/gap",
+    priority: "high",
+    category: "acquisition",
+  });
+
   for (const blocker of blockers) {
     const reviewHref = `/sellers/onboarding/${blocker.partnerId}/review/${blocker.sectionId}${
       blocker.reviewTaskId ? `?task=${blocker.reviewTaskId}` : ""
@@ -199,44 +237,7 @@ function buildDashboardTasks(): RecommendedTask[] {
     });
   }
 
-  for (const product of TRENDING_PRODUCTS.slice(0, 3)) {
-    tasks.push({
-      id: `dash-trend-${product.name.replace(/\s+/g, "-").toLowerCase()}`,
-      title: `Acquire trending ${product.name}`,
-      description: `${product.signal} · ${product.revenue} in ${product.category}.`,
-      actionLabel: "Add to plan →",
-      actionHref: "/assortment/plan",
-      priority: "high",
-      category: "trend",
-    });
-  }
-
   tasks.push(...buildNearLaunchTasks());
-
-  tasks.push({
-    id: "dash-gap-top",
-    title: `${topGap.label} gap is slowing revenue capture (${topGap.value}% vs competitors)`,
-    description: `${topGap.revenueOpportunity} opportunity · highest-impact category this quarter.`,
-    actionLabel: "Explore gap →",
-    actionHref: "/assortment/gap",
-    priority: "high",
-    category: "trend",
-  });
-
-  if (highMatchSellers.length > 0) {
-    const top = [...highMatchSellers].sort((a, b) => b.confidenceScore - a.confidenceScore)[0];
-    tasks.push({
-      id: `dash-lead-${top.id}`,
-      title: `${highMatchSellers.length} high-confidence sellers ready for outreach`,
-      description: `${top.legalBusinessName} scores ${top.confidenceScore.toFixed(1)}/10 in ${top.category}.`,
-      actionLabel: "View seller →",
-      actionHref: `/sellers/discovery/${top.id}`,
-      sellerId: top.id,
-      sellerName: top.legalBusinessName,
-      score: top.confidenceScore,
-      priority: "normal",
-    });
-  }
 
   return tasks.slice(0, 8);
 }
@@ -253,12 +254,16 @@ function buildGapAnalysisTasks(): RecommendedTask[] {
       description: `${topGap.revenueOpportunity} opportunity · competitors lead assortment depth.`,
       actionLabel: "Add to Plan →",
       actionHref: "/assortment/plan",
+      priority: "high",
+      category: "acquisition",
     },
     {
       id: "gap-product-1",
       title: `Add ${topProduct.name} to assortment plan`,
       description: `${topProduct.revenue} estimated revenue in ${topProduct.category}.`,
       actionLabel: "Explore Item →",
+      priority: "high",
+      category: "acquisition",
     },
     {
       id: "gap-product-2",
@@ -266,6 +271,8 @@ function buildGapAnalysisTasks(): RecommendedTask[] {
       description: `${secondProduct.revenue} opportunity · viral search volume, low Target coverage.`,
       actionLabel: "Add to Plan →",
       actionHref: "/assortment/plan",
+      priority: "high",
+      category: "acquisition",
     },
   ];
 }
@@ -287,6 +294,8 @@ function buildLeadDiscoveryTasks(): RecommendedTask[] {
       sellerId: top.id,
       sellerName: top.legalBusinessName,
       score: top.confidenceScore,
+      priority: "high",
+      category: "acquisition",
     });
   }
 
@@ -392,6 +401,8 @@ function buildSellerProfileTasks(pathname: string): RecommendedTask[] {
       sellerId: seller.id,
       sellerName: seller.legalBusinessName,
       sellerWebsite: seller.website,
+      priority: "high",
+      category: "acquisition",
     },
     {
       id: "sp-fit",
@@ -486,7 +497,7 @@ function buildPlanTasks(input: BeaconContextInput): RecommendedTask[] {
       actionHref: "/assortment/plan#calendar",
       actionType: "scroll_plan_calendar",
       priority: "high",
-      category: "plan",
+      category: "acquisition",
     });
   }
 
@@ -504,7 +515,7 @@ function buildPlanTasks(input: BeaconContextInput): RecommendedTask[] {
         actionHref: "/assortment/plan#calendar",
         actionType: "scroll_plan_calendar",
         priority: "high",
-        category: "plan",
+        category: "acquisition",
       });
       break;
     }

@@ -70,10 +70,14 @@ function formatGmv(stage: string, count: number): string {
   return `$${((count * avg) / 1_000_000).toFixed(1)}M`;
 }
 
-function pipelineHealth(count: number): { label: string; cls: string } {
-  if (count >= 6) return { label: "On Track",        cls: "text-green-700" };
+function pipelineHealth(count: number): {
+  label: string;
+  cls: string;
+  useKpiGreen?: boolean;
+} {
+  if (count >= 6) return { label: "On Track", cls: "", useKpiGreen: true };
   if (count >= 3) return { label: "Needs Attention", cls: "text-amber-600" };
-  return               { label: "At Risk",           cls: "text-red-600" };
+  return { label: "At Risk", cls: "text-red-600" };
 }
 
 // ── Avatar ────────────────────────────────────────────────────────────────────
@@ -201,7 +205,7 @@ function PartnerCard({ partner, stage }: { partner: PipelinePartner; stage: Part
               <ConfidenceScoreBadge score={partner.confidenceScore} variant="table" />
             )}
             {stage === "Established" && (
-              <MarkerTag tone="success" className="text-[10px]">
+              <MarkerTag tone="kpiPositive" className="text-[10px]">
                 Live
               </MarkerTag>
             )}
@@ -306,9 +310,15 @@ export function PipelineStageDrawer({
             <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
               Pipeline Health
             </p>
-            <p className={`mt-1 text-[var(--text-section-size)] font-bold ${health.cls}`}>
-              {health.label}
-            </p>
+            {health.useKpiGreen ? (
+              <MarkerTag tone="kpiPositive" className="mt-1 text-[var(--text-section-size)] font-bold">
+                {health.label}
+              </MarkerTag>
+            ) : (
+              <p className={`mt-1 text-[var(--text-section-size)] font-bold ${health.cls}`}>
+                {health.label}
+              </p>
+            )}
           </div>
         </div>
 

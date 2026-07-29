@@ -3,6 +3,7 @@
 import { ArrowDown, ArrowUp, CircleDollarSign, Goal, Layers, Store, Target, type LucideIcon } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
+import { KPI_CHANGE_NEGATIVE_CLASS, KPI_CHANGE_POSITIVE_CLASS } from "@/components/ui/marker-colors";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { cn } from "@/lib/utils";
 
@@ -25,9 +26,20 @@ const iconMap: Record<DashboardMetric["icon"], LucideIcon> = {
 /** Infer direction from the change string if changeType is not provided */
 function inferDirection(change: string, changeType?: DashboardMetric["changeType"]): "positive" | "negative" | "neutral" {
   if (changeType) return changeType;
-  if (change.startsWith("+") || (!change.startsWith("-") && parseFloat(change) > 0)) return "positive";
-  if (change.startsWith("-") || parseFloat(change) < 0) return "negative";
-  return "neutral";
+  const num = parseFloat(change.replace(/[%+\s]/g, ""));
+  if (change.startsWith("+") || (!Number.isNaN(num) && num > 0)) return "positive";
+  if (Number.isNaN(num) || num === 0) return "neutral";
+  return "positive";
+}
+
+/** Show change magnitude only — no leading minus on KPI badges */
+function formatMetricChangeDisplay(change: string): string {
+  const trimmed = change.trim();
+  const hasPercent = trimmed.includes("%");
+  const num = parseFloat(trimmed.replace(/[%+\s-]/g, ""));
+  if (Number.isNaN(num)) return trimmed.replace(/^-/, "");
+  const decimals = /\.\d/.test(trimmed) ? 1 : 0;
+  return `${Math.abs(num).toFixed(decimals)}${hasPercent ? "%" : ""}`;
 }
 
 // ── Shared KPI cell used as a standalone component too ────────────────────────
@@ -54,13 +66,14 @@ export function KpiMetric({
   showChange = true,
 }: KpiMetricProps) {
   const showBadge = showChange && change != null && change !== "";
+  const changeDisplay = showBadge ? formatMetricChangeDisplay(change) : "";
   const dir = showBadge ? inferDirection(change, changeType) : "neutral";
 
   const badgeCls =
     dir === "positive"
-      ? "bg-[#D1F0D1] text-[#1A7F1A]"
+      ? KPI_CHANGE_POSITIVE_CLASS
       : dir === "negative"
-        ? "bg-[#FAA69E] text-[#8B1A1A]"
+        ? KPI_CHANGE_NEGATIVE_CLASS
         : "bg-[var(--color-muted)] text-[var(--color-muted-foreground)]";
 
   const ArrowIcon = dir === "positive" ? ArrowUp : dir === "negative" ? ArrowDown : null;
@@ -84,7 +97,7 @@ export function KpiMetric({
               badgeCls,
             )}
           >
-            {change}
+            {changeDisplay}
             {ArrowIcon && <ArrowIcon className="h-3 w-3 shrink-0" aria-hidden />}
           </span>
         )}

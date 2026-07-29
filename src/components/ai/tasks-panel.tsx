@@ -47,7 +47,7 @@ export interface RecommendedTask {
   reviewTaskId?: string;
   /** Shown under Recommended Tasks — surfaced for dashboard & plan context */
   priority?: "high" | "normal";
-  category?: "blocker" | "trend" | "launch" | "plan";
+  category?: "blocker" | "trend" | "launch" | "plan" | "acquisition";
 }
 
 interface TasksPanelProps {
@@ -616,9 +616,26 @@ export function TasksPanel({
     tasks.some((t) => t.validationStatus) ||
     insightItems.some((t) => t.validationStatus);
 
+  function isAcquisitionRelatedTask(task: RecommendedTask): boolean {
+    if (task.category === "acquisition" || task.mailType === "acquisition_outreach") return true;
+    const hay = `${task.title} ${task.description}`.toLowerCase();
+    return (
+      hay.includes("acquisition") ||
+      hay.includes("acquire ") ||
+      hay.includes("outreach") ||
+      hay.includes("shortlist") ||
+      hay.includes("add to plan") ||
+      hay.includes("add to assortment")
+    );
+  }
+
   const orderedTasks = [...tasks].sort((a, b) => {
     if (a.priority === "high" && b.priority !== "high") return -1;
     if (b.priority === "high" && a.priority !== "high") return 1;
+    const acqA = isAcquisitionRelatedTask(a);
+    const acqB = isAcquisitionRelatedTask(b);
+    if (acqA && !acqB) return -1;
+    if (!acqA && acqB) return 1;
     return 0;
   });
 

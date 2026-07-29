@@ -1,15 +1,16 @@
 import type { ComponentProps } from "react";
 
-import { MARKER_BG, MARKER_RADIUS_CLASS, MARKER_TEXT_CLASS } from "@/components/ui/marker-colors";
+import { MARKER_BG, MARKER_RADIUS_CLASS, MARKER_TEXT_CLASS, KPI_CHANGE_POSITIVE_CLASS } from "@/components/ui/marker-colors";
 import { cn } from "@/lib/utils";
 
-export { MARKER_BG, MARKER_TEXT_CLASS, MARKER_RADIUS_CLASS } from "@/components/ui/marker-colors";
+export { MARKER_BG, MARKER_TEXT_CLASS, MARKER_RADIUS_CLASS, KPI_CHANGE_POSITIVE_CLASS, KPI_CHANGE_NEGATIVE_CLASS } from "@/components/ui/marker-colors";
 
 const markerText = MARKER_TEXT_CLASS;
 
 /** Semantic marker backgrounds with dark gray label/icon text. */
 export const markerToneClass = {
   success: `bg-[#a9e5a9] ${markerText}`,
+  kpiPositive: KPI_CHANGE_POSITIVE_CLASS,
   error: `bg-[#faa69e] ${markerText}`,
   warning: `bg-[#ffab66] ${markerText}`,
   info: `bg-[#a5bdec] ${markerText}`,

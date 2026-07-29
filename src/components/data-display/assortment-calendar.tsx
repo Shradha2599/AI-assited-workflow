@@ -10,6 +10,7 @@ import { TruncatedText } from "@/components/ui/truncated-text";
 import { cn } from "@/lib/utils";
 import { downloadCalendarPdf } from "@/lib/utils/calendar-pdf";
 import { schedulePlanItems } from "@/lib/assortment-plan/plan-acquisition-schedule";
+import { AssortmentCalendarShimmer } from "@/components/data-display/assortment-calendar-shimmer";
 import {
   usePlanStore,
   type ScheduledCalendarItem,
@@ -353,6 +354,8 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
   const setScheduledItems = usePlanStore((s) => s.setScheduledItems);
 
   const calendarApplyingBeaconFix = usePlanStore((s) => s.calendarApplyingBeaconFix);
+  const calendarApplyingGapImport = usePlanStore((s) => s.calendarApplyingGapImport);
+  const calendarBusy = calendarApplyingBeaconFix || calendarApplyingGapImport;
 
   // Items not yet placed on the calendar (available to drag)
   const scheduledLabels = useMemo(
@@ -610,7 +613,7 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
           <Button
             size="sm"
             onClick={handleGenerateCalendar}
-            disabled={generating || opportunityItems.length === 0}
+            disabled={generating || unscheduledOpportunityItems.length === 0}
           >
             {generating ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -627,9 +630,13 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
         id="assortment-plan-calendar"
         className={cn(
           "relative overflow-hidden border-0 shadow-none scroll-mt-6",
-          calendarApplyingBeaconFix && "animate-pulse",
+          calendarBusy && "animate-pulse",
         )}
       >
+        {calendarApplyingGapImport ? (
+          <AssortmentCalendarShimmer />
+        ) : (
+          <>
         {calendarApplyingBeaconFix ? (
           <div
             className="pointer-events-none absolute inset-0 z-10 bg-[var(--color-card)]/50"
@@ -920,6 +927,8 @@ export function AssortmentCalendar({ className }: AssortmentCalendarProps) {
             </tbody>
           </table>
         </div>
+          </>
+        )}
       </Card>
 
       <PlanActionButton />

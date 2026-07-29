@@ -1,25 +1,38 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { GapsDrawer } from "@/components/data-display/gaps-drawer";
 import { useGapDrawerStore } from "@/features/assortment-gap/store/gap-drawer-store";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
+import type { FiscalYearId } from "@/lib/mock-data/fy-plan-seeds";
+
+const CALENDAR_UPDATE_FY: FiscalYearId = "2025-2026";
 
 export function GlobalGapDrawer() {
   const router = useRouter();
   const { open, category, displayCategory, items, mode, closeDrawer } = useGapDrawerStore();
+  const fiscalYear = usePlanStore((s) => s.fiscalYear);
+  const setFiscalYear = usePlanStore((s) => s.setFiscalYear);
   const planItems = usePlanStore((s) => s.planItems);
   const baselinePlanItems = usePlanStore((s) => s.baselinePlanItems);
   const addPlanItem = usePlanStore((s) => s.addPlanItem);
   const removePlanItem = usePlanStore((s) => s.removePlanItem);
   const addGapItemsToCalendar = usePlanStore((s) => s.addGapItemsToCalendar);
+  const startGapCalendarImport = usePlanStore((s) => s.startGapCalendarImport);
   const calendarVersions = usePlanStore((s) => s.calendarVersions);
   const activeVersionId = usePlanStore((s) => s.activeVersionId);
 
-  if (!open) return null;
-
   const isCalendarUpdate = mode === "calendar-update";
+
+  useEffect(() => {
+    if (open && isCalendarUpdate && fiscalYear !== CALENDAR_UPDATE_FY) {
+      setFiscalYear(CALENDAR_UPDATE_FY);
+    }
+  }, [open, isCalendarUpdate, fiscalYear, setFiscalYear]);
+
+  if (!open) return null;
   const activeVersion =
     calendarVersions.find((v) => v.id === activeVersionId) ?? calendarVersions[0];
 
@@ -41,9 +54,16 @@ export function GlobalGapDrawer() {
     if (!canAddToCalendar) return;
 
     const namesToAdd = newlyAddedItems.map((item) => item.name);
+    startGapCalendarImport();
     addGapItemsToCalendar(namesToAdd, category);
     closeDrawer();
     router.push("/assortment/plan");
+  }
+
+  function ensureCalendarUpdateFy() {
+    if (isCalendarUpdate && fiscalYear !== CALENDAR_UPDATE_FY) {
+      setFiscalYear(CALENDAR_UPDATE_FY);
+    }
   }
 
   return (
@@ -66,10 +86,12 @@ export function GlobalGapDrawer() {
       onClose={closeDrawer}
       onAddToCalendar={handleAddToCalendar}
       onAddToPlan={(id) => {
+        ensureCalendarUpdateFy();
         const item = items.find((g) => g.id === id);
         if (item) addPlanItem(item.name);
       }}
       onRemoveFromPlan={(id) => {
+        ensureCalendarUpdateFy();
         const item = items.find((g) => g.id === id);
         if (item) removePlanItem(item.name);
       }}

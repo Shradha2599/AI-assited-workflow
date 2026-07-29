@@ -1,6 +1,8 @@
 /** Shared marker background palette — text/icons use dark gray via StatusTag. */
 export const MARKER_BG = {
   green: "#a9e5a9",
+  /** Matches dashboard KPI positive change badge */
+  kpiPositive: "#D1F0D1",
   blue: "#a5bdec",
   blueLight: "#d1ddf5",
   purple: "#c9b7e1",
@@ -13,6 +15,10 @@ export const MARKER_BG = {
 } as const;
 
 export const MARKER_TEXT_CLASS = "text-[var(--color-foreground)]";
+
+/** Dashboard KPI strip — positive / negative change badges */
+export const KPI_CHANGE_POSITIVE_CLASS = "bg-[#D1F0D1] text-[#1A7F1A]";
+export const KPI_CHANGE_NEGATIVE_CLASS = "bg-[#FAA69E] text-[#8B1A1A]";
 
 export const MARKER_RADIUS_CLASS = "rounded-[4px]";
 
