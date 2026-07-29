@@ -12,9 +12,11 @@ import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { GlobalGapDrawer } from "@/features/assortment-gap/components/global-gap-drawer";
 import { OutreachEmailDrawer } from "@/features/outreach/components/outreach-email-drawer";
 import { ToastContainer } from "@/components/ui/toast-container";
+import { useDiscoveryStore } from "@/features/lead-discovery/store/discovery-store";
 import { resolveBeaconContext } from "@/lib/beacon/beacon-context";
 import { usePartnerReviewStore } from "@/features/partner-onboarding/store/partner-review-store";
 import { useOnboardingReviewStore } from "@/features/partner-onboarding/store/onboarding-review-store";
+import { useOutreachStore } from "@/features/outreach/store/outreach-store";
 
 function AppShellContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -29,6 +31,17 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
   const planRevenues = usePlanStore((s) => s.planRevenues);
   const revenueGoal = usePlanStore((s) => s.revenueGoal);
   const dismissedBeaconPlanTaskIds = usePlanStore((s) => s.dismissedBeaconPlanTaskIds);
+  const fiscalYear = usePlanStore((s) => s.fiscalYear);
+  const acquisitionOutreachShareItems = usePlanStore((s) => s.acquisitionOutreachShareItems);
+  const calendarVersions = usePlanStore((s) => s.calendarVersions);
+  const activeVersionId = usePlanStore((s) => s.activeVersionId);
+  const discoverySnap = useDiscoveryStore((s) => s.getSnapshot(fiscalYear));
+  const documentReminderSentPartnerIds = useOutreachStore(
+    (s) => s.documentReminderSentPartnerIds,
+  );
+
+  const calendarVersionName =
+    calendarVersions.find((v) => v.id === activeVersionId)?.name ?? "Version 1";
 
   const beaconContext = useMemo(
     () =>
@@ -43,6 +56,13 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
         revenueGoal,
         dismissedBeaconPlanTaskIds,
         onboardingReview: { approvedIds, appliedFieldValues },
+        fiscalYear,
+        discoveryShortlisted: discoverySnap.shortlistedIds.length,
+        discoveryContacted: discoverySnap.contactedIds.length,
+        discoveryDiscovered: discoverySnap.discoveredIds.length,
+        acquisitionOutreachShareItems,
+        calendarVersionName,
+        documentReminderSentPartnerIds,
       }),
     [
       pathname,
@@ -56,6 +76,13 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
       planRevenues,
       revenueGoal,
       dismissedBeaconPlanTaskIds,
+      fiscalYear,
+      discoverySnap.shortlistedIds.length,
+      discoverySnap.contactedIds.length,
+      discoverySnap.discoveredIds.length,
+      acquisitionOutreachShareItems,
+      calendarVersionName,
+      documentReminderSentPartnerIds,
     ],
   );
 
@@ -104,6 +131,7 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
                   page={beaconContext.page}
                   starterPrompts={beaconContext.starters}
                   contextSummary={beaconContext.contextSummary}
+                  openingMessage={beaconContext.openingMessage}
                   pathname={pathname}
                 />
               </div>

@@ -32,6 +32,8 @@ interface OutreachStore {
   activeSellerId: string | null;
   draft: EmailDraft | null;
   isGenerating: boolean;
+  /** Partners who already received onboarding document reminder mail */
+  documentReminderSentPartnerIds: string[];
 
   openDrawer: (opts: OpenDrawerOptions) => void;
   closeDrawer: () => void;
@@ -50,15 +52,21 @@ export const useOutreachStore = create<OutreachStore>((set, get) => ({
   activeSellerId: null,
   draft: null,
   isGenerating: false,
+  documentReminderSentPartnerIds: [],
 
   openDrawer: (opts) => {
     const multiPartner = opts.multiPartner ?? opts.mailType === "document_reminder";
+    const sentIds = get().documentReminderSentPartnerIds;
     let partners: OutreachPartnerContext[] = [];
     let selectedPartnerId: string | null = opts.partnerId ?? null;
 
     if (multiPartner) {
-      partners = outreachReminderPartners;
-      selectedPartnerId = opts.partnerId ?? null;
+      partners = outreachReminderPartners.filter((p) => !sentIds.includes(p.partnerId));
+      if (opts.partnerId && partners.some((p) => p.partnerId === opts.partnerId)) {
+        selectedPartnerId = opts.partnerId;
+      } else {
+        selectedPartnerId = partners[0]?.partnerId ?? null;
+      }
     } else if (opts.partnerId) {
       const ctx = getOutreachPartnerContext(opts.partnerId);
       if (ctx) {
@@ -118,7 +126,16 @@ export const useOutreachStore = create<OutreachStore>((set, get) => ({
     })),
 
   sendMail: () => {
-    const { draft, mailType, activeSellerId } = get();
+    const { draft, mailType, activeSellerId, selectedPartnerId } = get();
+    if (mailType === "document_reminder" && selectedPartnerId) {
+      set((s) => ({
+        documentReminderSentPartnerIds: s.documentReminderSentPartnerIds.includes(
+          selectedPartnerId,
+        )
+          ? s.documentReminderSentPartnerIds
+          : [...s.documentReminderSentPartnerIds, selectedPartnerId],
+      }));
+    }
     if (mailType === "acquisition_outreach" && activeSellerId) {
       const fiscalYear = usePlanStore.getState().fiscalYear;
       useDiscoveryStore.getState().markContacted(fiscalYear, activeSellerId);

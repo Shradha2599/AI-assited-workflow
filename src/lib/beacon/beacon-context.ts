@@ -1,5 +1,11 @@
-import type { RecommendedTask } from "@/components/ai/tasks-panel";
+import type { FiscalYearId } from "@/lib/mock-data/fy-plan-seeds";
 import type { BeaconPage } from "@/lib/agents/system-prompt";
+import type { RecommendedTask } from "@/components/ai/tasks-panel";
+import {
+  mergeWorkflowTasks,
+  resolveAgentBeaconContext,
+  type AgentContextInput,
+} from "@/lib/beacon/resolve-agent-context";
 import {
   getLeadFormAnalysis,
   getLeadFormTasksFromAnalysis,
@@ -10,7 +16,7 @@ import {
 } from "@/lib/mock-data/onboarding-review-panel";
 import { getOnboardingTasksForPanel, getDocumentationEvaluation } from "@/lib/mock-data/onboarding-evaluation";
 import {
-  getOutreachTaskForOnboardingPage,
+  buildDocumentReminderTask,
   outreachReminderPartners,
 } from "@/lib/mock-data/outreach-mail";
 import {
@@ -71,6 +77,14 @@ export interface BeaconContextInput {
   revenueGoal?: string;
   dismissedBeaconPlanTaskIds?: string[];
   onboardingReview?: OnboardingReviewPanelState;
+  /** Agentic Beacon — optional; filled by app shell from live stores */
+  fiscalYear?: FiscalYearId;
+  discoveryShortlisted?: number;
+  discoveryContacted?: number;
+  discoveryDiscovered?: number;
+  acquisitionOutreachShareItems?: string[];
+  calendarVersionName?: string;
+  documentReminderSentPartnerIds?: string[];
 }
 
 export interface BeaconContextResult {
@@ -79,6 +93,8 @@ export interface BeaconContextResult {
   insights: RecommendedTask[];
   starters: string[];
   contextSummary: string;
+  /** Proactive agent briefing for Chat with Beacon */
+  openingMessage: string;
 }
 
 function isPartnerProfilePath(pathname: string): boolean {
@@ -141,6 +157,17 @@ function collectOnboardingBlockers(limit = 6): OnboardingBlocker[] {
   }
 
   return blockers.slice(0, limit);
+}
+
+/** Pinned card: multi-partner document reminder → opens outreach drawer */
+export function pinDocumentReminderTask(
+  tasks: RecommendedTask[],
+  sentPartnerIds: string[] = [],
+): RecommendedTask[] {
+  const reminder = buildDocumentReminderTask(sentPartnerIds);
+  const rest = tasks.filter((t) => t.id !== "po-outreach-reminder");
+  if (!reminder) return rest.slice(0, 8);
+  return [reminder, ...rest].slice(0, 8);
 }
 
 function buildNearLaunchTasks(): RecommendedTask[] {
@@ -325,9 +352,11 @@ function buildLeadDiscoveryTasks(): RecommendedTask[] {
   return tasks.slice(0, 4);
 }
 
-function buildOnboardingListTasks(): RecommendedTask[] {
+function buildOnboardingListTasks(sentPartnerIds: string[] = []): RecommendedTask[] {
   const blockers = collectOnboardingBlockers(4);
-  const tasks: RecommendedTask[] = [getOutreachTaskForOnboardingPage()];
+  const tasks: RecommendedTask[] = [];
+  const reminder = buildDocumentReminderTask(sentPartnerIds);
+  if (reminder) tasks.push(reminder);
 
   for (const blocker of blockers.slice(0, 3)) {
     const reviewHref = `/sellers/onboarding/${blocker.partnerId}/review/${blocker.sectionId}${
@@ -833,7 +862,7 @@ function buildConversationStarters(
     const nearComplete = outreachReminderPartners.length;
     return [
       nearComplete > 0
-        ? "Thunder Brewing and Pinnacle Goods are missing docs — draft a reminder email."
+        ? "Two partners near launch are missing docs — draft a reminder email."
         : "Which partners need a documentation follow-up this week?",
       blockers[0]
         ? `What's blocking ${blockers[0].partnerName} from going live?`
@@ -926,6 +955,16 @@ export function resolveBeaconContext(input: BeaconContextInput): BeaconContextRe
   const page = getPageForPath(input.pathname);
   const partnerId = extractPartnerId(input.pathname);
 
+  const agentDefaults: AgentContextInput = {
+    ...input,
+    fiscalYear: input.fiscalYear ?? "2025-2026",
+    discoveryShortlisted: input.discoveryShortlisted ?? 0,
+    discoveryContacted: input.discoveryContacted ?? 0,
+    discoveryDiscovered: input.discoveryDiscovered ?? 0,
+    acquisitionOutreachShareItems: input.acquisitionOutreachShareItems ?? [],
+    calendarVersionName: input.calendarVersionName ?? "Version 1",
+  };
+
   if (partnerId && isOnboardingReviewPath(input.pathname)) {
     const reviewPanel = getOnboardingReviewPanelTasks(
       partnerId,
@@ -934,6 +973,7 @@ export function resolveBeaconContext(input: BeaconContextInput): BeaconContextRe
       input.activeTaskId,
       input.onboardingReview,
     );
+    const agent = resolveAgentBeaconContext(agentDefaults);
     const starters = buildConversationStarters(
       page,
       reviewPanel.tasks,
@@ -942,40 +982,47 @@ export function resolveBeaconContext(input: BeaconContextInput): BeaconContextRe
     );
     return {
       page,
-      tasks: reviewPanel.tasks,
+      tasks: mergeWorkflowTasks(agent.tasks, reviewPanel.tasks),
       insights: reviewPanel.insights,
-      starters,
-      contextSummary: buildContextSummary(page, reviewPanel.tasks, input),
+      starters: starters.length ? starters : agent.starters,
+      contextSummary: buildContextSummary(page, reviewPanel.tasks, input) + "\n\n" + agent.contextSummary,
+      openingMessage: agent.openingMessage,
     };
   }
 
-  let tasks: RecommendedTask[] = [];
+  const agent = resolveAgentBeaconContext(agentDefaults);
+  const sentReminderIds = input.documentReminderSentPartnerIds ?? [];
 
-  if (input.pathname.startsWith("/assortment/plan") || input.pathname.startsWith("/assortment/finalize")) {
-    tasks = buildPlanTasks(input);
-  } else if (input.pathname.startsWith("/assortment/gap")) {
-    tasks = buildGapAnalysisTasks();
-  } else if (input.pathname === "/sellers/onboarding") {
-    tasks = buildOnboardingListTasks();
-  } else if (isPartnerProfilePath(input.pathname)) {
-    tasks = buildPartnerProfileTasks(input.pathname, input.statusOverrides);
-  } else if (isSellerProfilePath(input.pathname)) {
-    tasks = buildSellerProfileTasks(input.pathname);
-  } else if (input.pathname.startsWith("/sellers/discovery")) {
-    tasks = buildLeadDiscoveryTasks();
-  } else if (input.pathname.startsWith("/dashboard")) {
-    tasks = buildDashboardTasks();
-  } else {
-    tasks = buildDashboardTasks();
+  if (input.pathname === "/dashboard" || input.pathname.startsWith("/dashboard/")) {
+    return {
+      ...agent,
+      tasks: pinDocumentReminderTask(agent.tasks, sentReminderIds),
+    };
   }
 
-  const starters = buildConversationStarters(page, tasks, [], input);
+  if (input.pathname === "/sellers/onboarding") {
+    const workflow = buildOnboardingListTasks(sentReminderIds);
+    return {
+      ...agent,
+      tasks: pinDocumentReminderTask(mergeWorkflowTasks(agent.tasks, workflow), sentReminderIds),
+    };
+  }
 
-  return {
-    page,
-    tasks,
-    insights: [],
-    starters,
-    contextSummary: buildContextSummary(page, tasks, input),
-  };
+  if (isPartnerProfilePath(input.pathname)) {
+    const workflow = buildPartnerProfileTasks(input.pathname, input.statusOverrides);
+    return {
+      ...agent,
+      tasks: mergeWorkflowTasks(agent.tasks, workflow),
+    };
+  }
+
+  if (isSellerProfilePath(input.pathname)) {
+    const workflow = buildSellerProfileTasks(input.pathname);
+    return {
+      ...agent,
+      tasks: mergeWorkflowTasks(agent.tasks, workflow),
+    };
+  }
+
+  return agent;
 }

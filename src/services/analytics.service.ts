@@ -22,11 +22,11 @@ export async function getDashboardMetrics(): Promise<DashboardMetric[]> {
 export async function getIndustrySegments() {
   /** `value` is a fallback weight only — dashboard filterIndustrySegments recomputes share % from contributions. */
   return [
-    { label: "Target", value: 30, color: "#ea4335", revenue: "$0" },
-    { label: "Walmart", value: 22, color: "#f48fb1", revenue: "$0" },
-    { label: "Amazon", value: 20, color: "#4285f4", revenue: "$0" },
-    { label: "Lowe's", value: 14, color: "#9c27b0", revenue: "$0" },
-    { label: "Home Depot", value: 14, color: "#ff9800", revenue: "$0" },
+    { label: "Target", value: 30, color: "#FF6B6B", revenue: "$0" },
+    { label: "Walmart", value: 22, color: "#FF85C1", revenue: "$0" },
+    { label: "Amazon", value: 20, color: "#5C9DFF", revenue: "$0" },
+    { label: "Lowe's", value: 14, color: "#B794F6", revenue: "$0" },
+    { label: "Home Depot", value: 14, color: "#FFB84D", revenue: "$0" },
   ];
 }
 

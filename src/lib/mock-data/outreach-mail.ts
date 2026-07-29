@@ -1,3 +1,4 @@
+import type { RecommendedTask } from "@/components/ai/tasks-panel";
 import { getPotentialPartnerById } from "@/lib/mock-data/potential-partners";
 
 export type OutreachMailType =
@@ -162,16 +163,35 @@ Target Plus`,
   }
 }
 
-export function getOutreachTaskForOnboardingPage() {
+export function buildDocumentReminderTask(
+  sentPartnerIds: string[] = [],
+): RecommendedTask | null {
+  const remaining = outreachReminderPartners.filter(
+    (p) => !sentPartnerIds.includes(p.partnerId),
+  );
+  if (remaining.length === 0) return null;
+
+  const description =
+    remaining.length === 1
+      ? `${remaining[0].legalBusinessName} is near onboarding completion but has missing documentation and needs follow-up.`
+      : `${remaining.length} partners are near onboarding completion but have missing documentation and need follow-up.`;
+
   return {
     id: "po-outreach-reminder",
     title: "Onboarding Completion Reminder",
-    description:
-      "2 partners are near onboarding completion but have missing documentation. Thunder Brewing and Pinnacle Goods need follow-up.",
-    actionLabel: "Send Reminder Mail →",
-    actionType: "open_outreach" as const,
-    mailType: "document_reminder" as const,
+    description,
+    actionLabel: "Send reminder",
+    actionType: "open_outreach",
+    mailType: "document_reminder",
+    partnerId: remaining.length === 1 ? remaining[0].partnerId : undefined,
+    priority: "high",
+    category: "launch",
   };
+}
+
+/** @deprecated Use buildDocumentReminderTask */
+export function getOutreachTaskForOnboardingPage(): RecommendedTask {
+  return buildDocumentReminderTask([])!;
 }
 
 export function getSellerOutreachContext(sellerId: string, sellerName: string, website: string) {

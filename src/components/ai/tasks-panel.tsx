@@ -60,6 +60,8 @@ interface TasksPanelProps {
   starterPrompts?: string[];
   /** Extra context appended to Beacon system prompt */
   contextSummary?: string;
+  /** Agent briefing when chat opens */
+  openingMessage?: string;
   pathname?: string;
 }
 
@@ -135,6 +137,71 @@ function OnboardingTaskCard({
                 {task.actionLabel}
               </Button>
             ))}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function ActionCenterCard({
+  task,
+  onAction,
+  pathname = "",
+  applying = false,
+}: {
+  task: RecommendedTask;
+  onAction: (task: RecommendedTask) => void;
+  pathname?: string;
+  applying?: boolean;
+}) {
+  return (
+    <article
+      className={cn(
+        "rounded-[var(--radius-lg)] bg-[var(--color-task-card)] p-[var(--space-4)]",
+        applying && "animate-pulse",
+      )}
+    >
+      <div className="flex items-start gap-3">
+        <SvgIcon name="aiSparkle" size={16} variant="primary" className="mt-0.5 shrink-0" />
+        <div className="min-w-0 flex-1">
+          <h3 className="text-[var(--text-body-size)] font-semibold leading-snug text-[var(--color-foreground)]">
+            {task.title}
+          </h3>
+          <p className="mt-1.5 text-[var(--text-caption-size)] leading-relaxed text-[var(--color-muted-foreground)]">
+            {task.description}
+          </p>
+          {task.actionHref && task.actionType !== "scroll_plan_calendar" ? (
+            <Button variant="ghost" size="sm" className="mt-3 h-auto px-0 py-0 text-[var(--color-primary)]" asChild>
+              <Link
+                href={task.actionHref.split("#")[0] || task.actionHref}
+                onClick={(e) => {
+                  const hash = task.actionHref?.includes("#")
+                    ? task.actionHref.split("#")[1]
+                    : undefined;
+                  if (hash === "calendar" && pathname?.startsWith("/assortment/plan")) {
+                    e.preventDefault();
+                    document.getElementById("assortment-plan-calendar")?.scrollIntoView({
+                      behavior: "smooth",
+                    });
+                  }
+                }}
+              >
+                {task.actionLabel.replace(/\s*→\s*$/, "")}
+                <ArrowRight className="ml-1 h-3.5 w-3.5" />
+              </Link>
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mt-3 h-auto gap-1 px-0 py-0 text-[var(--color-primary)]"
+              onClick={() => onAction(task)}
+              disabled={applying}
+            >
+              {task.actionLabel.replace(/\s*→\s*$/, "")}
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          )}
         </div>
       </div>
     </article>
@@ -459,6 +526,7 @@ export function TasksPanel({
   page,
   starterPrompts = [],
   contextSummary = "",
+  openingMessage = "",
   pathname = "",
 }: TasksPanelProps) {
   const openGapDrawer = useGapDrawerStore((s) => s.openDrawer);
@@ -491,6 +559,18 @@ export function TasksPanel({
     body: { page, contextSummary, pathname },
     id: `beacon-${page ?? "global"}-${pathname}`,
   });
+
+  useEffect(() => {
+    if (activeTab === "beacon" && openingMessage.trim()) {
+      setMessages([
+        {
+          id: `beacon-open-${pathname}`,
+          role: "assistant",
+          content: openingMessage,
+        },
+      ]);
+    }
+  }, [activeTab, openingMessage, pathname, setMessages]);
 
   useEffect(() => {
     if (activeTab === "beacon") {
@@ -616,26 +696,9 @@ export function TasksPanel({
     tasks.some((t) => t.validationStatus) ||
     insightItems.some((t) => t.validationStatus);
 
-  function isAcquisitionRelatedTask(task: RecommendedTask): boolean {
-    if (task.category === "acquisition" || task.mailType === "acquisition_outreach") return true;
-    const hay = `${task.title} ${task.description}`.toLowerCase();
-    return (
-      hay.includes("acquisition") ||
-      hay.includes("acquire ") ||
-      hay.includes("outreach") ||
-      hay.includes("shortlist") ||
-      hay.includes("add to plan") ||
-      hay.includes("add to assortment")
-    );
-  }
-
   const orderedTasks = [...tasks].sort((a, b) => {
     if (a.priority === "high" && b.priority !== "high") return -1;
     if (b.priority === "high" && a.priority !== "high") return 1;
-    const acqA = isAcquisitionRelatedTask(a);
-    const acqB = isAcquisitionRelatedTask(b);
-    if (acqA && !acqB) return -1;
-    if (!acqA && acqB) return 1;
     return 0;
   });
 
@@ -651,11 +714,10 @@ export function TasksPanel({
       );
     }
     return (
-      <StandardTaskCard
+      <ActionCenterCard
         key={task.id}
         task={task}
         onAction={handleTaskAction}
-        onSecondaryAction={handleTaskSecondaryAction}
         pathname={pathname}
         applying={applyingPlanTaskId === task.id}
       />
@@ -679,7 +741,7 @@ export function TasksPanel({
                 : "bg-[var(--color-tasks-tab-inactive)] text-[var(--color-muted-foreground)]",
             )}
           >
-            Tasks
+            Recommendations
           </button>
           {showInsightsTab ? (
             <button
@@ -714,9 +776,6 @@ export function TasksPanel({
       <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-[var(--space-4)]">
         {activeTab === "tasks" ? (
           <>
-            <h2 className="mb-[var(--space-4)] text-[var(--text-body-size)] font-bold text-[var(--color-foreground)]">
-              Recommended Tasks
-            </h2>
             <div className="space-y-[var(--space-3)]">
               {orderedTasks.length === 0 ? (
                 <p className="text-[var(--text-caption-size)] text-[var(--color-muted-foreground)]">
@@ -771,15 +830,12 @@ export function TasksPanel({
           </>
         ) : (
           <div className="flex h-full flex-col gap-[var(--space-3)]">
-            {messages.length === 0 ? (
+            {messages.length === 0 && !openingMessage.trim() ? (
               <div className="flex flex-col gap-[var(--space-2)]">
                 <p className="text-[var(--text-label-size)] font-medium uppercase tracking-wide text-[var(--color-muted-foreground)]">
-                  Try asking
+                  Continue the discussion
                 </p>
-                {(starterPrompts.length > 0
-                  ? starterPrompts
-                  : ["What are the highest-priority actions on this page right now?"]
-                ).map((prompt) => (
+                {(starterPrompts.length > 0 ? starterPrompts : []).map((prompt) => (
                   <button
                     key={prompt}
                     type="button"
@@ -933,6 +989,24 @@ export function TasksPanel({
                 {error && (
                   <div className="rounded-[var(--radius-md)] border border-red-200 bg-red-50 px-[var(--space-3)] py-[var(--space-2)] text-[var(--text-caption-size)] text-red-700">
                     Something went wrong. Please try again.
+                  </div>
+                )}
+                {messages.length <= 1 && starterPrompts.length > 0 && (
+                  <div className="mt-2 flex flex-col gap-[var(--space-2)]">
+                    <p className="text-[var(--text-label-size)] font-medium uppercase tracking-wide text-[var(--color-muted-foreground)]">
+                      Continue the discussion
+                    </p>
+                    {starterPrompts.map((prompt) => (
+                      <button
+                        key={prompt}
+                        type="button"
+                        onClick={() => handleSubmit(prompt)}
+                        className="group flex cursor-pointer items-start gap-2.5 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white px-[var(--space-3)] py-[var(--space-2)] text-left transition-colors hover:border-[var(--color-primary)] hover:bg-[var(--color-ai-insight)]"
+                      >
+                        <SvgIcon name="aiSparkle" size={14} variant="primary" className="mt-0.5 shrink-0" />
+                        <span className="text-[var(--text-caption-size)] text-[var(--color-foreground)]">{prompt}</span>
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
