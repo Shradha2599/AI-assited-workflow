@@ -9,6 +9,7 @@ import {
   CircleDashed,
   ExternalLink,
   Loader2,
+  Plus,
   Sparkles,
   Star,
   Trash2,
@@ -261,19 +262,27 @@ export function SellerProfileDrawer({ seller, onClose }: SellerProfileDrawerProp
               </>
             )}
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="min-w-0 gap-1 px-2"
-            onClick={() =>
-              isShortlisted
-                ? removeFromShortlist(fiscalYear, seller.id)
-                : shortlistSeller(fiscalYear, seller.id)
-            }
-          >
-            <Trash2 className="h-3.5 w-3.5 shrink-0" />
-            <span className="truncate">Shortlist</span>
-          </Button>
+          {isShortlisted ? (
+            <Button
+              variant="outline"
+              size="sm"
+              className="min-w-0 gap-1 border-red-300 px-2 text-red-600 hover:bg-red-50 hover:text-red-700"
+              onClick={() => removeFromShortlist(fiscalYear, seller.id)}
+            >
+              <Trash2 className="h-3.5 w-3.5 shrink-0" aria-hidden />
+              <span className="truncate">Remove</span>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              className="min-w-0 gap-1 px-2 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+              onClick={() => shortlistSeller(fiscalYear, seller.id)}
+            >
+              <Plus className="h-3.5 w-3.5 shrink-0" aria-hidden />
+              <span className="truncate">Shortlist</span>
+            </Button>
+          )}
         </div>
       }
     >

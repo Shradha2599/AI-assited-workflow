@@ -21,6 +21,7 @@ export interface FYPlanSeed {
   baselinePlanItems: string[];
   baselineScheduledItems: ScheduledCalendarItem[];
   revenueGoal: string;
+  acquisitionOutreachShareItems: string[];
 }
 
 /** Kitchen & Dining manager — dense overlapping calendar (18+ items, multi-lane) */
@@ -79,6 +80,7 @@ export function getFYPlanSeed(fy: FiscalYearId): FYPlanSeed {
       baselinePlanItems: [],
       baselineScheduledItems: [],
       revenueGoal: "",
+      acquisitionOutreachShareItems: [],
     };
   }
 
@@ -99,6 +101,7 @@ export function getFYPlanSeed(fy: FiscalYearId): FYPlanSeed {
     baselinePlanItems: [...FY_2025_26_PLAN_ITEMS],
     baselineScheduledItems: scheduledItems.map((item) => ({ ...item })),
     revenueGoal: "$24.0M",
+    acquisitionOutreachShareItems: [],
   };
 }
 

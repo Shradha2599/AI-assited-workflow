@@ -142,16 +142,17 @@ Target Plus`,
         fromName,
         fromEmail,
         to: context.contactEmail,
-        subject: `Invitation to Join Target Plus — ${context.legalBusinessName}`,
+        subject: `Introduction to Target Plus — Partnership Opportunity for ${context.legalBusinessName}`,
         body: `Hi ${context.contactName},
 
-I'm reaching out from Target Plus, Target's invite-only third-party marketplace, to explore a potential partnership opportunity with ${context.legalBusinessName}.
+I'm reaching out from Target Plus — Target's invite-only third-party marketplace — to introduce a potential partnership opportunity with ${context.legalBusinessName}.
 
-Based on our analysis, your brand stands out as a strong fit for our curated marketplace — your assortment depth and marketplace track record align well with our quality standards.
+Target Plus gives curated brands a dedicated path to reach Target guests with the same quality and trust guests expect from Target assortments. Based on our review of your category fit, assortment depth, and marketplace track record, we believe ${context.legalBusinessName} could be a strong addition to our marketplace.
 
-We'd love to invite you to complete a short application to explore this further. The process takes approximately 20 minutes and our team will review within 5 business days.
+If you're interested in becoming a Target Plus partner, please complete our partner interest form (takes about 20 minutes):
+https://plus.target.com/apply
 
-Would you be open to a brief intro call this week to discuss the opportunity?
+Our acquisition team typically reviews applications within five business days. If you have questions before applying, reply to this email — I'm happy to walk through the opportunity and next steps.
 
 Best regards,
 ${fromName}

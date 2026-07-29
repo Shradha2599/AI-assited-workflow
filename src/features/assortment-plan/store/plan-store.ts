@@ -34,6 +34,8 @@ interface FYRuntimeState {
   baselinePlanItems: string[];
   baselineScheduledItems: ScheduledCalendarItem[];
   revenueGoal: string;
+  /** Item types added via seasonal/gap calendar — drives Finalize & Share acquisition mail */
+  acquisitionOutreachShareItems: string[];
 }
 
 function snapshotFromState(state: FYRuntimeState): FYRuntimeState {
@@ -49,6 +51,7 @@ function snapshotFromState(state: FYRuntimeState): FYRuntimeState {
     baselinePlanItems: [...state.baselinePlanItems],
     baselineScheduledItems: state.baselineScheduledItems.map((item) => ({ ...item })),
     revenueGoal: state.revenueGoal,
+    acquisitionOutreachShareItems: [...state.acquisitionOutreachShareItems],
   };
 }
 
@@ -65,6 +68,7 @@ interface PlanStore extends FYRuntimeState {
   getOpportunityItems: () => string[];
   getNewlyScheduledLabels: () => string[];
   hasPendingPlanChanges: () => boolean;
+  clearAcquisitionOutreachShareItems: () => void;
 
   addPlanItem: (name: string, revenueM?: number) => void;
   addPlanItems: (items: Array<{ name: string; revenueM: number }>) => void;
@@ -130,6 +134,7 @@ export const usePlanStore = create<PlanStore>()((set, get) => ({
         fiscalYear: fy,
         fySnapshots: { ...nextSnapshots, [fy]: loaded },
         ...loaded,
+        acquisitionOutreachShareItems: loaded.acquisitionOutreachShareItems ?? [],
         dismissedBeaconPlanTaskIds: [],
         assortmentPlanningStarted: fy === "2025-2026" || loaded.planItems.length > 0,
       };
@@ -151,8 +156,14 @@ export const usePlanStore = create<PlanStore>()((set, get) => ({
 
   hasPendingPlanChanges: () => {
     const store = get();
-    return store.getOpportunityItems().length > 0 || store.getNewlyScheduledLabels().length > 0;
+    return (
+      store.getOpportunityItems().length > 0 ||
+      store.getNewlyScheduledLabels().length > 0 ||
+      store.acquisitionOutreachShareItems.length > 0
+    );
   },
+
+  clearAcquisitionOutreachShareItems: () => set({ acquisitionOutreachShareItems: [] }),
 
   startAssortmentPlanning: () => set({ assortmentPlanningStarted: true }),
 
@@ -206,6 +217,7 @@ export const usePlanStore = create<PlanStore>()((set, get) => ({
     const baselineScheduledItems = [...state.baselineScheduledItems];
     let planItems = [...state.planItems];
     const planRevenues = { ...state.planRevenues };
+    const acquisitionOutreachShareItems = [...state.acquisitionOutreachShareItems];
 
     for (let i = 0; i < itemNames.length; i++) {
       const name = itemNames[i];
@@ -216,6 +228,9 @@ export const usePlanStore = create<PlanStore>()((set, get) => ({
       }
       if (!baselinePlanItems.includes(name)) {
         baselinePlanItems.push(name);
+      }
+      if (!acquisitionOutreachShareItems.includes(name)) {
+        acquisitionOutreachShareItems.push(name);
       }
 
       const entry: ScheduledCalendarItem = {
@@ -240,6 +255,7 @@ export const usePlanStore = create<PlanStore>()((set, get) => ({
         baselinePlanItems,
         baselineScheduledItems,
         scheduledItems,
+        acquisitionOutreachShareItems,
         calendarVersions: syncActiveVersion(
           state.calendarVersions,
           state.activeVersionId,

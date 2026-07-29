@@ -24,6 +24,7 @@ function buildEmailDraft(
   newlyScheduled: string[],
   hasPendingChanges: boolean,
   plannedItemCount: number,
+  acquisitionOutreachItems: string[],
 ): EmailDraft {
   if (fiscalYear === "2026-2027") {
     return {
@@ -40,6 +41,31 @@ Planning approach:
 • Revenue-weighted mix designed to meet our category goal while filling identified assortment gaps
 
 The attached calendar includes ${plannedItemCount} planned item types with recommended acquisition months. Please review the sequencing and share feedback so we can finalize seller outreach priorities for the year ahead.
+
+Thanks,
+John Doe
+Category Manager, Target`,
+    };
+  }
+
+  if (acquisitionOutreachItems.length > 0) {
+    const itemLines = acquisitionOutreachItems.map((item, i) => `${i + 1}. ${item}`).join("\n");
+    return {
+      to: "shane.doe@target.com",
+      subject: `${fyLabel} Assortment Plan — Plan Acquisition for New Calendar Item Types`,
+      body: `Hi Avon,
+
+I've updated the ${fyLabel} assortment calendar with new item types from our seasonal gap review. These are now scheduled on the calendar and need your team to plan acquisition and seller outreach so we are shelf-ready ahead of peak demand.
+
+Item types requiring acquisition planning:
+${itemLines}
+
+Recommended next steps:
+• Shortlist sellers whose assortment matches each item type and launch window on the attached calendar
+• Prioritize outreach and onboarding timelines against the scheduled acquisition months
+• Align capacity with category managers on Kitchen & Dining seasonal peaks (including Halloween)
+
+The attached calendar reflects where each item type lands in the fiscal year. Please use it to build acquisition workstreams for these additions.
 
 Thanks,
 John Doe
@@ -142,6 +168,8 @@ export function FinalizeShareDrawer({ open, onClose }: FinalizeShareDrawerProps)
   const getOpportunityItems = usePlanStore((s) => s.getOpportunityItems);
   const getNewlyScheduledLabels = usePlanStore((s) => s.getNewlyScheduledLabels);
   const hasPendingPlanChanges = usePlanStore((s) => s.hasPendingPlanChanges);
+  const acquisitionOutreachShareItems = usePlanStore((s) => s.acquisitionOutreachShareItems);
+  const clearAcquisitionOutreachShareItems = usePlanStore((s) => s.clearAcquisitionOutreachShareItems);
   const calendarVersions = usePlanStore((s) => s.calendarVersions);
   const activeVersionId = usePlanStore((s) => s.activeVersionId);
   const switchVersion = usePlanStore((s) => s.switchVersion);
@@ -176,19 +204,30 @@ export function FinalizeShareDrawer({ open, onClose }: FinalizeShareDrawerProps)
       newlyScheduled,
       pendingChanges,
       plannedItemCount,
+      acquisitionOutreachShareItems,
     );
     const timer = setTimeout(() => {
       setTo(draft.to);
       setSubject(draft.subject);
       setBody(draft.body);
       setGenerating(false);
-    }, pendingChanges ? 1200 : 3000);
+    }, acquisitionOutreachShareItems.length > 0 ? 1200 : pendingChanges ? 1200 : 3000);
     return () => clearTimeout(timer);
-  }, [open, fyLabel, fiscalYear, newItems, newlyScheduled, pendingChanges, plannedItemCount]);
+  }, [
+    open,
+    fyLabel,
+    fiscalYear,
+    newItems,
+    newlyScheduled,
+    pendingChanges,
+    plannedItemCount,
+    acquisitionOutreachShareItems,
+  ]);
 
   if (!open) return null;
 
   function handleSend() {
+    clearAcquisitionOutreachShareItems();
     showToast({
       title: "Email sent",
       description: `Assortment plan shared with ${to} via Outlook.`,

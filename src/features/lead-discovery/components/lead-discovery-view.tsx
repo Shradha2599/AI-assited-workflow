@@ -542,21 +542,27 @@ export function LeadDiscoveryView() {
                       <td className="py-2.5 text-left">
                         {activeTab === "discovered" ? (
                           isShortlisted ? (
-                            <button
+                            <Button
                               type="button"
+                              variant="outline"
+                              size="sm"
                               onClick={() => removeFromShortlist(fiscalYear, seller.id)}
-                              className="text-[var(--text-caption-size)] text-green-600"
+                              className="h-7 gap-1 border-red-300 px-2.5 text-[var(--text-caption-size)] font-semibold text-red-600 hover:bg-red-50 hover:text-red-700"
                             >
-                              ✓ Shortlisted
-                            </button>
+                              <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                              Remove
+                            </Button>
                           ) : (
-                            <button
+                            <Button
                               type="button"
+                              variant="outline"
+                              size="sm"
                               onClick={() => shortlistSeller(fiscalYear, seller.id)}
-                              className="flex items-center gap-1 text-[var(--text-caption-size)] font-semibold text-blue-600 hover:text-blue-700"
+                              className="h-7 gap-1 px-2.5 text-[var(--text-caption-size)] font-semibold text-blue-600 hover:bg-blue-50 hover:text-blue-700"
                             >
-                              <Plus className="h-3.5 w-3.5" /> Shortlist
-                            </button>
+                              <Plus className="h-3.5 w-3.5" aria-hidden />
+                              Shortlist
+                            </Button>
                           )
                         ) : (
                           <div className="flex items-center gap-3">
