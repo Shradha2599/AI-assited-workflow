@@ -48,7 +48,6 @@ export function DashboardView({
 }: DashboardViewProps) {
   const fiscalYear = usePlanStore((s) => s.fiscalYear);
   const planItems = usePlanStore((s) => s.planItems);
-  const baselinePlanItems = usePlanStore((s) => s.baselinePlanItems);
   const revenueGoal = usePlanStore((s) => s.revenueGoal);
 
   const [appliedCategoryIds, setAppliedCategoryIds] = useState(defaultCategoryIds);
@@ -58,13 +57,12 @@ export function DashboardView({
       buildDashboardMetrics({
         fiscalYear,
         planItemCount: planItems.length,
-        baselinePlanItemCount: baselinePlanItems.length,
         revenueGoal,
         selectedCategoryIds: appliedCategoryIds,
         categoryOptions,
         treemapRoot,
       }),
-    [fiscalYear, planItems.length, baselinePlanItems.length, revenueGoal, appliedCategoryIds, categoryOptions, treemapRoot],
+    [fiscalYear, planItems.length, revenueGoal, appliedCategoryIds, categoryOptions, treemapRoot],
   );
 
   const industry = useMemo(

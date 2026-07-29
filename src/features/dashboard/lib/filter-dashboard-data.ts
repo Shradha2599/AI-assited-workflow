@@ -35,15 +35,22 @@ const TREEMAP_PIPELINE_PRIMARY: Record<string, string> = {
 /** Category-level KPI seeds (FY 2025–26); scaled for other fiscal years */
 const TREEMAP_KPI_SEED: Record<
   string,
-  { revenueB: number; goalM: number; itemTypes: number; revenueChange: string }
+  {
+    revenueB: number;
+    goalM: number;
+    itemTypes: number;
+    /** Item types in the same categories prior fiscal year (YoY comparison) */
+    itemTypesLastYear: number;
+    revenueChange: string;
+  }
 > = {
-  kitchen: { revenueB: 1.8, goalM: 24, itemTypes: 0, revenueChange: "24%" },
-  outdoor: { revenueB: 0.45, goalM: 8.8, itemTypes: 3, revenueChange: "18%" },
-  holiday: { revenueB: 0.32, goalM: 5.2, itemTypes: 2, revenueChange: "15%" },
-  lighting: { revenueB: 0.55, goalM: 6.1, itemTypes: 4, revenueChange: "21%" },
-  furniture: { revenueB: 0.48, goalM: 7.0, itemTypes: 2, revenueChange: "12%" },
-  party: { revenueB: 0.28, goalM: 4.2, itemTypes: 5, revenueChange: "19%" },
-  rugs: { revenueB: 0.22, goalM: 3.5, itemTypes: 1, revenueChange: "11%" },
+  kitchen: { revenueB: 1.8, goalM: 24, itemTypes: 0, itemTypesLastYear: 22, revenueChange: "24%" },
+  outdoor: { revenueB: 0.45, goalM: 8.8, itemTypes: 3, itemTypesLastYear: 2, revenueChange: "18%" },
+  holiday: { revenueB: 0.32, goalM: 5.2, itemTypes: 2, itemTypesLastYear: 2, revenueChange: "15%" },
+  lighting: { revenueB: 0.55, goalM: 6.1, itemTypes: 4, itemTypesLastYear: 3, revenueChange: "21%" },
+  furniture: { revenueB: 0.48, goalM: 7.0, itemTypes: 2, itemTypesLastYear: 2, revenueChange: "12%" },
+  party: { revenueB: 0.28, goalM: 4.2, itemTypes: 5, itemTypesLastYear: 4, revenueChange: "19%" },
+  rugs: { revenueB: 0.22, goalM: 3.5, itemTypes: 1, itemTypesLastYear: 1, revenueChange: "11%" },
 };
 
 const FY_INDUSTRY_TOTAL: Record<FiscalYearId, string> = {
@@ -108,7 +115,6 @@ function truncateLabel(label: string, max = 16): string {
 export function buildDashboardMetrics(input: {
   fiscalYear: FiscalYearId;
   planItemCount: number;
-  baselinePlanItemCount: number;
   revenueGoal: string;
   selectedCategoryIds: string[];
   categoryOptions: GapCategoryFilterOption[];
@@ -132,7 +138,7 @@ export function buildDashboardMetrics(input: {
   let totalRevenueB = 0;
   let totalGoalM = 0;
   let totalItems = 0;
-  let baselineItems = 0;
+  let totalItemsLastYear = 0;
   let totalSellers = 0;
   let weightedChange = 0;
 
@@ -153,11 +159,17 @@ export function buildDashboardMetrics(input: {
 
     if (treemapId === KITCHEN_TREEMAP_ID) {
       totalItems += input.planItemCount;
-      baselineItems += input.baselinePlanItemCount;
+      totalItemsLastYear += Math.max(
+        1,
+        Math.round((seed?.itemTypesLastYear ?? 22) * scale),
+      );
     } else {
       const seeded = Math.round((seed?.itemTypes ?? 0) * scale);
       totalItems += seeded;
-      baselineItems += seeded;
+      totalItemsLastYear += Math.max(
+        1,
+        Math.round((seed?.itemTypesLastYear ?? seed?.itemTypes ?? 1) * scale),
+      );
     }
 
     totalSellers += Math.max(1, Math.round(activeSellersForPrimary(primary) * scale));
@@ -173,15 +185,15 @@ export function buildDashboardMetrics(input: {
       ? formatRevenueGoalDisplay(input.revenueGoal)
       : formatGoalMillions(totalGoalM);
 
-  const itemChangePct =
-    baselineItems > 0
-      ? ((totalItems - baselineItems) / baselineItems) * 100
+  const itemYoYPct =
+    totalItemsLastYear > 0
+      ? ((totalItems - totalItemsLastYear) / totalItemsLastYear) * 100
       : totalItems > 0
         ? 100
         : 0;
-  const itemChange = `${Math.abs(itemChangePct).toFixed(1)}%`;
+  const itemChange = `${Math.abs(itemYoYPct).toFixed(1)}%`;
   const itemChangeType: DashboardMetric["changeType"] =
-    itemChangePct > 0.05 ? "positive" : itemChangePct < -0.05 ? "negative" : "neutral";
+    itemYoYPct > 0.05 ? "positive" : itemYoYPct < -0.05 ? "negative" : "neutral";
 
   return [
     {
