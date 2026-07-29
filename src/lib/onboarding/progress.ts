@@ -7,7 +7,6 @@ import {
 import {
   countDocumentationSectionCompletedSteps,
   documentationTaskNeedsReview,
-  isDocumentationTaskTmApproved,
 } from "@/features/partner-onboarding/utils/documentation-task-progress";
 import type {
   OnboardingSection,

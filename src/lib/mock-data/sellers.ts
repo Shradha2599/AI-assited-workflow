@@ -28,9 +28,7 @@ function mapLeadStatus(status: string): Seller["status"] {
 
 function marketplacesFor(lead: LeadRecord): string[] {
   const n = lead.sellerId.charCodeAt(lead.sellerId.length - 1) % 3;
-  if (n === 0) return ["Amazon"];
-  if (n === 1) return ["Amazon", "Walmart"];
-  return ["Amazon", "Walmart", "Wayfair"];
+  return [...MARKETPLACE_POOL.slice(0, n + 1)];
 }
 
 function leadToSeller(lead: LeadRecord): Seller {

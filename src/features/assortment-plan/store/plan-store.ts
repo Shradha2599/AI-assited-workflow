@@ -205,11 +205,11 @@ export const usePlanStore = create<PlanStore>()((set, get) => ({
     const baselinePlanItems = [...state.baselinePlanItems];
     const baselineScheduledItems = [...state.baselineScheduledItems];
     let planItems = [...state.planItems];
-    let planRevenues = { ...state.planRevenues };
+    const planRevenues = { ...state.planRevenues };
 
     for (let i = 0; i < itemNames.length; i++) {
       const name = itemNames[i];
-      const { row, startMonth, span } = getAcquisitionWindow(category, i);
+      const { row, startMonth, span } = getAcquisitionWindow(category);
 
       if (!planItems.includes(name)) {
         planItems = [...planItems, name];

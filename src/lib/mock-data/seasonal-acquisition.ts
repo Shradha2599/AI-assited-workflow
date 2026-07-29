@@ -15,7 +15,7 @@ const SEASONAL_ACQUISITION: Record<string, AcquisitionWindow> = {
 
 const DEFAULT_ACQUISITION: AcquisitionWindow = JUL_AUG_SEP;
 
-export function getAcquisitionWindow(category: string, itemIndex = 0): AcquisitionWindow {
+export function getAcquisitionWindow(category: string): AcquisitionWindow {
   const base = SEASONAL_ACQUISITION[category] ?? DEFAULT_ACQUISITION;
   return { ...base };
 }

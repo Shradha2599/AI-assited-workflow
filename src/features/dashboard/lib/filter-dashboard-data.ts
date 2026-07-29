@@ -142,7 +142,7 @@ function segmentsFromContributions(
     };
   });
 
-  let pctSum = segments.reduce((sum, s) => sum + s.value, 0);
+  const pctSum = segments.reduce((sum, s) => sum + s.value, 0);
   if (segments.length > 0 && pctSum !== 100) {
     const leadIdx = segments.reduce(
       (best, s, i, arr) => (s.value > arr[best].value ? i : best),
