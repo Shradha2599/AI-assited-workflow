@@ -26,6 +26,7 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
   const activeTaskId = useOnboardingReviewStore((s) => s.activeTaskId);
   const approvedIds = useOnboardingReviewStore((s) => s.approvedIds);
   const appliedFieldValues = useOnboardingReviewStore((s) => s.appliedFieldValues);
+  const documentRejections = useOnboardingReviewStore((s) => s.documentRejections);
   const planItems = usePlanStore((s) => s.planItems);
   const scheduledItems = usePlanStore((s) => s.scheduledItems);
   const planRevenues = usePlanStore((s) => s.planRevenues);
@@ -55,7 +56,11 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
         planRevenues,
         revenueGoal,
         dismissedBeaconPlanTaskIds,
-        onboardingReview: { approvedIds, appliedFieldValues },
+        onboardingReview: {
+          approvedIds,
+          appliedFieldValues,
+          documentRejectionIds: Object.keys(documentRejections),
+        },
         fiscalYear,
         discoveryShortlisted: discoverySnap.shortlistedIds.length,
         discoveryContacted: discoverySnap.contactedIds.length,
@@ -71,6 +76,7 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
       activeTaskId,
       approvedIds,
       appliedFieldValues,
+      documentRejections,
       planItems,
       scheduledItems,
       planRevenues,

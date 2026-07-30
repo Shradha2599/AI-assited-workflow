@@ -11,10 +11,14 @@ import {
   getLeadFormTasksFromAnalysis,
 } from "@/lib/mock-data/lead-form-analysis";
 import {
-  getOnboardingReviewPanelItems,
-  type OnboardingReviewPanelState,
-} from "@/lib/mock-data/onboarding-review-panel";
+  buildAssortmentPanel,
+  buildDocumentationPanel,
+  buildOnboardingPartnerPanel,
+  buildProfilePanel,
+  type OnboardingPanelState,
+} from "@/lib/beacon/onboarding-panel-tasks";
 import { getOnboardingTasksForPanel, getDocumentationEvaluation } from "@/lib/mock-data/onboarding-evaluation";
+import { isPartnerNewlyApproved } from "@/lib/onboarding";
 import {
   buildDocumentReminderTask,
   outreachReminderPartners,
@@ -76,7 +80,7 @@ export interface BeaconContextInput {
   planRevenues?: Record<string, number>;
   revenueGoal?: string;
   dismissedBeaconPlanTaskIds?: string[];
-  onboardingReview?: OnboardingReviewPanelState;
+  onboardingReview?: OnboardingPanelState;
   /** Agentic Beacon — optional; filled by app shell from live stores */
   fiscalYear?: FiscalYearId;
   discoveryShortlisted?: number;
@@ -378,31 +382,63 @@ function buildOnboardingListTasks(sentPartnerIds: string[] = []): RecommendedTas
   return tasks.slice(0, 5);
 }
 
+function onboardingKickoffMailTask(partner: {
+  id: string;
+  legalBusinessName: string;
+}): RecommendedTask {
+  return {
+    id: "pod-outreach-kickoff",
+    title: "Onboarding Mail Ready",
+    description: `Send ${partner.legalBusinessName} the onboarding kickoff mail and next steps.`,
+    actionLabel: "Send Mail →",
+    actionType: "open_outreach",
+    mailType: "onboarding_kickoff",
+    partnerId: partner.id,
+  };
+}
+
+/**
+ * Freshly approved lead — the partner has only submitted an assortment file, so
+ * the panel shows the assortment review and the kickoff mail, nothing else.
+ */
+function buildNewlyApprovedPartnerTasks(partner: {
+  id: string;
+  legalBusinessName: string;
+}): RecommendedTask[] {
+  return [
+    {
+      id: `pod-assortment-file-${partner.id}`,
+      title: "Review assortment file",
+      description: `${partner.legalBusinessName} submitted their assortment file with the lead form. Review the SKUs and Target recommendations to start curation.`,
+      actionLabel: "Review assortment file →",
+      actionHref: `/sellers/onboarding/${partner.id}/review/assortment`,
+      partnerId: partner.id,
+      validationStatus: "partial",
+      sectionId: "assortment",
+    },
+    onboardingKickoffMailTask(partner),
+  ];
+}
+
 function buildPartnerProfileTasks(
   pathname: string,
   statusOverrides: Record<string, PartnerPipelineStatus>,
+  reviewState?: OnboardingPanelState,
 ): RecommendedTask[] {
   const id = pathname.split("/").pop();
   const partner = id ? getPotentialPartnerById(id) : undefined;
   const effectiveStatus = partner && id ? (statusOverrides[id] ?? partner.status) : undefined;
 
   if (partner && effectiveStatus && showsOnboardingChecklist(effectiveStatus) && id) {
-    const evalTasks = getOnboardingTasksForPanel(partner.sellerId).map((t) => ({
-      ...t,
-      partnerId: id,
-    }));
-    return [
-      {
-        id: "pod-outreach-kickoff",
-        title: "Onboarding Mail Ready",
-        description: `Send ${partner.legalBusinessName} the onboarding kickoff mail and next steps.`,
-        actionLabel: "Send Mail →",
-        actionType: "open_outreach" as const,
-        mailType: "onboarding_kickoff" as const,
-        partnerId: partner.id,
-      },
-      ...evalTasks,
-    ];
+    if (isPartnerNewlyApproved(id)) {
+      return buildNewlyApprovedPartnerTasks(partner);
+    }
+    const panel = buildOnboardingPartnerPanel(
+      partner,
+      reviewState ?? { approvedIds: [], appliedFieldValues: {} },
+    );
+    if (panel.tasks.length > 0) return panel.tasks;
+    return [onboardingKickoffMailTask(partner)];
   }
 
   if (partner && effectiveStatus && showsLeadForm(effectiveStatus) && id) {
@@ -602,34 +638,26 @@ function getOnboardingReviewPanelTasks(
   pathname: string,
   searchParams: URLSearchParams,
   activeTaskId: string | null,
-  reviewState?: OnboardingReviewPanelState,
+  reviewState?: OnboardingPanelState,
 ): { tasks: RecommendedTask[]; insights: RecommendedTask[] } {
   const partner = getPotentialPartnerById(partnerId);
   if (!partner || !showsOnboardingChecklist(partner.status)) {
     return { tasks: [], insights: [] };
   }
+  const state = reviewState ?? { approvedIds: [], appliedFieldValues: {} };
 
   if (pathname.includes("/review/profile")) {
     const taskId = searchParams.get("task") ?? activeTaskId ?? undefined;
-    const panel = getOnboardingReviewPanelItems(partner.sellerId, "profile", { taskId }, reviewState);
-    return {
-      tasks: panel.tasks.map((t) => ({ ...t, partnerId })),
-      insights: panel.insights.map((t) => ({ ...t, partnerId })),
-    };
+    return buildProfilePanel(partner, state, taskId);
   }
 
   if (pathname.includes("/review/documentation")) {
     const docTab = searchParams.get("tab") === "brands" ? "brands" : "general";
-    const panel = getOnboardingReviewPanelItems(
-      partner.sellerId,
-      "documentation",
-      { docTab },
-      reviewState,
-    );
-    return {
-      tasks: panel.tasks.map((t) => ({ ...t, partnerId })),
-      insights: panel.insights.map((t) => ({ ...t, partnerId })),
-    };
+    return buildDocumentationPanel(partner, state, docTab);
+  }
+
+  if (pathname.includes("/review/assortment")) {
+    return buildAssortmentPanel(partner, state);
   }
 
   if (pathname.includes("/review/integrations")) {
@@ -640,22 +668,6 @@ function getOnboardingReviewPanelTasks(
           title: "Review channel partner integration",
           description: "Approve or reject the seller's Ascenda integration selection.",
           actionLabel: "Review integration →",
-          actionHref: pathname,
-          partnerId,
-        },
-      ],
-      insights: [],
-    };
-  }
-
-  if (pathname.includes("/review/assortment")) {
-    return {
-      tasks: [
-        {
-          id: "assortment-review",
-          title: "Review assortment curation",
-          description: "Validate submitted SKUs, Target recommendations, and assortment analysis before approval.",
-          actionLabel: "Review assortment →",
           actionHref: pathname,
           partnerId,
         },
@@ -982,7 +994,9 @@ export function resolveBeaconContext(input: BeaconContextInput): BeaconContextRe
     );
     return {
       page,
-      tasks: mergeWorkflowTasks(agent.tasks, reviewPanel.tasks),
+      // Review pages own their panel — only fall back to generic agent
+      // recommendations when the section has nothing to review.
+      tasks: reviewPanel.tasks.length > 0 ? reviewPanel.tasks : agent.tasks,
       insights: reviewPanel.insights,
       starters: starters.length ? starters : agent.starters,
       contextSummary: buildContextSummary(page, reviewPanel.tasks, input) + "\n\n" + agent.contextSummary,
@@ -1009,10 +1023,16 @@ export function resolveBeaconContext(input: BeaconContextInput): BeaconContextRe
   }
 
   if (isPartnerProfilePath(input.pathname)) {
-    const workflow = buildPartnerProfileTasks(input.pathname, input.statusOverrides);
+    // Lead form shows Beacon's verdict only; onboarding shows the sub-tasks
+    // waiting on the TM. Neither mixes in generic agent recommendations.
+    const workflow = buildPartnerProfileTasks(
+      input.pathname,
+      input.statusOverrides,
+      input.onboardingReview,
+    );
     return {
       ...agent,
-      tasks: mergeWorkflowTasks(agent.tasks, workflow),
+      tasks: workflow.length > 0 ? workflow : agent.tasks,
     };
   }
 

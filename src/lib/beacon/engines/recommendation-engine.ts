@@ -340,29 +340,27 @@ function buildOnboardingRecs(ctx: BusinessContext, reasoning: BeaconReasoning): 
   const recs: RecommendedTask[] = [];
   const onList = ctx.pathname === "/sellers/onboarding";
 
-  if (reasoning.onboardingBlocked) {
+  // Pipeline-wide nudges belong on the onboarding list. A partner profile shows
+  // only that partner's own review sub-tasks.
+  if (onList && reasoning.onboardingBlocked) {
     recs.push(
       task({
         id: "agent-blockers",
-        title: onList ? "Onboarding blockers detected" : "Blockers on this partner",
-        description: onList
-          ? `${ctx.blockedPartners} partners on this list cannot launch until review tasks clear — I sorted them by revenue impact.`
-          : `Documentation or profile tasks are blocking launch — I opened the review steps tied to this partner profile.`,
+        title: "Onboarding blockers detected",
+        description: `${ctx.blockedPartners} partners on this list cannot launch until review tasks clear — I sorted them by revenue impact.`,
         actionLabel: "Resolve Blockers →",
-        actionHref: onList ? "/sellers/onboarding" : ctx.pathname,
+        actionHref: "/sellers/onboarding",
         category: "blocker",
       }),
     );
   }
 
-  if (reasoning.launchBacklog) {
+  if (onList && reasoning.launchBacklog) {
     recs.push(
       task({
         id: "agent-launch-ready",
         title: "Launch-ready partners waiting",
-        description: onList
-          ? `${ctx.launchReadyPartners} partners completed requirements on this pipeline view — launch actions are prepared without re-reading docs.`
-          : `This partner is near launch readiness at ${ctx.onboardingCapacityPct}% team capacity — I highlighted remaining checklist items.`,
+        description: `${ctx.launchReadyPartners} partners completed requirements on this pipeline view — launch actions are prepared without re-reading docs.`,
         actionLabel: "Launch Partners →",
         actionHref: "/sellers/onboarding",
         category: "launch",

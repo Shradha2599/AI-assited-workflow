@@ -180,6 +180,71 @@ export function getVersionSkus(
     });
 }
 
+/** Rationale shown to the TM for AI add/remove recommendations. */
+export interface AssortmentRecommendationImpact {
+  addCount: number;
+  removeCount: number;
+  keepCount: number;
+  /** Estimated incremental annual revenue from the AI-added SKUs, pre-formatted. */
+  estimatedRevenue: string;
+  /** Assortment growth the added SKUs represent over the retained catalog. */
+  growthPercent: number;
+  /** Why AI wants the SKUs added — revenue impact and growth. */
+  addReason: string;
+  /** Why AI wants the SKUs removed — they miss Target criteria. */
+  removeReason: string;
+}
+
+/** Deterministic demo assumption — annual units sold per new SKU. */
+const ANNUAL_UNITS_PER_SKU = 900;
+
+function parsePrice(value: string | undefined): number {
+  if (!value) return 0;
+  const parsed = Number.parseFloat(value.replace(/[^0-9.]/g, ""));
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function formatRevenue(amount: number): string {
+  if (amount >= 1_000_000) return `$${(amount / 1_000_000).toFixed(1)}M`;
+  if (amount >= 1_000) return `$${Math.round(amount / 1_000)}K`;
+  return `$${Math.round(amount)}`;
+}
+
+export function buildAssortmentRecommendationImpact(
+  content: AssortmentCurationContent,
+  versionId?: string,
+): AssortmentRecommendationImpact {
+  const version = versionId
+    ? content.versions.find((v) => v.id === versionId)
+    : content.versions[0];
+  const rows = version ? getVersionSkus(content, version.id) : [];
+
+  const addRows = rows.filter((r) => r.recommendationAction === "ai_add");
+  const removeRows = rows.filter((r) => r.recommendationAction === "ai_remove");
+  const keepCount = rows.length - addRows.length - removeRows.length;
+
+  const addCount = addRows.length || content.marketplaceSearch.addCount;
+  const removeCount = removeRows.length || content.marketplaceSearch.removeCount;
+
+  const revenueBase = addRows.reduce((sum, row) => sum + parsePrice(row.retailPrice), 0);
+  const estimatedRevenue = formatRevenue(revenueBase * ANNUAL_UNITS_PER_SKU);
+  const growthPercent = keepCount > 0 ? Math.round((addCount / keepCount) * 100) : 0;
+
+  return {
+    addCount,
+    removeCount,
+    keepCount,
+    estimatedRevenue,
+    growthPercent,
+    addReason:
+      `Adding ${addCount} SKUs — high-demand marketplace matches worth an estimated ` +
+      `${estimatedRevenue} in incremental annual revenue and ${growthPercent}% assortment growth.`,
+    removeReason:
+      `Removing ${removeCount} SKUs — these do not meet Target criteria on barcode validity, ` +
+      `WERCS compliance, and category fit.`,
+  };
+}
+
 export function getAnalysisForSource(
   content: AssortmentCurationContent,
   sourceId: string,

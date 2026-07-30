@@ -16,6 +16,7 @@ import { InfoBanner } from "@/components/data-display/info-banner";
 import { StatusTag, markerToneClass } from "@/components/ui/status-tag";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import {
+  buildAssortmentRecommendationImpact,
   getVersionSkus,
   type AssortmentCurationContent,
   type AssortmentSkuRow,
@@ -212,6 +213,10 @@ export function AssortmentRecommendedTab({
 
   const addCount = versionRows.filter((r) => r.recommendationAction === "ai_add").length;
   const removeCount = versionRows.filter((r) => r.recommendationAction === "ai_remove").length;
+  const impact = useMemo(
+    () => buildAssortmentRecommendationImpact(content, activeVersion?.id),
+    [content, activeVersion],
+  );
 
   const handleCreateVersion = (name: string) => {
     const created = createVersion(name);
@@ -242,7 +247,43 @@ export function AssortmentRecommendedTab({
       <InfoBanner
         className="border-[var(--color-primary)]/20 bg-[var(--color-primary-light)]/30"
         title="AI marketplace search complete"
-        message={content.marketplaceSearch.summary}
+        message={
+          <ul className="space-y-1.5">
+            <li className="flex items-start gap-2">
+              <MinusCircle
+                className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--color-error)]"
+                aria-hidden
+              />
+              <span>
+                <span className="font-medium text-[var(--color-foreground)]">
+                  Removing {impact.removeCount} SKUs
+                </span>{" "}
+                — these do not meet Target criteria on barcode validity, WERCS compliance, and
+                category fit.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <Sparkles
+                className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--color-success)]"
+                aria-hidden
+              />
+              <span>
+                <span className="font-medium text-[var(--color-foreground)]">
+                  Adding {impact.addCount} SKUs
+                </span>{" "}
+                — high-demand marketplace matches worth an estimated{" "}
+                <span className="font-medium text-[var(--color-foreground)]">
+                  {impact.estimatedRevenue}
+                </span>{" "}
+                in incremental annual revenue, growing this assortment by{" "}
+                <span className="font-medium text-[var(--color-foreground)]">
+                  {impact.growthPercent}%
+                </span>
+                .
+              </span>
+            </li>
+          </ul>
+        }
       />
 
       <AssortmentVersionToolbar

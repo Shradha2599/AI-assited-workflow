@@ -554,32 +554,24 @@ function buildDefaultLeadFormAnalysis(partnerId: string): LeadFormAnalysis | und
   };
 }
 
-const RECOMMENDATION_TASK_HINT: Record<LeadFormAnalysis["recommendation"], string> = {
-  accept: "Beacon recommends accepting this lead and moving the partner into onboarding.",
-  reject: "Beacon recommends rejecting this lead based on validation and risk signals.",
-  future_interest: "Beacon recommends marking this partner as future interest for later review.",
+const RECOMMENDATION_VERDICT: Record<LeadFormAnalysis["recommendation"], string> = {
+  accept: "Beacon recommends approving this lead",
+  reject: "Beacon recommends rejecting this lead",
+  future_interest: "Beacon recommends marking this lead as future interest",
 };
 
-const LEAD_DECISION_ACTION: Record<
-  LeadFormAnalysis["recommendation"],
-  { label: string; decision: "accept" | "reject" | "future_interest" }
-> = {
-  accept: { label: "Approve Lead →", decision: "accept" },
-  reject: { label: "Reject Lead →", decision: "reject" },
-  future_interest: { label: "Mark Future Interest →", decision: "future_interest" },
-};
-
+/**
+ * Lead form panel — Beacon's verdict on the lead plus a way into the full
+ * analysis. The approve / reject decision lives on the lead form itself.
+ */
 export function getLeadFormTasksFromAnalysis(analysis: LeadFormAnalysis) {
-  const decisionAction = LEAD_DECISION_ACTION[analysis.recommendation];
   return [
     {
       id: `insight-${analysis.partnerId}`,
-      title: analysis.recommendationTitle,
-      description: `${RECOMMENDATION_TASK_HINT[analysis.recommendation]} ${analysis.summary} Checked on ${analysis.checkedOn}.`,
+      title: RECOMMENDATION_VERDICT[analysis.recommendation],
+      description: `Confidence ${analysis.confidenceScore.toFixed(1)}/10 · Checked on ${analysis.checkedOn}. Open the analysis to see the validation and risk signals behind this recommendation.`,
       actionLabel: "View Analysis →",
       actionType: "open_analysis" as const,
-      secondaryActionLabel: decisionAction.label,
-      leadDecision: decisionAction.decision,
       partnerId: analysis.partnerId,
       score: analysis.confidenceScore,
     },

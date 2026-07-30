@@ -27,6 +27,7 @@ import {
 import type { PotentialPartner } from "@/lib/mock-data/potential-partners";
 import { PartnerProfileHeader } from "./partner-profile-header";
 import { AgentFeedbackModal } from "./agent-feedback-modal";
+import { AiRecommendationModal } from "./ai-recommendation-modal";
 import { OnboardingCommentsDrawer } from "./onboarding-comments-drawer";
 import { useOnboardingReviewStore } from "../store/onboarding-review-store";
 
@@ -300,6 +301,7 @@ export function OnboardingChecklistView({ partner, onboarding }: OnboardingCheck
 
       <OnboardingCommentsDrawer partner={partner} />
       <AgentFeedbackModal />
+      <AiRecommendationModal />
     </div>
   );
 }

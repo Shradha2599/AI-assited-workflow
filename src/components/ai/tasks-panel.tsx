@@ -16,7 +16,10 @@ import { StatusTag, MarkerTag, validationMarkerClass } from "@/components/ui/sta
 import { getConfidenceBadgeStyle } from "@/lib/utils/confidence-badge";
 import { useOnboardingReviewStore } from "@/features/partner-onboarding/store/onboarding-review-store";
 import { profileTaskApproveId } from "@/features/partner-onboarding/utils/profile-task-progress";
+import { documentationSubtaskApproveId } from "@/features/partner-onboarding/utils/documentation-task-progress";
+import { documentationSubtaskApproveIds } from "@/lib/beacon/onboarding-panel-tasks";
 import { getTaskEvaluation } from "@/lib/mock-data/onboarding-evaluation";
+import { useToastStore } from "@/stores/toast-store";
 import { useOutreachStore } from "@/features/outreach/store/outreach-store";
 import { usePlanStore } from "@/features/assortment-plan/store/plan-store";
 import { usePartnerReviewStore } from "@/features/partner-onboarding/store/partner-review-store";
@@ -31,10 +34,19 @@ export interface RecommendedTask {
   description: string;
   actionLabel: string;
   actionHref?: string;
-  actionType?: "open_analysis" | "open_onboarding_comment" | "open_onboarding_recommendation" | "approve_onboarding" | "navigate_review" | "open_outreach" | "open_finalize_drawer" | "lead_decision" | "scroll_plan_calendar";
+  actionType?: "open_analysis" | "open_onboarding_comment" | "open_onboarding_recommendation" | "approve_onboarding" | "approve_documents" | "request_valid_document" | "navigate_review" | "open_outreach" | "open_finalize_drawer" | "lead_decision" | "scroll_plan_calendar";
   secondaryActionLabel?: string;
   leadDecision?: "accept" | "reject" | "future_interest";
   partnerId?: string;
+  /** Alert id acknowledged alongside an approval — keeps in-page banners in sync */
+  alertId?: string;
+  approveToastMessage?: string;
+  /** Document approve ids handled by approve_documents / request_valid_document */
+  approveIds?: string[];
+  docSubtask?: "general" | "brands";
+  documentLabel?: string;
+  rejectionReason?: string;
+  suggestedComment?: string;
   score?: number;
   sellerId?: string;
   sellerName?: string;
@@ -546,7 +558,10 @@ export function TasksPanel({
   const openComments = useOnboardingReviewStore((s) => s.openComments);
   const openRecommendationModal = useOnboardingReviewStore((s) => s.openRecommendationModal);
   const approveItem = useOnboardingReviewStore((s) => s.approveItem);
+  const approveWithAcknowledgement = useOnboardingReviewStore((s) => s.approveWithAcknowledgement);
+  const requestValidDocument = useOnboardingReviewStore((s) => s.requestValidDocument);
   const isApproved = useOnboardingReviewStore((s) => s.isApproved);
+  const showToast = useToastStore((s) => s.showToast);
   const openOutreach = useOutreachStore((s) => s.openDrawer);
   const openFinalizeDrawer = usePlanStore((s) => s.openFinalizeDrawer);
   const applyBeaconCalendarRecommendation = usePlanStore(
@@ -608,7 +623,42 @@ export function TasksPanel({
       return;
     }
     if (task.actionType === "approve_onboarding" && task.reviewTaskId) {
+      if (task.alertId) {
+        approveWithAcknowledgement(
+          task.reviewTaskId,
+          task.alertId,
+          task.approveToastMessage ?? "Sub-task marked as approved.",
+        );
+        return;
+      }
       approveItem(task.reviewTaskId);
+      return;
+    }
+    if (task.actionType === "approve_documents" && task.approveIds?.length && task.partnerId) {
+      const subtask = task.docSubtask ?? "general";
+      task.approveIds.forEach((id) => approveItem(id));
+      const partner = getPotentialPartnerById(task.partnerId);
+      const allIds = partner
+        ? documentationSubtaskApproveIds(partner.sellerId, subtask)
+        : task.approveIds;
+      const approved = useOnboardingReviewStore.getState().approvedIds;
+      if (allIds.every((id) => approved.includes(id))) {
+        approveItem(documentationSubtaskApproveId(task.partnerId, subtask));
+      }
+      showToast({
+        title: "Documents approved",
+        description: task.approveToastMessage ?? "Validated documents were approved.",
+      });
+      return;
+    }
+    if (task.actionType === "request_valid_document" && task.approveIds?.length) {
+      requestValidDocument(
+        task.approveIds[0]!,
+        task.documentLabel ?? "Document",
+        task.rejectionReason ?? "AI could not validate this upload.",
+        task.suggestedComment ??
+          "Please upload an updated document that meets Target requirements.",
+      );
       return;
     }
     if (task.actionType === "open_outreach" && task.mailType) {
